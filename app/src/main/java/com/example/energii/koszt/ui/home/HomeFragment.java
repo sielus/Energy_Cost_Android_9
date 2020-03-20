@@ -5,50 +5,103 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-
 import com.example.energii.koszt.R;
+import java.util.Map;
 
-public class HomeFragment extends Fragment
-{
+public class HomeFragment extends Fragment {
+    private int numberDevice;
+    private int hours;
+    private int minutes;
+    private Double energyCost;
+    private Double powerValue;
 
-    private HomeViewModel homeViewModel;
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        final View root = inflater.inflate(R.layout.fragment_home, container, false);
+        Button buttonCalcCostEnergy = root.findViewById(R.id.buttonCalcCostEnergy);
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
-
-        final TextView textView = root.findViewById(R.id.text_home);
-
-
-
-
-
-
-        homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        buttonCalcCostEnergy.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onChanged(@Nullable String s)
-            {
+            public void onClick(View v) {
+                if(Check(root)) {
 
-                textView.setText(s);
+                    getInputValue(root);
 
+                    CostEnergy costEnergy = new CostEnergy(powerValue, energyCost, numberDevice, hours, minutes);
+
+                    Map <String, String> costValueMap = costEnergy.sumCostEnergy();
+
+                    displayCostEnergy(costValueMap, root);
+
+                    Toast.makeText(getContext(),"Policzono!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
-
-
 
         return root;
     }
 
+    private void getInputValue(View root) {
+        EditText inputPowerValue = root.findViewById(R.id.inputPowerValue);
+        EditText inputNumberDevices = root.findViewById(R.id.inputNumberDevices);
+        EditText inputEnergyCost = root.findViewById(R.id.inputEnergyCost);
+        EditText inputHours = root.findViewById(R.id.inputhours);
+        EditText inputMinutes = root.findViewById(R.id.inputminutes);
 
+        powerValue = Double.parseDouble(inputPowerValue.getText().toString());
+        energyCost = Double.parseDouble(inputEnergyCost.getText().toString());
+        numberDevice = Integer.parseInt(inputNumberDevices.getText().toString());;
+        hours = Integer.parseInt(inputHours.getText().toString());
+        minutes = Integer.parseInt(inputMinutes.getText().toString());
+    }
 
+    private void displayCostEnergy(Map<String, String> costValueMap,View root) {
+        TextView outputEnergyCostUser = root.findViewById(R.id.OutputEnergyCostUser);
+        TextView outputEnergyCostDay = root.findViewById(R.id.OutputEnergyCostDay);
+        TextView outputEnergyCostMonth = root.findViewById(R.id.OutputEnergyCostMonth);
+        outputEnergyCostUser.setText(costValueMap.get("userCost"));
+        outputEnergyCostDay.setText(costValueMap.get("dayCost"));
+        outputEnergyCostMonth.setText(costValueMap.get("monthCost"));
+    }
+
+    private boolean Check(View root) {
+        EditText inputPowerValue = root.findViewById(R.id.inputPowerValue);
+        EditText inputNumberDevices = root.findViewById(R.id.inputNumberDevices);
+        EditText inputEnergyCost = root.findViewById(R.id.inputEnergyCost);
+        EditText inputHours = root.findViewById(R.id.inputhours);
+        EditText inputMinutes = root.findViewById(R.id.inputminutes);
+
+        boolean isNotEmpty = true;
+
+        if(inputPowerValue.getText().toString().isEmpty()) {
+            inputPowerValue.setError("Brak danych!");
+            isNotEmpty = false;
+        }
+
+        if(inputNumberDevices.getText().toString().isEmpty()) {
+            inputNumberDevices.setError("Brak danych!");
+            isNotEmpty = false;
+        }
+
+        if(inputEnergyCost.getText().toString().isEmpty()) {
+            inputEnergyCost.setError("Brak danych!");
+            isNotEmpty = false;
+        }
+
+        if(inputHours.getText().toString().isEmpty()) {
+            inputHours.setError("Brak danych!");
+            isNotEmpty = false;
+        }
+
+        if(inputMinutes.getText().toString().isEmpty()) {
+            inputMinutes.setError("Brak danych!");
+            isNotEmpty = false;
+        }
+        return isNotEmpty;
+    }
 }
+

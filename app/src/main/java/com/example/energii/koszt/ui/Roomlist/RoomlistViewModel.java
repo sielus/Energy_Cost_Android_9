@@ -10,7 +10,7 @@ public class RoomlistViewModel extends ViewModel {
 
     public RoomlistViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is gallery fragment test2");
+        mText.setValue("This is gallery fragment");
     }
 
     public LiveData<String> getText() {
