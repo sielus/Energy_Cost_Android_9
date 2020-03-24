@@ -2,6 +2,7 @@ package com.example.energii.koszt.ui.Roomlist;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,18 +12,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
 import com.example.energii.koszt.R;
-import com.example.energii.koszt.ui.Roomlist.ManagerRoom.RoomManagerFragment;
+import com.example.energii.koszt.ui.Roomlist.ManagerRoom.RoomEditManager;
+
 public class RoomListAdapter extends ArrayAdapter<String> {
-    private Context roomListContext;
+    private final Context roomListContext;
     private String[] roomListName;
     private String[] roomListDescription;
+    private RoomListFragment roomlistFragment = new RoomListFragment();
 
-    RoomListAdapter(Context roomListContext, String[] roomListName, String[] roomListDescription) {
+   RoomListAdapter(Context roomListContext, String[] roomListName, String[] roomListDescription) {
         super(roomListContext, R.layout.row, R.id.testTextView1, roomListName);
         this.roomListContext = roomListContext;
         this.roomListName = roomListName;
@@ -34,36 +33,48 @@ public class RoomListAdapter extends ArrayAdapter<String> {
     @Override
     public View getView(final int position, @Nullable View convertView, @Nullable ViewGroup parent){
         LayoutInflater layoutInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        @SuppressLint("ViewHolder") View row = layoutInflater.inflate(R.layout.row, parent, false);
+        assert layoutInflater != null;
+        @SuppressLint("ViewHolder") final View row = layoutInflater.inflate(R.layout.row, parent, false);
         final TextView roomListTextView1 = row.findViewById(R.id.testTextView1);
-        final Button editroombutton = row.findViewById(R.id.editroombutton);
-        final Button deleteroombutton = row.findViewById(R.id.deleteroombutton);
+        final Button editRoomButton = row.findViewById(R.id.editroombutton);
+        final Button deleteRoomButton = row.findViewById(R.id.deleteroombutton);
         TextView roomListTextView2 = row.findViewById(R.id.testTextView2);
 
         roomListTextView1.setText(roomListName[position]);
         roomListTextView2.setText(roomListDescription[position]);
+        final RoomEditManager roomEditManager = new RoomEditManager();
+        editRoomButton.setTag(roomListName[position]);
+        editRoomButton.setId(2);
 
-        editroombutton.setTag(1);
-        editroombutton.setId(2);
-
-        editroombutton.setOnClickListener(new View.OnClickListener() {
+        editRoomButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editroombutton.setText(roomListName[position]);
-                Toast.makeText(getContext(), roomListName[position] +" id : " + String.valueOf(editroombutton.getId()),Toast.LENGTH_SHORT).show();
+              //  editRoomButton.setText(roomListName[position]);
+
+                Toast.makeText(getContext(), roomListName[position] +" id : " + String.valueOf(editRoomButton.getId()),Toast.LENGTH_SHORT).show();
+                roomEditManager.title = roomListName[position];
+
+
+
+                Intent intent = new Intent(roomListContext , RoomEditManager.class);
+                roomListContext.startActivity(intent);
 
             }
         });
 
-        deleteroombutton.setOnClickListener(new View.OnClickListener() {
+        deleteRoomButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deleteroombutton.setText(roomListName[position]);
+                //deleteRoomButton.setText(roomListName[position]);
 
-                Toast.makeText(getContext(), roomListName[position] +" id : " + String.valueOf(deleteroombutton.getId()),Toast.LENGTH_SHORT).show();
+                row.refreshDrawableState();
+                roomlistFragment.getTag(editRoomButton.getTag().toString(),roomListContext);
+                Toast.makeText(getContext(),"Pokój usunięty",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), roomListName[position] +" id : " + String.valueOf(deleteRoomButton.getId()),Toast.LENGTH_SHORT).show();
             }
         });
 
         return row;
     }
 }
+
