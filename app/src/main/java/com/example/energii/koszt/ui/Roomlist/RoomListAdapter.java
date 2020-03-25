@@ -17,15 +17,17 @@ import com.example.energii.koszt.ui.Roomlist.ManagerRoom.RoomEditManager;
 
 public class RoomListAdapter extends ArrayAdapter<String> {
     private final Context roomListContext;
+    private View root;
     private String[] roomListName;
     private String[] roomListDescription;
     private RoomListFragment roomlistFragment = new RoomListFragment();
 
-   RoomListAdapter(Context roomListContext, String[] roomListName, String[] roomListDescription) {
+   RoomListAdapter(Context roomListContext, String[] roomListName, String[] roomListDescription,View root) {
         super(roomListContext, R.layout.row, R.id.testTextView1, roomListName);
         this.roomListContext = roomListContext;
         this.roomListName = roomListName;
         this.roomListDescription = roomListDescription;
+        this.root = root;
     }
 
     @SuppressLint("ResourceType")
@@ -71,6 +73,7 @@ public class RoomListAdapter extends ArrayAdapter<String> {
                 roomlistFragment.getTag(editRoomButton.getTag().toString(),roomListContext);
                 Toast.makeText(getContext(),"Pokój usunięty",Toast.LENGTH_SHORT).show();
                 Toast.makeText(getContext(), roomListName[position] +" id : " + String.valueOf(deleteRoomButton.getId()),Toast.LENGTH_SHORT).show();
+                roomlistFragment.refreshListView(root);
             }
         });
 
