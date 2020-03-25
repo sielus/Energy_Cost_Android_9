@@ -31,14 +31,14 @@
             android:textSize="20dp" />
 
         <Button
-            android:id="@+id/editroombutton"
+            android:id="@+id/editbuttonRow"
             android:layout_width="127dp"
             android:width="127dp"
             android:layout_height="wrap_content"
             android:text="Edytuj" />
 
         <Button
-            android:id="@+id/deleteroombutton"
+            android:id="@+id/deletebuttonRow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

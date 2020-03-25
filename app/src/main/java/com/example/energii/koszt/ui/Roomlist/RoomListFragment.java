@@ -30,9 +30,10 @@ public class RoomListFragment extends Fragment {
         final SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
         final EditText editTextInsertRoomName = root.findViewById(R.id.editTextInsertRoomName);
         Button buttonAddRoom = root.findViewById(R.id.buttonAddRoom);
-        RoomListAdapter adapter = new RoomListAdapter(root.getContext(), Arrays.copyOf(roomId.toArray(), roomId.size(), String[].class), Arrays.copyOf(roomName.toArray(), roomName.size(), String[].class), root);
 
-        ViewDataFromDB(sqlLiteDBHelper.viewData());
+        ViewDataFromDB(sqlLiteDBHelper.getRoomList());
+
+        RoomListAdapter adapter = new RoomListAdapter(root.getContext(), Arrays.copyOf(roomId.toArray(), roomId.size(), String[].class), Arrays.copyOf(roomName.toArray(), roomName.size(), String[].class), root);
         listView.setAdapter(adapter);
 
         buttonAddRoom.setOnClickListener(new View.OnClickListener() {
@@ -40,7 +41,7 @@ public class RoomListFragment extends Fragment {
             public void onClick(View v) {
                 try {
                     sqlLiteDBHelper.addRoom(editTextInsertRoomName.getText().toString());
-                    ViewDataFromDB(sqlLiteDBHelper.viewData());
+                    ViewDataFromDB(sqlLiteDBHelper.getRoomList());
 
                     refreshListView(root);
 
