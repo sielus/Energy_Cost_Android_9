@@ -2,7 +2,6 @@ package com.example.energii.koszt.ui.Roomlist.ManagerRoom;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,10 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import com.example.energii.koszt.R;
 
 public class RoomEditManagerListAdapter extends ArrayAdapter<String> {
@@ -56,11 +53,11 @@ public class RoomEditManagerListAdapter extends ArrayAdapter<String> {
 
                 Toast.makeText(getContext(), roomListName[position] +" id : " + String.valueOf(editDeviceButton.getId()),Toast.LENGTH_SHORT).show();
              //   roomEditManager.title = roomListName[position];
+                roomEditManager.showDialog(root);
 
 
-
-                Intent intent = new Intent(roomListContext , RoomEditManager.class);
-                roomListContext.startActivity(intent);
+              //  Intent intent = new Intent(roomListContext , RoomEditManager.class);
+            //    roomListContext.startActivity(intent);
 
             }
         });

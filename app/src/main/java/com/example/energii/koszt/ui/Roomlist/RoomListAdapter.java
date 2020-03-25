@@ -54,7 +54,7 @@ public class RoomListAdapter extends ArrayAdapter<String> {
               //  editRoomButton.setText(roomListName[position]);
 
                 Toast.makeText(getContext(), roomListName[position] +" id : " + String.valueOf(editRoomButton.getId()),Toast.LENGTH_SHORT).show();
-                roomEditManager.title = roomListName[position];
+                roomEditManager.room_name = roomListName[position];
 
 
 
