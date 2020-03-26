@@ -16,7 +16,6 @@ import android.widget.Toast;
 import com.example.energii.koszt.R;
 import com.example.energii.koszt.ui.Roomlist.SQLLiteDBHelper;
 import com.example.energii.koszt.ui.exception.SQLEnergyCostException;
-
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -43,7 +42,7 @@ public class RoomEditManager extends AppCompatActivity {
         buttonAddDevice = findViewById(R.id.buttonAddDevice);
         editTextDeviceName = findViewById(R.id.editTextDeviceName);
 
-        ViewDataFromDB(sqlLiteDBHelper.getRoomDeviceList());
+        ViewDataFromDB(sqlLiteDBHelper.getRoomDeviceList(room_name));
 
         RoomEditManagerListAdapter adapter = new RoomEditManagerListAdapter(view.getContext(), Arrays.copyOf(deviceId.toArray(), deviceId.size(), String[].class), Arrays.copyOf(deviceName.toArray(), deviceName.size(), String[].class),view );
         listViewListDevice.setAdapter(adapter);
@@ -79,9 +78,10 @@ public class RoomEditManager extends AppCompatActivity {
         }else {
             //clearRoomList();
             while(cursor.moveToNext()) {
-                deviceId.add(cursor.getString(1));
-                deviceName.add(cursor.getString(0));
-                System.out.println(deviceName);
+                deviceId.add(cursor.getString(2));
+
+                deviceName.add(cursor.getString(4));
+
             }
         }
     }
@@ -102,7 +102,7 @@ public class RoomEditManager extends AppCompatActivity {
         buttonDialogAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            Double powerValue = Double.valueOf(editTextDevicePower.getText().toString());
+            double powerValue = Double.parseDouble(editTextDevicePower.getText().toString());
             int h = Integer.parseInt(editTextDeviceWorkH.getText().toString());
             int m = Integer.parseInt(editTextDeviceWorkM.getText().toString());
             int number = Integer.parseInt(editTextDeviceNumbers.getText().toString());
@@ -111,10 +111,8 @@ public class RoomEditManager extends AppCompatActivity {
                     sqlLiteDBHelper.addDevice(room_name,deviceNameInput,powerValue,h,m,number);
                     Toast.makeText(view.getContext(),"Urządzenie dodane",Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
-                } catch (SQLEnergyCostException.EmptyField emptyField) {
-                    emptyField.printStackTrace();
-                } catch (SQLEnergyCostException.DuplicationDevice duplicationDevice) {
-                    duplicationDevice.printStackTrace();
+                } catch (SQLEnergyCostException.EmptyField | SQLEnergyCostException.DuplicationDevice errorMessage) {
+                    Toast.makeText(view.getContext(), errorMessage.getMessage(),Toast.LENGTH_SHORT).show();
                 }
             }
         });

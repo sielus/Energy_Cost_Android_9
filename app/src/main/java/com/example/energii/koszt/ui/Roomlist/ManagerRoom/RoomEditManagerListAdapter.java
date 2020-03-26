@@ -12,12 +12,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.example.energii.koszt.R;
+import com.example.energii.koszt.ui.Roomlist.SQLLiteDBHelper;
 
 public class RoomEditManagerListAdapter extends ArrayAdapter<String> {
     private final Context roomListContext;
     private View root;
     private String[] roomListName;
     private String[] roomListDescription;
+    SQLLiteDBHelper sqlLiteDBHelper;
 
     RoomEditManagerListAdapter(Context roomListContext, String[] roomListName, String[] roomListDescription,View root) {
         super(roomListContext, R.layout.row, R.id.testTextView1, roomListName);
@@ -66,7 +68,7 @@ public class RoomEditManagerListAdapter extends ArrayAdapter<String> {
             @Override
             public void onClick(View v) {
                 //deleteRoomButton.setText(roomListName[position]);
-
+                //sqlLiteDBHelper.deleteDevice();
                 row.refreshDrawableState();
             //    roomlistFragment.getTag(editRoomButton.getTag().toString(),roomListContext);
                 Toast.makeText(getContext(),"Urządzenie usunięte",Toast.LENGTH_SHORT).show();

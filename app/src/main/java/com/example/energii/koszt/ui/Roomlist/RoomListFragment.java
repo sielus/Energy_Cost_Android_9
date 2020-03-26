@@ -23,11 +23,11 @@ public class RoomListFragment extends Fragment {
     private List<String> roomName = new LinkedList<>();
     private View root;
     private ListView listView;
-
+    private SQLLiteDBHelper sqlLiteDBHelper;
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_rooms, container, false);
         listView = root.findViewById(R.id.listView);
-        final SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
+        sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
         final EditText editTextInsertRoomName = root.findViewById(R.id.editTextInsertRoomName);
         Button buttonAddRoom = root.findViewById(R.id.buttonAddRoom);
 
@@ -55,9 +55,8 @@ public class RoomListFragment extends Fragment {
         return root;
     }
 
-    private void ViewDataFromDB(Cursor cursor) {
+     void ViewDataFromDB(Cursor cursor) {
         if(cursor.getCount()==0) {
-            Toast.makeText(getContext(),"Brak danych",Toast.LENGTH_SHORT).show();
         }else {
             clearRoomList();
             while(cursor.moveToNext()) {
@@ -67,8 +66,9 @@ public class RoomListFragment extends Fragment {
         }
     }
 
-    private void clearRoomList() {
-        refreshListView(root);
+     void clearRoomList() {
+
+        //refreshListView(root);
         roomName.clear();
         roomId.clear();
     }

@@ -21,7 +21,7 @@ public class RoomListAdapter extends ArrayAdapter<String> {
     private String[] roomListName;
     private String[] roomListDescription;
     private RoomListFragment roomlistFragment = new RoomListFragment();
-
+    SQLLiteDBHelper sqlLiteDBHelper;
    RoomListAdapter(Context roomListContext, String[] roomListName, String[] roomListDescription,View root) {
         super(roomListContext, R.layout.row, R.id.testTextView1, roomListName);
         this.roomListContext = roomListContext;
@@ -33,7 +33,7 @@ public class RoomListAdapter extends ArrayAdapter<String> {
     @SuppressLint("ResourceType")
     @NonNull
     @Override
-    public View getView(final int position, @Nullable View convertView, @Nullable ViewGroup parent){
+    public View getView(final int position, @Nullable final View convertView, @Nullable ViewGroup parent){
         LayoutInflater layoutInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         assert layoutInflater != null;
         @SuppressLint("ViewHolder") final View row = layoutInflater.inflate(R.layout.row, parent, false);
@@ -68,12 +68,18 @@ public class RoomListAdapter extends ArrayAdapter<String> {
             @Override
             public void onClick(View v) {
                 //deleteRoomButton.setText(roomListName[position]);
+                sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
+                System.out.println(roomListName[position]);
+                sqlLiteDBHelper.deleteRoom(roomListName[position]);
 
-                row.refreshDrawableState();
-                roomlistFragment.getTag(editRoomButton.getTag().toString(),roomListContext);
-                Toast.makeText(getContext(),"Pokój usunięty",Toast.LENGTH_SHORT).show();
-                Toast.makeText(getContext(), roomListName[position] +" id : " + String.valueOf(deleteRoomButton.getId()),Toast.LENGTH_SHORT).show();
+                //   roomlistFragment.getTag(editRoomButton.getTag().toString(),roomListContext);
+                roomlistFragment.clearRoomList();
+                roomlistFragment.ViewDataFromDB(sqlLiteDBHelper.getRoomList());
                 roomlistFragment.refreshListView(root);
+
+                Toast.makeText(getContext(),"Pokój usunięty",Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getContext(), +" id : " + deleteRoomButton.getId(),Toast.LENGTH_SHORT).show();
+
             }
         });
 

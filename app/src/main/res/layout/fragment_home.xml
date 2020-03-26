@@ -204,5 +204,13 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.653" />
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pobór kWh"
+        tools:layout_editor_absoluteX="104dp"
+        tools:layout_editor_absoluteY="353dp" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
