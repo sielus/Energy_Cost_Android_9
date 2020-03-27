@@ -132,4 +132,9 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         String roomListTable = "DROP TABLE" + roomName + "_device";
         db.execSQL(roomListTable);
     }
+
+    void getDeviceInfo(String roomName, String deviceName){
+
+                
+    }
 }

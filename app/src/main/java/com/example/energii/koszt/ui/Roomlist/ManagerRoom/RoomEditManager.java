@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 import com.example.energii.koszt.R;
+import com.example.energii.koszt.ui.Roomlist.RoomListAdapter;
 import com.example.energii.koszt.ui.Roomlist.SQLLiteDBHelper;
 import com.example.energii.koszt.ui.exception.SQLEnergyCostException;
 import java.util.Arrays;
@@ -46,6 +47,7 @@ public class RoomEditManager extends AppCompatActivity {
 
         RoomEditManagerListAdapter adapter = new RoomEditManagerListAdapter(view.getContext(), Arrays.copyOf(deviceId.toArray(), deviceId.size(), String[].class), Arrays.copyOf(deviceName.toArray(), deviceName.size(), String[].class),view );
         listViewListDevice.setAdapter(adapter);
+
         buttonAddDevice.setEnabled(false);
         editTextDeviceName.addTextChangedListener(new TextWatcher() {
             @Override
@@ -72,11 +74,11 @@ public class RoomEditManager extends AppCompatActivity {
         });
     }
 
-    private void ViewDataFromDB(Cursor cursor) {
+     void ViewDataFromDB(Cursor cursor) {
         if(cursor.getCount()==0) {
             Toast.makeText(view.getContext(),"Brak danych",Toast.LENGTH_SHORT).show();
         }else {
-            //clearRoomList();
+            clearRoomList();
             while(cursor.moveToNext()) {
                 deviceId.add(cursor.getString(2));
 
@@ -84,6 +86,18 @@ public class RoomEditManager extends AppCompatActivity {
 
             }
         }
+    }
+
+    void clearRoomList() {
+
+        deviceId.clear();
+        deviceName.clear();
+    }
+
+    void refreshListView(View root) {
+        RoomEditManagerListAdapter adapter = new RoomEditManagerListAdapter(root.getContext(), Arrays.copyOf(deviceId.toArray(), deviceId.size(), String[].class), Arrays.copyOf(deviceName.toArray(), deviceName.size(), String[].class),root);
+        listViewListDevice = findViewById(R.id.listViewDeviceList);
+        listViewListDevice.setAdapter(adapter);
     }
 
     public void showDialog(final View view){
@@ -111,6 +125,13 @@ public class RoomEditManager extends AppCompatActivity {
                     sqlLiteDBHelper.addDevice(room_name,deviceNameInput,powerValue,h,m,number);
                     Toast.makeText(view.getContext(),"Urządzenie dodane",Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
+
+
+                    ViewDataFromDB(sqlLiteDBHelper.getRoomDeviceList(room_name));
+
+                    refreshListView(view);
+
+
                 } catch (SQLEnergyCostException.EmptyField | SQLEnergyCostException.DuplicationDevice errorMessage) {
                     Toast.makeText(view.getContext(), errorMessage.getMessage(),Toast.LENGTH_SHORT).show();
                 }

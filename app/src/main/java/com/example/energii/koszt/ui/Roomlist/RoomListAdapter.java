@@ -73,6 +73,7 @@ public class RoomListAdapter extends ArrayAdapter<String> {
                 sqlLiteDBHelper.deleteRoom(roomListName[position]);
 
                 //   roomlistFragment.getTag(editRoomButton.getTag().toString(),roomListContext);
+
                 roomlistFragment.clearRoomList();
                 roomlistFragment.ViewDataFromDB(sqlLiteDBHelper.getRoomList());
                 roomlistFragment.refreshListView(root);

@@ -38,15 +38,17 @@ public class RoomEditManagerListAdapter extends ArrayAdapter<String> {
         assert layoutInflater != null;
         @SuppressLint("ViewHolder") final View row = layoutInflater.inflate(R.layout.row, parent, false);
         final TextView roomListTextView1 = row.findViewById(R.id.testTextView1);
+        TextView roomListTextView2 = row.findViewById(R.id.testTextView2);
+
         final Button editDeviceButton = row.findViewById(R.id.editbuttonRow);
         final Button deleteDevicebutton = row.findViewById(R.id.deletebuttonRow);
-        TextView roomListTextView2 = row.findViewById(R.id.testTextView2);
+        final RoomEditManager roomEditManager = new RoomEditManager();
 
         roomListTextView1.setText(roomListName[position]);
         roomListTextView2.setText(roomListDescription[position]);
-        final RoomEditManager roomEditManager = new RoomEditManager();
-        editDeviceButton.setTag(roomListName[position]);
 
+
+        editDeviceButton.setTag(roomListName[position]);
 
         editDeviceButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,8 +60,6 @@ public class RoomEditManagerListAdapter extends ArrayAdapter<String> {
                 roomEditManager.showDialog(root);
 
 
-              //  Intent intent = new Intent(roomListContext , RoomEditManager.class);
-            //    roomListContext.startActivity(intent);
 
             }
         });
@@ -73,7 +73,11 @@ public class RoomEditManagerListAdapter extends ArrayAdapter<String> {
             //    roomlistFragment.getTag(editRoomButton.getTag().toString(),roomListContext);
                 Toast.makeText(getContext(),"Urządzenie usunięte",Toast.LENGTH_SHORT).show();
                 Toast.makeText(getContext(), roomListName[position] +" id : " + String.valueOf(deleteDevicebutton.getId()),Toast.LENGTH_SHORT).show();
-               // roomlistFragment.refreshListView(root);
+
+
+                roomEditManager.clearRoomList();
+                roomEditManager.ViewDataFromDB(sqlLiteDBHelper.getRoomDeviceList(roomListName[position]));
+                roomEditManager.refreshListView(root);
             }
         });
 
