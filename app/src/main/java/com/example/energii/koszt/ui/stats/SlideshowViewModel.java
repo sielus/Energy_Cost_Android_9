@@ -1,4 +1,4 @@
-package com.example.energii.koszt.ui.slideshow;
+package com.example.energii.koszt.ui.stats;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

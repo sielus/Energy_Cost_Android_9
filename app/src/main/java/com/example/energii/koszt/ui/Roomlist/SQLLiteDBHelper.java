@@ -135,6 +135,6 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
 
     void getDeviceInfo(String roomName, String deviceName){
 
-                
+
     }
 }
