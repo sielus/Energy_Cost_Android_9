@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/relativeLayout"
-    android:layout_width="250dp"
-    android:layout_height="250dp"
+    android:layout_width="300dp"
+    android:layout_height="300dp"
     android:background="#D57070"
     android:visibility="visible">
 
@@ -23,12 +23,25 @@
         android:id="@+id/editTextDevicePower"
         android:layout_width="153dp"
         android:layout_height="43dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="84dp"
         android:ems="10"
         android:hint="Moc"
         android:inputType="numberSigned"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.567"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/editTextDeviceName"
+        android:layout_width="153dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="32dp"
+        android:ems="10"
+        android:hint="Nazwa"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.51"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -36,12 +49,12 @@
         android:id="@+id/editTextDeviceNumbers"
         android:layout_width="153dp"
         android:layout_height="43dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="128dp"
         android:ems="10"
         android:hint="Ilość urządzeń"
         android:inputType="numberSigned"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.567"
+        app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -49,12 +62,12 @@
         android:id="@+id/editTextDeviceWorkH"
         android:layout_width="67dp"
         android:layout_height="43dp"
-        android:layout_marginTop="140dp"
+        android:layout_marginTop="188dp"
         android:ems="10"
         android:hint="h"
         android:inputType="numberSigned"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.207"
+        app:layout_constraintHorizontal_bias="0.206"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -62,12 +75,12 @@
         android:id="@+id/editTextDeviceWorkM"
         android:layout_width="67dp"
         android:layout_height="43dp"
-        android:layout_marginTop="140dp"
+        android:layout_marginTop="188dp"
         android:ems="10"
         android:hint="m"
         android:inputType="numberSigned"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.77"
+        app:layout_constraintHorizontal_bias="0.69"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

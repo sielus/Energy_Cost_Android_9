@@ -56,7 +56,7 @@ public class RoomEditManagerListAdapter extends ArrayAdapter<String> {
 
                 Toast.makeText(getContext(), deviceListName[position] +" id : " + String.valueOf(editDeviceButton.getId()),Toast.LENGTH_SHORT).show();
              //   roomEditManager.title = roomListName[position];
-                roomEditManager.showDialog(root);
+                roomEditManager.showUpdateDialog(root,roomEditManager.room_name,deviceListName[position]);
 
 
 
