@@ -23,9 +23,9 @@ import java.util.List;
 
 public class RoomEditManager extends AppCompatActivity {
     Button buttonAddDevice;
-    ListView listViewListDevice;
+    public ListView listViewListDevice;
     EditText editTextDeviceName;
-    View view;
+   public View view;
     public SQLLiteDBHelper sqlLiteDBHelper;
     public String deviceNameInput;
     public static String room_name;
@@ -38,16 +38,15 @@ public class RoomEditManager extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_edit_manager);
         setTitle(room_name);
-        listViewListDevice = findViewById(R.id.listViewDeviceList);
+         listViewListDevice = findViewById(R.id.listViewDeviceList);
         sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
         buttonAddDevice = findViewById(R.id.buttonAddDevice);
         editTextDeviceName = findViewById(R.id.editTextDeviceName);
 
         ViewDataFromDB(sqlLiteDBHelper.getRoomDeviceList(room_name));
 
-        RoomEditManagerListAdapter adapter = new RoomEditManagerListAdapter(view.getContext(), Arrays.copyOf(deviceId.toArray(), deviceId.size(), String[].class), Arrays.copyOf(deviceName.toArray(), deviceName.size(), String[].class),view );
+        RoomEditManagerListAdapter adapter = new RoomEditManagerListAdapter(view.getContext(), Arrays.copyOf(deviceName.toArray(), deviceName.size(), String[].class), Arrays.copyOf(deviceName.toArray(), deviceName.size(), String[].class),view );
         listViewListDevice.setAdapter(adapter);
-
         buttonAddDevice.setEnabled(false);
         editTextDeviceName.addTextChangedListener(new TextWatcher() {
             @Override
@@ -76,13 +75,13 @@ public class RoomEditManager extends AppCompatActivity {
 
      void ViewDataFromDB(Cursor cursor) {
         if(cursor.getCount()==0) {
-            Toast.makeText(view.getContext(),"Brak danych",Toast.LENGTH_SHORT).show();
+
         }else {
             clearRoomList();
             while(cursor.moveToNext()) {
                 deviceId.add(cursor.getString(2));
 
-                deviceName.add(cursor.getString(4));
+                deviceName.add(cursor.getString(1));
 
             }
         }
@@ -95,9 +94,12 @@ public class RoomEditManager extends AppCompatActivity {
     }
 
     void refreshListView(View root) {
-        RoomEditManagerListAdapter adapter = new RoomEditManagerListAdapter(root.getContext(), Arrays.copyOf(deviceId.toArray(), deviceId.size(), String[].class), Arrays.copyOf(deviceName.toArray(), deviceName.size(), String[].class),root);
-        listViewListDevice = findViewById(R.id.listViewDeviceList);
-        listViewListDevice.setAdapter(adapter);
+
+        RoomEditManagerListAdapter adapter = new RoomEditManagerListAdapter(root.getContext(), Arrays.copyOf(deviceName.toArray(), deviceName.size(), String[].class), Arrays.copyOf(deviceName.toArray(), deviceName.size(), String[].class),root );
+        System.out.println(adapter);
+
+        ListView listView = root.findViewById(R.id.listViewDeviceList);
+        listView.setAdapter(adapter);
     }
 
     public void showDialog(final View view){

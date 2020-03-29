@@ -17,14 +17,14 @@ import com.example.energii.koszt.ui.Roomlist.SQLLiteDBHelper;
 public class RoomEditManagerListAdapter extends ArrayAdapter<String> {
     private final Context roomListContext;
     private View root;
-    private String[] roomListName;
+    private String[] deviceListName;
     private String[] roomListDescription;
     SQLLiteDBHelper sqlLiteDBHelper;
-
-    RoomEditManagerListAdapter(Context roomListContext, String[] roomListName, String[] roomListDescription,View root) {
-        super(roomListContext, R.layout.row, R.id.testTextView1, roomListName);
+    RoomEditManager roomEditManager = new RoomEditManager();
+    RoomEditManagerListAdapter(Context roomListContext, String[] deviceListName, String[] roomListDescription,View root) {
+        super(roomListContext, R.layout.row, R.id.testTextView1, deviceListName);
         this.roomListContext = roomListContext;
-        this.roomListName = roomListName;
+        this.deviceListName = deviceListName;
         this.roomListDescription = roomListDescription;
         this.root = root;
     }
@@ -44,18 +44,17 @@ public class RoomEditManagerListAdapter extends ArrayAdapter<String> {
         final Button deleteDevicebutton = row.findViewById(R.id.deletebuttonRow);
         final RoomEditManager roomEditManager = new RoomEditManager();
 
-        roomListTextView1.setText(roomListName[position]);
+        roomListTextView1.setText(deviceListName[position]);
         roomListTextView2.setText(roomListDescription[position]);
 
 
-        editDeviceButton.setTag(roomListName[position]);
 
         editDeviceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //  editRoomButton.setText(roomListName[position]);
 
-                Toast.makeText(getContext(), roomListName[position] +" id : " + String.valueOf(editDeviceButton.getId()),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), deviceListName[position] +" id : " + String.valueOf(editDeviceButton.getId()),Toast.LENGTH_SHORT).show();
              //   roomEditManager.title = roomListName[position];
                 roomEditManager.showDialog(root);
 
@@ -69,14 +68,18 @@ public class RoomEditManagerListAdapter extends ArrayAdapter<String> {
             public void onClick(View v) {
                 //deleteRoomButton.setText(roomListName[position]);
                 //sqlLiteDBHelper.deleteDevice();
+
                 row.refreshDrawableState();
             //    roomlistFragment.getTag(editRoomButton.getTag().toString(),roomListContext);
-                Toast.makeText(getContext(),"Urządzenie usunięte",Toast.LENGTH_SHORT).show();
-                Toast.makeText(getContext(), roomListName[position] +" id : " + String.valueOf(deleteDevicebutton.getId()),Toast.LENGTH_SHORT).show();
+                Toast.makeText(root.getContext(),"Urządzenie usunięte",Toast.LENGTH_SHORT).show();
 
+                Toast.makeText(root.getContext(), deviceListName[position] +" id : " + String.valueOf(deleteDevicebutton.getId()),Toast.LENGTH_SHORT).show();
+              //  System.out.println(roomEditManager.room_name + " " +deviceListName[position]);
+                sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
+                sqlLiteDBHelper.deleteDevice(roomEditManager.room_name,deviceListName[position]);
 
                 roomEditManager.clearRoomList();
-                roomEditManager.ViewDataFromDB(sqlLiteDBHelper.getRoomDeviceList(roomListName[position]));
+                roomEditManager.ViewDataFromDB(sqlLiteDBHelper.getRoomDeviceList(roomEditManager.room_name));
                 roomEditManager.refreshListView(root);
             }
         });

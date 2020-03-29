@@ -4,171 +4,126 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#222431"
+    android:background="@color/AppBackGroudColor"
     tools:context=".ui.home.HomeFragment">
 
-    <EditText
-        android:id="@+id/inputEnergyCost"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#FBFAFA"
-        android:ems="10"
-        android:inputType="numberDecimal"
-        android:text="0.48"
-        android:textColor="#FDFDFD"
-        android:visibility="visible"
 
-        app:layout_constraintBottom_toBottomOf="parent"
+    <Button
+        android:id="@+id/buttonCalcCostEnergy"
+        android:layout_width="128dp"
+
+        android:layout_height="60dp"
+
+        android:backgroundTint="#57F9FF"
+        android:fontFamily="@font/lato_black"
+        android:text="Oblicz"
+        android:textColor="#222431"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-
-        app:layout_constraintHorizontal_bias="0.919"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.243" />
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/lato_light"
-        android:text="Moc (W)"
-        android:textColor="#FFFFFF"
-        android:textSize="26sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/text_field_inputNumberDevices"
+        android:layout_width="351dp"
+        android:layout_height="68dp"
+        android:layout_marginTop="180dp"
+        android:hint="Ilość urządzeń"
+        android:textColorHint="#FFFFFF"
+        app:boxBackgroundMode="outline"
+
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.145"
+        app:layout_constraintHorizontal_bias="0.466"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.071" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/lato_light"
-        android:text="Ilość urządzeń"
-        android:textColor="#FFFFFF"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/inputNumberDevices"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberSigned"
+            android:textColor="@color/white" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-        android:textSize="26sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/text_field_inputEnergyCost"
+        android:layout_width="355dp"
+        android:layout_height="71dp"
+        android:textColorHint="@color/white"
+        app:boxBackgroundMode="outline"
+
+        android:layout_marginTop="100dp"
+        android:hint="Koszt kWh / zł"
+
+
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.063"
+        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.152" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="133dp"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/inputEnergyCost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:text="0.48"
+            android:textColor="@color/white" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-        android:layout_height="38dp"
-        android:fontFamily="@font/lato_light"
-        android:text="Koszt kWH"
-
-        android:textColor="#FFFFFF"
-
-        android:textSize="26sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/text_field_inputPowerValue"
+        android:layout_width="355dp"
+        android:layout_height="67dp"
+        android:layout_marginTop="24dp"
+        android:hint="Moc urządzenia (W)"
+        android:textColorHint="#FFFFFF"
+        app:boxBackgroundMode="outline"
+        app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.093"
+        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.24" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/lato_light"
-        android:text="Czas pracy"
-        android:textColor="#FFFFFF"
-        android:textSize="26sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/inputPowerValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberSigned"
+
+            android:textColor="@color/white" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/text_field_inputMinutes"
+        android:layout_width="168dp"
+        android:layout_height="69dp"
+        android:layout_marginTop="256dp"
+        android:hint="Czas pracy : Minuty"
+        android:textColorHint="#FFFFFF"
+        app:boxBackgroundMode="outline"
+        app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
-
-        app:layout_constraintHorizontal_bias="0.054"
+        app:layout_constraintHorizontal_bias="0.884"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.333" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <EditText
-        android:id="@+id/inputPowerValue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#FBFAFA"
-        android:ems="10"
-        android:inputType="numberSigned"
-        android:textColor="#FDFDFD"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.919"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.072" />
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/inputminutes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberSigned"
 
-    <EditText
-        android:id="@+id/inputNumberDevices"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#FBFAFA"
-        android:ems="10"
-
-        android:inputType="numberSigned"
-        android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.919"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.155" />
-
-
-    <EditText
-        android:id="@+id/inputhours"
-        android:layout_width="80dp"
-        android:layout_height="44dp"
-        android:backgroundTint="#FBFAFA"
-        android:ems="10"
-        android:hint="Godziny"
-        android:inputType="numberSigned"
-        android:textColor="#FDFDFD"
-
-        android:textColorHint="#FDFDFD"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.549"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.337" />
-
-    <EditText
-        android:id="@+id/inputminutes"
-        android:layout_width="73dp"
-        android:layout_height="43dp"
-        android:backgroundTint="#FBFAFA"
-        android:ems="10"
-        android:hint="Minuty"
-        android:inputType="numberSigned"
-        android:textColor="#FDFDFD"
-        android:textColorHint="#FDFDFD"
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.834"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.338" />
-
+            android:textColor="@color/white" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <TableLayout
         android:id="@+id/tableLayout"
-        android:layout_width="391dp"
-        android:layout_height="126dp"
-        android:layout_marginTop="276dp"
+        android:layout_width="390dp"
+        android:layout_height="161dp"
+        android:layout_marginTop="340dp"
 
         android:stretchColumns="*"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -180,7 +135,7 @@
 
                 android:layout_width="match_parent"
 
-                android:layout_height="40dp"
+                android:layout_height="50dp"
 
                 android:layout_weight="1"
                 android:background="@drawable/border"
@@ -188,7 +143,7 @@
                 android:gravity="center"
                 android:text="Użytkownika"
                 android:textColor="#FFFFFF"
-                android:textSize="22sp"
+                android:textSize="18sp"
 
                 />
 
@@ -198,7 +153,7 @@
 
 
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="50dp"
 
                 android:layout_weight="1"
                 android:background="@drawable/border"
@@ -206,13 +161,13 @@
                 android:gravity="center"
                 android:text="24h"
                 android:textColor="#FFFFFF"
-                android:textSize="22sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/textView11"
 
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="50dp"
 
                 android:layout_weight="1"
                 android:background="@drawable/border"
@@ -220,54 +175,65 @@
                 android:gravity="center"
                 android:text="30 dni"
                 android:textColor="#FFFFFF"
-                android:textSize="22sp" />
+                android:textSize="18sp" />
         </TableRow>
 
 
         <TableRow>
 
             <TextView
-                android:id="@+id/OutputEnergyCostUser"
+                android:id="@+id/OutputEnergyCostUserKwh"
 
                 android:layout_width="match_parent"
 
-                android:layout_height="40dp"
+                android:layout_height="50dp"
 
                 android:layout_weight="1"
                 android:background="@drawable/border"
                 android:fontFamily="@font/lato_light"
                 android:gravity="center"
+                android:autoSizeTextType="uniform"
+                android:autoSizeMinTextSize="9sp"
+                android:autoSizeMaxTextSize="18sp"
                 android:text="0 kWh"
                 android:textColor="#FFFFFF"
-                android:textSize="22sp" />
+                android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/OutputEnergyCostDay"
+                android:id="@+id/OutputEnergyCostDayKwh"
 
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="50dp"
 
                 android:layout_weight="1"
                 android:background="@drawable/border"
                 android:fontFamily="@font/lato_light"
                 android:gravity="center"
                 android:text="0 kWh "
+                android:autoSizeTextType="uniform"
+                android:autoSizeMinTextSize="9sp"
+                android:autoSizeMaxTextSize="18sp"
                 android:textColor="#FFFFFF"
-                android:textSize="22sp" />
+                android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/OutputEnergyCostMonth"
+                android:id="@+id/OutputEnergyCostMonthKwh"
 
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="50dp"
 
                 android:layout_weight="1"
                 android:background="@drawable/border"
                 android:fontFamily="@font/lato_light"
                 android:gravity="center"
+                android:textSize="18sp"
+                android:autoSizeTextType="uniform"
+                android:autoSizeMinTextSize="9sp"
+                android:autoSizeMaxTextSize="18sp"
+
                 android:text="0 kWh "
                 android:textColor="#FFFFFF"
-                android:textSize="22sp" />
+                />
         </TableRow>
 
         <TableRow>
@@ -276,14 +242,15 @@
                 android:id="@+id/OutputEnergyCostUser"
 
                 android:layout_width="match_parent"
-
-                android:layout_height="40dp"
+                android:layout_height="50dp"
 
                 android:layout_weight="1"
                 android:background="@drawable/border"
                 android:fontFamily="@font/lato_light"
                 android:gravity="center"
-                android:text=" 0 zł"
+                android:autoSizeTextType="uniform"
+                android:autoSizeMinTextSize="9sp"
+                android:autoSizeMaxTextSize="18sp"                android:text="0 zł"
                 android:textColor="#FFFFFF"
                 android:textSize="22sp" />
 
@@ -291,13 +258,15 @@
                 android:id="@+id/OutputEnergyCostDay"
 
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="50dp"
 
                 android:layout_weight="1"
                 android:background="@drawable/border"
                 android:fontFamily="@font/lato_light"
                 android:gravity="center"
-                android:text=" 0 zł"
+                android:autoSizeTextType="uniform"
+                android:autoSizeMinTextSize="9sp"
+                android:autoSizeMaxTextSize="18sp"                android:text="0 zł"
                 android:textColor="#FFFFFF"
                 android:textSize="22sp" />
 
@@ -305,33 +274,45 @@
                 android:id="@+id/OutputEnergyCostMonth"
 
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="50dp"
 
                 android:layout_weight="1"
                 android:background="@drawable/border"
                 android:fontFamily="@font/lato_light"
                 android:gravity="center"
+                android:autoSizeTextType="uniform"
+                android:autoSizeMinTextSize="9sp"
+                android:autoSizeMaxTextSize="18sp"
                 android:text="0 zł"
                 android:textColor="#FFFFFF"
                 android:textSize="22sp" />
         </TableRow>
     </TableLayout>
 
-    <Button
-        android:id="@+id/buttonCalcCostEnergy"
-        android:layout_width="128dp"
-
-        android:layout_height="60dp"
-        android:layout_marginTop="44dp"
-
-        android:backgroundTint="#57F9FF"
-        android:fontFamily="@font/lato_black"
-        android:text="Oblicz"
-        android:textColor="#222431"
-        android:textSize="16sp"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/text_field_inputHours"
+        android:layout_width="183dp"
+        android:layout_height="67dp"
+        android:layout_marginTop="256dp"
+        android:hint="Czas pracy : Godziny"
+        android:textColorHint="#FFFFFF"
+        app:boxBackgroundMode="outline"
+        app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.122"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/inputhours"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberSigned"
+
+            android:textColor="@color/white" />
+    </com.google.android.material.textfield.TextInputLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+

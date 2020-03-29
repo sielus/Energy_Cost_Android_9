@@ -21,7 +21,7 @@ import java.util.List;
 public class RoomListFragment extends Fragment {
     private List<String> roomId = new LinkedList<>();
     private List<String> roomName = new LinkedList<>();
-    private View root;
+    public View root;
     private ListView listView;
     private SQLLiteDBHelper sqlLiteDBHelper;
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -42,7 +42,6 @@ public class RoomListFragment extends Fragment {
                 try {
                     sqlLiteDBHelper.addRoom(editTextInsertRoomName.getText().toString());
                     ViewDataFromDB(sqlLiteDBHelper.getRoomList());
-
                     refreshListView(root);
 
                     Toast.makeText(getContext(),"Pokój dodany",Toast.LENGTH_SHORT).show();

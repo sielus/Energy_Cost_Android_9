@@ -30,6 +30,10 @@ class CostEnergy {
         costValueMap.put("dayCost", formatter.format(sumCostEnergyDay()));
         costValueMap.put("monthCost", formatter.format(sumCostEnergyMonth()));
 
+        costValueMap.put("userCostKwh", formatter.format(sumCostEnergyUserKwh()));
+        costValueMap.put("dayCostKwh", formatter.format(sumCostEnergyDayKwh()));
+        costValueMap.put("monthCostKwh", formatter.format(sumCostEnergyMonthKwh()));
+
         return costValueMap;
     }
 
@@ -44,5 +48,17 @@ class CostEnergy {
 
     private float sumCostEnergyMonth() {
         return sumCostEnergyDay() * 30;
+    }
+
+    private float sumCostEnergyUserKwh() {
+        return (float) (powerValue * hours * numberDevices);
+    }
+
+    private float sumCostEnergyDayKwh() {
+        return sumCostEnergyUserKwh() * 24;
+    }
+
+    private float sumCostEnergyMonthKwh() {
+        return sumCostEnergyDayKwh() * 30;
     }
 }

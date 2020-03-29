@@ -36,7 +36,6 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        onCreate(db);
     }
 
     void addRoom(String roomName) throws SQLEnergyCostException.DuplicationRoom,  SQLEnergyCostException.EmptyField {
@@ -110,15 +109,17 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
     }
 
     public void deleteDevice(String roomName, String deviceName) {
-        SQLiteDatabase dbhWrite = getWritableDatabase();
+        SQLiteDatabase db = getWritableDatabase();
+        roomName += "_device";
         String where = " name = ? ";
 
-        dbhWrite.delete(roomName + "_device", where, new String[] {deviceName});
+        db.delete(roomName, where, new String[] {deviceName});
     }
 
     private void addDeviceList(String roomName) {
-        String roomDeviceTable = "CREATE TABLE " + roomName + "_device " +
-                                    "(" +
+        roomName += "_device";
+        String roomDeviceTable = "CREATE TABLE " + roomName +
+                                    " (" +
                                     "    id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                                     "    name varchar(100) NOT NULL UNIQUE, " +
                                     "    power_value real NOT NULL, " +
@@ -129,8 +130,12 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
     }
 
     private void deleteDeviceList(String roomName) {
-        String roomListTable = "DROP TABLE" + roomName + "_device";
-        db.execSQL(roomListTable);
+        SQLiteDatabase db = getWritableDatabase();
+
+        roomName += "_device";
+        String deleteDeviceList = "DROP TABLE " + roomName;
+
+        db.execSQL(deleteDeviceList);
     }
 
     void getDeviceInfo(String roomName, String deviceName){
