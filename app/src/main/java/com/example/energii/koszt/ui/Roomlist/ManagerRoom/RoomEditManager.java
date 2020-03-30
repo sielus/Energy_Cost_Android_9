@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 import com.example.energii.koszt.R;
@@ -47,8 +48,8 @@ public class RoomEditManager extends AppCompatActivity {
         editTextDeviceName = findViewById(R.id.editTextDeviceName);
 
         ViewDataFromDB(sqlLiteDBHelper.getRoomDeviceList(room_name));
-        FloatingActionButton fab = findViewById(R.id.addButonfl);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton floatingActionButtonAddDevice = findViewById(R.id.addButonfl);
+        floatingActionButtonAddDevice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDialogAddDevice(view);
@@ -101,7 +102,7 @@ public class RoomEditManager extends AppCompatActivity {
         dialog.show();
         final EditText editTextDeviceName = dialog.findViewById(R.id.editTextDeviceName);
 
-        Button buttonDialogAccept = dialog.findViewById(R.id.buttonDialogAccept);
+        ImageButton buttonDialogAccept = dialog.findViewById(R.id.buttonDialogAccept);
         final EditText editTextDevicePower = dialog.findViewById(R.id.editTextDevicePower);
         final EditText editTextDeviceNumbers = dialog.findViewById(R.id.editTextDeviceNumbers);
         final EditText editTextDeviceWorkH = dialog.findViewById(R.id.editTextDeviceWorkH);
@@ -145,7 +146,7 @@ public class RoomEditManager extends AppCompatActivity {
 
         viewDeviceInfoFromDB(sqlLiteDBHelper.getDeviceInfo(roomName,deviceName));
 
-        Button buttonDialogAccept = dialog.findViewById(R.id.buttonDialogAccept);
+        ImageButton buttonDialogAccept = dialog.findViewById(R.id.buttonDialogAccept);
         final EditText editTextDeviceName = dialog.findViewById(R.id.editTextDeviceName);
         final EditText editTextDevicePower = dialog.findViewById(R.id.editTextDevicePower);
         final EditText editTextDeviceNumbers = dialog.findViewById(R.id.editTextDeviceNumbers);
