@@ -5,7 +5,7 @@
     <string name="nav_header_title">Koszty Energii</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Ustawienia</string>
 
     <string name="menu_home">Kalkulator kosztów energii</string>
     <string name="menu_gallery">Menadżer Pokoi</string>

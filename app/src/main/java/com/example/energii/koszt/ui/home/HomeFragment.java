@@ -1,5 +1,6 @@
 package com.example.energii.koszt.ui.home;
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import com.example.energii.koszt.R;
+import com.example.energii.koszt.ui.SQLLiteDBHelper;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import java.util.Map;
@@ -23,11 +25,17 @@ public class HomeFragment extends Fragment {
     private int minutes;
     private Double energyCost;
     private Double powerValue;
-    private View root;
+    static public View root;
+    SQLLiteDBHelper sqlLiteDBHelper;
+    String powerCost;
+    TextInputEditText inputEnergyCost;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_home, container, false);
         Button buttonCalcCostEnergy = root.findViewById(R.id.buttonCalcCostEnergy);
+        sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
+
 
         buttonCalcCostEnergy.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,18 +57,36 @@ public class HomeFragment extends Fragment {
 
         TextInputEditText inputPowerValue = root.findViewById(R.id.inputPowerValue);
         TextInputEditText inputNumberDevices = root.findViewById(R.id.inputNumberDevices);
-        TextInputEditText inputEnergyCost = root.findViewById(R.id.inputEnergyCost);
+        inputEnergyCost = root.findViewById(R.id.inputEnergyCost);
+
         TextInputEditText inputHours = root.findViewById(R.id.inputhours);
         TextInputEditText inputMinutes = root.findViewById(R.id.inputminutes);
+        inputEnergyCost.setText(ViewDataFromDB(sqlLiteDBHelper.getVariable("powerCost")));
 
         inputPowerValue.addTextChangedListener(textWatcher_text_field_inputPowerValue);
         inputNumberDevices.addTextChangedListener(textWatcher_text_field_inputNumberDevices);
         inputEnergyCost.addTextChangedListener(textWatcher_text_field_inputEnergyCost);
         inputHours.addTextChangedListener(textWatcher_text_field_inputHours);
         inputMinutes.addTextChangedListener(textWatcher_text_field_inputMinutes);
-
-
         return root;
+    }
+
+    String ViewDataFromDB(Cursor cursor) {
+        if(cursor.getCount()==0) {
+
+        }else {
+            while(cursor.moveToNext()) {
+                powerCost = cursor.getString(0);
+            }
+        }
+        return powerCost;
+    }
+
+    public void refrest(View root){
+        sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
+        inputEnergyCost = root.findViewById(R.id.inputEnergyCost);
+        inputEnergyCost.setText(ViewDataFromDB(sqlLiteDBHelper.getVariable("powerCost")));
+
     }
 
     private void getInputValue(View root) {
@@ -69,7 +95,6 @@ public class HomeFragment extends Fragment {
         TextInputEditText inputEnergyCost = root.findViewById(R.id.inputEnergyCost);
         TextInputEditText inputHours = root.findViewById(R.id.inputhours);
         TextInputEditText inputMinutes = root.findViewById(R.id.inputminutes);
-
         powerValue = Double.parseDouble(inputPowerValue.getText().toString());
         energyCost = Double.parseDouble(inputEnergyCost.getText().toString());
         numberDevice = Integer.parseInt(inputNumberDevices.getText().toString());;
@@ -242,5 +267,7 @@ public class HomeFragment extends Fragment {
 
         }
     };
+
+
 }
 

@@ -12,18 +12,16 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.example.energii.koszt.R;
-import com.example.energii.koszt.ui.Roomlist.SQLLiteDBHelper;
+import com.example.energii.koszt.ui.SQLLiteDBHelper;
 
 public class RoomEditManagerListAdapter extends ArrayAdapter<String> {
-    private final Context roomListContext;
     private View root;
     private String[] deviceListName;
     private String[] roomListDescription;
-    SQLLiteDBHelper sqlLiteDBHelper;
-    RoomEditManager roomEditManager = new RoomEditManager();
+    private SQLLiteDBHelper sqlLiteDBHelper;
+
     RoomEditManagerListAdapter(Context roomListContext, String[] deviceListName, String[] roomListDescription,View root) {
         super(roomListContext, R.layout.row, R.id.testTextView1, deviceListName);
-        this.roomListContext = roomListContext;
         this.deviceListName = deviceListName;
         this.roomListDescription = roomListDescription;
         this.root = root;
@@ -33,54 +31,39 @@ public class RoomEditManagerListAdapter extends ArrayAdapter<String> {
     @NonNull
     @Override
     public View getView(final int position, @Nullable View convertView, @Nullable ViewGroup parent){
-
         LayoutInflater layoutInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         assert layoutInflater != null;
         @SuppressLint("ViewHolder") final View row = layoutInflater.inflate(R.layout.row, parent, false);
-        final TextView roomListTextView1 = row.findViewById(R.id.testTextView1);
         TextView roomListTextView2 = row.findViewById(R.id.testTextView2);
-
+        final TextView roomListTextView1 = row.findViewById(R.id.testTextView1);
         final Button editDeviceButton = row.findViewById(R.id.editbuttonRow);
-        final Button deleteDevicebutton = row.findViewById(R.id.deletebuttonRow);
+        final Button deleteDeviceButton = row.findViewById(R.id.deletebuttonRow);
         final RoomEditManager roomEditManager = new RoomEditManager();
 
         roomListTextView1.setText(deviceListName[position]);
         roomListTextView2.setText(roomListDescription[position]);
 
-
-
         editDeviceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //  editRoomButton.setText(roomListName[position]);
-
-                Toast.makeText(getContext(), deviceListName[position] +" id : " + String.valueOf(editDeviceButton.getId()),Toast.LENGTH_SHORT).show();
-             //   roomEditManager.title = roomListName[position];
-                roomEditManager.showUpdateDialog(root,roomEditManager.room_name,deviceListName[position]);
-
-
-
+            Toast.makeText(getContext(), deviceListName[position] +" id : " + editDeviceButton.getId(),Toast.LENGTH_SHORT).show();
+            roomEditManager.showUpdateDialog(root, RoomEditManager.room_name,deviceListName[position]);
             }
         });
 
-        deleteDevicebutton.setOnClickListener(new View.OnClickListener() {
+        deleteDeviceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //deleteRoomButton.setText(roomListName[position]);
-                //sqlLiteDBHelper.deleteDevice();
+            row.refreshDrawableState();
+            Toast.makeText(root.getContext(),"Urządzenie usunięte",Toast.LENGTH_SHORT).show();
+            Toast.makeText(root.getContext(), deviceListName[position] +" id : " + deleteDeviceButton.getId(),Toast.LENGTH_SHORT).show();
 
-                row.refreshDrawableState();
-            //    roomlistFragment.getTag(editRoomButton.getTag().toString(),roomListContext);
-                Toast.makeText(root.getContext(),"Urządzenie usunięte",Toast.LENGTH_SHORT).show();
+            sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
+            sqlLiteDBHelper.deleteDevice(RoomEditManager.room_name,deviceListName[position]);
 
-                Toast.makeText(root.getContext(), deviceListName[position] +" id : " + String.valueOf(deleteDevicebutton.getId()),Toast.LENGTH_SHORT).show();
-              //  System.out.println(roomEditManager.room_name + " " +deviceListName[position]);
-                sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
-                sqlLiteDBHelper.deleteDevice(roomEditManager.room_name,deviceListName[position]);
-
-                roomEditManager.clearRoomList();
-                roomEditManager.ViewDataFromDB(sqlLiteDBHelper.getRoomDeviceList(roomEditManager.room_name));
-                roomEditManager.refreshListView(root);
+            roomEditManager.clearRoomList();
+            roomEditManager.ViewDataFromDB(sqlLiteDBHelper.getRoomDeviceList(RoomEditManager.room_name));
+            roomEditManager.refreshListView(root);
             }
         });
 

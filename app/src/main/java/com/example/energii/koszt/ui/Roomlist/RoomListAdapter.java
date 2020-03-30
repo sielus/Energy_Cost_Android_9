@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.example.energii.koszt.R;
 import com.example.energii.koszt.ui.Roomlist.ManagerRoom.RoomEditManager;
+import com.example.energii.koszt.ui.SQLLiteDBHelper;
 
 public class RoomListAdapter extends ArrayAdapter<String> {
     private final Context roomListContext;
@@ -21,7 +22,8 @@ public class RoomListAdapter extends ArrayAdapter<String> {
     private String[] roomListName;
     private String[] roomListDescription;
     private RoomListFragment roomlistFragment = new RoomListFragment();
-    SQLLiteDBHelper sqlLiteDBHelper;
+    private SQLLiteDBHelper sqlLiteDBHelper;
+
    RoomListAdapter(Context roomListContext, String[] roomListName, String[] roomListDescription,View root) {
         super(roomListContext, R.layout.row, R.id.testTextView1, roomListName);
         this.roomListContext = roomListContext;
@@ -44,43 +46,31 @@ public class RoomListAdapter extends ArrayAdapter<String> {
 
         roomListTextView1.setText(roomListName[position]);
         roomListTextView2.setText(roomListDescription[position]);
-        final RoomEditManager roomEditManager = new RoomEditManager();
         editRoomButton.setTag(roomListName[position]);
         editRoomButton.setId(2);
 
         editRoomButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              //  editRoomButton.setText(roomListName[position]);
-
-                Toast.makeText(getContext(), roomListName[position] +" id : " + String.valueOf(editRoomButton.getId()),Toast.LENGTH_SHORT).show();
-                roomEditManager.room_name = roomListName[position];
-
-
+                Toast.makeText(getContext(), roomListName[position] +" id : " + editRoomButton.getId(),Toast.LENGTH_SHORT).show();
+                RoomEditManager.room_name = roomListName[position];
 
                 Intent intent = new Intent(roomListContext , RoomEditManager.class);
                 roomListContext.startActivity(intent);
-
             }
         });
 
         deleteRoomButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //deleteRoomButton.setText(roomListName[position]);
                 sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
-                System.out.println(roomListName[position]);
                 sqlLiteDBHelper.deleteRoom(roomListName[position]);
-
-                //   roomlistFragment.getTag(editRoomButton.getTag().toString(),roomListContext);
 
                 roomlistFragment.clearRoomList();
                 roomlistFragment.ViewDataFromDB(sqlLiteDBHelper.getRoomList());
                 roomlistFragment.refreshListView(root);
 
                 Toast.makeText(getContext(),"Pokój usunięty",Toast.LENGTH_SHORT).show();
-               // Toast.makeText(getContext(), +" id : " + deleteRoomButton.getId(),Toast.LENGTH_SHORT).show();
-
             }
         });
 

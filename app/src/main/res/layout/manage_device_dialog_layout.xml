@@ -52,16 +52,13 @@
         android:id="@+id/text_field_inputeditTextDevicePowerLayout"
         android:layout_width="189dp"
         android:layout_height="58dp"
-        android:layout_marginTop="84dp"
-        android:layout_marginRight="10dp"
-        android:hint="Moc urządzenia (W)"
+        android:layout_marginStart="24dp"
 
+        android:layout_marginTop="80dp"
+        android:hint="Moc urządzenia (W)"
         android:textColorHint="#FFFFFF"
         app:boxBackgroundMode="outline"
         app:errorEnabled="true"
-        android:layout_marginLeft="10dp"
-        app:layout_constraintEnd_toStartOf="@+id/text_field_inputeditTextDeviceWorkDayLayout"
-        app:layout_constraintHorizontal_bias="0.513"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -86,37 +83,13 @@
         app:boxBackgroundMode="outline"
         app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.783"
+        app:layout_constraintHorizontal_bias="0.448"
         app:layout_constraintStart_toStartOf="@+id/text_field_inputeditTextDevicePowerLayout"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
 
             android:id="@+id/editTextDeviceNumbers"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:textColor="@color/white" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/text_field_inputeditTextDeviceWorkDayLayout"
-        android:layout_width="161dp"
-        android:layout_height="70dp"
-
-        android:layout_marginTop="84dp"
-        android:hint="Ilość Dni"
-        android:textColorHint="#FFFFFF"
-        app:boxBackgroundMode="outline"
-        app:errorEnabled="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.968"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <com.google.android.material.textfield.TextInputEditText
-
-            android:id="@+id/editTextDeviceWorkDay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
