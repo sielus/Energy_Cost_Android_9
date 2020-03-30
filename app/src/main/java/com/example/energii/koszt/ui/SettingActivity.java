@@ -1,6 +1,8 @@
 package com.example.energii.koszt.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.annotation.SuppressLint;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Editable;
@@ -13,6 +15,7 @@ import com.example.energii.koszt.ui.home.HomeFragment;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+@SuppressLint("Registered")
 public class SettingActivity extends AppCompatActivity {
     private TextInputEditText inputEnergyCostGlobal;
     private TextInputLayout inputEnergyCostGlobalLayout;

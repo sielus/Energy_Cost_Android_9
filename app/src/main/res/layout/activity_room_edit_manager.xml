@@ -11,8 +11,8 @@
 
     <ListView
         android:id="@+id/listViewDeviceList"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_width="392dp"
+        android:layout_height="305dp"
 
         android:layout_margin="10dp"
 
@@ -31,5 +31,179 @@
 
         app:layout_constraintRight_toRightOf="parent"
         app:srcCompat="@drawable/ic_edit_black_24dp" />
+
+    <TableLayout
+        android:id="@+id/tableLayout"
+        android:layout_width="390dp"
+        android:layout_height="161dp"
+
+        android:layout_marginTop="24dp"
+        android:stretchColumns="*"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/listViewDeviceList">
+
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/textView9"
+
+                android:layout_width="match_parent"
+
+                android:layout_height="50dp"
+
+                android:layout_weight="1"
+                android:background="@drawable/border"
+                android:fontFamily="@font/lato_light"
+                android:gravity="center"
+                android:text="Użytkownika"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+
+                />
+
+            <TextView
+
+                android:id="@+id/textView10"
+
+
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+
+                android:layout_weight="1"
+                android:background="@drawable/border"
+                android:fontFamily="@font/lato_light"
+                android:gravity="center"
+                android:text="24h"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textView11"
+
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+
+                android:layout_weight="1"
+                android:background="@drawable/border"
+                android:fontFamily="@font/lato_light"
+                android:gravity="center"
+                android:text="30 dni"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp" />
+        </TableRow>
+
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/OutputEnergyCostUserKwh"
+
+                android:layout_width="match_parent"
+
+                android:layout_height="50dp"
+
+                android:layout_weight="1"
+                android:autoSizeMaxTextSize="18sp"
+                android:autoSizeMinTextSize="9sp"
+                android:autoSizeTextType="uniform"
+                android:background="@drawable/border"
+                android:fontFamily="@font/lato_light"
+                android:gravity="center"
+                android:text="0 kWh"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/OutputEnergyCostDayKwh"
+
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+
+                android:layout_weight="1"
+                android:autoSizeMaxTextSize="18sp"
+                android:autoSizeMinTextSize="9sp"
+                android:autoSizeTextType="uniform"
+                android:background="@drawable/border"
+                android:fontFamily="@font/lato_light"
+                android:gravity="center"
+                android:text="0 kWh "
+                android:textColor="#FFFFFF"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/OutputEnergyCostMonthKwh"
+
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+
+                android:layout_weight="1"
+                android:autoSizeMaxTextSize="18sp"
+                android:autoSizeMinTextSize="9sp"
+                android:autoSizeTextType="uniform"
+                android:background="@drawable/border"
+                android:fontFamily="@font/lato_light"
+                android:gravity="center"
+                android:text="0 kWh "
+
+                android:textColor="#FFFFFF"
+                android:textSize="18sp" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/OutputEnergyCostUser"
+
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+
+                android:layout_weight="1"
+                android:autoSizeMaxTextSize="18sp"
+                android:autoSizeMinTextSize="9sp"
+                android:autoSizeTextType="uniform"
+                android:background="@drawable/border"
+                android:fontFamily="@font/lato_light"
+                android:gravity="center"
+                android:text="0 zł"
+                android:textColor="#FFFFFF"
+                android:textSize="22sp" />
+
+            <TextView
+                android:id="@+id/OutputEnergyCostDay"
+
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+
+                android:layout_weight="1"
+                android:autoSizeMaxTextSize="18sp"
+                android:autoSizeMinTextSize="9sp"
+                android:autoSizeTextType="uniform"
+                android:background="@drawable/border"
+                android:fontFamily="@font/lato_light"
+                android:gravity="center"
+                android:text="0 zł"
+                android:textColor="#FFFFFF"
+                android:textSize="22sp" />
+
+            <TextView
+                android:id="@+id/OutputEnergyCostMonth"
+
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+
+                android:layout_weight="1"
+                android:autoSizeMaxTextSize="18sp"
+                android:autoSizeMinTextSize="9sp"
+                android:autoSizeTextType="uniform"
+                android:background="@drawable/border"
+                android:fontFamily="@font/lato_light"
+                android:gravity="center"
+                android:text="0 zł"
+                android:textColor="#FFFFFF"
+                android:textSize="22sp" />
+        </TableRow>
+    </TableLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
 

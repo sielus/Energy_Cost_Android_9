@@ -22,7 +22,8 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         String roomListTable = "CREATE TABLE room_list " +
                                     "(" +
                                        " id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                                       " name varchar(100) NOT NULL UNIQUE" +
+                                       " name varchar(100) NOT NULL UNIQUE," +
+                                       " energy_consumption INTEGER NOT NULL DEFAULT 0" +
                                     ")";
         db.execSQL(roomListTable);
 
@@ -86,10 +87,14 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase dbhWrite = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
+        double amountEnergyNeeded = hour * (minutes / 60) * (powerValue / 1000) ;
+        String workTime = hour + ":" + minutes;
+
         contentValues.put("name", deviceName);
         contentValues.put("power_value", powerValue);
-        contentValues.put("work_time", hour + ":" + minutes);
+        contentValues.put("work_time", workTime);
         contentValues.put("device_number", deviceNumber);
+        contentValues.put("amount_energy_needed", amountEnergyNeeded);
         long resultInsert = dbhWrite.insert(roomName + "_device", null, contentValues);
 
         if (resultInsert == -1) {
@@ -143,6 +148,7 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         String workTime = hour + ":" + minutes;
         String where = "id = ?";
+        double amountEnergyNeeded = hour * (minutes / 60) * (powerValue / 1000) ;
 
         roomName += "_device";
 
@@ -150,6 +156,7 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         contentValues.put("power_value", powerValue);
         contentValues.put("work_time", workTime);
         contentValues.put("device_number", deviceNumber);
+        contentValues.put("amount_energy_needed", amountEnergyNeeded);
 
         dbWriter.update(roomName, contentValues, where, new String[] {Integer.toString(deviceId)})   ;
     }
@@ -185,7 +192,8 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
                                        " name varchar(100) NOT NULL UNIQUE, " +
                                        " power_value real NOT NULL, " +
                                        " work_time text NOT NULL, " +
-                                       " device_number int NOT NULL" +
+                                       " device_number int NOT NULL," +
+                                       " amount_energy_needed REAL NOT NULL DEFAULT 0" +
                                     ")";
 
         dbhWrite.execSQL(roomDeviceTable);

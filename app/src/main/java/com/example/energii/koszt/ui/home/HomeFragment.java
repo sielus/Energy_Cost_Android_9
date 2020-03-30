@@ -97,7 +97,7 @@ public class HomeFragment extends Fragment {
         TextInputEditText inputMinutes = root.findViewById(R.id.inputminutes);
         powerValue = Double.parseDouble(inputPowerValue.getText().toString());
         energyCost = Double.parseDouble(inputEnergyCost.getText().toString());
-        numberDevice = Integer.parseInt(inputNumberDevices.getText().toString());;
+        numberDevice = Integer.parseInt(inputNumberDevices.getText().toString());
         hours = Integer.parseInt(inputHours.getText().toString());
         minutes = Integer.parseInt(inputMinutes.getText().toString());
     }
@@ -129,11 +129,11 @@ public class HomeFragment extends Fragment {
         EditText inputMinutes = root.findViewById(R.id.inputminutes);
         boolean isNotEmpty = true;
 
-        TextInputLayout text_field_inputPowerValue = (TextInputLayout) root.findViewById(R.id.text_field_inputPowerValue);
-        TextInputLayout text_field_inputNumberDevices = (TextInputLayout) root.findViewById(R.id.text_field_inputNumberDevices);
-        TextInputLayout text_field_inputEnergyCost = (TextInputLayout) root.findViewById(R.id.text_field_inputEnergyCost);
-        TextInputLayout text_field_inputHours = (TextInputLayout) root.findViewById(R.id.text_field_inputHours);
-        TextInputLayout text_field_inputMinutes = (TextInputLayout) root.findViewById(R.id.text_field_inputMinutes);
+        TextInputLayout text_field_inputPowerValue = root.findViewById(R.id.text_field_inputPowerValue);
+        TextInputLayout text_field_inputNumberDevices = root.findViewById(R.id.text_field_inputNumberDevices);
+        TextInputLayout text_field_inputEnergyCost = root.findViewById(R.id.text_field_inputEnergyCost);
+        TextInputLayout text_field_inputHours = root.findViewById(R.id.text_field_inputHours);
+        TextInputLayout text_field_inputMinutes = root.findViewById(R.id.text_field_inputMinutes);
 
 
         if(inputPowerValue.getText().toString().isEmpty()) {
@@ -182,7 +182,7 @@ public class HomeFragment extends Fragment {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            TextInputLayout text_field_inputPowerValue = (TextInputLayout) root.findViewById(R.id.text_field_inputPowerValue);
+            TextInputLayout text_field_inputPowerValue = root.findViewById(R.id.text_field_inputPowerValue);
             text_field_inputPowerValue.setError(null);
         }
 
@@ -200,7 +200,7 @@ public class HomeFragment extends Fragment {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            TextInputLayout text_field_inputNumberDevices = (TextInputLayout) root.findViewById(R.id.text_field_inputNumberDevices);
+            TextInputLayout text_field_inputNumberDevices = root.findViewById(R.id.text_field_inputNumberDevices);
             text_field_inputNumberDevices.setError(null);
 
         }
@@ -219,7 +219,7 @@ public class HomeFragment extends Fragment {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            TextInputLayout text_field_inputEnergyCost = (TextInputLayout) root.findViewById(R.id.text_field_inputEnergyCost);
+            TextInputLayout text_field_inputEnergyCost = root.findViewById(R.id.text_field_inputEnergyCost);
             text_field_inputEnergyCost.setError(null);
 
         }
@@ -238,7 +238,7 @@ public class HomeFragment extends Fragment {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            TextInputLayout text_field_inputHours = (TextInputLayout) root.findViewById(R.id.text_field_inputHours);
+            TextInputLayout text_field_inputHours = root.findViewById(R.id.text_field_inputHours);
             text_field_inputHours.setError(null);
 
         }
@@ -257,7 +257,7 @@ public class HomeFragment extends Fragment {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            TextInputLayout text_field_inputMinutes = (TextInputLayout) root.findViewById(R.id.text_field_inputMinutes);
+            TextInputLayout text_field_inputMinutes = root.findViewById(R.id.text_field_inputMinutes);
             text_field_inputMinutes.setError(null);
 
         }
