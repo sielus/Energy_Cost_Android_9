@@ -97,14 +97,16 @@
         android:id="@+id/text_field_inputMinutes"
         android:layout_width="168dp"
         android:layout_height="69dp"
-        android:layout_marginTop="256dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="248dp"
         android:hint="Czas pracy : Minuty"
         android:textColorHint="#FFFFFF"
         app:boxBackgroundMode="outline"
         app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.884"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.916"
+        app:layout_constraintStart_toEndOf="@+id/text_field_inputHours"
+        app:layout_constraintStart_toStartOf="@+id/text_field_inputHours"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -293,7 +295,7 @@
         android:id="@+id/text_field_inputHours"
         android:layout_width="183dp"
         android:layout_height="67dp"
-        android:layout_marginTop="256dp"
+        android:layout_marginTop="248dp"
         android:hint="Czas pracy : Godziny"
         android:textColorHint="#FFFFFF"
         app:boxBackgroundMode="outline"

@@ -17,6 +17,8 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+
+
         String roomListTable = "CREATE TABLE room_list " +
                                     "(" +
                                     "    id INTEGER PRIMARY KEY AUTOINCREMENT, " +

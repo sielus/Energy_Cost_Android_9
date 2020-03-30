@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">kosztEnergiiPeliCoop</string>
+    <string name="app_name">Koszty Energii</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Koszty Energii</string>
