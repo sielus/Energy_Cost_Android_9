@@ -26,9 +26,9 @@ class CostEnergy {
         formatter.setRoundingMode(RoundingMode.HALF_UP);
 
         Map <String, String> costValueMap = new HashMap<>();
-        costValueMap.put("userCost", formatter.format(sumCostEnergyUser()));
-        costValueMap.put("dayCost", formatter.format(sumCostEnergyDay()));
-        costValueMap.put("monthCost", formatter.format(sumCostEnergyMonth()));
+        costValueMap.put("userCost", formatter.format(sumCostEnergyUserZl()));
+        costValueMap.put("dayCost", formatter.format(sumCostEnergyDayZl()));
+        costValueMap.put("monthCost", formatter.format(sumCostEnergyMonthZl()));
 
         costValueMap.put("userCostKwh", formatter.format(sumCostEnergyUserKwh()));
         costValueMap.put("dayCostKwh", formatter.format(sumCostEnergyDayKwh()));
@@ -38,16 +38,16 @@ class CostEnergy {
     }
 
 
-    private float sumCostEnergyUser() {
+    private float sumCostEnergyUserZl() {
         return (float) (powerValue * hours * energyCost * numberDevices);
     }
 
-    private float sumCostEnergyDay() {
-        return sumCostEnergyUser() * 24;
+    private float sumCostEnergyDayZl() {
+        return (float) (powerValue * energyCost * numberDevices * 24);
     }
 
-    private float sumCostEnergyMonth() {
-        return sumCostEnergyDay() * 30;
+    private float sumCostEnergyMonthZl() {
+        return sumCostEnergyDayZl() * 30;
     }
 
     private float sumCostEnergyUserKwh() {
@@ -55,7 +55,7 @@ class CostEnergy {
     }
 
     private float sumCostEnergyDayKwh() {
-        return sumCostEnergyUserKwh() * 24;
+        return (float) (powerValue * numberDevices * 24);
     }
 
     private float sumCostEnergyMonthKwh() {

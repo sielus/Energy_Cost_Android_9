@@ -9,6 +9,7 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.example.energii.koszt.R;
 import com.example.energii.koszt.ui.SQLLiteDBHelper;
@@ -26,13 +27,27 @@ public class RoomEditManager extends AppCompatActivity {
     public final List<String> device = new LinkedList<>();
     private List<String> deviceId = new LinkedList<>();
     private List<String> deviceName = new LinkedList<>();
+    TextView outputEnergyCostUser;
+    TextView outputEnergyCostDay;
+    TextView outputEnergyCostMonth;
+    TextView outputEnergyCostUserKwh;
+    TextView outputEnergyCostDayKwh;
+    TextView outputEnergyCostMonthKwh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         view = this.findViewById(android.R.id.content);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_edit_manager);
-        setTitle(room_name);
+       // getSupportActionBar().hide();
+        setTitle("Pokój " + room_name);
+        TextView outputEnergyCostUser = view.findViewById(R.id.OutputEnergyCostUser);
+        TextView outputEnergyCostDay = view.findViewById(R.id.OutputEnergyCostDay);
+        TextView outputEnergyCostMonth = view.findViewById(R.id.OutputEnergyCostMonth);
+        TextView outputEnergyCostUserKwh = view.findViewById(R.id.OutputEnergyCostUserKwh);
+        TextView outputEnergyCostDayKwh = view.findViewById(R.id.OutputEnergyCostDayKwh);
+        TextView outputEnergyCostMonthKwh = view.findViewById(R.id.OutputEnergyCostMonthKwh);
+
 
         listViewListDevice = findViewById(R.id.listViewDeviceList);
         sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
@@ -50,6 +65,9 @@ public class RoomEditManager extends AppCompatActivity {
         RoomEditManagerListAdapter adapter = new RoomEditManagerListAdapter(view.getContext(), Arrays.copyOf(deviceName.toArray(), deviceName.size(), String[].class), Arrays.copyOf(deviceName.toArray(), deviceName.size(), String[].class),view);
         listViewListDevice.setAdapter(adapter);
     }
+
+
+
 
      void ViewDataFromDB(Cursor cursor) {
          if (cursor.getCount() != 0) {

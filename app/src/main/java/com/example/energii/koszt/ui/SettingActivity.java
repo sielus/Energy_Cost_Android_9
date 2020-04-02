@@ -1,7 +1,6 @@
 package com.example.energii.koszt.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -11,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 import com.example.energii.koszt.R;
+import com.example.energii.koszt.ui.SQLLiteDBHelper;
 import com.example.energii.koszt.ui.home.HomeFragment;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -35,7 +35,9 @@ public class SettingActivity extends AppCompatActivity {
 
         inputEnergyCostGlobal = view.findViewById(R.id.inputEnergyCostGlobal);
         inputEnergyCostGlobalLayout = view.findViewById(R.id.text_field_inputinputEnergyCostGlobal);
+
         inputEnergyCostGlobal.setText(ViewDataFromDB(sqlLiteDBHelper.getVariable("powerCost")));
+
 
         inputEnergyCostGlobal.addTextChangedListener(new TextWatcher() {
             @Override
@@ -84,6 +86,8 @@ public class SettingActivity extends AppCompatActivity {
 
     String ViewDataFromDB(Cursor cursor) {
         if (cursor.getCount() != 0) {
+            System.out.println(cursor);
+
             while(cursor.moveToNext()) {
                powerCost = cursor.getString(0);
             }

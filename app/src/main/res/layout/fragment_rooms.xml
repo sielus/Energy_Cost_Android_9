@@ -3,13 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rooms_fragment_layaout"
-    android:background="@color/AppBackGroudColor"
+    android:background="@drawable/gradient"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     tools:context=".ui.Roomlist.RoomListFragment">
 
 
     <ListView
+
         android:id="@+id/listView"
         android:background="@drawable/border"
 

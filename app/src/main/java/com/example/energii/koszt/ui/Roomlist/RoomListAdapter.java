@@ -13,8 +13,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.example.energii.koszt.R;
-import com.example.energii.koszt.ui.Roomlist.ManagerRoom.RoomEditManager;
 import com.example.energii.koszt.ui.SQLLiteDBHelper;
+import com.example.energii.koszt.ui.Roomlist.ManagerRoom.RoomEditManager;
 
 public class RoomListAdapter extends ArrayAdapter<String> {
     private final Context roomListContext;
