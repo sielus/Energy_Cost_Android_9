@@ -38,6 +38,7 @@ public class RoomListAdapter extends ArrayAdapter<String> {
     public View getView(final int position, @Nullable final View convertView, @Nullable ViewGroup parent){
         LayoutInflater layoutInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         assert layoutInflater != null;
+
         @SuppressLint("ViewHolder") final View row = layoutInflater.inflate(R.layout.row, parent, false);
         final TextView roomListTextView1 = row.findViewById(R.id.testTextView1);
         final Button editRoomButton = row.findViewById(R.id.editbuttonRow);

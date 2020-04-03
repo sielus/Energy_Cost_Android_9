@@ -17,16 +17,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
+        <ListView
 
-    <ListView
+            android:id="@+id/listView"
+            android:background="@drawable/border"
 
-        android:id="@+id/listView"
-        android:background="@drawable/border"
-
-        android:layout_width="388dp"
-        android:layout_height="301dp"
-        android:layout_marginTop="36dp"
-        app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="388dp"
+            android:layout_height="301dp"
+            android:layout_marginTop="36dp"
+            app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

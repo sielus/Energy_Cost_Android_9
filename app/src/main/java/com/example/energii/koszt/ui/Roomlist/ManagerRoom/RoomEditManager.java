@@ -165,7 +165,11 @@ public class RoomEditManager extends AppCompatActivity {
                 int m = Integer.parseInt(editTextDeviceWorkM.getText().toString());
                 int number = Integer.parseInt(editTextDeviceNumbers.getText().toString());
 
-                sqlLiteDBHelper.updateDevice(Integer.parseInt(device.get(0)),roomName,deviceName,powerValue,number,h,m);
+                try {
+                    sqlLiteDBHelper.updateDevice(Integer.parseInt(device.get(0)),roomName,deviceName,powerValue,number,h,m);
+                } catch (SQLEnergyCostException.EmptyField emptyField) {
+                    emptyField.printStackTrace();
+                }
 
                 Toast.makeText(view.getContext(),"Urządzenie dodane",Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
