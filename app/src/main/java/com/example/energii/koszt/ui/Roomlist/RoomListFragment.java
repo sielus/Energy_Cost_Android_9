@@ -16,9 +16,20 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import com.example.energii.koszt.R;
 import com.example.energii.koszt.ui.exception.SQLEnergyCostException;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import com.example.energii.koszt.ui.SQLLiteDBHelper;
 import java.util.LinkedList;
@@ -31,6 +42,7 @@ public class RoomListFragment extends Fragment {
     private ListView listView;
     private Dialog dialog;
     private SQLLiteDBHelper sqlLiteDBHelper;
+    PieChart pieChart;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_rooms, container, false);
@@ -44,10 +56,39 @@ public class RoomListFragment extends Fragment {
         RoomListAdapter adapter = new RoomListAdapter(root.getContext(), Arrays.copyOf(roomId.toArray(), roomId.size(), String[].class), Arrays.copyOf(roomName.toArray(), roomName.size(), String[].class), root);
         listView.setAdapter(adapter);
 
+
+        pieChart = (PieChart) root.findViewById(R.id.testWykres);
+
+        final ArrayList<PieEntry> pieEntry = new ArrayList<PieEntry>();
+        pieEntry.add(new PieEntry(50,"test1"));
+        pieEntry.add(new PieEntry(100,"test2"));
+        pieEntry.add(new PieEntry(34,"test3"));
+        pieEntry.add(new PieEntry(90,"test4"));
+        pieEntry.add(new PieEntry(31,"test5"));
+        pieEntry.add(new PieEntry(20,"test6"));
+        pieEntry.add(new PieEntry(20,"test7"));
+
+
+        PieDataSet pieDataSet = new PieDataSet(pieEntry,"Dane");
+        pieChart.getLegend().setEnabled(false);
+
+        pieDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+        pieDataSet.setValueLineColor(R.color.colorAccent);
+        pieDataSet.setValueTextSize(14);
+        PieData pieData = new PieData(pieDataSet);
+        pieChart.setData(pieData);
+        pieChart.setHoleRadius(30);
+        pieChart.setTransparentCircleRadius(10);
+        pieChart.getDescription().setEnabled(false);
+        pieChart.setCenterText("Pokoje");
+        pieChart.animate();
+
+
         floatingActionButtonAddDevice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-             showRoomListDialog(root);
+
+                showRoomListDialog(root);
             }
         });
 

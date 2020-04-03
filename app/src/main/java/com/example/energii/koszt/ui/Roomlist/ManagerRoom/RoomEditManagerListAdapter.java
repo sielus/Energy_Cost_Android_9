@@ -34,6 +34,7 @@ public class RoomEditManagerListAdapter extends ArrayAdapter<String> {
         LayoutInflater layoutInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         assert layoutInflater != null;
         @SuppressLint("ViewHolder") final View row = layoutInflater.inflate(R.layout.row, parent, false);
+
         TextView roomListTextView2 = row.findViewById(R.id.testTextView2);
         final TextView roomListTextView1 = row.findViewById(R.id.testTextView1);
         final Button editDeviceButton = row.findViewById(R.id.editbuttonRow);
