@@ -11,68 +11,72 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.energii.koszt.R;
 import com.example.energii.koszt.ui.Roomlist.RoomListFragment;
 import com.example.energii.koszt.ui.SQLLiteDBHelper;
 
-public class RoomEditManagerListAdapter extends ArrayAdapter<String> {
-    private View root;
-    private String[] deviceListName;
-    private String[] roomListDescription;
-    private SQLLiteDBHelper sqlLiteDBHelper;
-    RoomEditManager roomEditManager;
+public class RoomEditManagerListAdapter extends RecyclerView.Adapter<RoomEditManagerListAdapter.MyViewHolder>   {
+    Context context;
+    String roomName[];
+    private RoomEditManagerListAdapter.onNoteListener onNoteListener;
+    private int lastPosition = -1;
 
-    RoomEditManagerListAdapter(Context roomListContext, String[] deviceListName, String[] roomListDescription,View root) {
-        super(roomListContext, R.layout.row, R.id.RecyckerView, deviceListName);
-        this.deviceListName = deviceListName;
-        this.roomListDescription = roomListDescription;
-        this.root = root;
+    public RoomEditManagerListAdapter(Context context, String roomName[], RoomEditManagerListAdapter.onNoteListener onNoteListener){
+        this.context = context;
+        this.onNoteListener = onNoteListener;
+        this.roomName = roomName;
     }
 
-    @SuppressLint("ResourceType")
+
+
+    private RoomListFragment roomlistFragment = new RoomListFragment();
+    private SQLLiteDBHelper sqlLiteDBHelper;
+
     @NonNull
     @Override
-    public View getView(final int position, @Nullable View convertView, @Nullable ViewGroup parent){
-        LayoutInflater layoutInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        assert layoutInflater != null;
-        @SuppressLint("ViewHolder") final View row = layoutInflater.inflate(R.layout.row, parent, false);
+    public RoomEditManagerListAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(R.layout.row, parent,false);
 
-        TextView roomListTextView2 = row.findViewById(R.id.testTextView2);
-        //   final TextView roomListTextView1 = row.findViewById(R.id.testTextView1);
-        final Button editDeviceButton = row.findViewById(R.id.editbuttonRow);
-        final Button deleteDeviceButton = row.findViewById(R.id.deletebuttonRow);
 
-        roomEditManager = new RoomEditManager();
-
-        //  roomListTextView1.setText(deviceListName[position]);
-        roomListTextView2.setText(roomListDescription[position]);
-
-        editDeviceButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(), deviceListName[position] +" id : " + editDeviceButton.getId(),Toast.LENGTH_SHORT).show();
-                roomEditManager.showUpdateDialog(root, RoomEditManager.room_name,deviceListName[position]);
-            }
-        });
-
-        deleteDeviceButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                row.refreshDrawableState();
-                Toast.makeText(root.getContext(),"Urządzenie usunięte",Toast.LENGTH_SHORT).show();
-                Toast.makeText(root.getContext(), deviceListName[position] +" id : " + deleteDeviceButton.getId(),Toast.LENGTH_SHORT).show();
-
-                sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
-                sqlLiteDBHelper.deleteDevice(RoomEditManager.room_name,deviceListName[position]);
-                RoomListFragment roomListFragment = new RoomListFragment();
-                roomListFragment.generateChart(RoomListFragment.root);
-
-                roomEditManager.clearRoomList();
-                roomEditManager.ViewDataFromDB(sqlLiteDBHelper.getRoomDeviceList(RoomEditManager.room_name));
-                roomEditManager.refreshListView(root);
-            }
-        });
-
-        return row;
+        return new RoomEditManagerListAdapter.MyViewHolder(view, onNoteListener);
     }
+
+    @Override
+    public void onBindViewHolder(@NonNull RoomEditManagerListAdapter.MyViewHolder holder, int position) {
+        holder.textViewName.setText(roomName[position]);
+    }
+
+    @Override
+    public int getItemCount() {
+        return roomName.length;
+    }
+
+
+
+
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        TextView textViewName;
+        RoomEditManagerListAdapter.onNoteListener onNoteListener;
+
+        public MyViewHolder(@NonNull View itemView, RoomEditManagerListAdapter.onNoteListener onNoteListener) {
+            super(itemView);
+            textViewName = itemView.findViewById(R.id.rowTextView1);
+            itemView.setOnClickListener(this);
+            this.onNoteListener = onNoteListener;
+        }
+
+        @Override
+        public void onClick(View v) {
+            onNoteListener.onNoteClick(getAdapterPosition());
+        }
+    }
+
+    public interface onNoteListener{
+        void onNoteClick(int position);
+    }
+
 }

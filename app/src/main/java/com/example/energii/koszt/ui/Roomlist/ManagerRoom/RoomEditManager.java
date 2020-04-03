@@ -1,8 +1,16 @@
 package com.example.energii.koszt.ui.Roomlist.ManagerRoom;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.app.Dialog;
+import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -12,6 +20,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.energii.koszt.R;
+import com.example.energii.koszt.ui.Roomlist.RoomListAdapter;
 import com.example.energii.koszt.ui.Roomlist.RoomListFragment;
 import com.example.energii.koszt.ui.SQLLiteDBHelper;
 import com.example.energii.koszt.ui.exception.SQLEnergyCostException;
@@ -27,21 +36,25 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-public class RoomEditManager extends AppCompatActivity {
-    public ListView listViewListDevice;
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
+
+public class RoomEditManager extends AppCompatActivity implements RoomEditManagerListAdapter.onNoteListener{
+    private RecyclerView recyclerView;
+
     public View view;
+    RoomEditManagerListAdapter adapter;
+
     public SQLLiteDBHelper sqlLiteDBHelper;
     public static String room_name;
     public final List<String> device = new LinkedList<>();
     private List<String> deviceId = new LinkedList<>();
-    private List<String> deviceName = new LinkedList<>();
+    private List<String> deviceName = new ArrayList<>();
     TextView outputEnergyCostUser;
     TextView outputEnergyCostDay;
     TextView outputEnergyCostMonth;
     TextView outputEnergyCostUserKwh;
     TextView outputEnergyCostDayKwh;
     TextView outputEnergyCostMonthKwh;
-
 
 
 
@@ -59,11 +72,18 @@ public class RoomEditManager extends AppCompatActivity {
         TextView outputEnergyCostDayKwh = view.findViewById(R.id.OutputEnergyCostDayKwh);
         TextView outputEnergyCostMonthKwh = view.findViewById(R.id.OutputEnergyCostMonthKwh);
 
-
-        listViewListDevice = findViewById(R.id.listViewDeviceList);
+        recyclerView = findViewById(R.id.RecyckerView);
         sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
 
         ViewDataFromDB(sqlLiteDBHelper.getRoomDeviceList(room_name));
+
+        adapter = new RoomEditManagerListAdapter(view.getContext(),Arrays.copyOf(deviceName.toArray(), deviceName.size(), String[].class),this);
+        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+
+
+
         FloatingActionButton floatingActionButtonAddDevice = findViewById(R.id.addButonfl);
         floatingActionButtonAddDevice.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,8 +93,7 @@ public class RoomEditManager extends AppCompatActivity {
             }
         });
 
-        RoomEditManagerListAdapter adapter = new RoomEditManagerListAdapter(view.getContext(), Arrays.copyOf(deviceName.toArray(), deviceName.size(), String[].class), Arrays.copyOf(deviceName.toArray(), deviceName.size(), String[].class),view);
-        listViewListDevice.setAdapter(adapter);
+        adapter = new RoomEditManagerListAdapter(view.getContext(),Arrays.copyOf(deviceName.toArray(), deviceName.size(), String[].class),this);
     }
 
 
@@ -96,18 +115,20 @@ public class RoomEditManager extends AppCompatActivity {
     }
 
     void refreshListView(View root) {
-        RoomEditManagerListAdapter adapter = new RoomEditManagerListAdapter(root.getContext(), Arrays.copyOf(deviceName.toArray(), deviceName.size(), String[].class), Arrays.copyOf(deviceName.toArray(), deviceName.size(), String[].class),root);
+        RoomEditManagerListAdapter adapter = new RoomEditManagerListAdapter(view.getContext(),Arrays.copyOf(deviceName.toArray(), deviceName.size(), String[].class),this);
 
-        ListView listView = root.findViewById(R.id.listViewDeviceList);
-        listView.setAdapter(adapter);
+        ViewDataFromDB(sqlLiteDBHelper.getRoomDeviceList(room_name));
+
+        recyclerView.setAdapter(adapter);
     }
 
     public void showDialogAddDevice(final View view){
         final Dialog dialog = new Dialog(view.getContext());
-
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.manage_device_dialog_layout);
         dialog.show();
+        dialog.setCanceledOnTouchOutside(true);
+
 
         ImageButton buttonDialogAccept = dialog.findViewById(R.id.buttonDialogAccept);
 
@@ -148,8 +169,12 @@ public class RoomEditManager extends AppCompatActivity {
     public void showUpdateDialog(final View view, final String roomName, String deviceName){
         final Dialog dialog = new Dialog(view.getContext());
 
+        ViewDataFromDB(sqlLiteDBHelper.getRoomDeviceList(room_name));
+
+
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.manage_device_dialog_layout);
+        dialog.setCancelable(false);
         dialog.show();
 
         sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
@@ -213,7 +238,57 @@ public class RoomEditManager extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onNoteClick(int position) {
 
+        System.out.println(position);
+        showUpdateDialog(view,room_name,deviceName.get(position));
+
+
+    }
+
+    ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+
+            sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
+            sqlLiteDBHelper.deleteDevice(RoomEditManager.room_name,deviceName.get(viewHolder.getAdapterPosition()));
+
+            int position = viewHolder.getAdapterPosition();
+            deviceName.remove(position);
+
+
+            clearRoomList();
+            ViewDataFromDB(sqlLiteDBHelper.getRoomDeviceList(room_name));
+            refreshListView(view);
+
+            adapter.notifyItemChanged(position);
+
+
+
+
+        }
+
+
+        @Override
+        public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+            new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                    .addBackgroundColor(ContextCompat.getColor(view.getContext(), R.color.red))
+                    .addActionIcon(R.drawable.ic_delete_black_24dp)
+                    .create()
+                    .decorate();
+
+
+        }
+
+    };
 
 
 }
