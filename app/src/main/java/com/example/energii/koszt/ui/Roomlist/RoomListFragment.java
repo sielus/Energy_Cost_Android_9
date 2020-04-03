@@ -1,7 +1,9 @@
 package com.example.energii.koszt.ui.Roomlist;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -10,17 +12,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.example.energii.koszt.R;
+import com.example.energii.koszt.ui.Roomlist.ManagerRoom.RoomEditManager;
 import com.example.energii.koszt.ui.exception.SQLEnergyCostException;
-import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -28,61 +30,45 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import com.example.energii.koszt.ui.SQLLiteDBHelper;
 import java.util.LinkedList;
 import java.util.List;
 
-public class RoomListFragment extends Fragment {
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
+
+public class RoomListFragment extends Fragment implements RoomListAdapter.onNoteListener {
     private List<String> roomId = new LinkedList<>();
-    private List<String> roomName = new LinkedList<>();
-    private View root;
-    private ListView listView;
+    private List<String> roomName = new ArrayList<>();
+    public static View root;
+    private RecyclerView recyclerView;
     private Dialog dialog;
     private SQLLiteDBHelper sqlLiteDBHelper;
-    PieChart pieChart;
+    RoomListAdapter adapter;
+    public int position;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_rooms, container, false);
-        listView = root.findViewById(R.id.listView);
+        recyclerView = root.findViewById(R.id.RecyckerView);
         sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
+
+
+        recyclerView = root.findViewById(R.id.RecyckerView);
+
+
 
         FloatingActionButton floatingActionButtonAddDevice = root.findViewById(R.id.buttonAddRoom);
 
         ViewDataFromDB(sqlLiteDBHelper.getRoomList());
 
-        RoomListAdapter adapter = new RoomListAdapter(root.getContext(), Arrays.copyOf(roomId.toArray(), roomId.size(), String[].class), Arrays.copyOf(roomName.toArray(), roomName.size(), String[].class), root);
-        listView.setAdapter(adapter);
+        adapter = new RoomListAdapter(root.getContext(),Arrays.copyOf(roomName.toArray(), roomName.size(), String[].class),this);
+        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
 
 
-        pieChart = (PieChart) root.findViewById(R.id.testWykres);
-
-        final ArrayList<PieEntry> pieEntry = new ArrayList<PieEntry>();
-        pieEntry.add(new PieEntry(50,"test1"));
-        pieEntry.add(new PieEntry(100,"test2"));
-        pieEntry.add(new PieEntry(34,"test3"));
-        pieEntry.add(new PieEntry(90,"test4"));
-        pieEntry.add(new PieEntry(31,"test5"));
-        pieEntry.add(new PieEntry(20,"test6"));
-        pieEntry.add(new PieEntry(20,"test7"));
-
-
-        PieDataSet pieDataSet = new PieDataSet(pieEntry,"Dane");
-        pieChart.getLegend().setEnabled(false);
-
-        pieDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
-        pieDataSet.setValueLineColor(R.color.colorAccent);
-        pieDataSet.setValueTextSize(14);
-        PieData pieData = new PieData(pieDataSet);
-        pieChart.setData(pieData);
-        pieChart.setHoleRadius(30);
-        pieChart.setTransparentCircleRadius(10);
-        pieChart.getDescription().setEnabled(false);
-        pieChart.setCenterText("Pokoje");
-        pieChart.animate();
-
+        generateChart(root);
 
         floatingActionButtonAddDevice.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,7 +81,7 @@ public class RoomListFragment extends Fragment {
         return root;
     }
 
-    private void showRoomListDialog(View view) {
+    private void showRoomListDialog(final View view) {
         dialog = new Dialog(view.getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.room_list_dialog);
@@ -115,8 +101,12 @@ public class RoomListFragment extends Fragment {
                 }else {
                     try {
                         sqlLiteDBHelper.addRoom(RoomName);
+                        clearRoomList();
                         ViewDataFromDB(sqlLiteDBHelper.getRoomList());
-                        refreshListView(root);
+                        refreshListView(view);
+                        generateChart(root);
+
+                        adapter.notifyItemInserted(position);
                         dialog.dismiss();
                         Toast.makeText(getContext(),"Pokój dodany",Toast.LENGTH_SHORT).show();
                     }catch (SQLEnergyCostException.DuplicationRoom | SQLEnergyCostException.EmptyField errorMessage) {
@@ -151,21 +141,117 @@ public class RoomListFragment extends Fragment {
             clearRoomList();
             while(cursor.moveToNext()) {
                 roomId.add(cursor.getString(1));
-                roomName.add(cursor.getString(0));
+                roomName.add(cursor.getString(1));
             }
         }
     }
 
-     void clearRoomList() {
+    void clearRoomList() {
         roomName.clear();
         roomId.clear();
     }
 
     void refreshListView(View root) {
-        RoomListAdapter adapter = new RoomListAdapter(root.getContext(), Arrays.copyOf(roomId.toArray(), roomId.size(), String[].class), Arrays.copyOf(roomName.toArray(), roomName.size(), String[].class),root);
-        listView = root.findViewById(R.id.listView);
-        listView.setAdapter(adapter);
+        ViewDataFromDB(sqlLiteDBHelper.getRoomList());
+
+        adapter = new RoomListAdapter(root.getContext(),Arrays.copyOf(roomName.toArray(), roomName.size(), String[].class),this);
+        recyclerView.setAdapter(adapter);
     }
+
+    @Override
+    public void onNoteClick(int position) {
+
+        RoomEditManager.room_name = roomName.get(position);
+        Intent intent = new Intent(root.getContext() , RoomEditManager.class);
+        root.getContext().startActivity(intent);
+    }
+
+    ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            sqlLiteDBHelper.deleteRoom(roomName.get(viewHolder.getAdapterPosition()));
+           position = viewHolder.getAdapterPosition();
+            roomName.remove(position);
+
+
+            clearRoomList();
+              ViewDataFromDB(sqlLiteDBHelper.getRoomList());
+           refreshListView(root);
+
+            generateChart(root);
+            adapter.notifyItemChanged(position);
+
+
+        }
+
+
+        @Override
+        public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+            new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                    .addBackgroundColor(ContextCompat.getColor(root.getContext(), R.color.red))
+                    .addActionIcon(R.drawable.ic_delete_black_24dp)
+                    .create()
+                    .decorate();
+
+
+        }
+
+    };
+
+
+
+    public void generateChart(View root){
+        SQLLiteDBHelper sqlLiteDBHelper;
+        sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
+        PieChart pieChart;
+
+        pieChart =  root.findViewById(R.id.testWykres);
+        pieChart.setNoDataText("Brak pokojów");
+        pieChart.invalidate();
+
+        ArrayList<PieEntry> pieEntry = new ArrayList<PieEntry>();
+
+        pieEntry.clear();
+        Cursor cursor = sqlLiteDBHelper.getRoomAmountEnergyAndName();
+        if (cursor.getCount() > 1) {
+            while(cursor.moveToNext()) {
+                pieEntry.add(new PieEntry(cursor.getInt(1),cursor.getString(0)));
+
+
+            }
+        }else if(cursor.getCount() == 1){
+            pieEntry.add(new PieEntry(cursor.getInt(1),cursor.getString(0)));
+
+        }else {
+            return;
+        }
+
+
+
+
+
+        PieDataSet pieDataSet = new PieDataSet(pieEntry,"Dane");
+        pieChart.getLegend().setEnabled(false);
+
+        pieDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+        pieDataSet.setValueLineColor(R.color.colorAccent);
+        pieDataSet.setValueTextSize(14);
+        PieData pieData = new PieData(pieDataSet);
+        pieChart.setData(pieData);
+        pieChart.setHoleRadius(30);
+        pieChart.setTransparentCircleRadius(10);
+        pieChart.getDescription().setEnabled(false);
+        pieChart.setCenterText("Pokoje");
+        pieChart.animate();
+    }
+
+
+
 }
-
-

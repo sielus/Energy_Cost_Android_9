@@ -12,14 +12,14 @@ class CostEnergy {
     private double energyCost;
     private double hours;
 
-    CostEnergy(double powerValue, double energyCost, int numberDevices, int hours, int minutes) {
+    public CostEnergy(double powerValue, double energyCost, int numberDevices, int hours, int minutes) {
         this.powerValue =  powerValue / 1000;
         this.energyCost = energyCost;
         this.numberDevices = numberDevices;
         this.hours = hours + minutes / 60;
     }
 
-    Map<String, String> sumCostEnergy() {
+    public Map<String, String> sumCostEnergy() {
         NumberFormat formatter = NumberFormat.getInstance(Locale.US);
         formatter.setMaximumFractionDigits(2);
         formatter.setMinimumFractionDigits(2);
@@ -37,6 +37,10 @@ class CostEnergy {
         return costValueMap;
     }
 
+    public float sumCostEnergyUserKwh() {
+        return (float) (powerValue * hours * numberDevices);
+    }
+
 
     private float sumCostEnergyUserZl() {
         return (float) (powerValue * hours * energyCost * numberDevices);
@@ -48,10 +52,6 @@ class CostEnergy {
 
     private float sumCostEnergyMonthZl() {
         return sumCostEnergyDayZl() * 30;
-    }
-
-    private float sumCostEnergyUserKwh() {
-        return (float) (powerValue * hours * numberDevices);
     }
 
     private float sumCostEnergyDayKwh() {

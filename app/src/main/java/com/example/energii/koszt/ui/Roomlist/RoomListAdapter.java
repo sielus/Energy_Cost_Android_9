@@ -3,79 +3,87 @@ package com.example.energii.koszt.ui.Roomlist;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.energii.koszt.R;
 import com.example.energii.koszt.ui.SQLLiteDBHelper;
 import com.example.energii.koszt.ui.Roomlist.ManagerRoom.RoomEditManager;
 
-public class RoomListAdapter extends ArrayAdapter<String> {
-    private final Context roomListContext;
-    private View root;
-    private String[] roomListName;
-    private String[] roomListDescription;
+import java.util.Map;
+
+public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.MyViewHolder>   {
+    Context context;
+    String roomName[];
+    private onNoteListener onNoteListener;
+    private int lastPosition = -1;
+
+    public RoomListAdapter(Context context, String roomName[],onNoteListener onNoteListener){
+        this.context = context;
+        this.onNoteListener = onNoteListener;
+        this.roomName = roomName;
+    }
+
+
+
     private RoomListFragment roomlistFragment = new RoomListFragment();
     private SQLLiteDBHelper sqlLiteDBHelper;
 
-   RoomListAdapter(Context roomListContext, String[] roomListName, String[] roomListDescription,View root) {
-        super(roomListContext, R.layout.row, R.id.testTextView1, roomListName);
-        this.roomListContext = roomListContext;
-        this.roomListName = roomListName;
-        this.roomListDescription = roomListDescription;
-        this.root = root;
-    }
-
-    @SuppressLint("ResourceType")
     @NonNull
     @Override
-    public View getView(final int position, @Nullable final View convertView, @Nullable ViewGroup parent){
-        LayoutInflater layoutInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        assert layoutInflater != null;
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(R.layout.row, parent,false);
 
-        @SuppressLint("ViewHolder") final View row = layoutInflater.inflate(R.layout.row, parent, false);
-        final TextView roomListTextView1 = row.findViewById(R.id.testTextView1);
-        final Button editRoomButton = row.findViewById(R.id.editbuttonRow);
-        final Button deleteRoomButton = row.findViewById(R.id.deletebuttonRow);
-        TextView roomListTextView2 = row.findViewById(R.id.testTextView2);
 
-        roomListTextView1.setText(roomListName[position]);
-        roomListTextView2.setText(roomListDescription[position]);
-        editRoomButton.setTag(roomListName[position]);
-        editRoomButton.setId(2);
-
-        editRoomButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(), roomListName[position] +" id : " + editRoomButton.getId(),Toast.LENGTH_SHORT).show();
-                RoomEditManager.room_name = roomListName[position];
-
-                Intent intent = new Intent(roomListContext , RoomEditManager.class);
-                roomListContext.startActivity(intent);
-            }
-        });
-
-        deleteRoomButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
-                sqlLiteDBHelper.deleteRoom(roomListName[position]);
-
-                roomlistFragment.clearRoomList();
-                roomlistFragment.ViewDataFromDB(sqlLiteDBHelper.getRoomList());
-                roomlistFragment.refreshListView(root);
-
-                Toast.makeText(getContext(),"Pokój usunięty",Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        return row;
+        return new MyViewHolder(view, onNoteListener);
     }
-}
 
+    @Override
+    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+        holder.textViewName.setText(roomName[position]);
+    }
+
+    @Override
+    public int getItemCount() {
+        return roomName.length;
+    }
+
+
+
+
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        TextView textViewName;
+        onNoteListener onNoteListener;
+
+        public MyViewHolder(@NonNull View itemView,onNoteListener onNoteListener) {
+            super(itemView);
+            textViewName = itemView.findViewById(R.id.rowTextView1);
+            itemView.setOnClickListener(this);
+            this.onNoteListener = onNoteListener;
+        }
+
+        @Override
+        public void onClick(View v) {
+            onNoteListener.onNoteClick(getAdapterPosition());
+        }
+    }
+
+    public interface onNoteListener{
+        void onNoteClick(int position);
+    }
+
+
+}

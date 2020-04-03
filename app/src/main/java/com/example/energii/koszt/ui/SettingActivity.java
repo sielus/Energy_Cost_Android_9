@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 import com.example.energii.koszt.R;
-import com.example.energii.koszt.ui.SQLLiteDBHelper;
 import com.example.energii.koszt.ui.home.HomeFragment;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -79,7 +78,7 @@ public class SettingActivity extends AppCompatActivity {
             value = getValue();
             Toast.makeText(getApplicationContext(),"Cena globala pradu : " + value + " zł",Toast.LENGTH_SHORT).show();
             sqlLiteDBHelper.setVariable("powerCost",value);
-            homeFragment.refrest(HomeFragment.root);
+            homeFragment.refresh(HomeFragment.root);
             finish();
         }
     }

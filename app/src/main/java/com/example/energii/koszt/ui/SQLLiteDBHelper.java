@@ -21,18 +21,18 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         String addVariable;
 
         String roomListTable = "CREATE TABLE room_list " +
-                "(" +
-                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "name varchar(100) NOT NULL UNIQUE, " +
-                "energy_amount real NOT NULL DEFAULT 0 " +
-                ")";
+                                "(" +
+                                    "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                                    "name varchar(100) NOT NULL UNIQUE, " +
+                                    "energy_amount real NOT NULL DEFAULT 0 " +
+                                ")";
         db.execSQL(roomListTable);
 
         String configurationVariableTable = "CREATE TABLE configuration_variable " +
-                "(" +
-                " name varchar(100) PRIMARY KEY, " +
-                " value varchar(100) NOT NULL UNIQUE " +
-                ");";
+                                                "(" +
+                                                    " name varchar(100) PRIMARY KEY, " +
+                                                    " value varchar(100) NOT NULL UNIQUE " +
+                                                ");";
         db.execSQL(configurationVariableTable);
 
         addVariable = "INSERT INTO configuration_variable (name, value) values (\"powerCost\", \"0.60\")";
@@ -51,7 +51,9 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase dbhWrite = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
+
         contentValues.put("name", roomName);
+
         long resultInsert = dbhWrite.insert("room_list", null, contentValues);
 
         if (resultInsert == -1) {
@@ -74,8 +76,8 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         Cursor cursor;
 
         String query = "SELECT id, " +
-                "name " +
-                "FROM   room_list";
+                              "name " +
+                       "FROM   room_list";
         cursor = dbhRead.rawQuery(query, null);
 
         return cursor;
@@ -116,13 +118,14 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
     public Cursor getRoomDeviceList(String roomName) {
         SQLiteDatabase dbhRead = getReadableDatabase();
         Cursor cursor;
+        String deviceRoomName = roomName + "_device";
 
         String query = "SELECT id, " +
-                "name, " +
-                "power_value, " +
-                "work_time, " +
-                "device_number " +
-                "FROM " + roomName + "_device";
+                              "name, " +
+                              "power_value, " +
+                              "work_time, " +
+                              "device_number " +
+                       "FROM " + deviceRoomName;
         cursor = dbhRead.rawQuery(query, null);
 
         return cursor;
@@ -140,17 +143,15 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
     public Cursor getDeviceInfo(String roomName, String deviceName) {
         SQLiteDatabase dbhRead = getReadableDatabase();
         Cursor cursor;
-        String deviceRoomName;
-
-        deviceRoomName = roomName + "_device";
+        String deviceRoomName = roomName + "_device";
 
         String query = "SELECT id, " +
                               "name, " +
                               "power_value, " +
                               "work_time, " +
                               "device_number " +
-                        "FROM " + deviceRoomName +
-                       " WHERE  name = ?";
+                       "FROM " + deviceRoomName +
+                      " WHERE name = ?";
         cursor = dbhRead.rawQuery(query, new String[]{deviceName});
 
         return cursor;
@@ -163,18 +164,16 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase dbWriter = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
+        double energyAmount;
         String workTime = hour + ":" + minutes;
         String where = "id = ?";
-        String deviceRoomName;
-        double energyAmount;
+        String deviceRoomName = roomName + "_device";
 
         if(minutes != 0) {
             energyAmount = powerValue * deviceNumber * (hour + (double) minutes / 60);
         }else {
             energyAmount = powerValue * deviceNumber * hour;
         }
-
-        deviceRoomName = roomName + "_device";
 
         contentValues.put("name", deviceName);
         contentValues.put("power_value", powerValue);
@@ -202,8 +201,8 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         Cursor cursor;
 
         String query = "SELECT value " +
-                "FROM   configuration_variable " +
-                "WHERE  name = ?";
+                       "FROM   configuration_variable " +
+                       "WHERE  name = ?";
         cursor = dbhRead.rawQuery(query, new String[]{variableName});
         return cursor;
     }
@@ -233,10 +232,11 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
     private double getDeviceAmountEnergy(String deviceName, String deviceRoomName) {
         SQLiteDatabase dbhRead = getReadableDatabase();
         Cursor cursor;
+        String query;
 
-        String query = "SELECT energy_amount " +
-                       "FROM " + deviceRoomName +
-                       " WHERE  name = ?";
+        query = "SELECT energy_amount " +
+                "FROM " + deviceRoomName +
+               " WHERE  name = ?";
 
         cursor = dbhRead.rawQuery(query, new String[]{deviceName});
         cursor.moveToFirst();
@@ -258,29 +258,44 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         return cursor.getString(0);
     }
 
+    public Cursor getRoomAmountEnergyAndName() {
+        SQLiteDatabase dbhRead = getReadableDatabase();
+        Cursor cursor;
+        String query;
+        query = "SELECT name," +
+                "energy_amount " +
+                "FROM   room_list";
+
+        cursor = dbhRead.rawQuery(query, null);
+        cursor.moveToFirst();
+
+        return cursor;
+    }
+
     private void addDeviceList(String roomName) {
         SQLiteDatabase dbhWrite = getWritableDatabase();
-        roomName += "_device";
-        String roomDeviceTable = "CREATE TABLE " + roomName +
-                " (" +
-                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "name varchar(100) NOT NULL UNIQUE, " +
-                "power_value real NOT NULL, " +
-                "work_time text NOT NULL, " +
-                "device_number INTEGER NOT NULL, " +
-                "energy_amount real NOT NULL DEFAULT 0" +
-                ")";
+        String deviceRoomName = roomName + "_device";
 
-        dbhWrite.execSQL(roomDeviceTable);
+        String query = "CREATE TABLE " + deviceRoomName +
+                            " (" +
+                                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                                "name varchar(100) NOT NULL UNIQUE, " +
+                                "power_value real NOT NULL, " +
+                                "work_time text NOT NULL, " +
+                                "device_number INTEGER NOT NULL, " +
+                                "energy_amount real NOT NULL DEFAULT 0" +
+                            ")";
+
+        dbhWrite.execSQL(query);
     }
 
     private void deleteDeviceList(String roomName) {
         SQLiteDatabase dbWriter = getWritableDatabase();
-        String deviceRoomName;
+        String deviceRoomName = roomName +  "_device";
+        String query;
 
-        deviceRoomName = roomName +  "_device";
-        String deleteDeviceList = "DROP TABLE " + deviceRoomName;
+        query = "DROP TABLE " + deviceRoomName;
 
-        dbWriter.execSQL(deleteDeviceList);
+        dbWriter.execSQL(query);
     }
 }
