@@ -6,6 +6,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
 import com.example.energii.koszt.ui.exception.SQLEnergyCostException;
 
 public class SQLLiteDBHelper extends SQLiteOpenHelper {
@@ -266,8 +268,11 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
                 "energy_amount " +
                 "FROM   room_list";
 
+
+
         cursor = dbhRead.rawQuery(query, null);
-        cursor.moveToFirst();
+        //cursor.moveToFirst();
+       // Log.d("getRoomAmountEnergyAndName", cursor.getString(0));
 
         return cursor;
     }
@@ -298,4 +303,5 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
 
         dbWriter.execSQL(query);
     }
+
 }

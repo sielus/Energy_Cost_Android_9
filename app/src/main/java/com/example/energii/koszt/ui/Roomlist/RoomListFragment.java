@@ -26,6 +26,7 @@ import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -222,12 +223,13 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
         Cursor cursor = sqlLiteDBHelper.getRoomAmountEnergyAndName();
         if (cursor.getCount() > 1) {
             while(cursor.moveToNext()) {
-                pieEntry.add(new PieEntry(cursor.getInt(1),cursor.getString(0)));
+                pieEntry.add(new PieEntry(cursor.getInt(1), cursor.getString(0) + " " + cursor.getInt(1)+" kWh" ));
 
 
             }
         }else if(cursor.getCount() == 1){
-            pieEntry.add(new PieEntry(cursor.getInt(1),cursor.getString(0)));
+            cursor.moveToFirst();
+            pieEntry.add(new PieEntry(cursor.getInt(1), cursor.getString(1) + " \n " + cursor.getInt(1)+" kWh" ));
 
         }else {
             return;
@@ -244,6 +246,8 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
         pieDataSet.setValueLineColor(R.color.colorAccent);
         pieDataSet.setValueTextSize(14);
         PieData pieData = new PieData(pieDataSet);
+        pieData.setValueFormatter(new PercentFormatter(pieChart));
+        pieChart.setUsePercentValues(true);
         pieChart.setData(pieData);
         pieChart.setHoleRadius(30);
         pieChart.setTransparentCircleRadius(10);
