@@ -248,17 +248,17 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
         if (cursor.getCount() > 1) {
             while(cursor.moveToNext()) {
                 pieEntry.add(new PieEntry(cursor.getInt(1), cursor.getString(0) + " " + cursor.getInt(1)+" kWh" ));
-                x = x +1;
-            //    barEntries.add(new BarEntry(x,cursor.getFloat(2)));
-            //    roomName.add(cursor.getString(0));
 
+                barEntries.add(new BarEntry(x,cursor.getFloat(2)));
+                roomName.add(cursor.getString(0));
+                x = x +1;
 
             }
         }else if(cursor.getCount() == 1){
             cursor.moveToFirst();
             pieEntry.add(new PieEntry(cursor.getInt(1), cursor.getString(0).replace("_"," ") + " " + cursor.getInt(1)+" kWh" ));
-         //  barEntries.add(new BarEntry(0, cursor.getFloat(2) ));
-         //   roomName.add(cursor.getString(0));
+            barEntries.add(new BarEntry(x, cursor.getFloat(2) ));
+            roomName.add(cursor.getString(0));
 
 
         }else {
@@ -266,14 +266,7 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
         }
 
 
-        barEntries.add(new BarEntry(0, 1000 ));
-        barEntries.add(new BarEntry(1, 2000 ));
-        barEntries.add(new BarEntry(2, 3000 ));
 
-
-        roomName.add("test1");
-        roomName.add("test2");
-        roomName.add("test3");
 
         BarDataSet barDataSet = new BarDataSet(barEntries, "Koszty Pokoi (zł)");
         barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
