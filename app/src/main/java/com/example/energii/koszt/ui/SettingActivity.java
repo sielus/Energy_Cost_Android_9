@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.Toast;
 import com.example.energii.koszt.R;
 import com.example.energii.koszt.ui.home.HomeFragment;
+import com.example.energii.koszt.ui.rooms.RoomListFragment;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -77,21 +78,19 @@ public class SettingActivity extends AppCompatActivity {
         }else {
             value = getValue();
             Toast.makeText(getApplicationContext(),"Cena globala pradu : " + value + " zł",Toast.LENGTH_SHORT).show();
-            sqlLiteDBHelper.setVariable("powerCost",value);
+            RoomListFragment roomListFragment = new RoomListFragment();
+            roomListFragment.generateChart(RoomListFragment.root);
+            sqlLiteDBHelper.setVariable("powerCost",value );
             homeFragment.refresh(HomeFragment.root);
             finish();
         }
     }
 
     String ViewDataFromDB(Cursor cursor) {
-        if (cursor.getCount() != 0) {
-            System.out.println(cursor);
-
-            while(cursor.moveToNext()) {
-               powerCost = cursor.getString(0);
-            }
-        }
-
+        cursor.moveToFirst();
+        powerCost = cursor.getString(0);
         return powerCost;
     }
+
+
 }

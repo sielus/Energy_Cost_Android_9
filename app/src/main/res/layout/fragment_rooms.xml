@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    tools:context=".ui.Roomlist.RoomListFragment">
+    tools:context=".ui.rooms.RoomListFragment">
 
 <ScrollView
     android:layout_width="match_parent"
@@ -19,8 +19,8 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/RecyckerView"
-            android:layout_width="match_parent"
-            android:layout_height="295dp"
+            android:layout_width="409dp"
+            android:layout_height="229dp"
 
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -28,13 +28,30 @@
 
         </androidx.recyclerview.widget.RecyclerView>
 
-        <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/testWykres"
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/bartChart"
             android:layout_width="match_parent"
             android:layout_height="325dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/pieChart"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/RecyckerView">
+
+
+        </com.github.mikephil.charting.charts.BarChart>
+
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pieChart"
+            android:layout_width="match_parent"
+            android:layout_height="325dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bartChart">
 
         </com.github.mikephil.charting.charts.PieChart>
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -54,6 +71,8 @@
         android:backgroundTint="#FF0A0A"
         app:layout_constraintRight_toRightOf="parent"
         app:srcCompat="@drawable/ic_add_black_24dp" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

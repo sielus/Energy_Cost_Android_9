@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient"
 
-    tools:context=".ui.Roomlist.ManagerRoom.RoomEditManager">
+    tools:context=".ui.rooms.manager.RoomEditManager">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/RecyckerView"

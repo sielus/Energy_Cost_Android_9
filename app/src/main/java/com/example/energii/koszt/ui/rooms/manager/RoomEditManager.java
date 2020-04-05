@@ -1,4 +1,4 @@
-package com.example.energii.koszt.ui.Roomlist.ManagerRoom;
+package com.example.energii.koszt.ui.rooms.manager;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -6,9 +6,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.Dialog;
-import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Canvas;
 import android.os.Bundle;
@@ -16,26 +14,17 @@ import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.energii.koszt.R;
-import com.example.energii.koszt.ui.Roomlist.RoomListAdapter;
-import com.example.energii.koszt.ui.Roomlist.RoomListFragment;
+import com.example.energii.koszt.ui.rooms.RoomListFragment;
 import com.example.energii.koszt.ui.SQLLiteDBHelper;
 import com.example.energii.koszt.ui.exception.SQLEnergyCostException;
-import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 public class RoomEditManager extends AppCompatActivity implements RoomEditManagerListAdapter.onNoteListener{
@@ -64,13 +53,15 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_edit_manager);
         // getSupportActionBar().hide();
-        setTitle("Pokój " + room_name);
+        setTitle("Pokój " + room_name.replace("_"," "));
+
         TextView outputEnergyCostUser = view.findViewById(R.id.OutputEnergyCostUser);
         TextView outputEnergyCostDay = view.findViewById(R.id.OutputEnergyCostDay);
         TextView outputEnergyCostMonth = view.findViewById(R.id.OutputEnergyCostMonth);
         TextView outputEnergyCostUserKwh = view.findViewById(R.id.OutputEnergyCostUserKwh);
         TextView outputEnergyCostDayKwh = view.findViewById(R.id.OutputEnergyCostDayKwh);
         TextView outputEnergyCostMonthKwh = view.findViewById(R.id.OutputEnergyCostMonthKwh);
+
 
         recyclerView = findViewById(R.id.RecyckerView);
         sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
@@ -270,9 +261,6 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
 
             adapter.notifyItemChanged(position);
 
-
-
-
         }
 
 
@@ -284,7 +272,6 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
                     .addActionIcon(R.drawable.ic_delete_black_24dp)
                     .create()
                     .decorate();
-
 
         }
 

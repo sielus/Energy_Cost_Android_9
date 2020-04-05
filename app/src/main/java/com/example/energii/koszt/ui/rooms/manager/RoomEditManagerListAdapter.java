@@ -1,35 +1,25 @@
-package com.example.energii.koszt.ui.Roomlist;
+package com.example.energii.koszt.ui.rooms.manager;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.energii.koszt.R;
+import com.example.energii.koszt.ui.rooms.RoomListFragment;
 import com.example.energii.koszt.ui.SQLLiteDBHelper;
-import com.example.energii.koszt.ui.Roomlist.ManagerRoom.RoomEditManager;
 
-import java.util.Map;
-
-public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.MyViewHolder>   {
+public class RoomEditManagerListAdapter extends RecyclerView.Adapter<RoomEditManagerListAdapter.MyViewHolder>   {
     Context context;
     String roomName[];
-    private onNoteListener onNoteListener;
+    private RoomEditManagerListAdapter.onNoteListener onNoteListener;
     private int lastPosition = -1;
 
-    public RoomListAdapter(Context context, String roomName[],onNoteListener onNoteListener){
+    public RoomEditManagerListAdapter(Context context, String roomName[], RoomEditManagerListAdapter.onNoteListener onNoteListener){
         this.context = context;
         this.onNoteListener = onNoteListener;
         this.roomName = roomName;
@@ -42,16 +32,16 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.MyView
 
     @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RoomEditManagerListAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.row, parent,false);
 
 
-        return new MyViewHolder(view, onNoteListener);
+        return new RoomEditManagerListAdapter.MyViewHolder(view, onNoteListener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RoomEditManagerListAdapter.MyViewHolder holder, int position) {
         holder.textViewName.setText(roomName[position]);
     }
 
@@ -66,9 +56,9 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.MyView
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView textViewName;
-        onNoteListener onNoteListener;
+        RoomEditManagerListAdapter.onNoteListener onNoteListener;
 
-        public MyViewHolder(@NonNull View itemView,onNoteListener onNoteListener) {
+        public MyViewHolder(@NonNull View itemView, RoomEditManagerListAdapter.onNoteListener onNoteListener) {
             super(itemView);
             textViewName = itemView.findViewById(R.id.rowTextView1);
             itemView.setOnClickListener(this);
@@ -84,6 +74,5 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.MyView
     public interface onNoteListener{
         void onNoteClick(int position);
     }
-
 
 }

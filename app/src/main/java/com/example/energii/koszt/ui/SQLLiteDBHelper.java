@@ -6,8 +6,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
-
 import com.example.energii.koszt.ui.exception.SQLEnergyCostException;
 
 public class SQLLiteDBHelper extends SQLiteOpenHelper {
@@ -23,11 +21,12 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         String addVariable;
 
         String roomListTable = "CREATE TABLE room_list " +
-                                "(" +
-                                    "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                                    "name varchar(100) NOT NULL UNIQUE, " +
-                                    "energy_amount real NOT NULL DEFAULT 0 " +
-                                ")";
+                                    "(" +
+                                        "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                                        "name varchar(100) NOT NULL UNIQUE, " +
+                                        "energy_amount real NOT NULL DEFAULT 0," +
+                                        "energy_cost_zl real NOT NULL DEFAULT 0" +
+                                    ")";
         db.execSQL(roomListTable);
 
         String configurationVariableTable = "CREATE TABLE configuration_variable " +
@@ -54,7 +53,7 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         SQLiteDatabase dbhWrite = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
-        contentValues.put("name", roomName);
+        contentValues.put("name", roomName.trim().replace(" ", "_"));
 
         long resultInsert = dbhWrite.insert("room_list", null, contentValues);
 
@@ -91,22 +90,29 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         }
 
         double energyAmount;
-        String deviceRoomName = roomName + "_device";
-
-        if(minutes != 0) {
-            energyAmount = powerValue * deviceNumber * (hour + (double) minutes / 60);
-        }else {
-            energyAmount = powerValue * deviceNumber * hour;
-        }
-
+        double energyCost;
         String workTime = hour + ":" + minutes;
         SQLiteDatabase dbhWrite = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
+        String deviceRoomName = roomName.trim().replace(" ", "_") + "_device";
+        double energyCostZl;
+
+        energyCost = Double.parseDouble(getVariable("powerCost").getString(0));
+
+        if(minutes != 0) {
+            energyAmount = powerValue * deviceNumber * (hour + (double) minutes / 60);
+            energyCostZl = energyCost * energyAmount / 1000 * deviceNumber * (hour + (double) minutes / 60);
+        }else {
+            energyAmount = powerValue * deviceNumber * hour;
+            energyCostZl = energyCost * energyAmount / 1000 * deviceNumber * hour;
+        }
+
         contentValues.put("name", deviceName);
         contentValues.put("power_value", powerValue);
         contentValues.put("work_time", workTime);
         contentValues.put("device_number", deviceNumber);
         contentValues.put("energy_amount", energyAmount);
+        contentValues.put("energy_cost_zl", energyCostZl);
 
         long resultInsert = dbhWrite.insert(deviceRoomName, null, contentValues);
 
@@ -115,6 +121,7 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         }
 
         updateRoomEnergyAmount(roomName, energyAmount);
+        updateRoomEnergyCostZl(roomName, energyCostZl);
     }
 
     public Cursor getRoomDeviceList(String roomName) {
@@ -139,6 +146,7 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         String where = " name = ? ";
 
         updateRoomEnergyAmount(roomName, (getDeviceAmountEnergy(deviceName, deviceRoomName) * -1));
+        updateRoomEnergyCostZl(roomName, (getDeviceCostEnergy(deviceName, deviceRoomName) * -1));
         dbWriter.delete(deviceRoomName, where, new String[]{deviceName});
     }
 
@@ -167,14 +175,20 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         SQLiteDatabase dbWriter = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         double energyAmount;
+        double energyCost;
+        double energyCostZl;
         String workTime = hour + ":" + minutes;
         String where = "id = ?";
-        String deviceRoomName = roomName + "_device";
+        String deviceRoomName = roomName.trim().replace(" ", "_") + "_device";
+
+        energyCost = Double.parseDouble(getVariable("powerCost").getString(0));
 
         if(minutes != 0) {
             energyAmount = powerValue * deviceNumber * (hour + (double) minutes / 60);
+            energyCostZl = energyCost * energyAmount / 1000 * deviceNumber * (hour + (double) minutes / 60);
         }else {
             energyAmount = powerValue * deviceNumber * hour;
+            energyCostZl = energyCost * energyAmount / 1000 * deviceNumber * hour;
         }
 
         contentValues.put("name", deviceName);
@@ -182,30 +196,25 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         contentValues.put("work_time", workTime);
         contentValues.put("device_number", deviceNumber);
         contentValues.put("energy_amount", energyAmount);
+        contentValues.put("energy_cost_zl", energyCostZl);
 
         updateRoomEnergyAmount(roomName, (energyAmount - getDeviceAmountEnergy(deviceName, deviceRoomName)));
+        updateRoomEnergyCostZl(roomName, (energyAmount - getDeviceCostEnergy(deviceName, deviceRoomName)));
 
         dbWriter.update(deviceRoomName, contentValues, where, new String[]{Integer.toString(deviceId)});
-    }
-
-    public void setPowerCost(String variableName, double cost) {
-        SQLiteDatabase dbWriter = getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        String where = "name = ?";
-
-        contentValues.put("value", cost);
-
-        dbWriter.update("configuration_variable", contentValues, where, new String[]{variableName});
     }
 
     public Cursor getVariable(String variableName) {
         SQLiteDatabase dbhRead = getReadableDatabase();
         Cursor cursor;
+        String query;
 
-        String query = "SELECT value " +
-                       "FROM   configuration_variable " +
-                       "WHERE  name = ?";
+        query = "SELECT value " +
+                "FROM   configuration_variable " +
+                "WHERE  name = ?";
         cursor = dbhRead.rawQuery(query, new String[]{variableName});
+        cursor.moveToFirst();
+
         return cursor;
     }
 
@@ -216,7 +225,48 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
 
         contentValues.put("value", value);
 
+        if(variableName.equals("powerCost")) {
+            updateAllEnergyCostZl(Double.parseDouble(value));
+        }
+
         dbWriter.update("configuration_variable", contentValues, where, new String[]{variableName});
+    }
+
+    public Cursor getRoomDetails() {
+        SQLiteDatabase dbhRead = getReadableDatabase();
+        Cursor cursor;
+        String query;
+
+        query = "SELECT name," +
+                       "energy_amount," +
+                       "energy_cost_zl " +
+                "FROM   room_list";
+
+        cursor = dbhRead.rawQuery(query, null);
+
+        return cursor;
+    }
+
+    private void updateAllEnergyCostZl(double newEnergyCost) {
+        SQLiteDatabase dbWriter = getWritableDatabase();
+        String query;
+        Cursor cursor;
+
+        query = "UPDATE room_list " +
+                "SET    energy_cost_zl = energy_amount * ? ";
+
+        dbWriter.execSQL(query, new String[] {String.valueOf(newEnergyCost / 1000)});
+
+        cursor = getRoomList();
+
+        while(cursor.moveToNext()) {
+            String deviceRoomName = cursor.getString(1) + "_device";
+
+            query = "UPDATE " + deviceRoomName +
+                  " SET    energy_cost_zl = energy_amount * ?";
+
+            dbWriter.execSQL(query, new String[] {String.valueOf(newEnergyCost / 1000)});
+        }
     }
 
     private void updateRoomEnergyAmount(String roomName, double energyAmount) {
@@ -224,10 +274,21 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         String query;
 
         query = "UPDATE room_list " +
-                "SET energy_amount = energy_amount + ? " +
-                "WHERE name = ?";
+                "SET    energy_amount = energy_amount + ? " +
+                "WHERE  name = ?";
 
         dbWriter.execSQL(query, new String[] {Double.toString(energyAmount), roomName});
+    }
+
+    private void updateRoomEnergyCostZl(String roomName, double energyCost){
+        SQLiteDatabase dbWriter = getWritableDatabase();
+        String query;
+
+        query = "UPDATE room_list " +
+                "SET    energy_cost_zl = energy_cost_zl + ? " +
+                "WHERE  name = ?";
+
+        dbWriter.execSQL(query, new String[] {String.valueOf(energyCost), roomName});
     }
 
     @SuppressLint("Recycle")
@@ -247,39 +308,24 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
     }
 
     @SuppressLint("Recycle")
-    public String getRoomEnergyAmount(String roomName) {
+    private double getDeviceCostEnergy(String deviceName, String deviceRoomName) {
         SQLiteDatabase dbhRead = getReadableDatabase();
         Cursor cursor;
         String query;
 
-        query = "SELECT energy_amount " +
-                "FROM   room_list " +
-                "WHERE  name = \"" + roomName + "\"";
+        query = "SELECT energy_cost_zl " +
+                "FROM " + deviceRoomName +
+               " WHERE  name = ?";
 
-        cursor = dbhRead.rawQuery(query, null);
-        return cursor.getString(0);
-    }
+        cursor = dbhRead.rawQuery(query, new String[]{deviceName});
+        cursor.moveToFirst();
 
-    public Cursor getRoomAmountEnergyAndName() {
-        SQLiteDatabase dbhRead = getReadableDatabase();
-        Cursor cursor;
-        String query;
-        query = "SELECT name," +
-                "energy_amount " +
-                "FROM   room_list";
-
-
-
-        cursor = dbhRead.rawQuery(query, null);
-        //cursor.moveToFirst();
-       // Log.d("getRoomAmountEnergyAndName", cursor.getString(0));
-
-        return cursor;
+        return cursor.getDouble(0);
     }
 
     private void addDeviceList(String roomName) {
         SQLiteDatabase dbhWrite = getWritableDatabase();
-        String deviceRoomName = roomName + "_device";
+        String deviceRoomName = roomName.trim().replace(" ", "_") + "_device";
 
         String query = "CREATE TABLE " + deviceRoomName +
                             " (" +
@@ -288,7 +334,8 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
                                 "power_value real NOT NULL, " +
                                 "work_time text NOT NULL, " +
                                 "device_number INTEGER NOT NULL, " +
-                                "energy_amount real NOT NULL DEFAULT 0" +
+                                "energy_amount real NOT NULL DEFAULT 0," +
+                                "energy_cost_zl real NOT NULL DEFAULT 0" +
                             ")";
 
         dbhWrite.execSQL(query);
@@ -303,5 +350,4 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
 
         dbWriter.execSQL(query);
     }
-
 }

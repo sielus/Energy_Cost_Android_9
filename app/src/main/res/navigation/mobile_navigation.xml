@@ -31,7 +31,7 @@
 
     <fragment
         android:id="@+id/nav_gallery"
-        android:name="com.example.energii.koszt.ui.Roomlist.RoomListFragment"
+        android:name="com.example.energii.koszt.ui.rooms.RoomListFragment"
         android:label="@string/menu_gallery"
         tools:layout="@layout/fragment_rooms" />
 

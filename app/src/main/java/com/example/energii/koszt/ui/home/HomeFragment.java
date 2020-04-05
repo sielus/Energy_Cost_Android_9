@@ -73,14 +73,11 @@ public class HomeFragment extends Fragment {
     }
 
     private String ViewDataFromDB(Cursor cursor) {
-        if (cursor.getCount() != 0) {
-            while(cursor.moveToNext()) {
-                powerCost = cursor.getString(0);
-            }
-        }
-
-        return powerCost;
+       powerCost = cursor.getString(0);
+       return powerCost;
     }
+
+
 
     public void refresh(View root){
         sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());

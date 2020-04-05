@@ -1,4 +1,4 @@
-package com.example.energii.koszt.ui.Roomlist;
+package com.example.energii.koszt.ui.rooms;
 
 import androidx.lifecycle.ViewModel;
 

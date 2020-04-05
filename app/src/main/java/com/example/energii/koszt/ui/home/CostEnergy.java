@@ -37,7 +37,7 @@ class CostEnergy {
         return costValueMap;
     }
 
-    public float sumCostEnergyUserKwh() {
+    private float sumCostEnergyUserKwh() {
         return (float) (powerValue * hours * numberDevices);
     }
 
