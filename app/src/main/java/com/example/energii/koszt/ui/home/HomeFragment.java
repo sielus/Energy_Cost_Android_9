@@ -131,6 +131,7 @@ public class HomeFragment extends Fragment {
         TextInputLayout text_field_inputMinutes = root.findViewById(R.id.text_field_inputMinutes);
         boolean isNotEmpty = true;
 
+
         if(inputPowerValue.getText().toString().isEmpty()) {
             text_field_inputPowerValue.setError("Brak danych!");
             isNotEmpty = false;

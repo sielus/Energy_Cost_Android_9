@@ -10,8 +10,13 @@ import android.app.Dialog;
 import android.database.Cursor;
 import android.graphics.Canvas;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -21,6 +26,9 @@ import com.example.energii.koszt.ui.rooms.RoomListFragment;
 import com.example.energii.koszt.ui.SQLLiteDBHelper;
 import com.example.energii.koszt.ui.exception.SQLEnergyCostException;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -30,14 +38,40 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 public class RoomEditManager extends AppCompatActivity implements RoomEditManagerListAdapter.onNoteListener{
     private RecyclerView recyclerView;
 
-    public View view;
+    static public View view;
     RoomEditManagerListAdapter adapter;
-
+    public Dialog room_name_dialog;
     public SQLLiteDBHelper sqlLiteDBHelper;
     public static String room_name;
     public final List<String> device = new LinkedList<>();
-    private List<String> deviceId = new LinkedList<>();
+    private List<String> devicePower = new LinkedList<>();
     private List<String> deviceName = new ArrayList<>();
+    private List<String> deviceTimeWork = new LinkedList<>();
+    private List<String> deviceNumber = new LinkedList<>();
+    public TextInputLayout text_field_inputRoomNameLayout;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.room_menu,menu);
+        return true;
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        switch (id){
+            case R.id.room_settings:
+                System.out.println("test");
+                showDialogEditRoomName(view);
+                break;
+        }
+        return true;
+    }
+
+    private List<String> roomCostKWH = new ArrayList<>();
+    private List<String> deviceCostKWH = new ArrayList<>();
+
     TextView outputEnergyCostUser;
     TextView outputEnergyCostDay;
     TextView outputEnergyCostMonth;
@@ -55,24 +89,25 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         // getSupportActionBar().hide();
         setTitle("Pokój " + room_name.replace("_"," "));
 
-        TextView outputEnergyCostUser = view.findViewById(R.id.OutputEnergyCostUser);
-        TextView outputEnergyCostDay = view.findViewById(R.id.OutputEnergyCostDay);
-        TextView outputEnergyCostMonth = view.findViewById(R.id.OutputEnergyCostMonth);
-        TextView outputEnergyCostUserKwh = view.findViewById(R.id.OutputEnergyCostUserKwh);
-        TextView outputEnergyCostDayKwh = view.findViewById(R.id.OutputEnergyCostDayKwh);
-        TextView outputEnergyCostMonthKwh = view.findViewById(R.id.OutputEnergyCostMonthKwh);
+
+
+        sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
+
+
+        getDeviceCostKWH(sqlLiteDBHelper.getDeviceDetails(room_name));
+
+
+        refreshTable();
 
 
         recyclerView = findViewById(R.id.RecyckerView);
-        sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
 
         ViewDataFromDB(sqlLiteDBHelper.getRoomDeviceList(room_name));
 
-        adapter = new RoomEditManagerListAdapter(view.getContext(),Arrays.copyOf(deviceName.toArray(), deviceName.size(), String[].class),this);
-        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
+        adapter = new RoomEditManagerListAdapter(view.getContext(),Arrays.copyOf(deviceName.toArray(), deviceName.size(), String[].class),this,Arrays.copyOf(devicePower.toArray(), devicePower.size(), String[].class),Arrays.copyOf(deviceTimeWork.toArray(), deviceTimeWork.size(), String[].class),Arrays.copyOf(deviceNumber.toArray(), deviceNumber.size(), String[].class));
+        new ItemTouchHelper(itemTouchHelperCallbackDelete).attachToRecyclerView(recyclerView);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-
 
 
         FloatingActionButton floatingActionButtonAddDevice = findViewById(R.id.addButonfl);
@@ -84,31 +119,159 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
             }
         });
 
-        adapter = new RoomEditManagerListAdapter(view.getContext(),Arrays.copyOf(deviceName.toArray(), deviceName.size(), String[].class),this);
     }
 
 
+
+
+    private void showDialogEditRoomName(final View view) {
+        final Dialog room_name_dialog = new Dialog(view.getContext());
+        System.out.println("da");
+        room_name_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        room_name_dialog.setContentView(R.layout.room_list_dialog);
+        room_name_dialog.show();
+        Button buttonDialogAccept = room_name_dialog.findViewById(R.id.ButtonAddRoom);
+        final TextInputEditText text_field_inputRoomName = room_name_dialog.findViewById(R.id.text_field_inputRoomName);
+        final TextInputLayout text_field_inputRoomNameLayout = room_name_dialog.findViewById(R.id.text_field_inputRoomNameLayout);
+
+        buttonDialogAccept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                text_field_inputRoomName.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        text_field_inputRoomNameLayout.setError(null);
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+
+                    }
+                });
+                String newRoomName = text_field_inputRoomName.getText().toString();
+                if (newRoomName.isEmpty()) {
+                    text_field_inputRoomNameLayout.setError("Brak danych!");
+                }else {
+                        Toast.makeText(view.getContext(),"Nowa nazwa pokoju : " + newRoomName,Toast.LENGTH_SHORT).show();
+                        setTitle("Pokój " + newRoomName);
+                        RoomListFragment roomListFragment = new RoomListFragment();
+
+
+                        room_name_dialog.dismiss();
+                  try {
+                          sqlLiteDBHelper.updateRoomName(room_name,newRoomName);
+                          roomListFragment.clearRoomList();
+                          roomListFragment.ViewDataFromDB(sqlLiteDBHelper.getRoomList());
+                          roomListFragment.refreshListView(RoomListFragment.root);
+                          roomListFragment.generateChart(RoomListFragment.root);
+
+                    } catch (SQLEnergyCostException.DuplicationRoom duplicationRoom) {
+                        duplicationRoom.printStackTrace();
+                    }
+
+
+                }
+            }
+        });
+    }
+
+
+
+
+
+    private void refreshTable() {
+
+
+
+        TextView outputEnergyCostUser = view.findViewById(R.id.OutputEnergyCostUser);
+        TextView outputEnergyCostMonth = view.findViewById(R.id.OutputEnergyCostDay);
+        TextView outputEnergyCostYearth = view.findViewById(R.id.OutputEnergyCostMonth);
+
+        TextView outputEnergyCostUserKwh = view.findViewById(R.id.OutputEnergyCostUserKwh);
+        TextView outputEnergyCostMonthKwh = view.findViewById(R.id.OutputEnergyCostDayKwh);
+        TextView outputEnergyCostYearthKwh= view.findViewById(R.id.OutputEnergyCostMonthKwh);
+        if(getRoomCostKwh(sqlLiteDBHelper.getRoomCost(room_name))){
+
+            outputEnergyCostUser.setText(String.valueOf(Float.valueOf(roomCostKWH.get(0)) / 1000) + " kWh");
+            outputEnergyCostUserKwh.setText(roomCostKWH.get(1) + " zł");
+
+            outputEnergyCostMonth.setText(String.valueOf(Float.valueOf(roomCostKWH.get(0)) / 1000 * 30) + " kWh");
+            outputEnergyCostMonthKwh.setText(Float.valueOf(roomCostKWH.get(1)) * 30 + " zł");
+
+            outputEnergyCostYearth.setText(String.valueOf(Float.valueOf(roomCostKWH.get(0)) / 1000 * 365) + " kWh");
+            outputEnergyCostYearthKwh.setText(Float.valueOf(roomCostKWH.get(1)) * 365 + " zł");
+        }else{
+            outputEnergyCostUser.setText("0");
+            outputEnergyCostUserKwh.setText("0");
+
+            outputEnergyCostMonth.setText("0");
+            outputEnergyCostMonthKwh.setText("0");
+
+            outputEnergyCostYearth.setText("0");
+            outputEnergyCostYearthKwh.setText("0");
+
+        }
+
+
+    }
 
 
     void ViewDataFromDB(Cursor cursor) {
         if (cursor.getCount() != 0) {
             clearRoomList();
+
             while(cursor.moveToNext()) {
-                deviceId.add(cursor.getString(2));
+                devicePower.add(cursor.getString(2));
+                deviceTimeWork.add(cursor.getString(3));
+                deviceNumber.add(cursor.getString(4));
                 deviceName.add(cursor.getString(1));
             }
         }
     }
 
+    boolean getRoomCostKwh(Cursor cursor){
+        roomCostKWH.clear();
+
+        if (cursor.getCount() != 0) {
+            while(cursor.moveToNext()) {
+                roomCostKWH.add(cursor.getString(0));
+                roomCostKWH.add(cursor.getString(1));
+                System.out.println(cursor.getString(0));
+
+            } return true;
+
+        } return false;
+
+    }
+
+    void getDeviceCostKWH(Cursor cursor){
+        if (cursor.getCount() != 0) {
+
+            while(cursor.moveToNext()) {
+                deviceCostKWH.add(cursor.getString(0));
+                deviceCostKWH.add(cursor.getString(1));
+                deviceCostKWH.add(cursor.getString(2));
+
+            }
+        }
+    }
+
     void clearRoomList() {
-        deviceId.clear();
+        deviceNumber.clear();
+        devicePower.clear();
+        deviceTimeWork.clear();
         deviceName.clear();
     }
 
     void refreshListView(View root) {
-        RoomEditManagerListAdapter adapter = new RoomEditManagerListAdapter(view.getContext(),Arrays.copyOf(deviceName.toArray(), deviceName.size(), String[].class),this);
 
         ViewDataFromDB(sqlLiteDBHelper.getRoomDeviceList(room_name));
+        RoomEditManagerListAdapter adapter = new RoomEditManagerListAdapter(view.getContext(),Arrays.copyOf(deviceName.toArray(), deviceName.size(), String[].class),this,Arrays.copyOf(devicePower.toArray(), devicePower.size(), String[].class),Arrays.copyOf(deviceTimeWork.toArray(), deviceTimeWork.size(), String[].class),Arrays.copyOf(deviceNumber.toArray(), deviceNumber.size(), String[].class));
 
         recyclerView.setAdapter(adapter);
     }
@@ -145,10 +308,16 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
                     dialog.dismiss();
 
                     RoomListFragment roomListFragment = new RoomListFragment();
+                    ViewDataFromDB(sqlLiteDBHelper.getRoomDeviceList(room_name));
+
                     roomListFragment.generateChart(RoomListFragment.root);
 
-                    ViewDataFromDB(sqlLiteDBHelper.getRoomDeviceList(room_name));
+                    roomListFragment.clearRoomList();
+                    roomListFragment.ViewDataFromDB(sqlLiteDBHelper.getRoomList());
+                    roomListFragment.refreshListView(RoomListFragment.root);
+
                     refreshListView(view);
+                    refreshTable();
 
                 } catch (SQLEnergyCostException.EmptyField | SQLEnergyCostException.DuplicationDevice errorMessage) {
                     Toast.makeText(view.getContext(), errorMessage.getMessage(),Toast.LENGTH_SHORT).show();
@@ -160,6 +329,8 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
     public void showUpdateDialog(final View view, final String roomName, String deviceName){
         final Dialog dialog = new Dialog(view.getContext());
 
+        sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
+
         ViewDataFromDB(sqlLiteDBHelper.getRoomDeviceList(room_name));
 
 
@@ -168,7 +339,6 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         dialog.setCancelable(false);
         dialog.show();
 
-        sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
 
         viewDeviceInfoFromDB(sqlLiteDBHelper.getDeviceInfo(roomName,deviceName));
 
@@ -200,15 +370,21 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
                 } catch (SQLEnergyCostException.EmptyField emptyField) {
                     emptyField.printStackTrace();
                 }
-                RoomListFragment roomListFragment = new RoomListFragment();
-                roomListFragment.generateChart(RoomListFragment.root);
 
                 Toast.makeText(view.getContext(),"Urządzenie zaktualizowane",Toast.LENGTH_SHORT).show();
 
                 dialog.dismiss();
-                System.out.println(RoomListFragment.root);
+                ViewDataFromDB(sqlLiteDBHelper.getRoomDeviceList(room_name));
+                RoomListFragment roomListFragment = new RoomListFragment();
+                roomListFragment.generateChart(RoomListFragment.root);
+
+                roomListFragment.clearRoomList();
+                roomListFragment.ViewDataFromDB(sqlLiteDBHelper.getRoomList());
+                roomListFragment.refreshListView(RoomListFragment.root);
+                refreshTable();
 
 
+                roomListFragment.generateChart(RoomListFragment.root);
 
                 ViewDataFromDB(sqlLiteDBHelper.getRoomDeviceList(room_name));
                 refreshListView(view);
@@ -219,6 +395,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
     void viewDeviceInfoFromDB(Cursor cursor) {
         if (cursor.getCount() != 0) {
             clearRoomList();
+            device.clear();
             while(cursor.moveToNext()) {
                 device.add((cursor.getString(0)));
                 device.add((cursor.getString(1)));
@@ -232,21 +409,25 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
     @Override
     public void onNoteClick(int position) {
 
-        System.out.println(position);
         showUpdateDialog(view,room_name,deviceName.get(position));
 
 
     }
 
-    ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
+    ItemTouchHelper.SimpleCallback itemTouchHelperCallbackDelete = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
 
             return false;
         }
 
-        @Override
+
+
+
+
+            @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+
 
             sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
             sqlLiteDBHelper.deleteDevice(RoomEditManager.room_name,deviceName.get(viewHolder.getAdapterPosition()));
@@ -260,6 +441,13 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
             refreshListView(view);
 
             adapter.notifyItemChanged(position);
+
+            RoomListFragment roomListFragment = new RoomListFragment();
+            roomListFragment.clearRoomList();
+            roomListFragment.ViewDataFromDB(sqlLiteDBHelper.getRoomList());
+            roomListFragment.refreshListView(RoomListFragment.root);
+            refreshTable();
+
 
         }
 
@@ -276,6 +464,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         }
 
     };
+
 
 
 }

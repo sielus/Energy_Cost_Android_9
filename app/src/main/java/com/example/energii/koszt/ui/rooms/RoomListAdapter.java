@@ -13,13 +13,15 @@ import com.example.energii.koszt.ui.SQLLiteDBHelper;
 public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.MyViewHolder>   {
     Context context;
     String roomName[];
+    String roomNameKwh[];
     private onNoteListener onNoteListener;
     private int lastPosition = -1;
 
-    public RoomListAdapter(Context context, String roomName[],onNoteListener onNoteListener){
+    public RoomListAdapter(Context context, String roomName[],onNoteListener onNoteListener, String roomNameKwh[]){
         this.context = context;
         this.onNoteListener = onNoteListener;
         this.roomName = roomName;
+        this.roomNameKwh = roomNameKwh;
     }
 
 
@@ -40,6 +42,7 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.MyView
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.textViewName.setText(roomName[position]);
+        holder.textViewSecond.setText(roomNameKwh[position] + " kWh");
     }
 
     @Override
@@ -53,11 +56,14 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.MyView
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView textViewName;
+        TextView textViewSecond;
+
         onNoteListener onNoteListener;
 
         public MyViewHolder(@NonNull View itemView,onNoteListener onNoteListener) {
             super(itemView);
-            textViewName = itemView.findViewById(R.id.rowTextView1);
+            textViewName = itemView.findViewById(R.id.rowTextViewTitle);
+            textViewSecond = itemView.findViewById(R.id.rowTextViewSecond);
             itemView.setOnClickListener(this);
             this.onNoteListener = onNoteListener;
         }

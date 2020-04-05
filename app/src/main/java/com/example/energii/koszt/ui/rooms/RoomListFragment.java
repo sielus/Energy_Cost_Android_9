@@ -1,6 +1,7 @@
 package com.example.energii.koszt.ui.rooms;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Canvas;
@@ -55,8 +56,9 @@ import java.util.List;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 public class RoomListFragment extends Fragment implements RoomListAdapter.onNoteListener {
-    private List<String> roomId = new LinkedList<>();
     private List<String> roomName = new ArrayList<>();
+    private List<String> roomNameKwh = new ArrayList<>();
+
     public static View root;
     private RecyclerView recyclerView;
     private Dialog dialog;
@@ -71,7 +73,6 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_rooms, container, false);
-        recyclerView = root.findViewById(R.id.RecyckerView);
         sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
 
         pieChart =  root.findViewById(R.id.pieChart);
@@ -84,14 +85,16 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
         FloatingActionButton floatingActionButtonAddDevice = root.findViewById(R.id.buttonAddRoom);
 
         ViewDataFromDB(sqlLiteDBHelper.getRoomList());
+        generateChart(root);
 
-        adapter = new RoomListAdapter(root.getContext(),Arrays.copyOf(roomName.toArray(), roomName.size(), String[].class),this);
+        adapter = new RoomListAdapter(root.getContext(),Arrays.copyOf(roomName.toArray(), roomName.size(), String[].class),this,Arrays.copyOf(roomNameKwh.toArray(), roomNameKwh.size(), String[].class));
+
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
+
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
 
 
-        generateChart(root);
 
         floatingActionButtonAddDevice.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,12 +121,12 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
             @Override
             public void onClick(View v) {
                 text_field_inputRoomName.addTextChangedListener(textWatcher);
-                String RoomName = text_field_inputRoomName.getText().toString();
-                if (RoomName.isEmpty()) {
+                String roomName = text_field_inputRoomName.getText().toString();
+                if (roomName.isEmpty()) {
                     text_field_inputRoomNameLayout.setError("Brak danych!");
                 }else {
                     try {
-                        sqlLiteDBHelper.addRoom(RoomName);
+                        sqlLiteDBHelper.addRoom(roomName);
                         clearRoomList();
                         ViewDataFromDB(sqlLiteDBHelper.getRoomList());
                         refreshListView(view);
@@ -159,25 +162,30 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
         }
     };
 
-    void ViewDataFromDB(Cursor cursor) {
+    public void ViewDataFromDB(Cursor cursor) {
         if (cursor.getCount() != 0) {
             clearRoomList();
             while(cursor.moveToNext()) {
-                roomId.add(cursor.getString(1));
                 roomName.add(cursor.getString(1).replace("_"," "));
+                roomNameKwh.add(String.valueOf(cursor.getInt(2)));
             }
         }
     }
 
-    void clearRoomList() {
+    public void clearRoomList() {
         roomName.clear();
-        roomId.clear();
+        roomNameKwh.clear();
     }
 
-    void refreshListView(View root) {
+    public void refreshListView(View root) {
+        System.out.println("refresh");
+        SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
         ViewDataFromDB(sqlLiteDBHelper.getRoomList());
 
-        adapter = new RoomListAdapter(root.getContext(),Arrays.copyOf(roomName.toArray(), roomName.size(), String[].class),this);
+        RoomListAdapter adapter;
+        adapter = new RoomListAdapter(root.getContext(),Arrays.copyOf(roomName.toArray(), roomName.size(), String[].class),this,Arrays.copyOf(roomNameKwh.toArray(), roomNameKwh.size(), String[].class));
+        RecyclerView recyclerView = root.findViewById(R.id.RecyckerView);
+        System.out.println(roomName);
         recyclerView.setAdapter(adapter);
     }
 
@@ -185,6 +193,7 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
     public void onNoteClick(int position) {
 
         RoomEditManager.room_name = roomName.get(position).replace(" ","_");
+
         Intent intent = new Intent(root.getContext() , RoomEditManager.class);
         root.getContext().startActivity(intent);
     }
@@ -251,6 +260,7 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
 
                 barEntries.add(new BarEntry(x,cursor.getFloat(2)));
                 roomName.add(cursor.getString(0));
+
                 x = x +1;
 
             }
@@ -259,6 +269,7 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
             pieEntry.add(new PieEntry(cursor.getInt(1), cursor.getString(0).replace("_"," ") + " " + cursor.getInt(1)+" kWh" ));
             barEntries.add(new BarEntry(x, cursor.getFloat(2) ));
             roomName.add(cursor.getString(0));
+
 
 
         }else {
@@ -282,19 +293,17 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
 
         barChart.getLegend().setTextSize(15f);
         barChart.getLegend().setTextColor(Color.WHITE);
-        barChart.setTouchEnabled(true);
+        barChart.setTouchEnabled(false);
         barChart.setFitBars(true);
-        barChart.setDragEnabled(true);
-        barChart.setScaleEnabled(true);
-
-        barChart.setDrawGridBackground(true);
-        System.out.println(roomName);
-        
+        barChart.setDragEnabled(false);
+        barChart.setScaleEnabled(false);
+        barChart.setDrawGridBackground(false);
+        barChart.getXAxis().setTextColor(Color.WHITE);
         axis.setPosition(XAxis.XAxisPosition.BOTTOM);
         axis.setTextSize(20f);
         axis.setDrawGridLines(true);
         axis.setTextColor(Color.WHITE);
-        axis.setDrawAxisLine(false);
+        axis.setDrawAxisLine(true);
         axis.setCenterAxisLabels(false);
         axis.setLabelCount(roomName.size());
 
@@ -309,7 +318,7 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
 
 
         barDataSet.setValueTextSize(14);
-        barDataSet.setValueTextColor(Color.BLACK);
+        barDataSet.setValueTextColor(Color.WHITE);
 
         BarData barData = new BarData(barDataSet);
         barData.setBarWidth(0.5f);
@@ -348,6 +357,8 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
 
 
     }
+
+
 
 
 

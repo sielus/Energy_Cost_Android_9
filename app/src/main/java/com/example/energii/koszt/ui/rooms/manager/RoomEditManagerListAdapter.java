@@ -16,13 +16,19 @@ import com.example.energii.koszt.ui.SQLLiteDBHelper;
 public class RoomEditManagerListAdapter extends RecyclerView.Adapter<RoomEditManagerListAdapter.MyViewHolder>   {
     Context context;
     String roomName[];
+    String devicePower[];
+    String deviceTimeWork[];
+    String deviceNumber[];
     private RoomEditManagerListAdapter.onNoteListener onNoteListener;
     private int lastPosition = -1;
 
-    public RoomEditManagerListAdapter(Context context, String roomName[], RoomEditManagerListAdapter.onNoteListener onNoteListener){
+    public RoomEditManagerListAdapter(Context context, String roomName[], RoomEditManagerListAdapter.onNoteListener onNoteListener,String devicePower[],  String deviceTimeWork[], String deviceNumber[]){
         this.context = context;
         this.onNoteListener = onNoteListener;
         this.roomName = roomName;
+        this.devicePower = devicePower;
+        this.deviceTimeWork = deviceTimeWork;
+        this.deviceNumber = deviceNumber;
     }
 
 
@@ -34,7 +40,7 @@ public class RoomEditManagerListAdapter extends RecyclerView.Adapter<RoomEditMan
     @Override
     public RoomEditManagerListAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.row, parent,false);
+        View view = inflater.inflate(R.layout.device_row, parent,false);
 
 
         return new RoomEditManagerListAdapter.MyViewHolder(view, onNoteListener);
@@ -43,6 +49,10 @@ public class RoomEditManagerListAdapter extends RecyclerView.Adapter<RoomEditMan
     @Override
     public void onBindViewHolder(@NonNull RoomEditManagerListAdapter.MyViewHolder holder, int position) {
         holder.textViewName.setText(roomName[position]);
+        holder.textViewPower.setText(devicePower[position]);
+        holder.textViewTimeWork.setText(deviceTimeWork[position]);
+        holder.textViewNumber.setText( deviceNumber[position]);
+
     }
 
     @Override
@@ -56,11 +66,19 @@ public class RoomEditManagerListAdapter extends RecyclerView.Adapter<RoomEditMan
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView textViewName;
+        TextView textViewPower;
+        TextView textViewTimeWork;
+        TextView textViewNumber;
+
         RoomEditManagerListAdapter.onNoteListener onNoteListener;
 
         public MyViewHolder(@NonNull View itemView, RoomEditManagerListAdapter.onNoteListener onNoteListener) {
             super(itemView);
-            textViewName = itemView.findViewById(R.id.rowTextView1);
+            textViewName = itemView.findViewById(R.id.rowTextViewDeviceName);
+            textViewPower = itemView.findViewById(R.id.rowTextViewPower);
+            textViewTimeWork = itemView.findViewById(R.id.rowTextViewTimeWork);
+            textViewNumber = itemView.findViewById(R.id.rowTextViewNumber);
+
             itemView.setOnClickListener(this);
             this.onNoteListener = onNoteListener;
         }

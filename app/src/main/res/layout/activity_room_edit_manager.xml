@@ -57,7 +57,7 @@
                 android:background="@drawable/border"
                 android:fontFamily="@font/lato_light"
                 android:gravity="center"
-                android:text="Użytkownika"
+                android:text="24h"
                 android:textColor="#FFFFFF"
                 android:textSize="18sp"
 
@@ -75,7 +75,7 @@
                 android:background="@drawable/border"
                 android:fontFamily="@font/lato_light"
                 android:gravity="center"
-                android:text="24h"
+                android:text="30 dni"
                 android:textColor="#FFFFFF"
                 android:textSize="18sp" />
 
@@ -89,7 +89,7 @@
                 android:background="@drawable/border"
                 android:fontFamily="@font/lato_light"
                 android:gravity="center"
-                android:text="30 dni"
+                android:text="365 dni"
                 android:textColor="#FFFFFF"
                 android:textSize="18sp" />
         </TableRow>
