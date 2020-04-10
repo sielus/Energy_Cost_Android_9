@@ -49,7 +49,7 @@ public class RoomEditManagerListAdapter extends RecyclerView.Adapter<RoomEditMan
     @Override
     public void onBindViewHolder(@NonNull RoomEditManagerListAdapter.MyViewHolder holder, int position) {
         holder.textViewName.setText(roomName[position]);
-        holder.textViewPower.setText(devicePower[position]);
+        holder.textViewPower.setText(devicePower[position] + "W");
         holder.textViewTimeWork.setText(deviceTimeWork[position]);
         holder.textViewNumber.setText( deviceNumber[position]);
 

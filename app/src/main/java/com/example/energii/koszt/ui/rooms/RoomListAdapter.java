@@ -42,7 +42,7 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.MyView
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.textViewName.setText(roomName[position]);
-        holder.textViewSecond.setText(roomNameKwh[position] + " kWh");
+        holder.textViewSecond.setText(String.valueOf(Float.parseFloat(roomNameKwh[position]) / 1000) + " kWh");
     }
 
     @Override

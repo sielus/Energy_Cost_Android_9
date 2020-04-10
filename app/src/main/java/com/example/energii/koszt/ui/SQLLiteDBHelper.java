@@ -53,7 +53,7 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         SQLiteDatabase dbhWrite = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
-        contentValues.put("name", roomName.trim().replace(" ", "_"));
+        contentValues.put("name", changeSpaceInName(roomName));
 
         long resultInsert = dbhWrite.insert("room_list", null, contentValues);
 
@@ -61,15 +61,15 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
             throw new SQLEnergyCostException.DuplicationRoom(roomName);
         }
 
-        addDeviceList(roomName);
+        addDeviceList(changeSpaceInName(roomName));
     }
 
     public void deleteRoom(String roomName) {
         SQLiteDatabase dbhWrite = getWritableDatabase();
         String where = " name = ? ";
 
-        dbhWrite.delete("room_list", where, new String[]{roomName});
-        deleteDeviceList(roomName);
+        dbhWrite.delete("room_list", where, new String[]{changeSpaceInName(roomName)});
+        deleteDeviceList(changeSpaceInName(roomName));
     }
 
     public Cursor getRoomList() {
@@ -96,7 +96,7 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         String workTime = hour + ":" + minutes;
         SQLiteDatabase dbhWrite = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        String deviceRoomName = roomName.trim().replace(" ", "_") + "_device";
+        String deviceRoomName = changeSpaceInName(roomName) + "_device";
         double energyCostZl;
 
         energyCost = Double.parseDouble(getVariable("powerCost").getString(0));
@@ -122,14 +122,14 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
             throw new SQLEnergyCostException.DuplicationDevice(deviceName);
         }
 
-        updateRoomEnergyAmount(roomName, energyAmount);
-        updateRoomEnergyCostZl(roomName, energyCostZl);
+        updateRoomEnergyAmount(changeSpaceInName(roomName), energyAmount);
+        updateRoomEnergyCostZl(changeSpaceInName(roomName), energyCostZl);
     }
 
     public Cursor getRoomDeviceList(String roomName) {
         SQLiteDatabase dbhRead = getReadableDatabase();
         Cursor cursor;
-        String deviceRoomName = roomName + "_device";
+        String deviceRoomName = changeSpaceInName(roomName) + "_device";
 
         String query = "SELECT id, " +
                               "name, " +
@@ -144,18 +144,18 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
 
     public void deleteDevice(String roomName, String deviceName) {
         SQLiteDatabase dbWriter = getWritableDatabase();
-        String deviceRoomName = roomName + "_device";
+        String deviceRoomName = changeSpaceInName(roomName) + "_device";
         String where = " name = ? ";
 
-        updateRoomEnergyAmount(roomName, (getDeviceAmountEnergy(deviceName, deviceRoomName) * -1));
-        updateRoomEnergyCostZl(roomName, (getDeviceCostEnergy(deviceName, deviceRoomName) * -1));
+        updateRoomEnergyAmount(changeSpaceInName(roomName), (getDeviceAmountEnergy(deviceName, deviceRoomName) * -1));
+        updateRoomEnergyCostZl(changeSpaceInName(roomName), (getDeviceCostEnergy(deviceName, deviceRoomName) * -1));
         dbWriter.delete(deviceRoomName, where, new String[]{deviceName});
     }
 
     public Cursor getDeviceInfo(String roomName, String deviceName) {
         SQLiteDatabase dbhRead = getReadableDatabase();
         Cursor cursor;
-        String deviceRoomName = roomName + "_device";
+        String deviceRoomName = changeSpaceInName(roomName) + "_device";
 
         String query = "SELECT id, " +
                               "name, " +
@@ -169,9 +169,15 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-    public void updateDevice(int deviceId, String roomName, String deviceName, double powerValue, int deviceNumber, int hour, int minutes) throws SQLEnergyCostException.EmptyField {
-        if (roomName.isEmpty() || deviceName.isEmpty() || powerValue == 0 || (hour == 0 && minutes == 0) || deviceNumber == 0) {
+    public void updateDevice(int deviceId, String roomName, String newDeviceName, double powerValue, int deviceNumber, int hour, int minutes) throws SQLEnergyCostException.EmptyField, SQLEnergyCostException.DuplicationDevice {
+        if (roomName.isEmpty() || newDeviceName.isEmpty() || powerValue == 0 || (hour == 0 && minutes == 0) || deviceNumber == 0) {
             throw new SQLEnergyCostException.EmptyField();
+        }
+
+        if (!checkDeviceName(roomName, deviceId).getString(0).equals(newDeviceName)) {
+            if(checkDeviceName(roomName, newDeviceName).getCount() == 1) {
+                throw new SQLEnergyCostException.DuplicationDevice(newDeviceName);
+            }
         }
 
         SQLiteDatabase dbWriter = getWritableDatabase();
@@ -181,7 +187,7 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         double energyCostZl;
         String workTime = hour + ":" + minutes;
         String where = "id = ?";
-        String deviceRoomName = roomName.trim().replace(" ", "_") + "_device";
+        String deviceRoomName = changeSpaceInName(roomName) + "_device";
 
         energyCost = Double.parseDouble(getVariable("powerCost").getString(0));
 
@@ -193,31 +199,34 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
             energyCostZl = energyCost * energyAmount / 1000 * deviceNumber * hour;
         }
 
-        contentValues.put("name", deviceName);
+        contentValues.put("name", newDeviceName);
         contentValues.put("power_value", powerValue);
         contentValues.put("work_time", workTime);
         contentValues.put("device_number", deviceNumber);
         contentValues.put("energy_amount", energyAmount);
         contentValues.put("energy_cost_zl", energyCostZl);
 
-        updateRoomEnergyAmount(roomName, (energyAmount - getDeviceAmountEnergy(deviceName, deviceRoomName)));
-        updateRoomEnergyCostZl(roomName, (energyCostZl - getDeviceCostEnergy(deviceName, deviceRoomName)));
+        updateRoomEnergyAmount(changeSpaceInName(roomName), (energyAmount - getDeviceAmountEnergy(deviceId, deviceRoomName)));
+        updateRoomEnergyCostZl(changeSpaceInName(roomName), (energyCostZl - getDeviceCostEnergy(deviceId, deviceRoomName)));
 
         dbWriter.update(deviceRoomName, contentValues, where, new String[]{Integer.toString(deviceId)});
     }
 
     public void updateRoomName(String oldRoomName, String newRoomName) throws SQLEnergyCostException.DuplicationRoom {
-        if(checkNameRoom(newRoomName).getCount() != 0) {
+
+        if(checkNameRoom(changeSpaceInName(newRoomName)).getCount() != 0) {
             throw new SQLEnergyCostException.DuplicationRoom(newRoomName);
         }
-
         SQLiteDatabase dbWriter = getWritableDatabase();
+
         ContentValues contentValues = new ContentValues();
         String where = "name = ?";
 
-        contentValues.put("name", newRoomName);
+        contentValues.put("name", changeSpaceInName(newRoomName));
 
-        dbWriter.update("room_list", contentValues, where, new String[] {oldRoomName});
+        dbWriter.update("room_list", contentValues, where, new String[] {changeSpaceInName(oldRoomName)});
+
+        updateNameDeviceList(changeSpaceInName(oldRoomName), changeSpaceInName(newRoomName));
     }
 
     public Cursor getVariable(String variableName) {
@@ -265,7 +274,7 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
 
     public Cursor getDeviceDetails(String roomName) {
         SQLiteDatabase dbhRead = getReadableDatabase();
-        String deviceRoomName = roomName + "_device";
+        String deviceRoomName = changeSpaceInName(roomName) + "_device";
         Cursor cursor;
         String query;
 
@@ -289,9 +298,43 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
                 "FROM   room_list " +
                 "WHERE  name = ?";
 
-        cursor = dbhRead.rawQuery(query, new String[] {roomName});
+        cursor = dbhRead.rawQuery(query, new String[] {changeSpaceInName(roomName)});
 
         return cursor;
+    }
+
+    private Cursor checkDeviceName(String roomName, int deviceId) {
+        SQLiteDatabase dbhRead = getReadableDatabase();
+        String deviceRoomName = roomName + "_device";
+        Cursor cursor;
+        String query;
+
+        query = "SELECT name " +
+                "FROM " + deviceRoomName +
+               " WHERE  id = ?";
+        cursor = dbhRead.rawQuery(query, new String[] {String.valueOf(deviceId)});
+
+        cursor.moveToFirst();
+        return cursor;
+    }
+
+    private Cursor checkDeviceName(String roomName, String newDeviceName) {
+        SQLiteDatabase dbhRead = getReadableDatabase();
+        String deviceRoomName = roomName + "_device";
+        Cursor cursor;
+        String query;
+
+        query = "SELECT id " +
+                "FROM " + deviceRoomName +
+                " WHERE  name = ?";
+        cursor = dbhRead.rawQuery(query, new String[] {newDeviceName});
+
+        cursor.moveToFirst();
+        return cursor;
+    }
+
+    private String changeSpaceInName(String name) {
+        return name.trim().replace(" ", "_");
     }
 
     private Cursor checkNameRoom(String roomName) {
@@ -302,9 +345,23 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         query = "SELECT id " +
                 "FROM   room_list " +
                 "WHERE  name = ?";
-        cursor = dbhRead.rawQuery(query, new String[]{roomName});
+        cursor = dbhRead.rawQuery(query, new String[]{changeSpaceInName(roomName)});
 
         return cursor;
+    }
+
+    @SuppressLint("Recycle")
+    private void updateNameDeviceList(String oldRoomName, String newRoomName) {
+        SQLiteDatabase dbWriter = getWritableDatabase();
+        String query;
+
+        String oldDeviceRoomName = changeSpaceInName(oldRoomName) + "_device";
+        String newDeviceRoomName = changeSpaceInName(newRoomName) + "_device";
+
+        query = "ALTER TABLE " + oldDeviceRoomName +
+               " RENAME TO " + newDeviceRoomName;
+
+        dbWriter.execSQL(query);
     }
 
     private void updateAllEnergyCostZl(double newEnergyCost) {
@@ -359,9 +416,27 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
 
         query = "SELECT energy_amount " +
                 "FROM " + deviceRoomName +
-               " WHERE  name = ?";
+                " WHERE  name = ?";
 
         cursor = dbhRead.rawQuery(query, new String[]{deviceName});
+
+        cursor.moveToFirst();
+
+        return cursor.getDouble(0);
+    }
+
+    @SuppressLint("Recycle")
+    private double getDeviceAmountEnergy(int deviceId, String deviceRoomName) {
+        SQLiteDatabase dbhRead = getReadableDatabase();
+        Cursor cursor;
+        String query;
+
+        query = "SELECT energy_amount " +
+                "FROM " + deviceRoomName +
+                " WHERE  id = ?";
+
+        cursor = dbhRead.rawQuery(query, new String[]{String.valueOf(deviceId)});
+
         cursor.moveToFirst();
 
         return cursor.getDouble(0);
@@ -383,9 +458,25 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         return cursor.getDouble(0);
     }
 
+    @SuppressLint("Recycle")
+    private double getDeviceCostEnergy(int deviceId, String deviceRoomName) {
+        SQLiteDatabase dbhRead = getReadableDatabase();
+        Cursor cursor;
+        String query;
+
+        query = "SELECT energy_cost_zl " +
+                "FROM " + deviceRoomName +
+                " WHERE  id = ?";
+
+        cursor = dbhRead.rawQuery(query, new String[]{String.valueOf(deviceId)});
+        cursor.moveToFirst();
+
+        return cursor.getDouble(0);
+    }
+
     private void addDeviceList(String roomName) {
         SQLiteDatabase dbhWrite = getWritableDatabase();
-        String deviceRoomName = roomName.trim().replace(" ", "_") + "_device";
+        String deviceRoomName = changeSpaceInName(roomName) + "_device";
 
         String query = "CREATE TABLE " + deviceRoomName +
                             " (" +
@@ -403,7 +494,7 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
 
     private void deleteDeviceList(String roomName) {
         SQLiteDatabase dbWriter = getWritableDatabase();
-        String deviceRoomName = roomName +  "_device";
+        String deviceRoomName = changeSpaceInName(roomName) +  "_device";
         String query;
 
         query = "DROP TABLE " + deviceRoomName;

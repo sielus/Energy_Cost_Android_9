@@ -256,7 +256,7 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
         Cursor cursor = sqlLiteDBHelper.getRoomDetails();
         if (cursor.getCount() > 1) {
             while(cursor.moveToNext()) {
-                pieEntry.add(new PieEntry(cursor.getInt(1), cursor.getString(0) + " " + cursor.getInt(1)+" kWh" ));
+                pieEntry.add(new PieEntry(cursor.getInt(1), cursor.getString(0).replace("_"," ") + " " + ((float)cursor.getInt(1) / 1000) +" kWh" ));
 
                 barEntries.add(new BarEntry(x,cursor.getFloat(2)));
                 roomName.add(cursor.getString(0));
@@ -266,7 +266,7 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
             }
         }else if(cursor.getCount() == 1){
             cursor.moveToFirst();
-            pieEntry.add(new PieEntry(cursor.getInt(1), cursor.getString(0).replace("_"," ") + " " + cursor.getInt(1)+" kWh" ));
+            pieEntry.add(new PieEntry(cursor.getInt(1), cursor.getString(0).replace("_"," ") + " " + ((float)cursor.getInt(1) / 1000) +" kWh" ));
             barEntries.add(new BarEntry(x, cursor.getFloat(2) ));
             roomName.add(cursor.getString(0));
 
@@ -296,7 +296,7 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
         barChart.setTouchEnabled(false);
         barChart.setFitBars(true);
         barChart.setDragEnabled(false);
-        barChart.setScaleEnabled(false);
+        barChart.setScaleEnabled(true);
         barChart.setDrawGridBackground(false);
         barChart.getXAxis().setTextColor(Color.WHITE);
         axis.setPosition(XAxis.XAxisPosition.BOTTOM);
