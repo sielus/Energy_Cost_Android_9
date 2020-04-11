@@ -32,7 +32,9 @@
                 android:fontFamily="@font/lato_black"
                 android:text="TextView"
                 android:textColor="@color/white"
-                android:textSize="24sp"
+                android:textSize="20dp"
+                android:autoSizeTextType="uniform"
+
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

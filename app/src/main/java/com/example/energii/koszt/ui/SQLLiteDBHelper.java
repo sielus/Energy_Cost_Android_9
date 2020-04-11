@@ -19,13 +19,15 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String addVariable;
+        String numberAfterDot;
+
 
         String roomListTable = "CREATE TABLE room_list " +
                                     "(" +
                                         "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                                         "name varchar(100) NOT NULL UNIQUE, " +
-                                        "energy_amount real NOT NULL DEFAULT 0," +
-                                        "energy_cost_zl real NOT NULL DEFAULT 0" +
+                                        "energy_amount NUMERIC(6,2) NOT NULL DEFAULT 0," +
+                                        "energy_cost_zl NUMERIC(6,2) NOT NULL DEFAULT 0" +
                                     ")";
         db.execSQL(roomListTable);
 
@@ -37,7 +39,10 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         db.execSQL(configurationVariableTable);
 
         addVariable = "INSERT INTO configuration_variable (name, value) values (\"powerCost\", \"0.60\")";
+        numberAfterDot = "INSERT INTO configuration_variable (name, value) values (\"numberAfterDot\", \"3\")";
+
         db.execSQL(addVariable);
+        db.execSQL(numberAfterDot);
     }
 
     @Override
@@ -103,10 +108,10 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
 
         if(minutes != 0) {
             energyAmount = powerValue * deviceNumber * (hour + (double) minutes / 60);
-            energyCostZl = energyCost * energyAmount / 1000 * deviceNumber * (hour + (double) minutes / 60);
+            energyCostZl = energyCost * energyAmount / 1000;
         }else {
             energyAmount = powerValue * deviceNumber * hour;
-            energyCostZl = energyCost * energyAmount / 1000 * deviceNumber * hour;
+            energyCostZl = energyCost * energyAmount / 1000;
         }
 
         contentValues.put("name", deviceName);
@@ -193,10 +198,10 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
 
         if(minutes != 0) {
             energyAmount = powerValue * deviceNumber * (hour + (double) minutes / 60);
-            energyCostZl = energyCost * energyAmount / 1000 * deviceNumber * (hour + (double) minutes / 60);
+            energyCostZl = energyCost * energyAmount / 1000;
         }else {
             energyAmount = powerValue * deviceNumber * hour;
-            energyCostZl = energyCost * energyAmount / 1000 * deviceNumber * hour;
+            energyCostZl = energyCost * energyAmount / 1000;
         }
 
         contentValues.put("name", newDeviceName);
@@ -482,11 +487,11 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
                             " (" +
                                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                                 "name varchar(100) NOT NULL UNIQUE, " +
-                                "power_value real NOT NULL, " +
+                                "power_value NUMERIC(8,2) NOT NULL, " +
                                 "work_time text NOT NULL, " +
-                                "device_number INTEGER NOT NULL, " +
-                                "energy_amount real NOT NULL DEFAULT 0," +
-                                "energy_cost_zl real NOT NULL DEFAULT 0" +
+                                "device_number NUMERIC(3,0) NOT NULL, " +
+                                "energy_amount NUMERIC(6,2) NOT NULL DEFAULT 0," +
+                                "energy_cost_zl NUMERIC(6,2) NOT NULL DEFAULT 0" +
                             ")";
 
         dbhWrite.execSQL(query);

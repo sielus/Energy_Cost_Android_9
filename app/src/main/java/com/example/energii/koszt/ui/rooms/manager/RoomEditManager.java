@@ -11,6 +11,7 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.database.Cursor;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -21,12 +22,26 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.energii.koszt.R;
+import com.example.energii.koszt.ui.SettingActivity;
 import com.example.energii.koszt.ui.rooms.RoomListFragment;
 import com.example.energii.koszt.ui.SQLLiteDBHelper;
 import com.example.energii.koszt.ui.exception.SQLEnergyCostException;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -51,7 +66,12 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
     private List<String> deviceTimeWork = new LinkedList<>();
     private List<String> deviceNumber = new LinkedList<>();
     public TextInputLayout text_field_inputRoomNameLayout;
-
+    PieChart pieChart;
+    BarChart barChart;
+    TableLayout tableLayout;
+    ArrayList<PieEntry> pieEntry = new ArrayList<PieEntry>();
+    ArrayList<BarEntry> barEntries = new ArrayList<BarEntry>();
+    int numberAfterDot;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.room_menu,menu);
@@ -92,13 +112,15 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         setTitle("Pokój " + room_name.replace("_"," "));
 
 
+        SettingActivity settingActivity = new SettingActivity();
+        numberAfterDot = settingActivity.getNumberAfterDot(view);
 
         sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
 
 
         getDeviceCostKWH(sqlLiteDBHelper.getDeviceDetails(room_name));
 
-
+        generateChartinRoom(view);
         refreshTable();
 
 
@@ -170,8 +192,10 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
                           roomListFragment.ViewDataFromDB(sqlLiteDBHelper.getRoomList());
                           roomListFragment.refreshListView(RoomListFragment.root);
                           roomListFragment.generateChart(RoomListFragment.root);
+                          generateChartinRoom(view);
 
-                    } catch (SQLEnergyCostException.DuplicationRoom duplicationRoom) {
+
+                  } catch (SQLEnergyCostException.DuplicationRoom duplicationRoom) {
                         duplicationRoom.printStackTrace();
                     }
 
@@ -184,6 +208,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
     @SuppressLint("SetTextI18n")
     private void refreshTable() {
 
+
         TextView outputEnergyCostUser = view.findViewById(R.id.OutputEnergyCostUser);
         TextView outputEnergyCostMonth = view.findViewById(R.id.OutputEnergyCostDay);
         TextView outputEnergyCostYearth = view.findViewById(R.id.OutputEnergyCostMonth);
@@ -193,16 +218,19 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         TextView outputEnergyCostYearthKwh= view.findViewById(R.id.OutputEnergyCostMonthKwh);
 
         if(sqlLiteDBHelper.getRoomDeviceList(room_name).getCount() != 0){
+
             getRoomCostKwh(sqlLiteDBHelper.getRoomCost(room_name));
-            outputEnergyCostUser.setText(Float.parseFloat(roomCostKWH.get(0)) / 1000 + " kWh");
-            outputEnergyCostUserKwh.setText(roomCostKWH.get(1) + " zł");
+            outputEnergyCostUser.setText(String.format("%."+ numberAfterDot +"f", Float.parseFloat(roomCostKWH.get(0)) / 1000) + " kWh");
+            outputEnergyCostUserKwh.setText(String.format("%."+ numberAfterDot +"f", Float.parseFloat(roomCostKWH.get(1))) + " zł");
 
-            outputEnergyCostMonth.setText(Float.parseFloat(roomCostKWH.get(0)) / 1000 * 30 + " kWh");
-            outputEnergyCostMonthKwh.setText(Float.parseFloat(roomCostKWH.get(1)) * 30 + " zł");
+            outputEnergyCostMonth.setText(String.format("%."+ numberAfterDot +"f", Float.parseFloat(roomCostKWH.get(0)) / 1000 * 30) + " kWh");
+            outputEnergyCostMonthKwh.setText(String.format("%."+ numberAfterDot +"f", Float.parseFloat(roomCostKWH.get(1)) * 30) + " zł");
 
-            outputEnergyCostYearth.setText(Float.parseFloat(roomCostKWH.get(0)) / 1000 * 365 + " kWh");
-            outputEnergyCostYearthKwh.setText(Float.parseFloat(roomCostKWH.get(1)) * 365 + " zł");
+            outputEnergyCostYearth.setText(String.format("%."+ numberAfterDot +"f", Float.parseFloat(roomCostKWH.get(0)) / 1000 * 365 )+ " kWh");
+            outputEnergyCostYearthKwh.setText(String.format("%."+ numberAfterDot +"f", Float.parseFloat(roomCostKWH.get(1)) * 365 )+ " zł");
         }else{
+            tableLayout = view.findViewById(R.id.tableLayout);
+            tableLayout.setVisibility(View.GONE);
             outputEnergyCostUser.setText("0 zł");
             outputEnergyCostUserKwh.setText("0 kWh");
 
@@ -315,6 +343,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
                         ViewDataFromDB(sqlLiteDBHelper.getRoomDeviceList(room_name));
 
                         roomListFragment.generateChart(RoomListFragment.root);
+                        generateChartinRoom(view);
 
                         roomListFragment.clearRoomList();
                         roomListFragment.ViewDataFromDB(sqlLiteDBHelper.getRoomList());
@@ -526,6 +555,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
                         refreshTable();
 
                         roomListFragment.generateChart(RoomListFragment.root);
+                        generateChartinRoom(view);
 
                         ViewDataFromDB(sqlLiteDBHelper.getRoomDeviceList(room_name));
                         refreshListView(view);
@@ -708,20 +738,29 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
 
             int position = viewHolder.getAdapterPosition();
             deviceName.remove(position);
+            generateChartinRoom(view);
 
 
             clearRoomList();
             ViewDataFromDB(sqlLiteDBHelper.getRoomDeviceList(room_name));
+
             refreshListView(view);
 
             adapter.notifyItemChanged(position);
 
             RoomListFragment roomListFragment = new RoomListFragment();
+            View view;
+            BarChart barChart = RoomListFragment.root.findViewById(R.id.bartChart);
             roomListFragment.clearRoomList();
             roomListFragment.ViewDataFromDB(sqlLiteDBHelper.getRoomList());
             roomListFragment.refreshListView(RoomListFragment.root);
-            roomListFragment.generateChart(RoomListFragment.root);
 
+                barChart.clear();
+                barChart.invalidate();
+                barChart.clear();
+
+
+                roomListFragment.generateChart(RoomListFragment.root);
                 refreshTable();
 
 
@@ -740,6 +779,144 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         }
 
     };
+
+    public void generateChartinRoom(View root){
+        SQLLiteDBHelper sqlLiteDBHelper;
+        sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
+        PieChart pieChart;
+        BarChart barChart;
+        tableLayout = root.findViewById(R.id.tableLayout);
+        pieChart =  root.findViewById(R.id.pieChart);
+        barChart = root.findViewById(R.id.bartChart);
+
+        if(sqlLiteDBHelper.getRoomDeviceList(room_name).getCount()==0){
+            barChart.setVisibility(View.GONE);
+            pieChart.setVisibility(View.GONE);
+            tableLayout.setVisibility(View.GONE);
+        }else{
+            barChart.setVisibility(View.VISIBLE);
+            pieChart.setVisibility(View.VISIBLE);
+            tableLayout.setVisibility(View.VISIBLE);
+
+        }
+
+        pieChart.invalidate();
+        barChart.invalidate();
+        String[] xAxisLables = new String[]{};
+        List<String> roomName = new ArrayList<>();
+        roomName.clear();
+        xAxisLables = null;
+        int x = 0;
+        barEntries.clear();
+        pieEntry.clear();
+
+
+        Cursor cursor = sqlLiteDBHelper.getDeviceDetails(room_name);
+        if (cursor.getCount() > 1) {
+            while(cursor.moveToNext()) {
+
+
+                pieEntry.add(new PieEntry(cursor.getInt(1), cursor.getString(0).replace("_"," ") + " " + String.format("%."+ numberAfterDot +"f",((float)cursor.getInt(1) / 1000)) +" kWh" ));
+
+                barEntries.add(new BarEntry(x, Float.parseFloat(String.format("%."+ numberAfterDot +"f", cursor.getFloat(2)))));
+                roomName.add(cursor.getString(0));
+
+                x = x +1;
+
+            }
+        }else if(cursor.getCount() == 1){
+
+                cursor.moveToFirst();
+                pieEntry.add(new PieEntry(cursor.getInt(1), cursor.getString(0).replace("_"," ") + " " + String.format("%."+ numberAfterDot +"f",((float)cursor.getInt(1) / 1000)) +" kWh" ));
+                barEntries.add(new BarEntry(x, Float.parseFloat(String.format("%."+ numberAfterDot +"f", cursor.getFloat(2)))));
+                roomName.add(cursor.getString(0));
+
+
+        }else {
+            return;
+        }
+
+
+
+
+        BarDataSet barDataSet = new BarDataSet(barEntries, "Koszty urządzeń (zł)");
+        barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+        barChart.getLegend().setEnabled(false);
+        barChart.getAxisLeft().setAxisMinimum(0);
+        barChart.getAxisRight().setAxisMinimum(0);
+        XAxis axis = barChart.getXAxis();
+
+        barChart.getAxisLeft().setTextColor(Color.WHITE);
+        barChart.getAxisRight().setTextColor(Color.WHITE);
+        barChart.getAxisRight().setTextSize(14);
+        barChart.getAxisLeft().setTextSize(14);
+
+        barChart.getLegend().setTextSize(15f);
+        barChart.getLegend().setTextColor(Color.WHITE);
+        barChart.setTouchEnabled(false);
+        barChart.setFitBars(true);
+        barChart.setDragEnabled(false);
+        barChart.setScaleEnabled(true);
+        barChart.setDrawGridBackground(false);
+        barChart.getXAxis().setTextColor(Color.WHITE);
+        axis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        axis.setTextSize(20f);
+        axis.setDrawGridLines(true);
+        axis.setTextColor(Color.WHITE);
+        axis.setDrawAxisLine(true);
+        axis.setCenterAxisLabels(false);
+        axis.setLabelCount(roomName.size());
+
+
+
+        xAxisLables = null;
+        xAxisLables = Arrays.copyOf(roomName.toArray(), roomName.size(), String[].class);
+        axis.setValueFormatter(new IndexAxisValueFormatter(xAxisLables));
+        axis.setGranularity(1f);
+        axis.setGranularityEnabled(true);
+
+
+
+        barDataSet.setValueTextSize(14);
+        barDataSet.setValueTextColor(Color.WHITE);
+
+        BarData barData = new BarData(barDataSet);
+        barData.setBarWidth(0.5f);
+
+        barChart.setData(barData);
+        barChart.invalidate();
+        barChart.getDescription().setText("");
+        barChart.getLegend().setEnabled(true);
+
+
+
+
+        barChart.animateY(1000);
+
+
+
+
+        PieDataSet pieDataSet = new PieDataSet(pieEntry,"Dane");
+        pieChart.getLegend().setEnabled(false);
+
+        pieDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+        pieDataSet.setValueLineColor(R.color.colorAccent);
+        pieDataSet.setValueTextSize(14);
+        PieData pieData = new PieData(pieDataSet);
+        pieData.setValueFormatter(new PercentFormatter(pieChart));
+        pieChart.setUsePercentValues(true);
+        pieChart.setData(pieData);
+        pieChart.setHoleRadius(30);
+        pieChart.setTransparentCircleRadius(10);
+
+        pieChart.getDescription().setEnabled(false);
+        pieChart.setCenterText("Urządzenia");
+        pieChart.animate();
+
+
+
+
+    }
 
 
 

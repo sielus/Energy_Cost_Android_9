@@ -11,19 +11,24 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_field_inputRoomNameLayout"
+        app:counterTextAppearance="@style/CounterOverFlow"
         android:layout_width="267dp"
         android:layout_height="71dp"
         android:layout_marginTop="16dp"
         android:hint="Nazwa Pokoju"
-        android:textColorHint="#FFFFFF"
+        android:textColorHint="@color/white"
         app:boxBackgroundMode="outline"
 
+        app:counterEnabled="true"
+        android:textColor="@color/white"
+        app:counterMaxLength="30"
         app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:maxLength="30"
 
             android:id="@+id/text_field_inputRoomName"
             android:layout_width="match_parent"

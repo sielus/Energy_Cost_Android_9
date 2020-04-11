@@ -14,9 +14,11 @@
         android:layout_height="67dp"
         android:layout_marginTop="24dp"
         android:hint="Cena prądu kWh (zł)"
-
         android:textColorHint="#FFFFFF"
         app:boxBackgroundMode="outline"
+        app:counterEnabled="true"
+        app:counterMaxLength="4"
+        app:counterTextAppearance="@style/CounterOverFlow"
         app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"
@@ -28,19 +30,67 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="numberDecimal"
+            android:maxLength="4"
+            android:textColor="@color/white"
 
-            android:textColor="@color/white" />
+            android:textSize="16dp" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <SeekBar
+        android:id="@+id/seekBarNumericDecimal"
+        android:layout_width="188dp"
+        android:layout_height="53dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="144dp"
+        android:layout_marginEnd="12dp"
+
+        android:max="6"
+        android:min="1"
+        android:progress="3"
+        app:layout_constraintStart_toEndOf="@+id/textViewNumberDecimal"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/buttonSettingsAccept"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="200dp"
         android:text="Button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.913"
+        app:layout_constraintHorizontal_bias="0.95"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_field_inputinputEnergyCostGlobal" />
+
+    <TextView
+        android:id="@+id/textViewNumberDecimal"
+        android:layout_width="wrap_content"
+        android:fontFamily="@font/lato_light"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="68dp"
+        android:gravity="center"
+        android:text="Dokładność"
+        android:textColor="@color/white"
+        android:textSize="16dp"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_field_inputinputEnergyCostGlobal" />
+
+    <TextView
+        android:id="@+id/textViewNumericView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/lato_light"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="68dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="111dp"
+        android:text="TextView"
+        android:textColor="@color/white"
+        android:textSize="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonSettingsAccept"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/seekBarNumericDecimal"
         app:layout_constraintTop_toBottomOf="@+id/text_field_inputinputEnergyCostGlobal" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

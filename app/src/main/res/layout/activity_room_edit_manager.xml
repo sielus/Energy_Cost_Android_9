@@ -9,16 +9,6 @@
 
     tools:context=".ui.rooms.manager.RoomEditManager">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/RecyckerView"
-        android:layout_width="match_parent"
-        android:layout_height="295dp"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-    </androidx.recyclerview.widget.RecyclerView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addButonfl"
@@ -32,178 +22,239 @@
         app:layout_constraintRight_toRightOf="parent"
         app:srcCompat="@drawable/ic_add_black_24dp" />
 
-    <TableLayout
-        android:id="@+id/tableLayout"
-        android:layout_width="390dp"
-        android:layout_height="161dp"
 
-        android:layout_marginTop="24dp"
-        android:stretchColumns="*"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/RecyckerView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/RecyckerView">
+        app:layout_constraintTop_toTopOf="parent">
+
+    </androidx.recyclerview.widget.RecyclerView>
 
 
-        <TableRow>
+            <TableLayout
 
-            <TextView
-                android:id="@+id/textView9"
-
+                android:id="@+id/tableLayout"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
 
-                android:layout_height="50dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
 
-                android:layout_weight="1"
-                android:background="@drawable/border"
-                android:fontFamily="@font/lato_light"
-                android:gravity="center"
-                android:text="24h"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp"
-
-                />
-
-            <TextView
-
-                android:id="@+id/textView10"
+                android:stretchColumns="*"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/RecyckerView">
 
 
+                <TableRow>
+
+                    <TextView
+                        android:id="@+id/textView9"
+
+                        android:layout_width="match_parent"
+
+                        android:layout_height="match_parent"
+
+                        android:layout_weight="1"
+                        android:background="@drawable/border"
+                        android:fontFamily="@font/lato_light"
+                        android:gravity="center"
+                        android:text="24h"
+                        android:textColor="#FFFFFF"
+                        android:textSize="18sp"
+
+                        />
+
+                    <TextView
+
+                        android:id="@+id/textView10"
+
+
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+
+                        android:layout_weight="1"
+                        android:background="@drawable/border"
+                        android:fontFamily="@font/lato_light"
+                        android:gravity="center"
+                        android:text="30 dni"
+                        android:textColor="#FFFFFF"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/textView11"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+
+                        android:layout_weight="1"
+                        android:background="@drawable/border"
+                        android:fontFamily="@font/lato_light"
+                        android:gravity="center"
+                        android:text="365 dni"
+                        android:textColor="#FFFFFF"
+                        android:textSize="18sp" />
+                </TableRow>
+
+
+                <TableRow
+                    android:id="@+id/task1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/OutputEnergyCostUserKwh"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+
+                        android:autoSizeMaxTextSize="18sp"
+                        android:autoSizeMinTextSize="9sp"
+                        android:autoSizeTextType="uniform"
+                        android:background="@drawable/border"
+                        android:fontFamily="@font/lato_light"
+                        android:gravity="center"
+                        android:minHeight="50dp"
+                        android:text="0 kWh"
+                        android:textColor="#FFFFFF"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/OutputEnergyCostDayKwh"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+
+                        android:layout_weight="1"
+                        android:autoSizeMaxTextSize="18sp"
+                        android:autoSizeMinTextSize="9sp"
+                        android:autoSizeTextType="uniform"
+                        android:background="@drawable/border"
+                        android:fontFamily="@font/lato_light"
+                        android:gravity="center"
+                        android:text="0 kWh "
+                        android:textColor="#FFFFFF"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/OutputEnergyCostMonthKwh"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+
+                        android:layout_weight="1"
+                        android:autoSizeMaxTextSize="18sp"
+                        android:autoSizeMinTextSize="9sp"
+                        android:autoSizeTextType="uniform"
+                        android:background="@drawable/border"
+                        android:fontFamily="@font/lato_light"
+                        android:gravity="center"
+                        android:text="0 kWh "
+
+                        android:textColor="#FFFFFF"
+                        android:textSize="18sp" />
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        android:id="@+id/OutputEnergyCostUser"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:autoSizeMaxTextSize="18sp"
+                        android:autoSizeMinTextSize="9sp"
+                        android:autoSizeTextType="uniform"
+                        android:background="@drawable/border"
+                        android:fontFamily="@font/lato_light"
+                        android:gravity="center"
+                        android:minHeight="50dp"
+                        android:text="0 zł"
+                        android:textColor="#FFFFFF"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/OutputEnergyCostDay"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+
+                        android:layout_weight="1"
+                        android:autoSizeMaxTextSize="18sp"
+                        android:autoSizeMinTextSize="9sp"
+                        android:autoSizeTextType="uniform"
+                        android:background="@drawable/border"
+                        android:fontFamily="@font/lato_light"
+                        android:gravity="center"
+                        android:text="0 zł"
+                        android:textColor="#FFFFFF"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/OutputEnergyCostMonth"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+
+                        android:layout_weight="1"
+                        android:autoSizeMaxTextSize="18sp"
+                        android:autoSizeMinTextSize="9sp"
+                        android:autoSizeTextType="uniform"
+                        android:background="@drawable/border"
+                        android:fontFamily="@font/lato_light"
+                        android:gravity="center"
+                        android:text="0 zł"
+                        android:textColor="#FFFFFF"
+                        android:textSize="18sp" />
+                </TableRow>
+            </TableLayout>
+
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/bartChart"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="325dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="16dp"
 
-                android:layout_weight="1"
-                android:background="@drawable/border"
-                android:fontFamily="@font/lato_light"
-                android:gravity="center"
-                android:text="30 dni"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp" />
+                app:layout_constraintBottom_toTopOf="@+id/pieChart"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tableLayout">
 
-            <TextView
-                android:id="@+id/textView11"
 
+            </com.github.mikephil.charting.charts.BarChart>
+
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/pieChart"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="325dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
 
-                android:layout_weight="1"
-                android:background="@drawable/border"
-                android:fontFamily="@font/lato_light"
-                android:gravity="center"
-                android:text="365 dni"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp" />
-        </TableRow>
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/bartChart">
 
+            </com.github.mikephil.charting.charts.PieChart>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TableRow>
+    </ScrollView>
 
-            <TextView
-                android:id="@+id/OutputEnergyCostUserKwh"
-
-                android:layout_width="match_parent"
-
-                android:layout_height="50dp"
-
-                android:layout_weight="1"
-                android:autoSizeMaxTextSize="18sp"
-                android:autoSizeMinTextSize="9sp"
-                android:autoSizeTextType="uniform"
-                android:background="@drawable/border"
-                android:fontFamily="@font/lato_light"
-                android:gravity="center"
-                android:text="0 kWh"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/OutputEnergyCostDayKwh"
-
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-
-                android:layout_weight="1"
-                android:autoSizeMaxTextSize="18sp"
-                android:autoSizeMinTextSize="9sp"
-                android:autoSizeTextType="uniform"
-                android:background="@drawable/border"
-                android:fontFamily="@font/lato_light"
-                android:gravity="center"
-                android:text="0 kWh "
-                android:textColor="#FFFFFF"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/OutputEnergyCostMonthKwh"
-
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-
-                android:layout_weight="1"
-                android:autoSizeMaxTextSize="18sp"
-                android:autoSizeMinTextSize="9sp"
-                android:autoSizeTextType="uniform"
-                android:background="@drawable/border"
-                android:fontFamily="@font/lato_light"
-                android:gravity="center"
-                android:text="0 kWh "
-
-                android:textColor="#FFFFFF"
-                android:textSize="18sp" />
-        </TableRow>
-
-        <TableRow>
-
-            <TextView
-                android:id="@+id/OutputEnergyCostUser"
-
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-
-                android:layout_weight="1"
-                android:autoSizeMaxTextSize="18sp"
-                android:autoSizeMinTextSize="9sp"
-                android:autoSizeTextType="uniform"
-                android:background="@drawable/border"
-                android:fontFamily="@font/lato_light"
-                android:gravity="center"
-                android:text="0 zł"
-                android:textColor="#FFFFFF"
-                android:textSize="22sp" />
-
-            <TextView
-                android:id="@+id/OutputEnergyCostDay"
-
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-
-                android:layout_weight="1"
-                android:autoSizeMaxTextSize="18sp"
-                android:autoSizeMinTextSize="9sp"
-                android:autoSizeTextType="uniform"
-                android:background="@drawable/border"
-                android:fontFamily="@font/lato_light"
-                android:gravity="center"
-                android:text="0 zł"
-                android:textColor="#FFFFFF"
-                android:textSize="22sp" />
-
-            <TextView
-                android:id="@+id/OutputEnergyCostMonth"
-
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-
-                android:layout_weight="1"
-                android:autoSizeMaxTextSize="18sp"
-                android:autoSizeMinTextSize="9sp"
-                android:autoSizeTextType="uniform"
-                android:background="@drawable/border"
-                android:fontFamily="@font/lato_light"
-                android:gravity="center"
-                android:text="0 zł"
-                android:textColor="#FFFFFF"
-                android:textSize="22sp" />
-        </TableRow>
-    </TableLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
 
