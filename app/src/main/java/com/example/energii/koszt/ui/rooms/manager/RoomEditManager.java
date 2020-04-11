@@ -720,7 +720,9 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
             roomListFragment.clearRoomList();
             roomListFragment.ViewDataFromDB(sqlLiteDBHelper.getRoomList());
             roomListFragment.refreshListView(RoomListFragment.root);
-            refreshTable();
+            roomListFragment.generateChart(RoomListFragment.root);
+
+                refreshTable();
 
 
         }
