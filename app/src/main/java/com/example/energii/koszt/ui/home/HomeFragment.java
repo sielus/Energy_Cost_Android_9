@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import com.example.energii.koszt.R;
 import com.example.energii.koszt.ui.SQLLiteDBHelper;
+import com.example.energii.koszt.ui.SettingActivity;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import java.util.Map;
@@ -31,12 +32,14 @@ public class HomeFragment extends Fragment {
     private SQLLiteDBHelper sqlLiteDBHelper;
     private String powerCost;
     private TextInputEditText inputEnergyCost;
+    int numberAfterDot;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_home, container, false);
         Button buttonCalcCostEnergy = root.findViewById(R.id.buttonCalcCostEnergy);
         sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
-
+        SettingActivity settingActivity = new SettingActivity();
+        numberAfterDot = settingActivity.getNumberAfterDot(root);
         buttonCalcCostEnergy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,13 +111,13 @@ public class HomeFragment extends Fragment {
         TextView outputEnergyCostDayKwh = root.findViewById(R.id.OutputEnergyCostDayKwh);
         TextView outputEnergyCostMonthKwh = root.findViewById(R.id.OutputEnergyCostMonthKwh);
 
-        outputEnergyCostUserKwh.setText(costValueMap.get("userCostKwh") + " kWh");
-        outputEnergyCostDayKwh.setText(costValueMap.get("dayCostKwh") + " kWh");
-        outputEnergyCostMonthKwh.setText(costValueMap.get("monthCostKwh") + " kWh");
+        outputEnergyCostUserKwh.setText(String.format("%."+ numberAfterDot +"f",Double.parseDouble(costValueMap.get("userCostKwh"))) + " kWh");
+        outputEnergyCostDayKwh.setText(String.format("%."+ numberAfterDot +"f",Float.parseFloat(costValueMap.get("dayCostKwh"))) + " kWh");
+        outputEnergyCostMonthKwh.setText(String.format("%."+ numberAfterDot +"f",Float.parseFloat(costValueMap.get("monthCostKwh"))) + " kWh");
 
-        outputEnergyCostUser.setText(costValueMap.get("userCost") + " zł");
-        outputEnergyCostDay.setText(costValueMap.get("dayCost") + " zł");
-        outputEnergyCostMonth.setText(costValueMap.get("monthCost") + " zł");
+        outputEnergyCostUser.setText(String.format("%."+ numberAfterDot +"f",Float.parseFloat(costValueMap.get("userCost")))+ " zł");
+        outputEnergyCostDay.setText(String.format("%."+ numberAfterDot +"f",Float.parseFloat(costValueMap.get("dayCost"))) + " zł");
+        outputEnergyCostMonth.setText(String.format("%."+ numberAfterDot +"f",Float.parseFloat(costValueMap.get("monthCost"))) + " zł");
     }
 
 
