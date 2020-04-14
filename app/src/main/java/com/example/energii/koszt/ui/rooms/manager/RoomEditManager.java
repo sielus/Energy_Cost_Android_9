@@ -806,7 +806,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         List<String> roomName = new ArrayList<>();
         roomName.clear();
         xAxisLables = null;
-        int x = 0;
+        int labelNumberIndex = 0;
         barEntries.clear();
         pieEntry.clear();
 
@@ -815,20 +815,17 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         if (cursor.getCount() > 1) {
             while(cursor.moveToNext()) {
 
-
                 pieEntry.add(new PieEntry(cursor.getInt(1), cursor.getString(0).replace("_"," ") + " " + String.format("%."+ numberAfterDot +"f",((float)cursor.getInt(1) / 1000)) +" kWh" ));
-
-                barEntries.add(new BarEntry(x, Float.parseFloat(String.format("%."+ numberAfterDot +"f", cursor.getFloat(2)))));
+                barEntries.add(new BarEntry(labelNumberIndex, Float.parseFloat(String.format("%."+ numberAfterDot +"f", cursor.getFloat(2)).replace(",","."))));
                 roomName.add(cursor.getString(0));
-
-                x = x +1;
+                labelNumberIndex = labelNumberIndex +1;
 
             }
         }else if(cursor.getCount() == 1){
 
                 cursor.moveToFirst();
                 pieEntry.add(new PieEntry(cursor.getInt(1), cursor.getString(0).replace("_"," ") + " " + String.format("%."+ numberAfterDot +"f",((float)cursor.getInt(1) / 1000)) +" kWh" ));
-                barEntries.add(new BarEntry(x, Float.parseFloat(String.format("%."+ numberAfterDot +"f", cursor.getFloat(2)))));
+                barEntries.add(new BarEntry(labelNumberIndex, Float.parseFloat(String.format("%."+ numberAfterDot +"f", cursor.getFloat(2)).replace(",","."))));
                 roomName.add(cursor.getString(0));
 
 
@@ -866,9 +863,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         axis.setDrawAxisLine(true);
         axis.setCenterAxisLabels(false);
         axis.setLabelCount(roomName.size());
-
-
-
+        
         xAxisLables = null;
         xAxisLables = Arrays.copyOf(roomName.toArray(), roomName.size(), String[].class);
         axis.setValueFormatter(new IndexAxisValueFormatter(xAxisLables));
@@ -888,13 +883,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         barChart.getDescription().setText("");
         barChart.getLegend().setEnabled(true);
 
-
-
-
         barChart.animateY(1000);
-
-
-
 
         PieDataSet pieDataSet = new PieDataSet(pieEntry,"Dane");
         pieChart.getLegend().setEnabled(false);
