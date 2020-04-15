@@ -863,7 +863,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         axis.setDrawAxisLine(true);
         axis.setCenterAxisLabels(false);
         axis.setLabelCount(roomName.size());
-        
+
         xAxisLables = null;
         xAxisLables = Arrays.copyOf(roomName.toArray(), roomName.size(), String[].class);
         axis.setValueFormatter(new IndexAxisValueFormatter(xAxisLables));

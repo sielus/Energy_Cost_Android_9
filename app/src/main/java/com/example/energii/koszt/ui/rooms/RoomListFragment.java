@@ -75,34 +75,31 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_rooms, container, false);
         sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
+        ViewDataFromDB(sqlLiteDBHelper.getRoomList());
 
         pieChart =  root.findViewById(R.id.pieChart);
         barChart = root.findViewById(R.id.bartChart);
+
+        pieChart.setVisibility(View.GONE);
+        barChart.setVisibility(View.GONE);
 
         recyclerView = root.findViewById(R.id.RecyckerView);
         SettingActivity settingActivity = new SettingActivity();
         numberAfterDot = settingActivity.getNumberAfterDot(root);
 
+        adapter = new RoomListAdapter(root.getContext(),Arrays.copyOf(roomName.toArray(), roomName.size(), String[].class),this,Arrays.copyOf(roomNameKwh.toArray(), roomNameKwh.size(), String[].class));
 
-        FloatingActionButton floatingActionButtonAddDevice = root.findViewById(R.id.buttonAddRoom);
+        FloatingActionButton floatingActionButtonAddRoomDialog = root.findViewById(R.id.buttonAddRoom);
 
-        ViewDataFromDB(sqlLiteDBHelper.getRoomList());
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
 
-        if(sqlLiteDBHelper.getRoomList().getCount()!=0){
-            generateChart(root);
-            adapter = new RoomListAdapter(root.getContext(),Arrays.copyOf(roomName.toArray(), roomName.size(), String[].class),this,Arrays.copyOf(roomNameKwh.toArray(), roomNameKwh.size(), String[].class));
-            recyclerView.setAdapter(adapter);
-            recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
+        pieChart.setVisibility(View.VISIBLE);
+        barChart.setVisibility(View.VISIBLE);
+        generateChart(root);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
 
-        }
-
-
-
-
-
-
-        floatingActionButtonAddDevice.setOnClickListener(new View.OnClickListener() {
+        floatingActionButtonAddRoomDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -112,6 +109,7 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
 
         return root;
     }
+
 
     private void showRoomListDialog(final View view) {
         dialog = new Dialog(view.getContext());
@@ -136,15 +134,12 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
                         clearRoomList();
                         ViewDataFromDB(sqlLiteDBHelper.getRoomList());
                         refreshListView(view);
-                        if(sqlLiteDBHelper.getRoomList().getCount()!=0){
-                            generateChart(root);
-                        }
+                        generateChart(root);
+                        adapter.notifyDataSetChanged();
 
                         barChart.setVisibility(View.VISIBLE);
                         pieChart.setVisibility(View.VISIBLE);
 
-
-                        adapter.notifyItemInserted(position);
                         dialog.dismiss();
                         Toast.makeText(getContext(),"Pokój dodany",Toast.LENGTH_SHORT).show();
                     }catch (SQLEnergyCostException.DuplicationRoom | SQLEnergyCostException.EmptyField errorMessage) {
@@ -190,14 +185,14 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
     }
 
     public void refreshListView(View root) {
-        System.out.println("refresh");
+
         SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
         ViewDataFromDB(sqlLiteDBHelper.getRoomList());
-
         RoomListAdapter adapter;
         adapter = new RoomListAdapter(root.getContext(),Arrays.copyOf(roomName.toArray(), roomName.size(), String[].class),this,Arrays.copyOf(roomNameKwh.toArray(), roomNameKwh.size(), String[].class));
         RecyclerView recyclerView = root.findViewById(R.id.RecyckerView);
         System.out.println(roomName);
+
         recyclerView.setAdapter(adapter);
     }
 
@@ -274,9 +269,9 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
         if (cursor.getCount() > 1) {
             while(cursor.moveToNext()) {
 
-                pieEntry.add(new PieEntry(cursor.getInt(1), cursor.getString(0).replace("_"," ") + " " + String.format("%."+ numberAfterDot +"f",((float)cursor.getInt(1) / 1000) +" kWh" )));
+                pieEntry.add(new PieEntry(cursor.getInt(1), cursor.getString(0).replace("_"," ") + " " + String.format("%."+ numberAfterDot +"f",((float)cursor.getInt(1) / 1000)) +" kWh"));
                 barEntries.add(new BarEntry(labelNumberIndex, Float.parseFloat(String.format("%."+ numberAfterDot +"f",cursor.getFloat(2)).replace(",","."))));
-                roomName.add(cursor.getString(0));
+                roomName.add(cursor.getString(0).replace("_"," ") + " ");
                 labelNumberIndex = labelNumberIndex + 1;
 
             }
@@ -285,7 +280,7 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
             cursor.moveToFirst();
             pieEntry.add(new PieEntry(cursor.getInt(1), cursor.getString(0).replace("_"," ") + " " + String.format("%."+ numberAfterDot +"f",((float)cursor.getInt(1) / 1000)) +" kWh" ));
             barEntries.add(new BarEntry(labelNumberIndex, Float.parseFloat(String.format("%."+ numberAfterDot +"f",cursor.getFloat(2)).replace(",","."))));
-            roomName.add(cursor.getString(0));
+            roomName.add(cursor.getString(0).replace("_"," ") + " ");
 
         }else {
             return;

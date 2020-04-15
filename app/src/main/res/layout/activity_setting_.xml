@@ -41,29 +41,28 @@
         android:id="@+id/buttonSettingsAccept"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
-        android:text="Button"
+        android:layout_marginTop="220dp"
+        android:text="Zatwierdź"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintHorizontal_bias="0.947"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_field_inputinputEnergyCostGlobal" />
 
     <TextView
         android:id="@+id/textViewNumberDecimal"
         android:layout_width="wrap_content"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="28dp"
-        android:layout_marginTop="40dp"
         android:layout_marginBottom="110dp"
         android:fontFamily="@font/lato_light"
         android:gravity="center"
-        android:text="Dokładność"
+        android:text="Dokładność \n obliczeniowa"
         android:textColor="@color/white"
         android:textSize="16dp"
         app:layout_constraintBottom_toTopOf="@+id/buttonSettingsAccept"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_field_inputinputEnergyCostGlobal"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.729" />
 
     <TextView
         android:id="@+id/textViewNumericView"
