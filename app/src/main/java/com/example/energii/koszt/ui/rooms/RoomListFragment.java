@@ -59,6 +59,7 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 public class RoomListFragment extends Fragment implements RoomListAdapter.onNoteListener {
     private List<String> roomName = new ArrayList<>();
     private List<String> roomNameKwh = new ArrayList<>();
+    boolean ifNumberOnStart = false;
 
     public static View root;
     private RecyclerView recyclerView;
@@ -116,19 +117,55 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.room_list_dialog);
         dialog.show();
-
+        ifNumberOnStart = false;
         Button buttonDialogAccept = dialog.findViewById(R.id.ButtonAddRoom);
         final TextInputEditText text_field_inputRoomName = dialog.findViewById(R.id.text_field_inputRoomName);
         final TextInputLayout text_field_inputRoomNameLayout = dialog.findViewById(R.id.text_field_inputRoomNameLayout);
+        text_field_inputRoomName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+
+                String roomName = text_field_inputRoomName.getText().toString();
+
+                if(!roomName.isEmpty()){
+                    char First = roomName.charAt(0);
+
+                    if(Character.isDigit(First)){
+                        text_field_inputRoomNameLayout.setError("Nazwa nie może zaczynać się od cyfry");
+                        ifNumberOnStart = true;
+                    }else {
+                        text_field_inputRoomNameLayout.setError(null);
+                        ifNumberOnStart = false;
+                    }
+
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
         buttonDialogAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                text_field_inputRoomName.addTextChangedListener(textWatcher);
                 String roomName = text_field_inputRoomName.getText().toString();
                 if (roomName.isEmpty()) {
                     text_field_inputRoomNameLayout.setError("Brak danych!");
-                }else {
+                }
+                else if(ifNumberOnStart){
+                    text_field_inputRoomNameLayout.setError("Nazwa nie może zaczynać się od cyfry");
+                }
+                else{
+                    text_field_inputRoomNameLayout.setError(null);
                     try {
                         sqlLiteDBHelper.addRoom(roomName);
                         clearRoomList();
@@ -150,24 +187,7 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
         });
     }
 
-    private TextWatcher textWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            final TextInputLayout text_field_inputRoomNameLayout = dialog.findViewById(R.id.text_field_inputRoomNameLayout);
-            text_field_inputRoomNameLayout.setError(null);
-
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-
-        }
-    };
 
     public void ViewDataFromDB(Cursor cursor) {
         if (cursor.getCount() != 0) {
@@ -191,7 +211,6 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
         RoomListAdapter adapter;
         adapter = new RoomListAdapter(root.getContext(),Arrays.copyOf(roomName.toArray(), roomName.size(), String[].class),this,Arrays.copyOf(roomNameKwh.toArray(), roomNameKwh.size(), String[].class));
         RecyclerView recyclerView = root.findViewById(R.id.RecyckerView);
-        System.out.println(roomName);
 
         recyclerView.setAdapter(adapter);
     }

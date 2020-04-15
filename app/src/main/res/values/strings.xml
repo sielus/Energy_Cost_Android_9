@@ -9,7 +9,7 @@
 
     <string name="menu_home">Kalkulator kosztów energii</string>
     <string name="menu_gallery">Menadżer Pokoi</string>
-    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_slideshow">Fotowoltaika</string>
 
     <string name="home_second">Home Second</string>
     <string name="title_activity_room_manager">RoomManager</string>

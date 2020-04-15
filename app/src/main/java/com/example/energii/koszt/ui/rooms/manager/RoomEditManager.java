@@ -72,6 +72,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
     ArrayList<PieEntry> pieEntry = new ArrayList<PieEntry>();
     ArrayList<BarEntry> barEntries = new ArrayList<BarEntry>();
     int numberAfterDot;
+    boolean ifNumberOnStart = false;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.room_menu,menu);
@@ -317,10 +318,44 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         final TextInputLayout text_field_inputeditTextDeviceWorkHLayout = dialog.findViewById(R.id.text_field_inputeditTextDeviceWorkHLayout);
         final TextInputLayout text_field_inputeditTextDeviceWorkMLayout = dialog.findViewById(R.id.text_field_inputeditTextDeviceWorkMLayout);
 
+        editTextDeviceName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+
+                String deviceName = editTextDeviceName.getText().toString();
+
+                if(!deviceName.isEmpty()){
+                    char first = deviceName.charAt(0);
+
+                    if(Character.isDigit(first)){
+                        text_field_inputeditTextDeviceNameLayout.setError("Nazwa nie może zaczynać się od cyfry");
+                        ifNumberOnStart = true;
+                    }else {
+                        text_field_inputeditTextDeviceNameLayout.setError(null);
+                        ifNumberOnStart = false;
+                    }
+
+                }
+
+            }
+
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         buttonDialogAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editTextDeviceName.addTextChangedListener(roomNameTextWatcher);
+
                 editTextDevicePower.addTextChangedListener(roomPowerTextWatcher);
                 editTextDeviceNumbers.addTextChangedListener(roomNumberTextWatcher);
                 editTextDeviceWorkH.addTextChangedListener(roomWorkTimeHTextWatcher);
@@ -358,22 +393,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
                 }
             }
 
-            private TextWatcher roomNameTextWatcher = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    text_field_inputeditTextDeviceNameLayout.setError(null);
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-
-                }
-            };
 
             private TextWatcher roomPowerTextWatcher = new TextWatcher() {
                 @Override
@@ -450,7 +470,11 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
                 if(editTextDeviceName.getText().toString().isEmpty()) {
                     text_field_inputeditTextDeviceNameLayout.setError("Brak danych!");
                     isNotEmpty = false;
-                }else {
+                }else if(ifNumberOnStart){
+                    text_field_inputeditTextDeviceNameLayout.setError("Nazwa nie może zaczynać się od cyfry");
+                    isNotEmpty = false;
+                }
+                else {
                     text_field_inputeditTextDeviceNameLayout.setError(null);
                 }
 
@@ -838,7 +862,6 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
 
         BarDataSet barDataSet = new BarDataSet(barEntries, "Koszty urządzeń (zł)");
         barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
-        barChart.getLegend().setEnabled(false);
         barChart.getAxisLeft().setAxisMinimum(0);
         barChart.getAxisRight().setAxisMinimum(0);
         XAxis axis = barChart.getXAxis();

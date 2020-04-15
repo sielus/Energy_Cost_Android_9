@@ -34,6 +34,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editTextDeviceName"
+            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890óęążźć"
 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
