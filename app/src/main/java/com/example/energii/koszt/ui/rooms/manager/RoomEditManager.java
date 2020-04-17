@@ -22,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TableLayout;
@@ -356,7 +357,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
             @Override
             public void onClick(View v) {
 
-                TimePickerDialog timePickerDialog = new TimePickerDialog(view.getContext() , R.style.TimePickerTheme, new TimePickerDialog.OnTimeSetListener() {
+                TimePickerDialog timePickerDialog = new TimePickerDialog(dialog.getContext() , R.style.TimePickerTheme, new TimePickerDialog.OnTimeSetListener() {
 
 
                     @Override
@@ -367,6 +368,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
                         buttonTimePicker.setText("Czas pracy \n " + h + "h" + " " + m + "m");
                     }
                 } ,12,0,true);
+                timePickerDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 
                 timePickerDialog.show();
             }
@@ -564,7 +566,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         buttonTimePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TimePickerDialog timePickerDialog = new TimePickerDialog(view.getContext() , R.style.TimePickerTheme, new TimePickerDialog.OnTimeSetListener() {
+                TimePickerDialog timePickerDialog = new TimePickerDialog(dialog.getContext() , R.style.TimePickerTheme, new TimePickerDialog.OnTimeSetListener() {
 
 
                     @Override
@@ -575,7 +577,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
                         buttonTimePicker.setText("Czas pracy \n " + h + "h" + " " + m + "m");
                     }
                 } ,Integer.parseInt(device.get(3).split(":")[0]),Integer.parseInt(device.get(3).split(":")[1]),true);
-
+                timePickerDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
                 timePickerDialog.show();
             }
         });
