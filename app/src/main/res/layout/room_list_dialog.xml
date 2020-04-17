@@ -29,7 +29,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:maxLength="30"
-            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890óęążźć"
+            android:digits=" abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890óęążźć"
             android:id="@+id/text_field_inputRoomName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -42,7 +42,8 @@
         android:layout_width="102dp"
         android:layout_height="53dp"
         android:layout_marginTop="88dp"
-        android:text="Button"
+        android:fontFamily="@font/lato_black"
+        android:text="ok"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

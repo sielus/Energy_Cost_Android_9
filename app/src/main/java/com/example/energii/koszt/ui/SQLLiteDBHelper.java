@@ -39,7 +39,7 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         db.execSQL(configurationVariableTable);
 
         addVariable = "INSERT INTO configuration_variable (name, value) values (\"powerCost\", \"0.60\")";
-        numberAfterDot = "INSERT INTO configuration_variable (name, value) values (\"numberAfterDot\", \"3\")";
+        numberAfterDot = "INSERT INTO configuration_variable (name, value) values (\"numberAfterDot\", \"2\")";
 
         db.execSQL(addVariable);
         db.execSQL(numberAfterDot);
@@ -304,6 +304,19 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
                 "WHERE  name = ?";
 
         cursor = dbhRead.rawQuery(query, new String[] {changeSpaceInName(roomName)});
+
+        return cursor;
+    }
+
+    public Cursor getHouseCost() {
+        SQLiteDatabase dbhRead = getReadableDatabase();
+        Cursor cursor;
+        String query;
+
+        query = "SELECT SUM(energy_amount)," +
+                       "SUM(energy_cost_zl) " +
+                "FROM   room_list";
+        cursor = dbhRead.rawQuery(query, null);
 
         return cursor;
     }

@@ -45,10 +45,11 @@ public class SettingActivity extends AppCompatActivity {
 
         inputEnergyCostGlobal = view.findViewById(R.id.inputEnergyCostGlobal);
         inputEnergyCostGlobalLayout = view.findViewById(R.id.text_field_inputinputEnergyCostGlobal);
-        seekBar.setProgress(Integer.parseInt(ViewDataNumberAfterDotFromDB(sqlLiteDBHelper.getVariable("numberAfterDot"))));
+        int progres = Integer.parseInt(ViewDataNumberAfterDotFromDB(sqlLiteDBHelper.getVariable("numberAfterDot")));
+        seekBar.setProgress(progres);
         inputEnergyCostGlobal.setText(ViewDataPowerCostFromDB(sqlLiteDBHelper.getVariable("powerCost")));
         final TextView textView = view.findViewById(R.id.textViewNumericView);
-        String text = String.format("%."+ 3 +"f",0.1000);
+        String text = String.format("%."+ progres +"f",0.1000);
         textView.setText(text);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -112,14 +113,16 @@ public class SettingActivity extends AppCompatActivity {
         }else {
             value = getValue();
 
-            if(RoomListFragment.root!=null){
-                System.out.println(RoomListFragment.root);
-                roomListFragment.generateChart(RoomListFragment.root);
-            }
+
             sqlLiteDBHelper.setVariable("powerCost",value );
             sqlLiteDBHelper.setVariable("numberAfterDot",numberAfterDot);
 
             homeFragment.refresh(HomeFragment.root);
+
+            if(RoomListFragment.root!=null){
+                roomListFragment.generateChart(RoomListFragment.root);
+                roomListFragment.refreshTable(RoomListFragment.root);
+            }
             finish();
         }
     }

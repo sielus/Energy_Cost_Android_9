@@ -1,11 +1,12 @@
 package com.example.energii.koszt.ui.rooms;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.location.SettingInjectorService;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.TableLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -27,9 +30,6 @@ import com.example.energii.koszt.ui.rooms.manager.RoomEditManager;
 import com.example.energii.koszt.ui.exception.SQLEnergyCostException;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -37,10 +37,8 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.PercentFormatter;
-import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -49,9 +47,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import com.example.energii.koszt.ui.SQLLiteDBHelper;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
@@ -59,6 +54,9 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 public class RoomListFragment extends Fragment implements RoomListAdapter.onNoteListener {
     private List<String> roomName = new ArrayList<>();
     private List<String> roomNameKwh = new ArrayList<>();
+    private List<String> allRoomsCostKWH = new ArrayList<>();
+    private List<String> allRoomsCost = new ArrayList<>();
+
     boolean ifNumberOnStart = false;
 
     public static View root;
@@ -72,18 +70,20 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
     int numberAfterDot;
     ArrayList<PieEntry> pieEntry = new ArrayList<PieEntry>();
     ArrayList<BarEntry> barEntries = new ArrayList<BarEntry>();
+    TextView title_summary;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_rooms, container, false);
         sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
         ViewDataFromDB(sqlLiteDBHelper.getRoomList());
-
+        TableLayout tableLayout = root.findViewById(R.id.tableLayout);
         pieChart =  root.findViewById(R.id.pieChart);
         barChart = root.findViewById(R.id.bartChart);
-
+        title_summary = root.findViewById(R.id.title_summary);
         pieChart.setVisibility(View.GONE);
         barChart.setVisibility(View.GONE);
-
+        title_summary.setVisibility(View.GONE);
+        tableLayout.setVisibility(View.GONE);
         recyclerView = root.findViewById(R.id.RecyckerView);
         SettingActivity settingActivity = new SettingActivity();
         numberAfterDot = settingActivity.getNumberAfterDot(root);
@@ -97,6 +97,7 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
         pieChart.setVisibility(View.VISIBLE);
         barChart.setVisibility(View.VISIBLE);
         generateChart(root);
+        refreshTable(root);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
 
@@ -111,6 +112,58 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
         return root;
     }
 
+    @SuppressLint("SetTextI18n")
+    public void refreshTable(View view){
+        SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
+        SettingActivity settingActivity = new SettingActivity();
+        numberAfterDot = settingActivity.getNumberAfterDot(root);
+
+        TableLayout tableLayout = view.findViewById(R.id.tableLayout);
+        TextView title_summary = view.findViewById(R.id.title_summary);
+        TextView OutputEnergyCostDay = view.findViewById(R.id.OutputEnergyCostDay);
+        TextView OutputEnergyCostMonth = view.findViewById(R.id.OutputEnergyCostMonth);
+        TextView OutputEnergyCostYear = view.findViewById(R.id.OutputEnergyCostYear);
+
+        TextView OutputEnergyCostDayKwh = view.findViewById(R.id.OutputEnergyCostDayKwh);
+        TextView OutputEnergyCostMonthKwh = view.findViewById(R.id.OutputEnergyCostMonthKwh);
+        TextView OutputEnergyCostYearKwh= view.findViewById(R.id.OutputEnergyCostYearKwh);
+
+
+        if(sqlLiteDBHelper.getRoomList().getCount()!=0){
+            tableLayout.setVisibility(View.VISIBLE);
+            title_summary.setVisibility(View.VISIBLE);
+            getAllRoomsCostFromDB(sqlLiteDBHelper.getHouseCost());
+
+
+            OutputEnergyCostDayKwh.setText(String.format("%."+ numberAfterDot +"f", getAllRoomsKwHFromDB(sqlLiteDBHelper.getHouseCost()) / 1000) + " kWh");
+            OutputEnergyCostDay.setText(String.format("%."+ numberAfterDot +"f", getAllRoomsCostFromDB(sqlLiteDBHelper.getHouseCost())) + " zł");
+
+            OutputEnergyCostMonthKwh.setText(String.format("%."+ numberAfterDot +"f", getAllRoomsKwHFromDB(sqlLiteDBHelper.getHouseCost()) / 1000 * 30 ) + " kWh");
+            OutputEnergyCostMonth.setText(String.format("%."+ numberAfterDot +"f",getAllRoomsCostFromDB(sqlLiteDBHelper.getHouseCost()) * 30 ) + " zł");
+
+            OutputEnergyCostYearKwh.setText(String.format("%."+ numberAfterDot +"f", getAllRoomsKwHFromDB(sqlLiteDBHelper.getHouseCost()) / 1000 * 365 ) + " kWh");
+            OutputEnergyCostYear.setText(String.format("%."+ numberAfterDot +"f", getAllRoomsCostFromDB(sqlLiteDBHelper.getHouseCost())  * 365 ) + " zł");
+
+
+        }
+
+
+    }
+
+
+    private float getAllRoomsKwHFromDB(Cursor cursor){
+
+        cursor.moveToFirst();
+        return cursor.getFloat(0);
+
+    }
+
+    private float getAllRoomsCostFromDB(Cursor cursor){
+
+        cursor.moveToFirst();
+        return cursor.getFloat(1);
+
+    }
 
     private void showRoomListDialog(final View view) {
         dialog = new Dialog(view.getContext());
@@ -171,11 +224,13 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
                         clearRoomList();
                         ViewDataFromDB(sqlLiteDBHelper.getRoomList());
                         refreshListView(view);
+                        refreshTable(view);
                         generateChart(root);
                         adapter.notifyDataSetChanged();
 
                         barChart.setVisibility(View.VISIBLE);
                         pieChart.setVisibility(View.VISIBLE);
+
 
                         dialog.dismiss();
                         Toast.makeText(getContext(),"Pokój dodany",Toast.LENGTH_SHORT).show();
@@ -211,7 +266,7 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
         RoomListAdapter adapter;
         adapter = new RoomListAdapter(root.getContext(),Arrays.copyOf(roomName.toArray(), roomName.size(), String[].class),this,Arrays.copyOf(roomNameKwh.toArray(), roomNameKwh.size(), String[].class));
         RecyclerView recyclerView = root.findViewById(R.id.RecyckerView);
-
+        refreshTable(root);
         recyclerView.setAdapter(adapter);
     }
 
@@ -243,7 +298,7 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
             ViewDataFromDB(sqlLiteDBHelper.getRoomList());
             refreshListView(root);
             generateChart(root);
-
+            refreshTable(root);
             adapter.notifyItemChanged(position);
         }
 
@@ -268,10 +323,15 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
 
         pieChart =  root.findViewById(R.id.pieChart);
         barChart = root.findViewById(R.id.bartChart);
+        TableLayout tableLayout = root.findViewById(R.id.tableLayout);
+        TextView textView = root.findViewById(R.id.title_summary);
 
         if(sqlLiteDBHelper.getRoomList().getCount()==0){
             barChart.setVisibility(View.GONE);
             pieChart.setVisibility(View.GONE);
+            tableLayout.setVisibility(View.GONE);
+            title_summary.setVisibility(View.GONE);
+
         }
 
         pieChart.setNoDataText("Brak pokojów");
@@ -305,7 +365,7 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
             return;
         }
 
-        BarDataSet barDataSet = new BarDataSet(barEntries, "Koszty Pokoi (zł)");
+        BarDataSet barDataSet = new BarDataSet(barEntries, "Koszty Pokoi (zł) / 24h");
         barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
         barChart.getLegend().setEnabled(false);
         barChart.getAxisLeft().setAxisMinimum(0);
@@ -317,7 +377,7 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
         barChart.getAxisRight().setTextSize(14);
         barChart.getAxisLeft().setTextSize(14);
 
-        barChart.getLegend().setTextSize(15f);
+        barChart.getLegend().setTextSize(14f);
         barChart.getLegend().setTextColor(Color.WHITE);
         barChart.setTouchEnabled(false);
         barChart.setFitBars(true);
@@ -327,7 +387,7 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
         barChart.getXAxis().setTextColor(Color.WHITE);
 
         axis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        axis.setTextSize(20f);
+        axis.setTextSize(16f);
         axis.setDrawGridLines(true);
         axis.setTextColor(Color.WHITE);
         axis.setDrawAxisLine(true);
@@ -367,7 +427,7 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
         pieChart.setTransparentCircleRadius(10);
 
         pieChart.getDescription().setEnabled(false);
-        pieChart.setCenterText("Pokoje");
+        pieChart.setCenterText("Pokoje \n kWh / 24h");
         pieChart.animate();
 
     }

@@ -11,33 +11,33 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_field_inputeditTextDeviceNameLayout"
+        android:layout_width="346dp"
+        android:layout_height="72dp"
 
-        android:layout_width="349dp"
-        android:layout_height="61dp"
-        app:counterEnabled="true"
-        app:counterMaxLength="30"
-
-
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginEnd="10dp"
+        android:autoSizeTextType="uniform"
         android:hint="Nazwa Urządzenia"
         android:textColorHint="#FFFFFF"
         app:boxBackgroundMode="outline"
+        app:counterEnabled="true"
+        app:counterMaxLength="30"
+        app:counterTextAppearance="@style/CounterOverFlow"
         app:errorEnabled="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.473"
+        app:layout_constraintHorizontal_bias="0.436"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.026">
+        app:layout_constraintVertical_bias="0.129">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editTextDeviceName"
-            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890óęążźć"
-
             android:layout_width="match_parent"
+
             android:layout_height="wrap_content"
+            android:digits=" abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890óęążźć"
             android:inputType="text"
             android:maxLength="30"
             android:textColor="@color/white"
@@ -46,118 +46,65 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_field_inputeditTextDevicePowerLayout"
+        android:layout_width="175dp"
+        android:layout_height="73dp"
 
-        android:layout_width="191dp"
-        android:layout_height="64dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginBottom="1dp"
 
-        android:layout_marginStart="10dp"
+        android:autoSizeTextType="uniform"
         android:hint="Moc urządzenia (W)"
+
         android:textColorHint="#FFFFFF"
         app:boxBackgroundMode="outline"
-        app:errorEnabled="true"
-
         app:counterEnabled="true"
         app:counterMaxLength="8"
-
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:counterTextAppearance="@style/CounterOverFlow"
+        app:errorEnabled="true"
+        app:layout_constraintBottom_toTopOf="@+id/text_field_inputeditTextDeviceNumbersLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.101"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.403">
+        app:layout_constraintTop_toBottomOf="@+id/text_field_inputeditTextDeviceNameLayout">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:maxLength="8"
-
             android:id="@+id/editTextDevicePower"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="numberSigned"
+            android:maxLength="8"
             android:textColor="@color/white" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_field_inputeditTextDeviceNumbersLayout"
-
-        android:layout_width="148dp"
-        android:layout_height="68dp"
-        app:counterEnabled="true"
-        app:counterMaxLength="3"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="24dp"
+        android:layout_width="176dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginBottom="9dp"
+        android:autoSizeTextType="uniform"
         android:hint="Ilość urządzeń"
+
         android:textColorHint="#FFFFFF"
         app:boxBackgroundMode="outline"
+        app:counterEnabled="true"
+        app:counterMaxLength="3"
+        app:counterTextAppearance="@style/CounterOverFlow"
         app:errorEnabled="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/text_field_inputeditTextDevicePowerLayout"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.408">
+        app:layout_constraintHorizontal_bias="0.102"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_field_inputeditTextDevicePowerLayout">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:maxLength="3"
-
             android:id="@+id/editTextDeviceNumbers"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="numberSigned"
-            android:textColor="@color/white" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/text_field_inputeditTextDeviceWorkHLayout"
-
-        android:layout_width="122dp"
-        android:layout_height="70dp"
-        app:counterEnabled="true"
-        app:counterMaxLength="2"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="7dp"
-        android:layout_marginBottom="24dp"
-        android:hint="Czas pracy H"
-        android:textColorHint="#FFFFFF"
-        app:boxBackgroundMode="outline"
-        app:errorEnabled="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/text_field_inputeditTextDeviceWorkMLayout"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:maxLength="2"
-
-            android:id="@+id/editTextDeviceWorkH"
-            android:layout_width="match_parent"
-            android:layout_height="49dp"
-            android:inputType="numberSigned"
-            android:textColor="@color/white" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/text_field_inputeditTextDeviceWorkMLayout"
-
-        android:layout_width="125dp"
-        android:layout_height="70dp"
-        app:counterEnabled="true"
-        app:counterMaxLength="2"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="28dp"
-        android:layout_marginBottom="24dp"
-        android:hint="Czas pracy M"
-        android:textColorHint="#FFFFFF"
-        app:boxBackgroundMode="outline"
-        app:errorEnabled="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/buttonDialogAccept"
-        app:layout_constraintHorizontal_bias="0.75"
-        app:layout_constraintStart_toEndOf="@+id/text_field_inputeditTextDeviceWorkHLayout">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:maxLength="2"
-
-            android:id="@+id/editTextDeviceWorkM"
-            android:layout_width="match_parent"
-            android:layout_height="49dp"
-            android:inputType="numberSigned"
+            android:maxLength="3"
             android:textColor="@color/white" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -165,12 +112,27 @@
         android:id="@+id/buttonDialogAccept"
         android:layout_width="61dp"
         android:layout_height="50dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="40dp"
         android:text="ok"
+        android:fontFamily="@font/lato_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.815" />
+        app:layout_constraintVertical_bias="0.92" />
+
+    <Button
+        android:id="@+id/buttonTimePicker"
+
+        android:layout_width="146dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/lato_light"
+        android:text="Czas pracy"
+        android:textSize="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.445"
+        app:layout_constraintStart_toEndOf="@+id/text_field_inputeditTextDevicePowerLayout"
+        app:layout_constraintTop_toBottomOf="@+id/text_field_inputeditTextDeviceNameLayout" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
