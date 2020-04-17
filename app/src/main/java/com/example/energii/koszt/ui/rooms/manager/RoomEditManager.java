@@ -71,8 +71,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
     private List<String> deviceNumber = new LinkedList<>();
     public TextInputLayout text_field_inputRoomNameLayout;
     PieChart pieChart;
-    int m = 0;
-    int h = 0;
+
     BarChart barChart;
     TableLayout tableLayout;
     ArrayList<PieEntry> pieEntry = new ArrayList<PieEntry>();
@@ -352,6 +351,8 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         final TextInputLayout text_field_inputeditTextDevicePowerLayout = dialog.findViewById(R.id.text_field_inputeditTextDevicePowerLayout);
        // final TextInputLayout text_field_inputeditTextDeviceWorkHLayout = dialog.findViewById(R.id.text_field_inputeditTextDeviceWorkHLayout);
      //   final TextInputLayout text_field_inputeditTextDeviceWorkMLayout = dialog.findViewById(R.id.text_field_inputeditTextDeviceWorkMLayout);
+        final int[] h = new int[1];
+        final int[] m = new int[1];
         buttonTimePicker.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -363,9 +364,9 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
                     @Override
                     public void onTimeSet(TimePicker timePickerV, int hourOfDay, int minute) {
                         timePickerV.setIs24HourView(true);
-                         h = hourOfDay;
-                         m = minute;
-                        buttonTimePicker.setText("Czas pracy \n " + h + "h" + " " + m + "m");
+                         h[0] = hourOfDay;
+                         m[0] = minute;
+                        buttonTimePicker.setText("Czas pracy \n " + h[0] + "h" + " " + m[0] + "m");
                     }
                 } ,12,0,true);
                 timePickerDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
@@ -418,14 +419,14 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
                 editTextDeviceNumbers.addTextChangedListener(roomNumberTextWatcher);
 
                 if(checkInputValue(dialog)) {
+ 
                     double powerValue = Double.parseDouble(editTextDevicePower.getText().toString());
-
                     String deviceNameInput = editTextDeviceName.getText().toString();
 
                     int number = Integer.parseInt(editTextDeviceNumbers.getText().toString());
 
                     try {
-                        sqlLiteDBHelper.addDevice(room_name, deviceNameInput, powerValue, h, m, number);
+                        sqlLiteDBHelper.addDevice(room_name, deviceNameInput, powerValue, h[0], m[0], number);
 
                         Toast.makeText(view.getContext(), "Urządzenie dodane", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
@@ -557,11 +558,11 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         editTextDeviceName.setText(device.get(1));
         editTextDevicePower.setText(device.get(2));
         editTextDeviceNumbers.setText(device.get(4));
-        h = Integer.parseInt(device.get(3).split(":")[0]);
-        m = Integer.parseInt(device.get(3).split(":")[1]);
+        final int[] h = {Integer.parseInt(device.get(3).split(":")[0])};
+        final int[] m = {Integer.parseInt(device.get(3).split(":")[1])};
       //  editTextDeviceWorkH.setText(device.get(3).split(":")[0]);
         //editTextDeviceWorkM.setText(device.get(3).split(":")[1]);
-        buttonTimePicker.setText("Czas pracy \n " + h + "h" + " " + m + "m");
+        buttonTimePicker.setText("Czas pracy \n " + h[0] + "h" + " " + m[0] + "m");
 
         buttonTimePicker.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -572,9 +573,9 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
                     @Override
                     public void onTimeSet(TimePicker timePickerV, int hourOfDay, int minute) {
                         timePickerV.setIs24HourView(true);
-                        h = hourOfDay;
-                        m = minute;
-                        buttonTimePicker.setText("Czas pracy \n " + h + "h" + " " + m + "m");
+                        h[0] = hourOfDay;
+                        m[0] = minute;
+                        buttonTimePicker.setText("Czas pracy \n " + h[0] + "h" + " " + m[0] + "m");
                     }
                 } ,Integer.parseInt(device.get(3).split(":")[0]),Integer.parseInt(device.get(3).split(":")[1]),true);
                 timePickerDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
@@ -600,7 +601,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
 
                     try {
 
-                        sqlLiteDBHelper.updateDevice(Integer.parseInt(device.get(0)),roomName,deviceName,powerValue,number,h,m);
+                        sqlLiteDBHelper.updateDevice(Integer.parseInt(device.get(0)),roomName,deviceName,powerValue,number, h[0], m[0]);
                         Toast.makeText(view.getContext(),"Urządzenie zaktualizowane",Toast.LENGTH_SHORT).show();
 
                         dialog.dismiss();
