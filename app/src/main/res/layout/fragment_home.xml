@@ -139,23 +139,25 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
+                android:stretchColumns="*"
                 ads:layout_constraintEnd_toEndOf="parent"
                 ads:layout_constraintStart_toStartOf="parent"
                 ads:layout_constraintTop_toBottomOf="@+id/calculatorTable">
 
-                <TableRow >
+                <TableRow
+                    android:id="@+id/task213">
+
+
 
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/text_field_inputHours"
                         android:layout_width="180dp"
                         android:layout_height="match_parent"
+                        android:hint="Czas pracy : Godziny"
 
                         android:autoSizeTextType="uniform"
-                        android:foregroundGravity="left"
-                        android:hint="Czas pracy : Godziny"
                         android:textColorHint="#FFFFFF"
-                        ads:counterEnabled="true"
                         app:boxBackgroundMode="outline"
                         app:counterEnabled="true"
                         app:counterMaxLength="2"
@@ -173,18 +175,22 @@
                             android:textColor="@color/white" />
                     </com.google.android.material.textfield.TextInputLayout>
 
+                    <TextView
+                        android:id="@+id/textView4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="" />
+
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/text_field_inputMinutes"
                         android:layout_width="180dp"
                         android:layout_height="wrap_content"
                         android:autoSizeTextType="uniform"
 
-                        android:gravity="right"
                         android:hint="Czas pracy : Minuty"
                         android:textColorHint="#FFFFFF"
                         ads:counterEnabled="true"
                         app:boxBackgroundMode="outline"
-                        app:counterEnabled="true"
                         app:counterMaxLength="2"
                         app:counterTextAppearance="@style/CounterOverFlow"
                         app:errorEnabled="true">
@@ -208,6 +214,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
+                android:layout_marginTop="8dp"
                 ads:adSize="BANNER"
                 ads:adUnitId="@string/banner_ad_unit_id"
                 ads:layout_constraintEnd_toEndOf="parent"

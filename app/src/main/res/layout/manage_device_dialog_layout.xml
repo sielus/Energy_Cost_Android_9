@@ -155,5 +155,18 @@
         app:layout_constraintStart_toEndOf="@+id/text_field_inputeditTextDevicePowerLayout"
         app:layout_constraintTop_toBottomOf="@+id/text_field_inputeditTextDeviceNameLayout" />
 
+    <Switch
+        android:id="@+id/switch1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="57dp"
+        android:layout_marginEnd="18dp"
+        android:text="24h"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toStartOf="@+id/buttonDialogAccept"
+        app:layout_constraintStart_toEndOf="@+id/text_field_inputeditTextDeviceNumbersLayout"
+        app:layout_constraintTop_toBottomOf="@+id/buttonTimePicker" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
