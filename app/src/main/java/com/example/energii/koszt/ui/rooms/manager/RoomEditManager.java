@@ -26,8 +26,10 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -367,12 +369,33 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
             }
         });
 
+        final Button buttonTimePicker = dialog.findViewById(R.id.buttonTimePicker);
+
+        Switch is24hSwitch = dialog.findViewById(R.id.switch1);
+        final int[] h = new int[1];
+        final int[] m = new int[1];
+        is24hSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Toast.makeText(dialog.getContext(),String.valueOf(isChecked),Toast.LENGTH_SHORT).show();
+                if(isChecked){
+                    h[0] = 24;
+                    m[0] = 0;
+                    buttonTimePicker.setEnabled(false);
+                    buttonTimePicker.setText("Czas pracy \n " + h[0] + "h" + " " + m[0] + "m");
+
+                }else{
+                    buttonTimePicker.setEnabled(true);
+                    buttonTimePicker.setText("Czas pracy");
+
+                }
+            }
+        });
 
         final Button buttonDialogAccept = dialog.findViewById(R.id.buttonDialogAccept);
         final EditText editTextDeviceName = dialog.findViewById(R.id.editTextDeviceName);
         final EditText editTextDevicePower = dialog.findViewById(R.id.editTextDevicePower);
         final EditText editTextDeviceNumbers = dialog.findViewById(R.id.editTextDeviceNumbers);
-        final Button buttonTimePicker = dialog.findViewById(R.id.buttonTimePicker);
        // final EditText editTextDeviceWorkH = dialog.findViewById(R.id.editTextDeviceWorkH);
       //  final EditText editTextDeviceWorkM = dialog.findViewById(R.id.editTextDeviceWorkM);
 
@@ -383,8 +406,8 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         final TextInputLayout text_field_inputeditTextDevicePowerLayout = dialog.findViewById(R.id.text_field_inputeditTextDevicePowerLayout);
        // final TextInputLayout text_field_inputeditTextDeviceWorkHLayout = dialog.findViewById(R.id.text_field_inputeditTextDeviceWorkHLayout);
      //   final TextInputLayout text_field_inputeditTextDeviceWorkMLayout = dialog.findViewById(R.id.text_field_inputeditTextDeviceWorkMLayout);
-        final int[] h = new int[1];
-        final int[] m = new int[1];
+
+
         buttonTimePicker.setOnClickListener(new View.OnClickListener() {
 
             @Override
