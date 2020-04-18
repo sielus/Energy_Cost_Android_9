@@ -23,8 +23,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -334,6 +337,35 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         dialog.setContentView(R.layout.manage_device_dialog_layout);
         dialog.show();
         dialog.setCanceledOnTouchOutside(true);
+        Spinner spinner = dialog.findViewById(R.id.spinner);
+
+        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList.add(0,"Wybierz urządzenie");
+        arrayList.add("xd");
+        arrayList.add("tdfsadsa");
+        arrayList.add("Cdwacxgage");
+
+
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(dialog.getContext(),android.R.layout.simple_spinner_dropdown_item, arrayList);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinner.setAdapter(arrayAdapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(arrayAdapter.getItem(0)==arrayAdapter.getItem(position)){
+
+                }else{
+                    Toast.makeText(parent.getContext(),String.valueOf(arrayAdapter.getItem(position)),Toast.LENGTH_SHORT).show();
+
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
 
         final Button buttonDialogAccept = dialog.findViewById(R.id.buttonDialogAccept);
@@ -419,7 +451,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
                 editTextDeviceNumbers.addTextChangedListener(roomNumberTextWatcher);
 
                 if(checkInputValue(dialog)) {
- 
+
                     double powerValue = Double.parseDouble(editTextDevicePower.getText().toString());
                     String deviceNameInput = editTextDeviceName.getText().toString();
 

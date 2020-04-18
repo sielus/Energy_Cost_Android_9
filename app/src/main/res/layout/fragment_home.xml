@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/home_layoutID"
@@ -10,15 +11,210 @@
     android:background="@drawable/gradient"
     tools:context=".ui.home.HomeFragment">
 
+
     <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="51dp"
-        tools:layout_editor_absoluteY="0dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+            <TableLayout
+                android:id="@+id/calculatorTable"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+
+
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:stretchColumns="*"
+                ads:layout_constraintEnd_toEndOf="parent"
+                ads:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/title_summary">
+
+
+                <TableRow android:gravity="center">
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/text_field_inputPowerValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="74dp"
+                        android:hint="Moc urządzenia (W)"
+                        android:textColorHint="#FFFFFF"
+                        app:boxBackgroundMode="outline"
+                        app:counterEnabled="true"
+                        app:counterMaxLength="8"
+                        app:counterTextAppearance="@style/CounterOverFlow"
+                        app:errorEnabled="true">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/inputPowerValue"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="numberSigned"
+                            android:maxLength="8"
+
+                            android:textColor="@color/white" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                </TableRow>
+
+
+                <TableRow
+                    android:id="@+id/task1"
+                    android:gravity="center">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/text_field_inputEnergyCost"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:autoSizeTextType="uniform"
+                        android:hint="Koszt kWh / zł"
+                        android:textColorHint="@color/white"
+
+                        app:boxBackgroundMode="outline"
+                        app:counterEnabled="true"
+                        app:counterMaxLength="4"
+                        app:counterTextAppearance="@style/CounterOverFlow">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/inputEnergyCost"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="numberDecimal"
+                            android:text="0.48"
+                            android:textColor="@color/white" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/task13"
+                    android:gravity="center">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/text_field_inputNumberDevices"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:autoSizeTextType="uniform"
+                        android:hint="Ilość urządzeń"
+                        android:textColorHint="#FFFFFF"
+                        app:boxBackgroundMode="outline"
+                        app:counterEnabled="true"
+                        app:counterMaxLength="3"
+                        app:counterTextAppearance="@style/CounterOverFlow">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/inputNumberDevices"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+
+                            android:inputType="numberSigned"
+                            android:maxLength="3"
+                            android:textColor="@color/white" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                </TableRow>
+
+
+            </TableLayout>
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                ads:layout_constraintEnd_toEndOf="parent"
+                ads:layout_constraintStart_toStartOf="parent"
+                ads:layout_constraintTop_toBottomOf="@+id/calculatorTable">
+
+                <TableRow >
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/text_field_inputHours"
+                        android:layout_width="180dp"
+                        android:layout_height="match_parent"
+
+                        android:autoSizeTextType="uniform"
+                        android:foregroundGravity="left"
+                        android:hint="Czas pracy : Godziny"
+                        android:textColorHint="#FFFFFF"
+                        ads:counterEnabled="true"
+                        app:boxBackgroundMode="outline"
+                        app:counterEnabled="true"
+                        app:counterMaxLength="2"
+                        app:counterTextAppearance="@style/CounterOverFlow"
+                        app:errorEnabled="true">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/inputhours"
+                            android:layout_width="match_parent"
+
+                            android:layout_height="wrap_content"
+                            android:inputType="numberSigned"
+                            android:maxLength="2"
+
+                            android:textColor="@color/white" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/text_field_inputMinutes"
+                        android:layout_width="180dp"
+                        android:layout_height="wrap_content"
+                        android:autoSizeTextType="uniform"
+
+                        android:gravity="right"
+                        android:hint="Czas pracy : Minuty"
+                        android:textColorHint="#FFFFFF"
+                        ads:counterEnabled="true"
+                        app:boxBackgroundMode="outline"
+                        app:counterEnabled="true"
+                        app:counterMaxLength="2"
+                        app:counterTextAppearance="@style/CounterOverFlow"
+                        app:errorEnabled="true">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/inputminutes"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="numberSigned"
+                            android:maxLength="2"
+
+                            android:textColor="@color/white" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </TableRow>
+            </TableLayout>
+
+
+            <com.google.android.gms.ads.AdView
+                android:id="@+id/adView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                ads:adSize="BANNER"
+                ads:adUnitId="@string/banner_ad_unit_id"
+                ads:layout_constraintEnd_toEndOf="parent"
+                ads:layout_constraintStart_toStartOf="parent"
+                ads:layout_constraintTop_toBottomOf="@+id/buttonCalcCostEnergy">
+
+            </com.google.android.gms.ads.AdView>
 
             <Button
                 android:id="@+id/buttonCalcCostEnergy"
@@ -26,128 +222,16 @@
 
                 android:layout_height="60dp"
 
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="24dp"
                 android:backgroundTint="#57F9FF"
                 android:fontFamily="@font/lato_black"
                 android:text="Oblicz"
                 android:textColor="#222431"
                 android:textSize="16sp"
+                ads:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/text_field_inputNumberDevices"
-                android:layout_width="355dp"
-                android:layout_height="68dp"
-                android:layout_marginTop="180dp"
-                android:autoSizeTextType="uniform"
-                android:hint="Ilość urządzeń"
-                android:textColorHint="#FFFFFF"
-                app:boxBackgroundMode="outline"
-                app:counterEnabled="true"
-                app:counterMaxLength="3"
-                app:counterTextAppearance="@style/CounterOverFlow"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/inputNumberDevices"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-
-                    android:inputType="numberSigned"
-                    android:maxLength="3"
-                    android:textColor="@color/white" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/text_field_inputEnergyCost"
-                android:layout_width="355dp"
-                android:layout_height="71dp"
-                android:layout_marginTop="100dp"
-                android:autoSizeTextType="uniform"
-                android:hint="Koszt kWh / zł"
-                android:textColorHint="@color/white"
-
-                app:boxBackgroundMode="outline"
-                app:counterEnabled="true"
-                app:counterMaxLength="4"
-                app:counterTextAppearance="@style/CounterOverFlow"
-
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.491"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/inputEnergyCost"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="numberDecimal"
-                    android:text="0.48"
-                    android:textColor="@color/white" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/text_field_inputPowerValue"
-                android:layout_width="354dp"
-                android:layout_height="74dp"
-                android:layout_marginTop="24dp"
-                android:autoSizeTextType="uniform"
-                android:hint="Moc urządzenia (W)"
-                android:textColorHint="#FFFFFF"
-                app:boxBackgroundMode="outline"
-                app:counterEnabled="true"
-                app:counterMaxLength="8"
-                app:counterTextAppearance="@style/CounterOverFlow"
-                app:errorEnabled="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.491"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/inputPowerValue"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="numberSigned"
-                    android:maxLength="8"
-
-                    android:textColor="@color/white" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/text_field_inputMinutes"
-                android:layout_width="174dp"
-                android:layout_height="69dp"
-                android:layout_marginStart="2dp"
-
-                android:layout_marginTop="2dp"
-                android:layout_marginBottom="22dp"
-                android:autoSizeTextType="uniform"
-                android:hint="Czas pracy : Minuty"
-                android:textColorHint="#FFFFFF"
-                app:boxBackgroundMode="outline"
-                app:counterEnabled="true"
-                app:counterMaxLength="2"
-                app:counterTextAppearance="@style/CounterOverFlow"
-                app:errorEnabled="true"
-                app:layout_constraintBottom_toTopOf="@+id/tableLayout"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/text_field_inputHours"
-                app:layout_constraintTop_toBottomOf="@+id/text_field_inputNumberDevices">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/inputminutes"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="numberSigned"
-                    android:maxLength="2"
-
-                    android:textColor="@color/white" />
-            </com.google.android.material.textfield.TextInputLayout>
 
             <TableLayout
                 android:id="@+id/tableLayout"
@@ -325,40 +409,10 @@
                 </TableRow>
             </TableLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/text_field_inputHours"
-                android:layout_width="173dp"
-                android:layout_height="68dp"
-                android:layout_marginTop="2dp"
-                android:layout_marginEnd="2dp"
-                android:layout_marginBottom="22dp"
-                android:autoSizeTextType="uniform"
-                android:hint="Czas pracy : Godziny"
-                android:textColorHint="#FFFFFF"
-                app:boxBackgroundMode="outline"
-                app:counterEnabled="true"
-                app:counterMaxLength="2"
-                app:counterTextAppearance="@style/CounterOverFlow"
-                app:errorEnabled="true"
-                app:layout_constraintBottom_toTopOf="@+id/tableLayout"
-                app:layout_constraintEnd_toStartOf="@+id/text_field_inputMinutes"
-                app:layout_constraintStart_toStartOf="parent"
-
-                app:layout_constraintTop_toBottomOf="@+id/text_field_inputNumberDevices">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/inputhours"
-                    android:layout_width="match_parent"
-
-                    android:layout_height="wrap_content"
-                    android:inputType="numberSigned"
-                    android:maxLength="2"
-
-                    android:textColor="@color/white" />
-            </com.google.android.material.textfield.TextInputLayout>
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</RelativeLayout>
 
 

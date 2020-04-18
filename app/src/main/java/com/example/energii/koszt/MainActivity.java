@@ -6,6 +6,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import com.example.energii.koszt.ui.SettingActivity;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.navigation.NavigationView;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -30,6 +33,12 @@ public class MainActivity extends AppCompatActivity {
         NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         view = this.findViewById(android.R.id.content);
+
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
 
 
 

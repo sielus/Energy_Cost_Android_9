@@ -17,8 +17,18 @@ import androidx.fragment.app.Fragment;
 import com.example.energii.koszt.R;
 import com.example.energii.koszt.ui.SQLLiteDBHelper;
 import com.example.energii.koszt.ui.SettingActivity;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdRequest.Builder;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.RequestConfiguration;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+
+
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 public class HomeFragment extends Fragment {
@@ -33,13 +43,25 @@ public class HomeFragment extends Fragment {
     private String powerCost;
     private TextInputEditText inputEnergyCost;
     int numberAfterDot;
+    private AdView mAdView;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_home, container, false);
         Button buttonCalcCostEnergy = root.findViewById(R.id.buttonCalcCostEnergy);
+
+
         sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
         SettingActivity settingActivity = new SettingActivity();
         numberAfterDot = settingActivity.getNumberAfterDot(root);
+
+
+        mAdView = root.findViewById(R.id.adView);
+
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
+
         buttonCalcCostEnergy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,6 +79,10 @@ public class HomeFragment extends Fragment {
                 }
             }
         });
+
+
+
+
 
         TextInputEditText inputPowerValue = root.findViewById(R.id.inputPowerValue);
         TextInputEditText inputNumberDevices = root.findViewById(R.id.inputNumberDevices);
