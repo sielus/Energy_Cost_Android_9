@@ -16,19 +16,13 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import com.example.energii.koszt.R;
 import com.example.energii.koszt.ui.SQLLiteDBHelper;
-import com.example.energii.koszt.ui.SettingActivity;
+import com.example.energii.koszt.ui.settings.SettingActivity;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdRequest.Builder;
-import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.RequestConfiguration;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
 public class HomeFragment extends Fragment {

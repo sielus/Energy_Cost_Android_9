@@ -1,7 +1,5 @@
 package com.example.energii.koszt.ui.rooms.manager;
 
-import androidx.annotation.ColorInt;
-import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -9,7 +7,6 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.database.Cursor;
@@ -35,7 +32,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import com.example.energii.koszt.R;
-import com.example.energii.koszt.ui.SettingActivity;
+import com.example.energii.koszt.ui.settings.SettingActivity;
 import com.example.energii.koszt.ui.rooms.RoomListFragment;
 import com.example.energii.koszt.ui.SQLLiteDBHelper;
 import com.example.energii.koszt.ui.exception.SQLEnergyCostException;
@@ -56,7 +53,6 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
@@ -617,8 +613,33 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         final int[] m = {Integer.parseInt(device.get(3).split(":")[1])};
       //  editTextDeviceWorkH.setText(device.get(3).split(":")[0]);
         //editTextDeviceWorkM.setText(device.get(3).split(":")[1]);
+        Switch is24hSwitch = dialog.findViewById(R.id.switch1);
         buttonTimePicker.setText("Czas pracy \n " + h[0] + "h" + " " + m[0] + "m");
+        if(h[0]==24){
+            is24hSwitch.setChecked(true);
+            buttonTimePicker.setEnabled(false);
+        }else{
+            is24hSwitch.setChecked(false);
+            buttonTimePicker.setEnabled(true);
 
+        }
+        is24hSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Toast.makeText(dialog.getContext(),String.valueOf(isChecked),Toast.LENGTH_SHORT).show();
+                if(isChecked){
+                    h[0] = 24;
+                    m[0] = 0;
+                    buttonTimePicker.setEnabled(false);
+                    buttonTimePicker.setText("Czas pracy \n " + h[0] + "h" + " " + m[0] + "m");
+
+                }else{
+                    buttonTimePicker.setEnabled(true);
+                    buttonTimePicker.setText("Czas pracy \n " + h[0] + "h" + " " + m[0] + "m");
+
+                }
+            }
+        });
         buttonTimePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

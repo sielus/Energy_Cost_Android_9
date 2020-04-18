@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient"
-    tools:context=".ui.SettingActivity">
+    tools:context=".ui.settings.SettingActivity">
 
 
     <com.google.android.material.textfield.TextInputLayout
@@ -41,42 +41,48 @@
         android:id="@+id/buttonSettingsAccept"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="220dp"
+        android:layout_marginStart="278dp"
+        android:layout_marginTop="148dp"
+        android:layout_marginEnd="24dp"
         android:text="Zatwierdź"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.947"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_field_inputinputEnergyCostGlobal" />
+        app:layout_constraintTop_toBottomOf="@+id/RecyckerViewSettings" />
 
     <TextView
         android:id="@+id/textViewNumberDecimal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="28dp"
-        android:layout_marginBottom="110dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="69dp"
         android:fontFamily="@font/lato_light"
         android:gravity="center"
         android:text="Dokładność \n obliczeniowa"
         android:textColor="@color/white"
         android:textSize="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/buttonSettingsAccept"
+        app:layout_constraintBottom_toTopOf="@+id/RecyckerView"
+        app:layout_constraintEnd_toStartOf="@+id/seekBarNumericDecimal"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_field_inputinputEnergyCostGlobal"
-        app:layout_constraintVertical_bias="0.729" />
+        app:layout_constraintTop_toBottomOf="@+id/text_field_inputinputEnergyCostGlobal" />
 
     <TextView
         android:id="@+id/textViewNumericView"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
-        android:layout_marginEnd="28dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="69dp"
         android:fontFamily="@font/lato_light"
         android:text="TextView"
         android:textColor="@color/white"
         android:textSize="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/buttonSettingsAccept"
+        app:layout_constraintBottom_toTopOf="@+id/RecyckerView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_field_inputinputEnergyCostGlobal"
-        app:layout_constraintVertical_bias="0.276" />
+        app:layout_constraintStart_toEndOf="@+id/seekBarNumericDecimal"
+        app:layout_constraintTop_toBottomOf="@+id/text_field_inputinputEnergyCostGlobal" />
 
     <SeekBar
         android:id="@+id/seekBarNumericDecimal"
@@ -84,12 +90,48 @@
         android:layout_height="30dp"
 
         android:layout_marginTop="44dp"
-        android:layout_marginBottom="138dp"
+        android:layout_marginBottom="69dp"
         android:max="6"
         android:min="1"
-        app:layout_constraintBottom_toTopOf="@+id/buttonSettingsAccept"
+        app:layout_constraintBottom_toTopOf="@+id/RecyckerView"
         app:layout_constraintStart_toEndOf="@+id/textViewNumberDecimal"
-        app:layout_constraintTop_toBottomOf="@+id/text_field_inputinputEnergyCostGlobal"
-        app:layout_constraintVertical_bias="0.333" />
+        app:layout_constraintTop_toBottomOf="@+id/text_field_inputinputEnergyCostGlobal" />
+
+    <TextView
+        android:id="@+id/title_summary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="29dp"
+        android:fontFamily="@font/lato_light"
+        android:text="Lista przykładowych urządzeń"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewNumberDecimal" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/RecyckerViewSettings"
+        android:layout_width="match_parent"
+        android:layout_height="173dp"
+        android:layout_marginTop="68dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/seekBarNumericDecimal">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <Button
+        android:id="@+id/addDefaultDevice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="307dp"
+        android:layout_marginEnd="16dp"
+        android:text="Dodaj urządzenie"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/RecyckerViewSettings" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
