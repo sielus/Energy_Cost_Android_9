@@ -9,22 +9,6 @@
     android:visibility="visible">
 
 
-    <Spinner
-        android:id="@+id/spinner"
-        android:layout_width="150dp"
-        android:layout_height="56dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="48dp"
-        android:autofillHints="dwadawdaw"
-        android:theme="@style/mySpinnerItemStyle"
-        app:layout_constraintBottom_toTopOf="@+id/buttonTimePicker"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.767"
-        app:layout_constraintStart_toEndOf="@+id/text_field_inputeditTextDeviceNameLayout"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        tools:ignore="HardcodedText" />
-
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_field_inputeditTextDeviceNameLayout"
         android:layout_width="175dp"
@@ -64,29 +48,29 @@
         android:layout_width="175dp"
         android:layout_height="73dp"
 
-        android:layout_marginTop="12dp"
-
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="49dp"
         android:autoSizeTextType="uniform"
         android:hint="Moc urządzenia (W)"
         android:textColorHint="#FFFFFF"
+
         app:boxBackgroundMode="outline"
         app:counterEnabled="true"
         app:counterMaxLength="8"
-
         app:counterTextAppearance="@style/CounterOverFlow"
         app:errorEnabled="true"
-        app:layout_constraintEnd_toStartOf="@+id/switch1"
-        app:layout_constraintHorizontal_bias="0.312"
+        app:layout_constraintEnd_toStartOf="@+id/buttonTimePicker"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_field_inputeditTextDeviceNameLayout">
 
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editTextDevicePower"
-            android:digits="0123456789"
-
             android:layout_width="match_parent"
+
             android:layout_height="wrap_content"
+            android:digits="0123456789"
             android:inputType="numberSigned"
             android:maxLength="8"
             android:textColor="@color/white" />
@@ -111,17 +95,17 @@
         app:errorEnabled="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.042"
+        app:layout_constraintHorizontal_bias="0.033"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_field_inputeditTextDevicePowerLayout"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="1.0">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editTextDeviceNumbers"
-            android:digits="0123456789"
-
             android:layout_width="match_parent"
+
             android:layout_height="wrap_content"
+            android:digits="0123456789"
             android:inputType="numberSigned"
             android:maxLength="3"
             android:textColor="@color/white" />
@@ -133,10 +117,10 @@
         android:layout_height="48dp"
         android:layout_marginEnd="32dp"
         android:backgroundTint="#1683B1"
-        android:textColor="@color/white"
-
         android:fontFamily="@font/lato_bold"
+
         android:text="ok"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -146,7 +130,9 @@
         android:id="@+id/buttonTimePicker"
         android:layout_width="118dp"
         android:layout_height="61dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="49dp"
+        android:layout_marginTop="78dp"
+        android:layout_marginEnd="61dp"
         android:backgroundTint="#1683B1"
         android:fontFamily="@font/lato_bold"
         android:text="Czas pracy"
@@ -154,17 +140,16 @@
         android:textSize="15dp"
         app:icon="@drawable/ic_access_time_black_24dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.62"
-        app:layout_constraintStart_toEndOf="@+id/text_field_inputeditTextDevicePowerLayout"
-        app:layout_constraintTop_toBottomOf="@+id/text_field_inputeditTextDeviceNameLayout" />
+        app:layout_constraintStart_toEndOf="@+id/text_field_inputeditTextDeviceNameLayout"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Switch
         android:id="@+id/switch1"
         android:layout_width="wrap_content"
         android:layout_height="27dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="41dp"
-        android:layout_marginEnd="21dp"
+        android:layout_marginStart="39dp"
+        android:layout_marginTop="55dp"
+        android:layout_marginEnd="19dp"
         android:text="24h"
         android:textColor="@color/white"
         app:layout_constraintEnd_toStartOf="@+id/buttonDialogAccept"

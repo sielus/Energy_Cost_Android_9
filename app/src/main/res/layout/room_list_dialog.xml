@@ -38,6 +38,8 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
+        android:backgroundTint="#344955"
+        android:textColor="@color/white"
         android:id="@+id/ButtonAddRoom"
         android:layout_width="102dp"
         android:layout_height="53dp"

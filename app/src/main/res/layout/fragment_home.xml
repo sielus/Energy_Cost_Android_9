@@ -65,7 +65,7 @@
                             android:layout_height="wrap_content"
                             android:inputType="numberSigned"
                             android:maxLength="8"
-
+                            android:digits="0123456789"
                             android:textColor="@color/white" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -96,6 +96,7 @@
                             android:layout_height="wrap_content"
                             android:inputType="numberDecimal"
                             android:text="0.48"
+
                             android:textColor="@color/white" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -122,6 +123,7 @@
                             android:id="@+id/inputNumberDevices"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:digits="0123456789"
 
                             android:inputType="numberSigned"
                             android:maxLength="3"
@@ -152,7 +154,7 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/text_field_inputHours"
-                        android:layout_width="180dp"
+                        android:layout_width="160dp"
                         android:layout_height="match_parent"
                         android:hint="Czas pracy : Godziny"
 
@@ -167,6 +169,7 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/inputhours"
                             android:layout_width="match_parent"
+                            android:digits="0123456789"
 
                             android:layout_height="wrap_content"
                             android:inputType="numberSigned"
@@ -183,13 +186,14 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/text_field_inputMinutes"
-                        android:layout_width="180dp"
+                        android:layout_width="160dp"
                         android:layout_height="wrap_content"
                         android:autoSizeTextType="uniform"
 
                         android:hint="Czas pracy : Minuty"
                         android:textColorHint="#FFFFFF"
                         ads:counterEnabled="true"
+
                         app:boxBackgroundMode="outline"
                         app:counterMaxLength="2"
                         app:counterTextAppearance="@style/CounterOverFlow"
@@ -201,6 +205,8 @@
                             android:layout_height="wrap_content"
                             android:inputType="numberSigned"
                             android:maxLength="2"
+                            android:digits="0123456789"
+
 
                             android:textColor="@color/white" />
                     </com.google.android.material.textfield.TextInputLayout>

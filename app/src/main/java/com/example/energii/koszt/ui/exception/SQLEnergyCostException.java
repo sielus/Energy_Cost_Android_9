@@ -13,6 +13,12 @@ public class SQLEnergyCostException {
         }
     }
 
+    public static class WrongTime extends Exception {
+        public WrongTime() {
+            super("Proszę wybrać czas pracy urządzenia");
+        }
+    }
+
     public static class EmptyField extends Exception {
         public EmptyField(String fieldName) {
             super("Pole \"" + fieldName +  "\" nie może być puste");

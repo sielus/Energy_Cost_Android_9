@@ -39,11 +39,13 @@
 
     <Button
         android:id="@+id/buttonSettingsAccept"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="278dp"
         android:layout_marginTop="148dp"
         android:layout_marginEnd="24dp"
+        android:backgroundTint="#57F9FF"
         android:text="Zatwierdź"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -122,15 +124,40 @@
 
     </androidx.recyclerview.widget.RecyclerView>
 
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="13dp"
+        android:background="@drawable/border"
+        app:layout_constraintBottom_toTopOf="@+id/title_summary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewNumberDecimal">
+
+    </View>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:background="@drawable/border"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addDefaultDevice">
+
+    </View>
+
     <Button
         android:id="@+id/addDefaultDevice"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="307dp"
-        android:layout_marginEnd="16dp"
+        android:backgroundTint="#57F9FF"
         android:text="Dodaj urządzenie"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/RecyckerViewSettings" />
 

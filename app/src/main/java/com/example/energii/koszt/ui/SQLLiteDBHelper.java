@@ -21,7 +21,6 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         String addVariable;
         String numberAfterDot;
 
-
         String roomListTable = "CREATE TABLE room_list " +
                                     "(" +
                                         "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -37,6 +36,16 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
                                                     " value varchar(100) NOT NULL UNIQUE " +
                                                 ");";
         db.execSQL(configurationVariableTable);
+
+        String defaultDevice = "CREATE TABLE default_device_settings " +
+                                    "(" +
+                                        "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                                        "name varchar(100) NOT NULL UNIQUE, " +
+                                        "power_value NUMERIC(8,2) NOT NULL, " +
+                                        "work_time text NOT NULL, " +
+                                        "device_number NUMERIC(3,0) NOT NULL " +
+                                    ")";
+        db.execSQL(defaultDevice);
 
         addVariable = "INSERT INTO configuration_variable (name, value) values (\"powerCost\", \"0.60\")";
         numberAfterDot = "INSERT INTO configuration_variable (name, value) values (\"numberAfterDot\", \"2\")";
@@ -91,9 +100,11 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-    public void addDevice(String roomName, String deviceName, double powerValue, int hour, int minutes, int deviceNumber) throws SQLEnergyCostException.EmptyField, SQLEnergyCostException.DuplicationDevice {
-        if (roomName.isEmpty() || deviceName.isEmpty() || powerValue == 0 || (hour == 0 && minutes == 0) || deviceNumber == 0) {
+    public void addDevice(String roomName, String deviceName, double powerValue, int hour, int minutes, int deviceNumber) throws SQLEnergyCostException.EmptyField, SQLEnergyCostException.DuplicationDevice, SQLEnergyCostException.WrongTime {
+        if (roomName.isEmpty() || deviceName.isEmpty() || powerValue == 0 || deviceNumber == 0) {
             throw new SQLEnergyCostException.EmptyField();
+        }else if(hour == 0 && minutes == 0) {
+            throw new SQLEnergyCostException.WrongTime();
         }
 
         double energyAmount;
@@ -174,9 +185,11 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-    public void updateDevice(int deviceId, String roomName, String newDeviceName, double powerValue, int deviceNumber, int hour, int minutes) throws SQLEnergyCostException.EmptyField, SQLEnergyCostException.DuplicationDevice {
-        if (roomName.isEmpty() || newDeviceName.isEmpty() || powerValue == 0 || (hour == 0 && minutes == 0) || deviceNumber == 0) {
+    public void updateDevice(int deviceId, String roomName, String newDeviceName, double powerValue, int deviceNumber, int hour, int minutes) throws SQLEnergyCostException.EmptyField, SQLEnergyCostException.DuplicationDevice, SQLEnergyCostException.WrongTime {
+        if (roomName.isEmpty() || newDeviceName.isEmpty() || powerValue == 0 || deviceNumber == 0) {
             throw new SQLEnergyCostException.EmptyField();
+        }else if(hour == 0 && minutes == 0) {
+             throw new SQLEnergyCostException.WrongTime();
         }
 
         if (!checkDeviceName(roomName, deviceId).getString(0).equals(newDeviceName)) {
@@ -299,7 +312,7 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         String query;
 
         query = "SELECT energy_amount," +
-                        "energy_cost_zl " +
+                       "energy_cost_zl " +
                 "FROM   room_list " +
                 "WHERE  name = ?";
 
@@ -319,6 +332,93 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         cursor = dbhRead.rawQuery(query, null);
 
         return cursor;
+    }
+
+    public Cursor getDefaultDeviceList() {
+        SQLiteDatabase dbhRead = getReadableDatabase();
+        Cursor cursor;
+        String query;
+
+        query = "SELECT NAME," +
+                       "power_value," +
+                       "work_time," +
+                       "device_number " +
+                "FROM default_device_settings";
+        cursor = dbhRead.rawQuery(query, null);
+
+        return cursor;
+    }
+
+    public Cursor getDetailsDefaultDevice(String deviceName) {
+        SQLiteDatabase dbhRead = getReadableDatabase();
+        Cursor cursor;
+        String query;
+
+        query = "SELECT name," +
+                       "power_value," +
+                       "work_time," +
+                       "device_number " +
+                "FROM  default_device_settings " +
+                "WHERE name = ?";
+        cursor = dbhRead.rawQuery(query, new String[] {deviceName});
+
+        return cursor;
+    }
+
+    @SuppressLint("Recycle")
+    public void deleteDefaultDevice(String deviceName) {
+        SQLiteDatabase dbWriter = getWritableDatabase();
+        String where = "name = ?";
+        dbWriter.delete("default_device_settings", where, new String[]{deviceName});
+    }
+
+    public void addDefaultDevice(String deviceName, double powerValue, int hour, int minutes, int deviceNumber) throws SQLEnergyCostException.EmptyField, SQLEnergyCostException.DuplicationDevice, SQLEnergyCostException.WrongTime {
+        if (deviceName.isEmpty() || powerValue == 0 ||  deviceNumber == 0) {
+            throw new SQLEnergyCostException.EmptyField();
+        }else if(hour == 0 && minutes == 0) {
+            throw new SQLEnergyCostException.WrongTime();
+        }
+
+        String workTime = hour + ":" + minutes;
+        SQLiteDatabase dbhWrite = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put("name", deviceName);
+        contentValues.put("power_value", powerValue);
+        contentValues.put("work_time", workTime);
+        contentValues.put("device_number", deviceNumber);
+
+        long resultInsert = dbhWrite.insert("default_device_settings", null, contentValues);
+
+        if (resultInsert == -1) {
+            throw new SQLEnergyCostException.DuplicationDevice(deviceName);
+        }
+    }
+
+    public void updateDefaultDevice(String newDeviceName, String oldDeviceName, double powerValue, int hour, int minutes, int deviceNumber) throws SQLEnergyCostException.EmptyField, SQLEnergyCostException.DuplicationDevice, SQLEnergyCostException.WrongTime {
+        if (newDeviceName.isEmpty() || oldDeviceName.isEmpty() || powerValue == 0 || deviceNumber == 0) {
+            throw new SQLEnergyCostException.EmptyField();
+        }else if(hour == 0 && minutes == 0) {
+            throw new SQLEnergyCostException.WrongTime();
+        }
+
+        if(!oldDeviceName.equals(newDeviceName)) {
+            if(checkDeviceName(newDeviceName).getCount() == 1) {
+                throw new SQLEnergyCostException.DuplicationDevice(newDeviceName);
+            }
+       }
+
+        SQLiteDatabase dbWriter = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        String workTime = hour + ":" + minutes;
+        String where = "name = ?";
+
+        contentValues.put("name", newDeviceName);
+        contentValues.put("power_value", powerValue);
+        contentValues.put("work_time", workTime);
+        contentValues.put("device_number", deviceNumber);
+
+        dbWriter.update("default_device_settings", contentValues, where, new String[] {oldDeviceName});
     }
 
     private Cursor checkDeviceName(String roomName, int deviceId) {
@@ -350,6 +450,22 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         cursor.moveToFirst();
         return cursor;
     }
+
+    private Cursor checkDeviceName(String deviceName) {
+        SQLiteDatabase dbhRead = getReadableDatabase();
+        Cursor cursor;
+        String query;
+
+        query = "SELECT name " +
+                "FROM   default_device_settings " +
+                "WHERE  name = ?";
+        cursor = dbhRead.rawQuery(query, new String[] {deviceName});
+
+        cursor.moveToFirst();
+        return cursor;
+    }
+
+
 
     private String changeSpaceInName(String name) {
         return name.trim().replace(" ", "_");

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -70,6 +71,13 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
     private List<String> deviceName = new ArrayList<>();
     private List<String> deviceTimeWork = new LinkedList<>();
     private List<String> deviceNumber = new LinkedList<>();
+
+    ArrayList<String> defaultListDeviceName = new ArrayList<>();
+    ArrayList<String> defaultListDevicePower= new ArrayList<>();
+    ArrayList<String> defaultListDeviceTimeWork = new ArrayList<>();
+    ArrayList<String> defaultListDeviceNumber = new ArrayList<>();
+
+
     public TextInputLayout text_field_inputRoomNameLayout;
     PieChart pieChart;
 
@@ -122,11 +130,16 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         setTitle("Pokój " + room_name.replace("_"," "));
 
 
+
+
         SettingActivity settingActivity = new SettingActivity();
         numberAfterDot = settingActivity.getNumberAfterDot(view);
 
         sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
 
+        clearDefaultDeviceList();
+
+        getDefaultDeviceList(sqlLiteDBHelper.getDefaultDeviceList());
 
         getDeviceCostKWH(sqlLiteDBHelper.getDeviceDetails(room_name));
 
@@ -288,6 +301,26 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         }
     }
 
+    void getDefaultDeviceList(Cursor cursor) {
+        if (cursor.getCount() != 0) {
+            clearDefaultDeviceList();
+            defaultListDeviceName.add(0,"Gotowy schemat");
+            defaultListDeviceNumber.add(0,"");
+            defaultListDeviceTimeWork.add(0,"0:0");
+            defaultListDevicePower.add(0,"");
+
+
+            while(cursor.moveToNext()) {
+
+                defaultListDeviceName.add(cursor.getString(0));
+                defaultListDevicePower.add(cursor.getString(1));
+                defaultListDeviceNumber.add(cursor.getString(3));
+                defaultListDeviceTimeWork.add(cursor.getString(2));
+            }
+
+        }
+    }
+
     boolean getRoomCostKwh(Cursor cursor){
         roomCostKWH.clear();
 
@@ -337,17 +370,24 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         dialog.setCanceledOnTouchOutside(true);
         Spinner spinner = dialog.findViewById(R.id.spinner);
 
-        ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add(0,"Wybierz urządzenie");
-        arrayList.add("xd");
-        arrayList.add("tdfsadsa");
-        arrayList.add("Cdwacxgage");
+        final EditText editTextDeviceName = dialog.findViewById(R.id.editTextDeviceName);
+        final EditText editTextDevicePower = dialog.findViewById(R.id.editTextDevicePower);
+        final EditText editTextDeviceNumbers = dialog.findViewById(R.id.editTextDeviceNumbers);
 
 
-        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(dialog.getContext(),android.R.layout.simple_spinner_dropdown_item, arrayList);
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(dialog.getContext(),android.R.layout.simple_spinner_dropdown_item, defaultListDeviceName);
+
+
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
+
         spinner.setAdapter(arrayAdapter);
+        final int[] h = new int[1];
+        final int[] m = new int[1];
+        final Button buttonTimePicker = dialog.findViewById(R.id.buttonTimePicker);
+        final Switch is24hSwitch = dialog.findViewById(R.id.switch1);
+
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -355,6 +395,21 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
 
                 }else{
                     Toast.makeText(parent.getContext(),String.valueOf(arrayAdapter.getItem(position)),Toast.LENGTH_SHORT).show();
+                    editTextDeviceName.setText(defaultListDeviceName.get(position));
+                    editTextDevicePower.setText(defaultListDevicePower.get(position));
+                    editTextDeviceNumbers.setText(defaultListDeviceNumber.get(position));
+                    h[0] = Integer.parseInt(defaultListDeviceTimeWork.get(position).split(":")[0]);
+                    m[0] = Integer.parseInt(defaultListDeviceTimeWork.get(position).split(":")[1]);
+                    buttonTimePicker.setText("Czas pracy \n " + h[0] + "h" + " " + m[0] + "m");
+                    if(h[0]==24){
+                        is24hSwitch.setChecked(true);
+                        buttonTimePicker.setEnabled(false);
+                    }else{
+                        is24hSwitch.setChecked(false);
+                        buttonTimePicker.setText("Czas pracy \n " + h[0] + "h" + " " + m[0] + "m");
+                        buttonTimePicker.setEnabled(true);
+
+                    }
 
                 }
             }
@@ -365,11 +420,11 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
             }
         });
 
-        final Button buttonTimePicker = dialog.findViewById(R.id.buttonTimePicker);
 
-        Switch is24hSwitch = dialog.findViewById(R.id.switch1);
-        final int[] h = new int[1];
-        final int[] m = new int[1];
+
+
+
+
         is24hSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -389,9 +444,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         });
 
         final Button buttonDialogAccept = dialog.findViewById(R.id.buttonDialogAccept);
-        final EditText editTextDeviceName = dialog.findViewById(R.id.editTextDeviceName);
-        final EditText editTextDevicePower = dialog.findViewById(R.id.editTextDevicePower);
-        final EditText editTextDeviceNumbers = dialog.findViewById(R.id.editTextDeviceNumbers);
+
        // final EditText editTextDeviceWorkH = dialog.findViewById(R.id.editTextDeviceWorkH);
       //  final EditText editTextDeviceWorkM = dialog.findViewById(R.id.editTextDeviceWorkM);
 
@@ -410,7 +463,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
             public void onClick(View v) {
 
                 TimePickerDialog timePickerDialog = new TimePickerDialog(dialog.getContext() , R.style.TimePickerTheme, new TimePickerDialog.OnTimeSetListener() {
-
+                    
 
                     @Override
                     public void onTimeSet(TimePicker timePickerV, int hourOfDay, int minute) {
@@ -419,10 +472,12 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
                          m[0] = minute;
                         buttonTimePicker.setText("Czas pracy \n " + h[0] + "h" + " " + m[0] + "m");
                     }
-                } ,12,0,true);
+                } ,h[0],m[0],true);
                 timePickerDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 
+
                 timePickerDialog.show();
+
             }
         });
 
@@ -477,23 +532,30 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
                     int number = Integer.parseInt(editTextDeviceNumbers.getText().toString());
 
                     try {
-                        sqlLiteDBHelper.addDevice(room_name, deviceNameInput, powerValue, h[0], m[0], number);
+                        try {
+                            sqlLiteDBHelper.addDevice(room_name, deviceNameInput, powerValue, h[0], m[0], number);
+                            Toast.makeText(view.getContext(), "Urządzenie dodane", Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
 
-                        Toast.makeText(view.getContext(), "Urządzenie dodane", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
+                            RoomListFragment roomListFragment = new RoomListFragment();
+                            ViewDataFromDB(sqlLiteDBHelper.getRoomDeviceList(room_name));
 
-                        RoomListFragment roomListFragment = new RoomListFragment();
-                        ViewDataFromDB(sqlLiteDBHelper.getRoomDeviceList(room_name));
+                            roomListFragment.generateChart(RoomListFragment.root);
+                            generateChartinRoom(view);
 
-                        roomListFragment.generateChart(RoomListFragment.root);
-                        generateChartinRoom(view);
+                            roomListFragment.clearRoomList();
+                            roomListFragment.ViewDataFromDB(sqlLiteDBHelper.getRoomList());
+                            roomListFragment.refreshListView(RoomListFragment.root);
 
-                        roomListFragment.clearRoomList();
-                        roomListFragment.ViewDataFromDB(sqlLiteDBHelper.getRoomList());
-                        roomListFragment.refreshListView(RoomListFragment.root);
+                            refreshListView(view);
+                            refreshTable();
 
-                        refreshListView(view);
-                        refreshTable();
+                        } catch (SQLEnergyCostException.WrongTime wrongTime) {
+                            System.out.println(h[0]);
+                            Toast.makeText(view.getContext(),wrongTime.getMessage(),Toast.LENGTH_SHORT).show();
+                        }
+
+
 
                     } catch (SQLEnergyCostException.EmptyField | SQLEnergyCostException.DuplicationDevice errorMessage) {
                         Toast.makeText(view.getContext(), errorMessage.getMessage(), Toast.LENGTH_SHORT).show();
@@ -577,6 +639,10 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
 
     }
 
+    private void clearDefaultDeviceList() {
+        defaultListDeviceName.clear();
+    }
+
     public void showUpdateDialog(final View view, final String roomName, String deviceName){
         final Dialog dialog = new Dialog(view.getContext());
 
@@ -585,7 +651,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         ViewDataFromDB(sqlLiteDBHelper.getRoomDeviceList(room_name));
 
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.manage_device_dialog_layout);
+        dialog.setContentView(R.layout.device_edit_dialog_layout_no_spinner);
         dialog.setCancelable(false);
         dialog.show();
 
@@ -624,16 +690,20 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
 
         }
         is24hSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @SuppressLint("ResourceAsColor")
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 Toast.makeText(dialog.getContext(),String.valueOf(isChecked),Toast.LENGTH_SHORT).show();
                 if(isChecked){
                     h[0] = 24;
                     m[0] = 0;
+
                     buttonTimePicker.setEnabled(false);
                     buttonTimePicker.setText("Czas pracy \n " + h[0] + "h" + " " + m[0] + "m");
 
                 }else{
+                    final int[] h = {Integer.parseInt(device.get(3).split(":")[0])};
+                    final int[] m = {Integer.parseInt(device.get(3).split(":")[1])};
                     buttonTimePicker.setEnabled(true);
                     buttonTimePicker.setText("Czas pracy \n " + h[0] + "h" + " " + m[0] + "m");
 
@@ -665,19 +735,21 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
                 editTextDeviceName.addTextChangedListener(roomNameTextWatcher);
                 editTextDevicePower.addTextChangedListener(roomPowerTextWatcher);
                 editTextDeviceNumbers.addTextChangedListener(roomNumberTextWatcher);
-              //  editTextDeviceWorkH.addTextChangedListener(roomWorkTimeHTextWatcher);
-               // editTextDeviceWorkM.addTextChangedListener(roomWorkTimeMTextWatcher);
+
 
                 if(checkInputValue(dialog)){
                     String deviceName = editTextDeviceName.getText().toString();
                     double powerValue = Double.parseDouble(editTextDevicePower.getText().toString());
-                  //  int h = Integer.parseInt(editTextDeviceWorkH.getText().toString());
-                 //   int m = Integer.parseInt(editTextDeviceWorkM.getText().toString());
+
                     int number = Integer.parseInt(editTextDeviceNumbers.getText().toString());
 
                     try {
 
-                        sqlLiteDBHelper.updateDevice(Integer.parseInt(device.get(0)),roomName,deviceName,powerValue,number, h[0], m[0]);
+                        try {
+                            sqlLiteDBHelper.updateDevice(Integer.parseInt(device.get(0)),roomName,deviceName,powerValue,number, h[0], m[0]);
+                        } catch (SQLEnergyCostException.WrongTime wrongTime) {
+                            wrongTime.printStackTrace();
+                        }
                         Toast.makeText(view.getContext(),"Urządzenie zaktualizowane",Toast.LENGTH_SHORT).show();
 
                         dialog.dismiss();
@@ -902,7 +974,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
             return;
         }
 
-        BarDataSet barDataSet = new BarDataSet(barEntries, "Koszty urządzeń (zł) / 24h");
+        BarDataSet barDataSet = new BarDataSet(barEntries, "Koszty dobowe urządzeń");
 
         barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
         barChart.getAxisLeft().setAxisMinimum(0);
@@ -964,7 +1036,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         pieChart.setHoleRadius(30);
         pieChart.setTransparentCircleRadius(10);
         pieChart.getDescription().setEnabled(false);
-        pieChart.setCenterText("Urządzenia \n kWh / 24h");
+        pieChart.setCenterText("Zużycie kWh");
         pieChart.animate();
     }
 }

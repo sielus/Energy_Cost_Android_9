@@ -364,7 +364,7 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
             return;
         }
 
-        BarDataSet barDataSet = new BarDataSet(barEntries, "Koszty Pokoi (zł) / 24h");
+        BarDataSet barDataSet = new BarDataSet(barEntries, "Koszty dobowe pokoi");
         barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
         barChart.getLegend().setEnabled(false);
         barChart.getAxisLeft().setAxisMinimum(0);
@@ -426,7 +426,7 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
         pieChart.setTransparentCircleRadius(10);
 
         pieChart.getDescription().setEnabled(false);
-        pieChart.setCenterText("Pokoje \n kWh / 24h");
+        pieChart.setCenterText("Zużycie kWh ");
         pieChart.animate();
 
     }

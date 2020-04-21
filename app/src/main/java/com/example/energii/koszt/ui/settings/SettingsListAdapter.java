@@ -37,8 +37,7 @@ public class SettingsListAdapter extends RecyclerView.Adapter<SettingsListAdapte
     @Override
     public SettingsListAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.device_row, parent,false);
-
+        View view = inflater.inflate(R.layout.default_device_list_row, parent,false);
 
         return new SettingsListAdapter.MyViewHolder(view, onNoteListener);
     }
