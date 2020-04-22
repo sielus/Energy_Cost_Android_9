@@ -304,7 +304,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
     void getDefaultDeviceList(Cursor cursor) {
         if (cursor.getCount() != 0) {
             clearDefaultDeviceList();
-            defaultListDeviceName.add(0,"Gotowy schemat");
+            defaultListDeviceName.add(0,"Przykłady");
             defaultListDeviceNumber.add(0,"");
             defaultListDeviceTimeWork.add(0,"0:0");
             defaultListDevicePower.add(0,"");
