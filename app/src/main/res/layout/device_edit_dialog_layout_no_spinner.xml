@@ -24,21 +24,20 @@
 
         <Button
             android:id="@+id/buttonTimePicker"
-            android:layout_width="120dp"
-            android:layout_height="60dp"
+            android:layout_width="124dp"
+            android:layout_height="65dp"
             android:text="Czas pracy"
             android:autoSizeTextType="uniform"
-            android:autoSizeMaxTextSize="13dp"
-            android:drawableLeft="@drawable/ic_access_time_black_24dp"
+            android:autoSizeMaxTextSize="14dp"
 
             android:drawableTint="@color/white"
             android:backgroundTint="#1683B1"
 
             android:fontFamily="@font/lato_bold"
-            android:scaleType="fitCenter"
+            android:scaleType="fitEnd"
 
             android:textColor="@color/white"
-            android:textSize="13dp" />
+            android:textSize="14dp" />
 
         <Switch
             android:id="@+id/switch1"

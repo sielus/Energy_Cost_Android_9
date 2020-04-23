@@ -45,6 +45,8 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -76,6 +78,8 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
     ArrayList<PieEntry> pieEntry = new ArrayList<PieEntry>();
     ArrayList<BarEntry> barEntries = new ArrayList<BarEntry>();
     TextView title_summary;
+    private AdView mAdView;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_rooms, container, false);
@@ -97,6 +101,9 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
 
         FloatingActionButton floatingActionButtonAddRoomDialog = root.findViewById(R.id.buttonAddRoom);
 
+        mAdView = root.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
 
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);

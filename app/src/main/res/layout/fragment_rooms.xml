@@ -10,25 +10,41 @@
     tools:context=".ui.rooms.RoomListFragment">
 
     <ScrollView
+        android:id="@+id/scrollView3"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
->
+        android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
             android:id="@+id/ConstraintLayoutRoomList"
+            android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+
+            <com.google.android.gms.ads.AdView
+                android:id="@+id/adView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+
+
+                android:layout_marginBottom="8dp"
+                app:adSize="LARGE_BANNER"
+                app:adUnitId="ca-app-pub-3940256099942544/6300978111"
+                app:layout_constraintBottom_toTopOf="@+id/RecyckerView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/RecyckerView"
                 android:layout_width="match_parent"
                 android:layout_height="234dp"
 
+                android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toBottomOf="@+id/adView">
 
             </androidx.recyclerview.widget.RecyclerView>
 
@@ -246,8 +262,8 @@
                 android:id="@+id/pieChart"
                 android:layout_width="match_parent"
                 android:layout_height="325dp"
-                android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.1"
@@ -255,9 +271,12 @@
                 app:layout_constraintTop_toBottomOf="@+id/bartChart">
 
             </com.github.mikephil.charting.charts.PieChart>
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/buttonAddRoom"
@@ -271,6 +290,10 @@
         android:tint="#fff"
         app:layout_constraintRight_toRightOf="parent"
         app:srcCompat="@drawable/ic_add_black_24dp" />
+
+
+
+
 
 
 

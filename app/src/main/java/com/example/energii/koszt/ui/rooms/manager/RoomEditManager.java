@@ -50,6 +50,8 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -122,6 +124,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
     TextView outputEnergyCostUserKwh;
     TextView outputEnergyCostDayKwh;
     TextView outputEnergyCostMonthKwh;
+    private AdView mAdView;
 
 
 
@@ -134,9 +137,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         setTitle("Pokój " + room_name.replace("_"," "));
 
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        ;
+
 
         SettingActivity settingActivity = new SettingActivity();
         numberAfterDot = settingActivity.getNumberAfterDot(view);
@@ -152,6 +153,12 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         generateChartinRoom(view);
         refreshTable();
 
+        mAdView = view.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
+
+
 
         recyclerView = findViewById(R.id.RecyckerView);
 
@@ -161,7 +168,6 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         new ItemTouchHelper(itemTouchHelperCallbackDelete).attachToRecyclerView(recyclerView);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-
 
         FloatingActionButton floatingActionButtonAddDevice = findViewById(R.id.addButonfl);
         floatingActionButtonAddDevice.setOnClickListener(new View.OnClickListener() {
