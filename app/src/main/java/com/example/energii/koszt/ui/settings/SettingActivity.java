@@ -1,25 +1,32 @@
 package com.example.energii.koszt.ui.settings;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -30,6 +37,9 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+import android.widget.Toolbar;
+
+import com.example.energii.koszt.MainActivity;
 import com.example.energii.koszt.R;
 import com.example.energii.koszt.ui.SQLLiteDBHelper;
 import com.example.energii.koszt.ui.exception.SQLEnergyCostException;
@@ -81,7 +91,25 @@ public class SettingActivity extends AppCompatActivity implements SettingsListAd
         seekBar = findViewById(R.id.seekBarNumericDecimal);
         recyclerView = view.findViewById(R.id.RecyckerViewSettings);
 
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
+        recyclerView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                hideKeyboard(SettingActivity.this);
+
+                return false;
+            }
+        });
+        ConstraintLayout ConstraintLayoutSettings = view.findViewById(R.id.ConstraintLayoutSettings);
+        ConstraintLayoutSettings.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                hideKeyboard(SettingActivity.this);
+                return false;
+            }
+        });
 
         ViewDataFromDB(sqlLiteDBHelper.getDefaultDeviceList());
 
@@ -108,19 +136,31 @@ public class SettingActivity extends AppCompatActivity implements SettingsListAd
                 numberAfterDot = Integer.toString(progress);
             }
 
+
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
+                hideKeyboard(SettingActivity.this);
+
 
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+                sqlLiteDBHelper.setVariable("numberAfterDot", numberAfterDot);
+                if (RoomListFragment.root != null) {
+                    roomListFragment.generateChart(RoomListFragment.root);
+                    roomListFragment.refreshTable(RoomListFragment.root);
+                }
 
             }
         });
+
+
         adddefaultDevice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                hideKeyboard(SettingActivity.this);
+
                 showDialogAddDevice(view);
             }
         });
@@ -142,21 +182,18 @@ public class SettingActivity extends AppCompatActivity implements SettingsListAd
 
             @Override
             public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-        Button buttonSettingsAccept = view.findViewById(R.id.buttonSettingsAccept);
-
-        buttonSettingsAccept.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
                 checkIfEmpty();
             }
         });
+
+
+
     }
 
-
+    public boolean onOptionsItemSelected(MenuItem item){
+        this.onBackPressed();
+        return true;
+    }
 
     void ViewDataFromDB(Cursor cursor) {
         if (cursor.getCount() != 0) {
@@ -187,14 +224,14 @@ public class SettingActivity extends AppCompatActivity implements SettingsListAd
     void checkIfEmpty() {
         String value = getValue();
 
-        if (value.isEmpty()) {
+        if (value.isEmpty() | value.equals(".")) {
             inputEnergyCostGlobalLayout.setError("Wprowadź dane!");
         } else {
             value = getValue();
 
 
             sqlLiteDBHelper.setVariable("powerCost", value);
-            sqlLiteDBHelper.setVariable("numberAfterDot", numberAfterDot);
+           // sqlLiteDBHelper.setVariable("numberAfterDot", numberAfterDot);
 
             homeFragment.refresh(HomeFragment.root);
 
@@ -202,7 +239,8 @@ public class SettingActivity extends AppCompatActivity implements SettingsListAd
                 roomListFragment.generateChart(RoomListFragment.root);
                 roomListFragment.refreshTable(RoomListFragment.root);
             }
-            finish();
+
+            //finish();
         }
     }
 
@@ -228,7 +266,6 @@ public class SettingActivity extends AppCompatActivity implements SettingsListAd
     @Override
     public void onNoteClick(int position) {
 
-        Toast.makeText(view.getContext(), "onClick", Toast.LENGTH_SHORT).show();
         showUpdateDialog(view, deviceName.get(position));
 
     }
@@ -242,7 +279,6 @@ public class SettingActivity extends AppCompatActivity implements SettingsListAd
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
 
-            Toast.makeText(view.getContext(),deviceName.get(viewHolder.getAdapterPosition()),Toast.LENGTH_SHORT).show();
             sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
             sqlLiteDBHelper.deleteDefaultDevice(deviceName.get(viewHolder.getAdapterPosition()));
             int position = viewHolder.getAdapterPosition();
@@ -333,7 +369,6 @@ public class SettingActivity extends AppCompatActivity implements SettingsListAd
         is24hSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Toast.makeText(dialog.getContext(),String.valueOf(isChecked),Toast.LENGTH_SHORT).show();
                 if(isChecked){
                     h[0] = 24;
                     m[0] = 0;
@@ -698,7 +733,15 @@ public class SettingActivity extends AppCompatActivity implements SettingsListAd
         })
     ;}
 
-
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        View view = activity.getCurrentFocus();
+        if (view == null) {
+            view = new View(activity);
+        }
+        activity.getWindow().getDecorView().clearFocus();
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
 
 }
 

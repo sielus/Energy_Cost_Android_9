@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient"
     tools:context=".ui.settings.SettingActivity">
+
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
@@ -16,164 +17,137 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ConstraintLayoutSettings"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/text_field_inputinputEnergyCostGlobal"
-        android:layout_width="355dp"
-        android:layout_height="67dp"
-        android:layout_marginTop="24dp"
-        android:hint="Cena prądu kWh (zł)"
-        android:textColorHint="#FFFFFF"
-        app:boxBackgroundMode="outline"
-        app:counterEnabled="true"
-        app:counterMaxLength="4"
-        app:counterTextAppearance="@style/CounterOverFlow"
-        app:errorEnabled="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/inputEnergyCostGlobal"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_field_inputinputEnergyCostGlobal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="numberDecimal"
-            android:maxLength="4"
+            android:layout_marginStart="22dp"
+            android:layout_marginEnd="22dp"
+            android:layout_marginTop="32dp"
+            android:hint="Cena prądu kWh (zł)"
+            android:textColorHint="#FFFFFF"
+            app:boxBackgroundMode="outline"
+            app:counterEnabled="true"
+            app:counterMaxLength="4"
+            app:counterTextAppearance="@style/CounterOverFlow"
+            app:errorEnabled="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputEnergyCostGlobal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:maxLength="4"
+                android:textColor="@color/white"
+
+                android:textSize="16dp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TableLayout
+            android:id="@+id/calculatorTable"
+
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_weight="1"
+
+
+            android:gravity="center"
+            android:stretchColumns="*"
+            app:layout_constraintBottom_toTopOf="@+id/title_summary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_field_inputinputEnergyCostGlobal">
+
+            <TableRow
+                android:id="@+id/task1"
+                android:layout_height="30dp"
+                android:gravity="center">
+
+
+                <TextView
+                    android:id="@+id/textViewNumberDecimal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato_light"
+                    android:gravity="center"
+                    android:text="Dokładność \n obliczeniowa"
+                    android:textColor="@color/white"
+                    android:textSize="16dp" />
+
+                <SeekBar
+                    android:id="@+id/seekBarNumericDecimal"
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:max="6"
+                    android:min="1" />
+
+                <TextView
+                    android:id="@+id/textViewNumericView"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato_light"
+                    android:text="TextView"
+
+                    android:textColor="@color/white"
+                    android:textSize="16dp" />
+
+            </TableRow>
+
+        </TableLayout>
+
+        <TextView
+            android:id="@+id/title_summary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="76dp"
+            android:layout_marginEnd="76dp"
+            android:fontFamily="@font/lato_light"
+            android:text="Lista przykładowych urządzeń"
             android:textColor="@color/white"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/RecyckerViewSettings"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/calculatorTable" />
 
-            android:textSize="16dp" />
-    </com.google.android.material.textfield.TextInputLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/RecyckerViewSettings"
+            android:layout_width="match_parent"
+            android:layout_height="173dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title_summary">
 
+        </androidx.recyclerview.widget.RecyclerView>
 
-    <Button
-        android:id="@+id/buttonSettingsAccept"
+        <Button
+            android:id="@+id/addDefaultDevice"
 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="278dp"
-        android:layout_marginTop="148dp"
-        android:layout_marginEnd="24dp"
-        android:backgroundTint="#57F9FF"
-        android:text="Zatwierdź"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/RecyckerViewSettings" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:backgroundTint="#57F9FF"
+            android:text="Dodaj urządzenie"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/RecyckerViewSettings" />
 
-    <TextView
-        android:id="@+id/textViewNumberDecimal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="69dp"
-        android:fontFamily="@font/lato_light"
-        android:gravity="center"
-        android:text="Dokładność \n obliczeniowa"
-        android:textColor="@color/white"
-        android:textSize="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/RecyckerView"
-        app:layout_constraintEnd_toStartOf="@+id/seekBarNumericDecimal"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_field_inputinputEnergyCostGlobal" />
-
-    <TextView
-        android:id="@+id/textViewNumericView"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_marginStart="3dp"
-        android:layout_marginTop="44dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="69dp"
-        android:fontFamily="@font/lato_light"
-        android:text="TextView"
-        android:textColor="@color/white"
-        android:textSize="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/RecyckerView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/seekBarNumericDecimal"
-        app:layout_constraintTop_toBottomOf="@+id/text_field_inputinputEnergyCostGlobal" />
-
-    <SeekBar
-        android:id="@+id/seekBarNumericDecimal"
-        android:layout_width="200dp"
-        android:layout_height="30dp"
-
-        android:layout_marginTop="44dp"
-        android:layout_marginBottom="69dp"
-        android:max="6"
-        android:min="1"
-        app:layout_constraintBottom_toTopOf="@+id/RecyckerView"
-        app:layout_constraintStart_toEndOf="@+id/textViewNumberDecimal"
-        app:layout_constraintTop_toBottomOf="@+id/text_field_inputinputEnergyCostGlobal" />
-
-    <TextView
-        android:id="@+id/title_summary"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="29dp"
-        android:fontFamily="@font/lato_light"
-        android:text="Lista przykładowych urządzeń"
-        android:textColor="@color/white"
-        android:textSize="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewNumberDecimal" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/RecyckerViewSettings"
-        android:layout_width="match_parent"
-        android:layout_height="173dp"
-        android:layout_marginTop="68dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/seekBarNumericDecimal">
-
-    </androidx.recyclerview.widget.RecyclerView>
-
-    <View
-        android:layout_width="wrap_content"
-        android:layout_height="1dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="14dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="13dp"
-        android:background="@drawable/border"
-        app:layout_constraintBottom_toTopOf="@+id/title_summary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewNumberDecimal">
-
-    </View>
-
-    <View
-        android:layout_width="wrap_content"
-        android:layout_height="1dp"
-        android:background="@drawable/border"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addDefaultDevice">
-
-    </View>
-
-    <Button
-        android:id="@+id/addDefaultDevice"
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#57F9FF"
-        android:text="Dodaj urządzenie"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/RecyckerViewSettings" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-</ScrollView>
-
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

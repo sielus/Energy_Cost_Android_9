@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -20,11 +21,14 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.energii.koszt.MainActivity;
 import com.example.energii.koszt.R;
 import com.example.energii.koszt.ui.settings.SettingActivity;
 import com.example.energii.koszt.ui.rooms.manager.RoomEditManager;
@@ -88,10 +92,12 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
         recyclerView = root.findViewById(R.id.RecyckerView);
         SettingActivity settingActivity = new SettingActivity();
         numberAfterDot = settingActivity.getNumberAfterDot(root);
-
+        hideKeyboard(getActivity());
         adapter = new RoomListAdapter(root.getContext(),Arrays.copyOf(roomName.toArray(), roomName.size(), String[].class),this,Arrays.copyOf(roomNameKwh.toArray(), roomNameKwh.size(), String[].class));
 
         FloatingActionButton floatingActionButtonAddRoomDialog = root.findViewById(R.id.buttonAddRoom);
+
+
 
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
 
@@ -327,7 +333,7 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
         pieChart =  root.findViewById(R.id.pieChart);
         barChart = root.findViewById(R.id.bartChart);
         TableLayout tableLayout = root.findViewById(R.id.tableLayout);
-        TextView textView = root.findViewById(R.id.title_summary);
+        TextView title_summary = root.findViewById(R.id.title_summary);
 
         if(sqlLiteDBHelper.getRoomList().getCount()==0){
             barChart.setVisibility(View.GONE);
@@ -440,8 +446,10 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
         if (view == null) {
             view = new View(activity);
         }
+        activity.getWindow().getDecorView().clearFocus();
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
+
 
 }
 

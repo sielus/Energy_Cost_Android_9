@@ -19,6 +19,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import com.example.energii.koszt.R;
 import com.example.energii.koszt.ui.SQLLiteDBHelper;
@@ -59,10 +60,17 @@ public class HomeFragment extends Fragment {
         SettingActivity settingActivity = new SettingActivity();
         numberAfterDot = settingActivity.getNumberAfterDot(root);
 
-        RelativeLayout relativeLayout = root.findViewById(R.id.home_layoutID);
 
         mAdView = root.findViewById(R.id.adView);
 
+        ConstraintLayout constraintLayout = root.findViewById(R.id.ConstraintLayoutHome);
+        constraintLayout.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                hideKeyboard(getActivity());
+                return false;
+            }
+        });
 
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
@@ -160,6 +168,7 @@ public class HomeFragment extends Fragment {
         if (view == null) {
             view = new View(activity);
         }
+        activity.getWindow().getDecorView().clearFocus();
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 

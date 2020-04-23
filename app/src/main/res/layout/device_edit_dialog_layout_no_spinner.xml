@@ -9,6 +9,60 @@
     android:visibility="visible">
 
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginStart="47dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tableLayout2"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Button
+            android:id="@+id/buttonTimePicker"
+            android:layout_width="120dp"
+            android:layout_height="60dp"
+            android:text="Czas pracy"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMaxTextSize="13dp"
+            android:drawableLeft="@drawable/ic_access_time_black_24dp"
+
+            android:drawableTint="@color/white"
+            android:backgroundTint="#1683B1"
+
+            android:fontFamily="@font/lato_bold"
+            android:scaleType="fitCenter"
+
+            android:textColor="@color/white"
+            android:textSize="13dp" />
+
+        <Switch
+            android:id="@+id/switch1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:fontFamily="@font/lato_light"
+            android:scaleType="fitCenter"
+            android:text="24h"
+            android:textColor="@color/white"
+            android:textSize="20dp" />
+
+        <Button
+            android:id="@+id/buttonDialogAccept"
+            android:layout_width="76dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="30dp"
+
+            android:backgroundTint="#1683B1"
+            android:fontFamily="@font/lato_bold"
+            android:text="ok"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
     <TableLayout
         android:id="@+id/tableLayout2"
         android:layout_width="200dp"
@@ -125,60 +179,6 @@
 
         </TableRow>
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </TableRow>
     </TableLayout>
-
-    <Switch
-        android:id="@+id/switch1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="29dp"
-        android:layout_marginEnd="36dp"
-        android:layout_marginBottom="34dp"
-        android:fontFamily="@font/lato_light"
-        android:text="24h"
-        android:textColor="@color/white"
-        android:textSize="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/buttonDialogAccept"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonTimePicker"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <Button
-        android:id="@+id/buttonTimePicker"
-        android:layout_width="118dp"
-        android:layout_height="61dp"
-
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="20dp"
-        android:backgroundTint="#1683B1"
-        android:fontFamily="@font/lato_bold"
-        android:text="Czas pracy"
-        android:textColor="@color/white"
-        android:textSize="15dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.736"
-        app:layout_constraintStart_toEndOf="@+id/tableLayout2"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/buttonDialogAccept"
-        android:layout_width="76dp"
-        android:layout_height="48dp"
-
-        android:layout_marginStart="87dp"
-        android:layout_marginTop="21dp"
-        android:layout_marginEnd="32dp"
-        android:backgroundTint="#1683B1"
-        android:fontFamily="@font/lato_bold"
-        android:text="ok"
-        android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tableLayout2"
-        app:layout_constraintTop_toBottomOf="@+id/switch1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,7 @@
 package com.example.energii.koszt.ui.rooms.manager;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -104,7 +105,11 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
             case R.id.room_settings:
                 showDialogEditRoomName(view);
                 break;
+            case 16908332:
+                this.onBackPressed();
+
         }
+
         return true;
     }
 
@@ -129,7 +134,9 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         setTitle("Pokój " + room_name.replace("_"," "));
 
 
-
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        ;
 
         SettingActivity settingActivity = new SettingActivity();
         numberAfterDot = settingActivity.getNumberAfterDot(view);
@@ -164,6 +171,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
 
             }
         });
+
 
     }
 
@@ -921,6 +929,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         }
     };
 
+
     public void generateChartinRoom(View root){
         SQLLiteDBHelper sqlLiteDBHelper;
         sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
@@ -1036,4 +1045,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         pieChart.setCenterText("Zużycie kWh");
         pieChart.animate();
     }
+
+
 }
+
