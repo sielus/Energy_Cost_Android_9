@@ -1,10 +1,15 @@
 package com.example.energii.koszt;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+
 import com.example.energii.koszt.ui.settings.SettingActivity;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
@@ -17,6 +22,8 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import static com.example.energii.koszt.ui.home.HomeFragment.hideKeyboard;
 
 public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
@@ -64,9 +71,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
+        hideKeyboard(this);
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+
 
     }
 
@@ -75,7 +84,6 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_settings:
                 Intent intent = new Intent(this, SettingActivity.class);
-
                 startActivity(intent);
 
                 return true;
@@ -92,6 +100,18 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
+
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager inputManager = (InputMethodManager) activity
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        // check if no view has focus:
+        View currentFocusedView = activity.getCurrentFocus();
+        if (currentFocusedView != null) {
+            inputManager.hideSoftInputFromWindow(currentFocusedView.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+    }
+
 
 
 

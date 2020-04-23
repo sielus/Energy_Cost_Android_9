@@ -6,7 +6,19 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient"
     tools:context=".ui.settings.SettingActivity">
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_field_inputinputEnergyCostGlobal"
@@ -160,5 +172,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/RecyckerViewSettings" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

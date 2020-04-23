@@ -1,15 +1,21 @@
 package com.example.energii.koszt.ui.home;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -25,7 +31,12 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Map;
 
+import static android.content.Context.INPUT_METHOD_SERVICE;
+import static androidx.core.content.ContextCompat.getSystemService;
+import static androidx.core.content.ContextCompat.getSystemServiceName;
+
 public class HomeFragment extends Fragment {
+
     @SuppressLint("StaticFieldLeak")
     public static View root;
     private int numberDevice;
@@ -48,6 +59,7 @@ public class HomeFragment extends Fragment {
         SettingActivity settingActivity = new SettingActivity();
         numberAfterDot = settingActivity.getNumberAfterDot(root);
 
+        RelativeLayout relativeLayout = root.findViewById(R.id.home_layoutID);
 
         mAdView = root.findViewById(R.id.adView);
 
@@ -138,8 +150,18 @@ public class HomeFragment extends Fragment {
         outputEnergyCostUser.setText(String.format("%."+ numberAfterDot +"f",Float.parseFloat(costValueMap.get("userCost")))+ " zł");
         outputEnergyCostDay.setText(String.format("%."+ numberAfterDot +"f",Float.parseFloat(costValueMap.get("dayCost"))) + " zł");
         outputEnergyCostMonth.setText(String.format("%."+ numberAfterDot +"f",Float.parseFloat(costValueMap.get("monthCost"))) + " zł");
+
+        hideKeyboard(getActivity());
     }
 
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        View view = activity.getCurrentFocus();
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
 
     private boolean Check(View root) {
         EditText inputPowerValue = root.findViewById(R.id.inputPowerValue);
@@ -285,5 +307,11 @@ public class HomeFragment extends Fragment {
 
         }
     };
+
+
+
+
+
+
 }
 

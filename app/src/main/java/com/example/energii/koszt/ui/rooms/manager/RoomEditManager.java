@@ -102,7 +102,6 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         int id = item.getItemId();
         switch (id){
             case R.id.room_settings:
-                System.out.println("test");
                 showDialogEditRoomName(view);
                 break;
         }
@@ -229,7 +228,6 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
 
                         room_name_dialog.dismiss();
                   try {
-                          System.out.println(room_name +" " + newRoomName );
                           sqlLiteDBHelper.updateRoomName(room_name,newRoomName);
                           room_name = newRoomName;
 
@@ -551,7 +549,6 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
                             refreshTable();
 
                         } catch (SQLEnergyCostException.WrongTime wrongTime) {
-                            System.out.println(h[0]);
                             Toast.makeText(view.getContext(),wrongTime.getMessage(),Toast.LENGTH_SHORT).show();
                         }
 

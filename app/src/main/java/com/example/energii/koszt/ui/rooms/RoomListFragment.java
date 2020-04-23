@@ -1,6 +1,7 @@
 package com.example.energii.koszt.ui.rooms;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.database.Cursor;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TextView;
@@ -230,8 +232,10 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
                         barChart.setVisibility(View.VISIBLE);
                         pieChart.setVisibility(View.VISIBLE);
 
+                        hideKeyboard(getActivity());
 
                         dialog.dismiss();
+
                         Toast.makeText(getContext(),"Pokój dodany",Toast.LENGTH_SHORT).show();
                     }catch (SQLEnergyCostException.DuplicationRoom | SQLEnergyCostException.EmptyField errorMessage) {
                         text_field_inputRoomNameLayout.setError(errorMessage.getMessage());
@@ -429,6 +433,14 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
         pieChart.setCenterText("Zużycie kWh ");
         pieChart.animate();
 
+    }
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        View view = activity.getCurrentFocus();
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
 }
