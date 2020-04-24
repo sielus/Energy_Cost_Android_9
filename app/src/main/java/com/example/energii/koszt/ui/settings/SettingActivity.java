@@ -359,6 +359,8 @@ public class SettingActivity extends AppCompatActivity implements SettingsListAd
         Switch is24hSwitch = dialog.findViewById(R.id.switch1);
         buttonTimePicker.setText("Czas pracy \n " + h[0] + "h" + " " + m[0] + "m");
         if(h[0]==24){
+            Toast.makeText(dialog.getContext(),"Urządzenie pracuje całą dobe",Toast.LENGTH_SHORT).show();
+
             is24hSwitch.setChecked(true);
             buttonTimePicker.setEnabled(false);
         }else{
@@ -533,10 +535,11 @@ public class SettingActivity extends AppCompatActivity implements SettingsListAd
         is24hSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Toast.makeText(dialog.getContext(),String.valueOf(isChecked),Toast.LENGTH_SHORT).show();
                 if(isChecked){
                     h[0] = 24;
                     m[0] = 0;
+                    Toast.makeText(dialog.getContext(),"Urządzenie pracuje całą dobe",Toast.LENGTH_SHORT).show();
+
                     buttonTimePicker.setEnabled(false);
                     buttonTimePicker.setText("Czas pracy \n " + h[0] + "h" + " " + m[0] + "m");
 

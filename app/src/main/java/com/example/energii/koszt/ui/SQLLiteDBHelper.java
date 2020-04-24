@@ -20,6 +20,7 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String addVariable;
         String numberAfterDot;
+        String defaultDevice;
 
         String roomListTable = "CREATE TABLE room_list " +
                                     "(" +
@@ -37,7 +38,7 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
                                                 ");";
         db.execSQL(configurationVariableTable);
 
-        String defaultDevice = "CREATE TABLE default_device_settings " +
+        String defaultDeviceTable = "CREATE TABLE default_device_settings " +
                                     "(" +
                                         "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                                         "name varchar(100) NOT NULL UNIQUE, " +
@@ -45,13 +46,29 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
                                         "work_time text NOT NULL, " +
                                         "device_number NUMERIC(3,0) NOT NULL " +
                                     ")";
-        db.execSQL(defaultDevice);
+        db.execSQL(defaultDeviceTable);
 
         addVariable = "INSERT INTO configuration_variable (name, value) values (\"powerCost\", \"0.60\")";
         numberAfterDot = "INSERT INTO configuration_variable (name, value) values (\"numberAfterDot\", \"2\")";
-
+        defaultDevice = "INSERT INTO default_device_settings (name, power_value, work_time, device_number) values (\"Ładowarka do telefonu\", 15, \"2:0\", 1)," +
+                                                                                                                 "(\"Ładowarka do telefonu (stan spoczynku)\", 0.1, \"24:0\", 1)," +
+                                                                                                                 "(\"Lodówka\", 35, \"24:0\", 1)," +
+                                                                                                                 "(\"Żarówka LED\", 8, \"7:0\", 1)," +
+                                                                                                                 "(\"Żarówka energooszczędna\", 20, \"7:0\", 1)," +
+                                                                                                                 "(\"Komputer\", 250, \"8:0\", 1)," +
+                                                                                                                 "(\"Laptop\", 130, \"8:0\", 1)," +
+                                                                                                                 "(\"Telewizor QLED 65 cali\", 150, \"12:0\", 1)," +
+                                                                                                                 "(\"Mikrofalówka\", 800, \"0:5\", 1)," +
+                                                                                                                 "(\"Konsola do gier\", 100, \"4:0\", 1)," +
+                                                                                                                 "(\"Konsola do gier (stan spoczynku)\", 1.4, \"24:0\", 1)," +
+                                                                                                                 "(\"Router\", 3, \"24:0\", 1)," +
+                                                                                                                 "(\"Lampka nocna LED\", 10, \"1:0\", 1)," +
+                                                                                                                 "(\"Odkurzacz\", 20, \"0:20\", 1)," +
+                                                                                                                 "(\"Amplituner\", 40, \"10:0\", 1)," +
+                                                                                                                 "(\"Amplituner (stan spoczynku)\", 2, \"24:0\", 1)";
         db.execSQL(addVariable);
         db.execSQL(numberAfterDot);
+        db.execSQL(defaultDevice);
     }
 
     @Override

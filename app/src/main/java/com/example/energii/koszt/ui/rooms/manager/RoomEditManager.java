@@ -318,7 +318,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
     void getDefaultDeviceList(Cursor cursor) {
         if (cursor.getCount() != 0) {
             clearDefaultDeviceList();
-            defaultListDeviceName.add(0,"Przykłady");
+            defaultListDeviceName.add(0,"Szablony");
             defaultListDeviceNumber.add(0,"");
             defaultListDeviceTimeWork.add(0,"0:0");
             defaultListDevicePower.add(0,"");
@@ -408,7 +408,6 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
                 if(arrayAdapter.getItem(0)==arrayAdapter.getItem(position)){
 
                 }else{
-                    Toast.makeText(parent.getContext(),String.valueOf(arrayAdapter.getItem(position)),Toast.LENGTH_SHORT).show();
                     editTextDeviceName.setText(defaultListDeviceName.get(position));
                     editTextDevicePower.setText(defaultListDevicePower.get(position));
                     editTextDeviceNumbers.setText(defaultListDeviceNumber.get(position));
@@ -442,10 +441,11 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         is24hSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Toast.makeText(dialog.getContext(),String.valueOf(isChecked),Toast.LENGTH_SHORT).show();
                 if(isChecked){
                     h[0] = 24;
                     m[0] = 0;
+                    Toast.makeText(dialog.getContext(),"Urządzenie pracuje całą dobe",Toast.LENGTH_SHORT).show();
+
                     buttonTimePicker.setEnabled(false);
                     buttonTimePicker.setText("Czas pracy \n " + h[0] + "h" + " " + m[0] + "m");
 
@@ -706,10 +706,10 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
             @SuppressLint("ResourceAsColor")
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Toast.makeText(dialog.getContext(),String.valueOf(isChecked),Toast.LENGTH_SHORT).show();
                 if(isChecked){
                     h[0] = 24;
                     m[0] = 0;
+                    Toast.makeText(dialog.getContext(),"Urządzenie pracuje całą dobe",Toast.LENGTH_SHORT).show();
 
                     buttonTimePicker.setEnabled(false);
                     buttonTimePicker.setText("Czas pracy \n " + h[0] + "h" + " " + m[0] + "m");
