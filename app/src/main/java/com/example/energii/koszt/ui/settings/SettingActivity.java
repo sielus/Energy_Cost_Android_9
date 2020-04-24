@@ -13,11 +13,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -27,8 +24,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -37,9 +32,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
-import com.example.energii.koszt.MainActivity;
 import com.example.energii.koszt.R;
 import com.example.energii.koszt.ui.SQLLiteDBHelper;
 import com.example.energii.koszt.ui.exception.SQLEnergyCostException;
@@ -59,6 +52,8 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 public class SettingActivity extends AppCompatActivity implements SettingsListAdapter.onNoteListener {
     private TextInputEditText inputEnergyCostGlobal;
     private TextInputLayout inputEnergyCostGlobalLayout;
+    private TextInputLayout inputDefaultCurrencyGlobalLayout;
+    private TextInputEditText inputDefaultCurrencyGlobal;
     private String powerCost;
     private HomeFragment homeFragment;
     RoomListFragment roomListFragment;
@@ -69,6 +64,7 @@ public class SettingActivity extends AppCompatActivity implements SettingsListAd
     public static String numberAfterDot;
     private RecyclerView recyclerView;
     SettingsListAdapter settings_listAdapter;
+    public static String defaultCurrency;
 
     private List<String> devicePower = new LinkedList<>();
     private List<String> deviceName = new ArrayList<>();
@@ -120,9 +116,35 @@ public class SettingActivity extends AppCompatActivity implements SettingsListAd
 
         Button adddefaultDevice = view.findViewById(R.id.addDefaultDevice);
 
+        inputDefaultCurrencyGlobal = view.findViewById(R.id.inputDefaultCurrencyGlobal);
+        inputDefaultCurrencyGlobalLayout = view.findViewById(R.id.text_field_inputinputDefaultCurrencyGlobal);
+
+        inputDefaultCurrencyGlobal.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                inputDefaultCurrencyGlobalLayout.setError(null);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                checkifEmptydefaultCurrency();
+
+            }
+        });
+
+
+
+
+        inputDefaultCurrencyGlobal.setText(getdefaultCurrencyFromDB(sqlLiteDBHelper.getVariable("defaultCurrency")));
+
         inputEnergyCostGlobal = view.findViewById(R.id.inputEnergyCostGlobal);
         inputEnergyCostGlobalLayout = view.findViewById(R.id.text_field_inputinputEnergyCostGlobal);
-        int progres = Integer.parseInt(ViewDataNumberAfterDotFromDB(sqlLiteDBHelper.getVariable("numberAfterDot")));
+        int progres = Integer.parseInt(getnumberAfterDotFromDB(sqlLiteDBHelper.getVariable("numberAfterDot")));
         seekBar.setProgress(progres);
         inputEnergyCostGlobal.setText(ViewDataPowerCostFromDB(sqlLiteDBHelper.getVariable("powerCost")));
         final TextView textView = view.findViewById(R.id.textViewNumericView);
@@ -182,7 +204,7 @@ public class SettingActivity extends AppCompatActivity implements SettingsListAd
 
             @Override
             public void afterTextChanged(Editable s) {
-                checkIfEmpty();
+                checkIfEmptInputEnergyCosty();
             }
         });
 
@@ -221,7 +243,7 @@ public class SettingActivity extends AppCompatActivity implements SettingsListAd
         return inputEnergyCostGlobal.getText().toString();
     }
 
-    void checkIfEmpty() {
+    void checkIfEmptInputEnergyCosty() {
         String value = getValue();
 
         if (value.isEmpty() | value.equals(".")) {
@@ -244,13 +266,40 @@ public class SettingActivity extends AppCompatActivity implements SettingsListAd
         }
     }
 
+    String getDefaultCurrency(){
+        return  inputDefaultCurrencyGlobal.getText().toString();
+    }
+
+    void checkifEmptydefaultCurrency() {
+        String defaultCurrency = getDefaultCurrency();
+
+        if (defaultCurrency.isEmpty()) {
+            inputDefaultCurrencyGlobalLayout.setError("Wprowadź dane!");
+        } else {
+            defaultCurrency = getDefaultCurrency();
+
+
+            sqlLiteDBHelper.setVariable("defaultCurrency", defaultCurrency);
+            // sqlLiteDBHelper.setVariable("numberAfterDot", numberAfterDot);
+
+            homeFragment.refresh(HomeFragment.root);
+
+            if (RoomListFragment.root != null) {
+                roomListFragment.generateChart(RoomListFragment.root);
+                roomListFragment.refreshTable(RoomListFragment.root);
+            }
+
+            //finish();
+        }
+    }
+
     String ViewDataPowerCostFromDB(Cursor cursor) {
         cursor.moveToFirst();
         powerCost = cursor.getString(0);
         return powerCost;
     }
 
-    String ViewDataNumberAfterDotFromDB(Cursor cursor) {
+    String getnumberAfterDotFromDB(Cursor cursor) {
         cursor.moveToFirst();
         numberAfterDot = cursor.getString(0);
         return numberAfterDot;
@@ -258,7 +307,7 @@ public class SettingActivity extends AppCompatActivity implements SettingsListAd
 
     public int getNumberAfterDot(View root) {
         SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
-        numberAfterDot = ViewDataNumberAfterDotFromDB(sqlLiteDBHelper.getVariable("numberAfterDot"));
+        numberAfterDot = getnumberAfterDotFromDB(sqlLiteDBHelper.getVariable("numberAfterDot"));
 
         return Integer.parseInt(numberAfterDot);
     }
@@ -745,8 +794,21 @@ public class SettingActivity extends AppCompatActivity implements SettingsListAd
         activity.getWindow().getDecorView().clearFocus();
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
+    String getdefaultCurrencyFromDB(Cursor cursor) {
+        cursor.moveToFirst();
+        defaultCurrency = cursor.getString(0);
+        return defaultCurrency;
+    }
 
+    public String getdefaultCurrency(View view) {
+        SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
+        defaultCurrency = getdefaultCurrencyFromDB(sqlLiteDBHelper.getVariable("defaultCurrency"));
+
+        return defaultCurrency;
+    }
 }
+
+
 
 
 

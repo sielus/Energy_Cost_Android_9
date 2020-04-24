@@ -48,7 +48,7 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
                                     ")";
         db.execSQL(defaultDeviceTable);
 
-        addVariable = "INSERT INTO configuration_variable (name, value) values (\"powerCost\", \"0.60\")";
+        addVariable = "INSERT INTO configuration_variable (name, value) values (\"powerCost\", \"0.60\"), (\"defaultCurrency\", \"zł\")";
         numberAfterDot = "INSERT INTO configuration_variable (name, value) values (\"numberAfterDot\", \"2\")";
         defaultDevice = "INSERT INTO default_device_settings (name, power_value, work_time, device_number) values (\"Ładowarka do telefonu\", 15, \"2:0\", 1)," +
                                                                                                                  "(\"Ładowarka do telefonu (stan spoczynku)\", 0.1, \"24:0\", 1)," +
@@ -130,16 +130,16 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         SQLiteDatabase dbhWrite = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         String deviceRoomName = changeSpaceInName(roomName) + "_device";
-        double energyCostZl;
+        double energyCostCurrency;
 
         energyCost = Double.parseDouble(getVariable("powerCost").getString(0));
 
         if(minutes != 0) {
             energyAmount = powerValue * deviceNumber * (hour + (double) minutes / 60);
-            energyCostZl = energyCost * energyAmount / 1000;
+            energyCostCurrency = energyCost * energyAmount / 1000;
         }else {
             energyAmount = powerValue * deviceNumber * hour;
-            energyCostZl = energyCost * energyAmount / 1000;
+            energyCostCurrency = energyCost * energyAmount / 1000;
         }
 
         contentValues.put("name", deviceName);
@@ -147,7 +147,7 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         contentValues.put("work_time", workTime);
         contentValues.put("device_number", deviceNumber);
         contentValues.put("energy_amount", energyAmount);
-        contentValues.put("energy_cost_zl", energyCostZl);
+        contentValues.put("energy_cost_zl", energyCostCurrency);
 
         long resultInsert = dbhWrite.insert(deviceRoomName, null, contentValues);
 
@@ -156,7 +156,7 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         }
 
         updateRoomEnergyAmount(changeSpaceInName(roomName), energyAmount);
-        updateRoomEnergyCostZl(changeSpaceInName(roomName), energyCostZl);
+        updateRoomEnergyCostCurrency(changeSpaceInName(roomName), energyCostCurrency);
     }
 
     public Cursor getRoomDeviceList(String roomName) {
@@ -181,7 +181,7 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         String where = " name = ? ";
 
         updateRoomEnergyAmount(changeSpaceInName(roomName), (getDeviceAmountEnergy(deviceName, deviceRoomName) * -1));
-        updateRoomEnergyCostZl(changeSpaceInName(roomName), (getDeviceCostEnergy(deviceName, deviceRoomName) * -1));
+        updateRoomEnergyCostCurrency(changeSpaceInName(roomName), (getDeviceCostEnergy(deviceName, deviceRoomName) * -1));
         dbWriter.delete(deviceRoomName, where, new String[]{deviceName});
     }
 
@@ -219,7 +219,7 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         double energyAmount;
         double energyCost;
-        double energyCostZl;
+        double energyCostCurrency;
         String workTime = hour + ":" + minutes;
         String where = "id = ?";
         String deviceRoomName = changeSpaceInName(roomName) + "_device";
@@ -228,10 +228,10 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
 
         if(minutes != 0) {
             energyAmount = powerValue * deviceNumber * (hour + (double) minutes / 60);
-            energyCostZl = energyCost * energyAmount / 1000;
+            energyCostCurrency = energyCost * energyAmount / 1000;
         }else {
             energyAmount = powerValue * deviceNumber * hour;
-            energyCostZl = energyCost * energyAmount / 1000;
+            energyCostCurrency = energyCost * energyAmount / 1000;
         }
 
         contentValues.put("name", newDeviceName);
@@ -239,10 +239,10 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         contentValues.put("work_time", workTime);
         contentValues.put("device_number", deviceNumber);
         contentValues.put("energy_amount", energyAmount);
-        contentValues.put("energy_cost_zl", energyCostZl);
+        contentValues.put("energy_cost_zl", energyCostCurrency);
 
         updateRoomEnergyAmount(changeSpaceInName(roomName), (energyAmount - getDeviceAmountEnergy(deviceId, deviceRoomName)));
-        updateRoomEnergyCostZl(changeSpaceInName(roomName), (energyCostZl - getDeviceCostEnergy(deviceId, deviceRoomName)));
+        updateRoomEnergyCostCurrency(changeSpaceInName(roomName), (energyCostCurrency - getDeviceCostEnergy(deviceId, deviceRoomName)));
 
         dbWriter.update(deviceRoomName, contentValues, where, new String[]{Integer.toString(deviceId)});
     }
@@ -286,7 +286,7 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         contentValues.put("value", value);
 
         if(variableName.equals("powerCost")) {
-            updateAllEnergyCostZl(Double.parseDouble(value));
+            updateAllEnergyCostCurrency(Double.parseDouble(value));
         }
 
         dbWriter.update("configuration_variable", contentValues, where, new String[]{variableName});
@@ -515,7 +515,7 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         dbWriter.execSQL(query);
     }
 
-    private void updateAllEnergyCostZl(double newEnergyCost) {
+    private void updateAllEnergyCostCurrency(double newEnergyCost) {
         SQLiteDatabase dbWriter = getWritableDatabase();
         String query;
         Cursor cursor;
@@ -548,7 +548,7 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         dbWriter.execSQL(query, new String[] {Double.toString(energyAmount), roomName});
     }
 
-    private void updateRoomEnergyCostZl(String roomName, double energyCost){
+    private void updateRoomEnergyCostCurrency(String roomName, double energyCost){
         SQLiteDatabase dbWriter = getWritableDatabase();
         String query;
 

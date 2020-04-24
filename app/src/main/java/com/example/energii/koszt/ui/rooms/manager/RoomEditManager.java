@@ -90,6 +90,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
     ArrayList<BarEntry> barEntries = new ArrayList<BarEntry>();
     TextView title_summary;
     int numberAfterDot;
+    String defaultCurrency;
     boolean ifNumberOnStart = false;
     TimePickerDialog timePicker;
 
@@ -141,7 +142,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
 
         SettingActivity settingActivity = new SettingActivity();
         numberAfterDot = settingActivity.getNumberAfterDot(view);
-
+        defaultCurrency = settingActivity.getdefaultCurrency(view);
         sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
 
         clearDefaultDeviceList();
@@ -279,25 +280,25 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
 
             getRoomCostKwh(sqlLiteDBHelper.getRoomCost(room_name));
             outputEnergyCostUser.setText(String.format("%."+ numberAfterDot +"f", Float.parseFloat(roomCostKWH.get(0)) / 1000) + " kWh");
-            outputEnergyCostUserKwh.setText(String.format("%."+ numberAfterDot +"f", Float.parseFloat(roomCostKWH.get(1))) + " zł");
+            outputEnergyCostUserKwh.setText(String.format("%."+ numberAfterDot +"f", Float.parseFloat(roomCostKWH.get(1))) + " " +defaultCurrency);
 
             outputEnergyCostMonth.setText(String.format("%."+ numberAfterDot +"f", Float.parseFloat(roomCostKWH.get(0)) / 1000 * 30) + " kWh");
-            outputEnergyCostMonthKwh.setText(String.format("%."+ numberAfterDot +"f", Float.parseFloat(roomCostKWH.get(1)) * 30) + " zł");
+            outputEnergyCostMonthKwh.setText(String.format("%."+ numberAfterDot +"f", Float.parseFloat(roomCostKWH.get(1)) * 30) + " " +defaultCurrency);
 
             outputEnergyCostYearth.setText(String.format("%."+ numberAfterDot +"f", Float.parseFloat(roomCostKWH.get(0)) / 1000 * 365 )+ " kWh");
-            outputEnergyCostYearthKwh.setText(String.format("%."+ numberAfterDot +"f", Float.parseFloat(roomCostKWH.get(1)) * 365 )+ " zł");
+            outputEnergyCostYearthKwh.setText(String.format("%."+ numberAfterDot +"f", Float.parseFloat(roomCostKWH.get(1)) * 365 )+ " " + defaultCurrency);
         }else{
             tableLayout = view.findViewById(R.id.tableLayout);
             tableLayout.setVisibility(View.GONE);
             title_summary = view.findViewById(R.id.title_summary);
             title_summary.setVisibility(View.GONE);
-            outputEnergyCostUser.setText("0 zł");
+            outputEnergyCostUser.setText("0 " + defaultCurrency);
             outputEnergyCostUserKwh.setText("0 kWh");
 
-            outputEnergyCostMonth.setText("0 zł");
+            outputEnergyCostMonth.setText("0" + defaultCurrency);
             outputEnergyCostMonthKwh.setText("0 kWh");
 
-            outputEnergyCostYearth.setText("0 zł");
+            outputEnergyCostYearth.setText("0" + defaultCurrency);
             outputEnergyCostYearthKwh.setText("0 kWh");
         }
     }
@@ -973,7 +974,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         Cursor cursor = sqlLiteDBHelper.getDeviceDetails(room_name);
         if (cursor.getCount() > 1) {
             while(cursor.moveToNext()) {
-                pieEntry.add(new PieEntry(cursor.getInt(1), cursor.getString(0).replace("_"," ") + " " + String.format("%."+ numberAfterDot +"f",((float)cursor.getInt(1) / 1000)) +" kWh" ));
+                pieEntry.add(new PieEntry(cursor.getInt(1), cursor.getString(0).replace("_"," ") + " " + String.format("%."+ numberAfterDot +"f",((float)cursor.getInt(1) / 1000))));
                 barEntries.add(new BarEntry(labelNumberIndex, Float.parseFloat(String.format("%."+ numberAfterDot +"f", cursor.getFloat(2)).replace(",","."))));
                 roomName.add(cursor.getString(0));
                 labelNumberIndex = labelNumberIndex +1;
@@ -981,14 +982,14 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
 
         }else if(cursor.getCount() == 1){
             cursor.moveToFirst();
-            pieEntry.add(new PieEntry(cursor.getInt(1), cursor.getString(0).replace("_"," ") + " " + String.format("%."+ numberAfterDot +"f",((float)cursor.getInt(1) / 1000)) +" kWh" ));
+            pieEntry.add(new PieEntry(cursor.getInt(1), cursor.getString(0).replace("_"," ") + " " + String.format("%."+ numberAfterDot +"f",((float)cursor.getInt(1) / 1000))));
             barEntries.add(new BarEntry(labelNumberIndex, Float.parseFloat(String.format("%."+ numberAfterDot +"f", cursor.getFloat(2)).replace(",","."))));
             roomName.add(cursor.getString(0));
         }else {
             return;
         }
 
-        BarDataSet barDataSet = new BarDataSet(barEntries, "Koszty dobowe urządzeń");
+        BarDataSet barDataSet = new BarDataSet(barEntries, "Koszty dobowe urządzeń (" + defaultCurrency + ")");
 
         barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
         barChart.getAxisLeft().setAxisMinimum(0);

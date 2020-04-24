@@ -50,7 +50,7 @@ public class HomeFragment extends Fragment {
     private TextInputEditText inputEnergyCost;
     int numberAfterDot;
     private AdView mAdView;
-
+    String defaultCurrency;
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_home, container, false);
         Button buttonCalcCostEnergy = root.findViewById(R.id.buttonCalcCostEnergy);
@@ -60,8 +60,12 @@ public class HomeFragment extends Fragment {
         SettingActivity settingActivity = new SettingActivity();
         numberAfterDot = settingActivity.getNumberAfterDot(root);
 
+        defaultCurrency = settingActivity.getdefaultCurrency(root);
 
         mAdView = root.findViewById(R.id.adView);
+
+        TextInputLayout text_field_inputEnergyCost = root.findViewById(R.id.text_field_inputEnergyCost);
+        text_field_inputEnergyCost.setHint("Koszt kWh / " + defaultCurrency);
 
         ConstraintLayout constraintLayout = root.findViewById(R.id.ConstraintLayoutHome);
         constraintLayout.setOnTouchListener(new View.OnTouchListener() {
@@ -95,8 +99,12 @@ public class HomeFragment extends Fragment {
         });
 
 
-
-
+        TextView outputEnergyCostUser = root.findViewById(R.id.OutputEnergyCostUser);
+        TextView outputEnergyCostDay = root.findViewById(R.id.OutputEnergyCostDay);
+        TextView outputEnergyCostMonth = root.findViewById(R.id.OutputEnergyCostMonth);
+        outputEnergyCostUser.setText("0 " + defaultCurrency);
+        outputEnergyCostDay.setText("0 " + defaultCurrency);
+        outputEnergyCostMonth.setText("0 " + defaultCurrency);
 
         TextInputEditText inputPowerValue = root.findViewById(R.id.inputPowerValue);
         TextInputEditText inputNumberDevices = root.findViewById(R.id.inputNumberDevices);
@@ -106,7 +114,7 @@ public class HomeFragment extends Fragment {
         TextInputEditText inputHours = root.findViewById(R.id.inputhours);
         TextInputEditText inputMinutes = root.findViewById(R.id.inputminutes);
 
-        inputEnergyCost.setText(ViewDataFromDB(sqlLiteDBHelper.getVariable("powerCost")));
+        inputEnergyCost.setText(ViewpowerCostFromDB(sqlLiteDBHelper.getVariable("powerCost")));
         inputPowerValue.addTextChangedListener(textWatcher_text_field_inputPowerValue);
         inputNumberDevices.addTextChangedListener(textWatcher_text_field_inputNumberDevices);
         inputEnergyCost.addTextChangedListener(textWatcher_text_field_inputEnergyCost);
@@ -115,18 +123,35 @@ public class HomeFragment extends Fragment {
         return root;
     }
 
-    private String ViewDataFromDB(Cursor cursor) {
+    private String ViewpowerCostFromDB(Cursor cursor) {
        powerCost = cursor.getString(0);
        return powerCost;
     }
 
+    private String ViewdefaultCurrencyFromDB(Cursor cursor) {
+        defaultCurrency = cursor.getString(0);
+        return defaultCurrency;
+    }
 
 
     public void refresh(View root){
         sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
         inputEnergyCost = root.findViewById(R.id.inputEnergyCost);
-        inputEnergyCost.setText(ViewDataFromDB(sqlLiteDBHelper.getVariable("powerCost")));
+        inputEnergyCost.setText(ViewpowerCostFromDB(sqlLiteDBHelper.getVariable("powerCost")));
+        TextInputLayout text_field_inputEnergyCost = root.findViewById(R.id.text_field_inputEnergyCost);
+
+        text_field_inputEnergyCost.setHint("Koszt kWh / " + ViewdefaultCurrencyFromDB(sqlLiteDBHelper.getVariable("defaultCurrency")));
+
+        TextView outputEnergyCostUser = root.findViewById(R.id.OutputEnergyCostUser);
+        TextView outputEnergyCostDay = root.findViewById(R.id.OutputEnergyCostDay);
+        TextView outputEnergyCostMonth = root.findViewById(R.id.OutputEnergyCostMonth);
+        outputEnergyCostUser.setText("0 " + ViewdefaultCurrencyFromDB(sqlLiteDBHelper.getVariable("defaultCurrency")));
+        outputEnergyCostDay.setText("0 " + ViewdefaultCurrencyFromDB(sqlLiteDBHelper.getVariable("defaultCurrency")));
+        outputEnergyCostMonth.setText("0 " + ViewdefaultCurrencyFromDB(sqlLiteDBHelper.getVariable("defaultCurrency")));
+
     }
+
+
 
     private void getInputValue(View root) {
         TextInputEditText inputPowerValue = root.findViewById(R.id.inputPowerValue);
@@ -155,9 +180,9 @@ public class HomeFragment extends Fragment {
         outputEnergyCostDayKwh.setText(String.format("%."+ numberAfterDot +"f",Float.parseFloat(costValueMap.get("dayCostKwh"))) + " kWh");
         outputEnergyCostMonthKwh.setText(String.format("%."+ numberAfterDot +"f",Float.parseFloat(costValueMap.get("monthCostKwh"))) + " kWh");
 
-        outputEnergyCostUser.setText(String.format("%."+ numberAfterDot +"f",Float.parseFloat(costValueMap.get("userCost")))+ " zł");
-        outputEnergyCostDay.setText(String.format("%."+ numberAfterDot +"f",Float.parseFloat(costValueMap.get("dayCost"))) + " zł");
-        outputEnergyCostMonth.setText(String.format("%."+ numberAfterDot +"f",Float.parseFloat(costValueMap.get("monthCost"))) + " zł");
+        outputEnergyCostUser.setText(String.format("%."+ numberAfterDot +"f",Float.parseFloat(costValueMap.get("userCost")))+ " " + defaultCurrency);
+        outputEnergyCostDay.setText(String.format("%."+ numberAfterDot +"f",Float.parseFloat(costValueMap.get("dayCost"))) + " " +defaultCurrency);
+        outputEnergyCostMonth.setText(String.format("%."+ numberAfterDot +"f",Float.parseFloat(costValueMap.get("monthCost"))) + " " + defaultCurrency);
 
         hideKeyboard(getActivity());
     }

@@ -28,10 +28,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="22dp"
-            android:layout_marginEnd="22dp"
             android:layout_marginTop="32dp"
+            android:layout_marginEnd="22dp"
             android:hint="Cena prądu kWh (zł)"
-            android:textColorHint="#FFFFFF"
+            android:textColorHint="@color/white"
             app:boxBackgroundMode="outline"
             app:counterEnabled="true"
             app:counterMaxLength="4"
@@ -52,8 +52,37 @@
                 android:textSize="16dp" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="22dp"
+            app:counterTextAppearance="@style/CounterOverFlow"
+            app:boxBackgroundMode="outline"
+            android:id="@+id/text_field_inputinputDefaultCurrencyGlobal"
+            app:errorEnabled="true"
+
+            android:textColorHint="@color/white"
+            app:counterEnabled="true"
+            app:counterMaxLength="3"
+            app:layout_constraintBottom_toTopOf="@+id/calculatorTable"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_field_inputinputEnergyCostGlobal">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLength="3"
+                android:id="@+id/inputDefaultCurrencyGlobal"
+                android:textColor="@color/white"
+                android:hint="hint" />
+        </com.google.android.material.textfield.TextInputLayout>
+
         <TableLayout
             android:id="@+id/calculatorTable"
+            android:textColorHint="@color/white"
 
             android:layout_width="match_parent"
             android:layout_height="100dp"

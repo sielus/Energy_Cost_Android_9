@@ -79,6 +79,8 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
     ArrayList<BarEntry> barEntries = new ArrayList<BarEntry>();
     TextView title_summary;
     private AdView mAdView;
+    public static String defaultCurrency;
+
 
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -95,7 +97,10 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
         tableLayout.setVisibility(View.GONE);
         recyclerView = root.findViewById(R.id.RecyckerView);
         SettingActivity settingActivity = new SettingActivity();
+
         numberAfterDot = settingActivity.getNumberAfterDot(root);
+        defaultCurrency = settingActivity.getdefaultCurrency(root);
+
         hideKeyboard(getActivity());
         adapter = new RoomListAdapter(root.getContext(),Arrays.copyOf(roomName.toArray(), roomName.size(), String[].class),this,Arrays.copyOf(roomNameKwh.toArray(), roomNameKwh.size(), String[].class));
 
@@ -131,6 +136,7 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
         SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
         SettingActivity settingActivity = new SettingActivity();
         numberAfterDot = settingActivity.getNumberAfterDot(root);
+        defaultCurrency = settingActivity.getdefaultCurrency(root);
 
         TableLayout tableLayout = view.findViewById(R.id.tableLayout);
         TextView title_summary = view.findViewById(R.id.title_summary);
@@ -150,13 +156,13 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
 
 
             OutputEnergyCostDayKwh.setText(String.format("%."+ numberAfterDot +"f", getAllRoomsKwHFromDB(sqlLiteDBHelper.getHouseCost()) / 1000) + " kWh");
-            OutputEnergyCostDay.setText(String.format("%."+ numberAfterDot +"f", getAllRoomsCostFromDB(sqlLiteDBHelper.getHouseCost())) + " zł");
+            OutputEnergyCostDay.setText(String.format("%."+ numberAfterDot +"f", getAllRoomsCostFromDB(sqlLiteDBHelper.getHouseCost())) + " " +defaultCurrency);
 
             OutputEnergyCostMonthKwh.setText(String.format("%."+ numberAfterDot +"f", getAllRoomsKwHFromDB(sqlLiteDBHelper.getHouseCost()) / 1000 * 30 ) + " kWh");
-            OutputEnergyCostMonth.setText(String.format("%."+ numberAfterDot +"f",getAllRoomsCostFromDB(sqlLiteDBHelper.getHouseCost()) * 30 ) + " zł");
+            OutputEnergyCostMonth.setText(String.format("%."+ numberAfterDot +"f",getAllRoomsCostFromDB(sqlLiteDBHelper.getHouseCost()) * 30 ) + " " + defaultCurrency);
 
             OutputEnergyCostYearKwh.setText(String.format("%."+ numberAfterDot +"f", getAllRoomsKwHFromDB(sqlLiteDBHelper.getHouseCost()) / 1000 * 365 ) + " kWh");
-            OutputEnergyCostYear.setText(String.format("%."+ numberAfterDot +"f", getAllRoomsCostFromDB(sqlLiteDBHelper.getHouseCost())  * 365 ) + " zł");
+            OutputEnergyCostYear.setText(String.format("%."+ numberAfterDot +"f", getAllRoomsCostFromDB(sqlLiteDBHelper.getHouseCost())  * 365 ) + " " + defaultCurrency);
 
 
         }
@@ -336,6 +342,9 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
         sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
         PieChart pieChart;
         BarChart barChart;
+        SettingActivity settingActivity = new SettingActivity();
+        numberAfterDot = settingActivity.getNumberAfterDot(root);
+        defaultCurrency = settingActivity.getdefaultCurrency(root);
 
         pieChart =  root.findViewById(R.id.pieChart);
         barChart = root.findViewById(R.id.bartChart);
@@ -364,7 +373,7 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
         if (cursor.getCount() > 1) {
             while(cursor.moveToNext()) {
 
-                pieEntry.add(new PieEntry(cursor.getInt(1), cursor.getString(0).replace("_"," ") + " " + String.format("%."+ numberAfterDot +"f",((float)cursor.getInt(1) / 1000)) +" kWh"));
+                pieEntry.add(new PieEntry(cursor.getInt(1), cursor.getString(0).replace("_"," ") + " " + String.format("%."+ numberAfterDot +"f",((float)cursor.getInt(1) / 1000))));
                 barEntries.add(new BarEntry(labelNumberIndex, Float.parseFloat(String.format("%."+ numberAfterDot +"f",cursor.getFloat(2)).replace(",","."))));
                 roomName.add(cursor.getString(0).replace("_"," ") + " ");
                 labelNumberIndex = labelNumberIndex + 1;
@@ -373,7 +382,7 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
         }else if(cursor.getCount() == 1){
 
             cursor.moveToFirst();
-            pieEntry.add(new PieEntry(cursor.getInt(1), cursor.getString(0).replace("_"," ") + " " + String.format("%."+ numberAfterDot +"f",((float)cursor.getInt(1) / 1000)) +" kWh" ));
+            pieEntry.add(new PieEntry(cursor.getInt(1), cursor.getString(0).replace("_"," ") + " " + String.format("%."+ numberAfterDot +"f",((float)cursor.getInt(1) / 1000)) ));
             barEntries.add(new BarEntry(labelNumberIndex, Float.parseFloat(String.format("%."+ numberAfterDot +"f",cursor.getFloat(2)).replace(",","."))));
             roomName.add(cursor.getString(0).replace("_"," ") + " ");
 
@@ -381,7 +390,7 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
             return;
         }
 
-        BarDataSet barDataSet = new BarDataSet(barEntries, "Koszty dobowe pokoi");
+        BarDataSet barDataSet = new BarDataSet(barEntries, "Koszty dobowe pokoi (" + defaultCurrency + ")");
         barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
         barChart.getLegend().setEnabled(false);
         barChart.getAxisLeft().setAxisMinimum(0);
