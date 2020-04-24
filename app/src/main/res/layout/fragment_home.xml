@@ -100,7 +100,7 @@
                             android:layout_height="wrap_content"
                             android:inputType="numberDecimal"
                             android:text="0.48"
-
+                            android:maxLength="4"
                             android:textColor="@color/white" />
                     </com.google.android.material.textfield.TextInputLayout>
 

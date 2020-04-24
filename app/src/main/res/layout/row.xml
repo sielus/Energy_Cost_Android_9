@@ -27,14 +27,17 @@
             <TextView
                 android:id="@+id/rowTextViewTitle"
                 android:layout_width="125dp"
-                android:layout_height="32dp"
-                android:layout_marginStart="32dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="8dp"
+                android:autoSizeTextType="uniform"
                 android:fontFamily="@font/lato_black"
                 android:text="TextView"
                 android:textColor="@color/white"
                 android:textSize="24sp"
-
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/rowTextViewSecond"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.529" />

@@ -974,19 +974,38 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         Cursor cursor = sqlLiteDBHelper.getDeviceDetails(room_name);
         if (cursor.getCount() > 1) {
             while(cursor.moveToNext()) {
-                pieEntry.add(new PieEntry(cursor.getInt(1), cursor.getString(0).replace("_"," ") + " " + String.format("%."+ numberAfterDot +"f",((float)cursor.getInt(1) / 1000))));
+                String name = cursor.getString(0).replace("_"," ");
+                if(name.length()>9){
+
+                    pieEntry.add(new PieEntry(cursor.getInt(1), name.substring(0,9) + " " + String.format("%."+ numberAfterDot +"f",((float)cursor.getInt(1) / 1000))));
+                }else{
+                    pieEntry.add(new PieEntry(cursor.getInt(1), cursor.getString(0).replace("_"," ") + " " + String.format("%."+ numberAfterDot +"f",((float)cursor.getInt(1) / 1000))));
+                }
+
                 barEntries.add(new BarEntry(labelNumberIndex, Float.parseFloat(String.format("%."+ numberAfterDot +"f", cursor.getFloat(2)).replace(",","."))));
-                roomName.add(cursor.getString(0));
-                labelNumberIndex = labelNumberIndex +1;
+                if(cursor.getString(0).length() > 9) {
+                    roomName.add(cursor.getString(0).substring(0,9));
+                }else{
+                    roomName.add(cursor.getString(0));
+                }
+                labelNumberIndex++;
             }
 
         }else if(cursor.getCount() == 1){
             cursor.moveToFirst();
-            pieEntry.add(new PieEntry(cursor.getInt(1), cursor.getString(0).replace("_"," ") + " " + String.format("%."+ numberAfterDot +"f",((float)cursor.getInt(1) / 1000))));
+            String name = cursor.getString(0).replace("_"," ");
+            if(name.length()>9){
+                pieEntry.add(new PieEntry(cursor.getInt(1), name.substring(0,9) + " " + String.format("%."+ numberAfterDot +"f",((float)cursor.getInt(1) / 1000))));
+            }else{
+                pieEntry.add(new PieEntry(cursor.getInt(1), cursor.getString(0).replace("_"," ") + " " + String.format("%."+ numberAfterDot +"f",((float)cursor.getInt(1) / 1000))));
+            }
+
             barEntries.add(new BarEntry(labelNumberIndex, Float.parseFloat(String.format("%."+ numberAfterDot +"f", cursor.getFloat(2)).replace(",","."))));
-            roomName.add(cursor.getString(0));
-        }else {
-            return;
+            if(cursor.getString(0).length() > 9) {
+                roomName.add(cursor.getString(0).substring(0,9));
+            }else {
+                roomName.add(cursor.getString(0));
+            }
         }
 
         BarDataSet barDataSet = new BarDataSet(barEntries, "Koszty dobowe urządzeń (" + defaultCurrency + ")");
@@ -1003,15 +1022,15 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         barChart.getAxisLeft().setTextSize(14);
         barChart.getLegend().setTextSize(14f);
         barChart.getLegend().setTextColor(Color.WHITE);
-        barChart.setTouchEnabled(false);
-        barChart.setFitBars(true);
+        barChart.setTouchEnabled(true);
+        barChart.setFitBars(false);
         barChart.setDragEnabled(false);
         barChart.setScaleEnabled(true);
         barChart.setDrawGridBackground(false);
         barChart.getXAxis().setTextColor(Color.WHITE);
-
+        axis.removeAllLimitLines();
         axis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        axis.setTextSize(16f);
+        axis.setTextSize(14f);
         axis.setDrawGridLines(true);
         axis.setTextColor(Color.WHITE);
         axis.setDrawAxisLine(true);

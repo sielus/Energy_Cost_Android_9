@@ -31,6 +31,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 
 import java.util.Map;
+import java.util.Objects;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
 import static androidx.core.content.ContextCompat.getSystemService;
@@ -176,15 +177,15 @@ public class HomeFragment extends Fragment {
         TextView outputEnergyCostDayKwh = root.findViewById(R.id.OutputEnergyCostDayKwh);
         TextView outputEnergyCostMonthKwh = root.findViewById(R.id.OutputEnergyCostMonthKwh);
 
-        outputEnergyCostUserKwh.setText(String.format("%."+ numberAfterDot +"f",Double.parseDouble(costValueMap.get("userCostKwh"))) + " kWh");
-        outputEnergyCostDayKwh.setText(String.format("%."+ numberAfterDot +"f",Float.parseFloat(costValueMap.get("dayCostKwh"))) + " kWh");
-        outputEnergyCostMonthKwh.setText(String.format("%."+ numberAfterDot +"f",Float.parseFloat(costValueMap.get("monthCostKwh"))) + " kWh");
+        outputEnergyCostUserKwh.setText(String.format("%."+ numberAfterDot +"f",Double.parseDouble(Objects.requireNonNull(costValueMap.get("userCostKwh")).replace(",", ""))) + " kWh");
+        outputEnergyCostDayKwh.setText(String.format("%."+ numberAfterDot +"f",Double.parseDouble(Objects.requireNonNull(costValueMap.get("dayCostKwh")).replace(",", ""))) + " kWh");
+        outputEnergyCostMonthKwh.setText(String.format("%."+ numberAfterDot +"f",Double.parseDouble(Objects.requireNonNull(costValueMap.get("monthCostKwh")).replace(",", ""))) + " kWh");
 
-        outputEnergyCostUser.setText(String.format("%."+ numberAfterDot +"f",Float.parseFloat(costValueMap.get("userCost")))+ " " + defaultCurrency);
-        outputEnergyCostDay.setText(String.format("%."+ numberAfterDot +"f",Float.parseFloat(costValueMap.get("dayCost"))) + " " +defaultCurrency);
-        outputEnergyCostMonth.setText(String.format("%."+ numberAfterDot +"f",Float.parseFloat(costValueMap.get("monthCost"))) + " " + defaultCurrency);
+        outputEnergyCostUser.setText(String.format("%."+ numberAfterDot +"f",Double.parseDouble(Objects.requireNonNull(costValueMap.get("userCost")).replace(",", "")))+ " " + defaultCurrency);
+        outputEnergyCostDay.setText(String.format("%."+ numberAfterDot +"f",Double.parseDouble(Objects.requireNonNull(costValueMap.get("dayCost")).replace(",", ""))) + " " + defaultCurrency);
+        outputEnergyCostMonth.setText(String.format("%."+ numberAfterDot +"f",Double.parseDouble(Objects.requireNonNull(costValueMap.get("monthCost")).replace(",", ""))) + " " + defaultCurrency);
 
-        hideKeyboard(getActivity());
+        hideKeyboard(requireActivity());
     }
 
     public static void hideKeyboard(Activity activity) {
