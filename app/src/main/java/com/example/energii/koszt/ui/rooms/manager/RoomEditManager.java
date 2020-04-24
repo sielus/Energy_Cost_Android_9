@@ -158,6 +158,8 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         mAdView.loadAd(adRequest);
 
 
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
 
         recyclerView = findViewById(R.id.RecyckerView);
