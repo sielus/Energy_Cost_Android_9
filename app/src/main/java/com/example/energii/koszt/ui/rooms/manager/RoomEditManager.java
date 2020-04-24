@@ -1022,8 +1022,8 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         barChart.getAxisLeft().setTextSize(14);
         barChart.getLegend().setTextSize(14f);
         barChart.getLegend().setTextColor(Color.WHITE);
-        barChart.setTouchEnabled(true);
-        barChart.setFitBars(false);
+        barChart.setTouchEnabled(false);
+        barChart.setFitBars(true);
         barChart.setDragEnabled(false);
         barChart.setScaleEnabled(true);
         barChart.setDrawGridBackground(false);

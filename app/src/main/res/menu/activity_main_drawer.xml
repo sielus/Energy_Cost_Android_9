@@ -12,12 +12,21 @@
             android:icon="@drawable/ic_attach_money_black_24dp"
             android:title="@string/menu_home" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_rooms"
             android:icon="@drawable/ic_home_black_24dp"
             android:title="@string/menu_gallery" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_wb_sunny_black_24dp"
-            android:title="Fotowoltaika" />
     </group>
+
+        <item android:title="Fotowoltaika">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_fragment_sun_energy_calculator_layout"
+                        android:icon="@drawable/ic_wb_sunny_black_24dp"
+                        android:title="Opłacalność" />
+                </group>
+            </menu>
+        </item>
+
+
 </menu>

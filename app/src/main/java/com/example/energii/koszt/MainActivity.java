@@ -1,6 +1,8 @@
 package com.example.energii.koszt;
 
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -11,6 +13,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.energii.koszt.ui.settings.SettingActivity;
 import com.google.android.gms.ads.MobileAds;
@@ -41,6 +45,17 @@ public class MainActivity extends AppCompatActivity {
         view = this.findViewById(android.R.id.content);
 
 
+        View headerview = navigationView.getHeaderView(0);
+        final TextView studioMail = (TextView) headerview.findViewById(R.id.studioMail);
+        studioMail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                copyMailtoCopyBoard(studioMail);
+            }
+        });
+
+
+
 
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
@@ -51,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
+                R.id.nav_home, R.id.nav_rooms, R.id.nav_fragment_sun_energy_calculator_layout)
                 .setDrawerLayout(drawer)
 
                 .build();
@@ -61,8 +76,16 @@ public class MainActivity extends AppCompatActivity {
 
             }
 
+    private void copyMailtoCopyBoard(TextView studioMail) {
+        ClipboardManager myClipboard;
+        myClipboard = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
+        ClipData myClip;
+        String text = studioMail.getText().toString();
+        myClip = ClipData.newPlainText("text", text);
+        myClipboard.setPrimaryClip(myClip);
+        Toast.makeText(this,"Mail skopiowany!",Toast.LENGTH_SHORT).show();
 
-
+    }
 
 
     @Override
