@@ -37,7 +37,7 @@
                 android:scrollbars="vertical"
 
                 android:autoSizeTextType="uniform"
-                android:hint="@string/_dialog_edit_device_name"
+                android:hint="@string/dialog_edit_device_name"
                 android:textColorHint="#FFFFFF"
                 app:boxBackgroundMode="outline"
                 app:counterEnabled="true"
@@ -74,7 +74,7 @@
                 android:layout_height="wrap_content"
 
                 android:autoSizeTextType="uniform"
-                android:hint="@string/_dialog_edit_device_power_value"
+                android:hint="@string/dialog_edit_device_power_value"
                 android:textColorHint="#FFFFFF"
 
                 app:boxBackgroundMode="outline"
@@ -108,7 +108,7 @@
                 android:layout_height="wrap_content"
 
                 android:autoSizeTextType="uniform"
-                android:hint="@string/_dialog_edit_device_number"
+                android:hint="@string/dialog_edit_device_number"
 
                 android:textColorHint="#FFFFFF"
                 app:boxBackgroundMode="outline"
@@ -171,7 +171,7 @@
             android:backgroundTint="#1683B1"
             android:fontFamily="@font/lato_bold"
             android:scaleType="fitCenter"
-            android:text="@string/_dialog_edit_device_button_time_work"
+            android:text="@string/dialog_edit_device_button_time_work"
             android:textColor="@color/white"
             android:textSize="13dp" />
 

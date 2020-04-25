@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.example.energii.koszt.MainActivity;
 import com.example.energii.koszt.R;
 import com.example.energii.koszt.ui.settings.SettingActivity;
@@ -299,6 +300,7 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
 
         Intent intent = new Intent(root.getContext() , RoomEditManager.class);
         root.getContext().startActivity(intent);
+        Animatoo.animateSlideLeft(root.getContext());
     }
 
     ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {

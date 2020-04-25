@@ -33,6 +33,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.example.energii.koszt.R;
 import com.example.energii.koszt.ui.SQLLiteDBHelper;
 import com.example.energii.koszt.ui.exception.SQLEnergyCostException;
@@ -216,6 +217,11 @@ public class SettingActivity extends AppCompatActivity implements SettingsListAd
         return true;
     }
 
+    public void onBackPressed() {
+        super.onBackPressed();
+        Animatoo.animateSlideRight(this);
+
+    }
     void ViewDataFromDB(Cursor cursor) {
         if (cursor.getCount() != 0) {
             clearRoomList();

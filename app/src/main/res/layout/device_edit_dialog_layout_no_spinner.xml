@@ -26,7 +26,7 @@
             android:id="@+id/buttonTimePicker"
             android:layout_width="124dp"
             android:layout_height="65dp"
-            android:text="@string/_dialog_edit_device_button_time_work"
+            android:text="@string/dialog_edit_device_button_time_work"
             android:autoSizeTextType="uniform"
             android:autoSizeMaxTextSize="14dp"
 
@@ -87,7 +87,7 @@
                 android:scrollbars="vertical"
 
                 android:autoSizeTextType="uniform"
-                android:hint="@string/_dialog_edit_device_name"
+                android:hint="@string/dialog_edit_device_name"
                 android:textColorHint="#FFFFFF"
                 app:boxBackgroundMode="outline"
                 app:counterEnabled="true"
@@ -120,7 +120,7 @@
                 android:layout_height="wrap_content"
 
                 android:autoSizeTextType="uniform"
-                android:hint="@string/_dialog_edit_device_power_value"
+                android:hint="@string/dialog_edit_device_power_value"
                 android:textColorHint="#FFFFFF"
 
                 app:boxBackgroundMode="outline"
@@ -154,7 +154,7 @@
                 android:layout_height="wrap_content"
 
                 android:autoSizeTextType="uniform"
-                android:hint="@string/_dialog_edit_device_number"
+                android:hint="@string/dialog_edit_device_number"
 
                 android:textColorHint="#FFFFFF"
                 app:boxBackgroundMode="outline"

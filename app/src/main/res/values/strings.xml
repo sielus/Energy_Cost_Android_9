@@ -16,37 +16,25 @@
     <string name="home_table_user_time">User time</string>
     <string name="home_table_day" translatable="false">24h</string>
     <string name="home_button_calc_it">Calc it</string>
-
-    <string name="room_list_summary_of_the_costs">Summary of rooms costs</string>
-
-    <string name="room_list_table_day" translatable="false">24h</string>
-    <string name="room_list_table_year">365 days</string>
-
-    <string name="room_edit_summary_of_the_costs_room">Summary of room cost</string>
-
-    <string name="_dialog_edit_device_power_value" translatable="false">@string/home_hint_power_value</string>
-    <string name="_dialog_edit_device_number" translatable="false">@string/home_hint_number_device</string>
-
-    <string name="_dialog_edit_device_button_time_work">Working Time</string>
-
-    <string name="_dialog_room_edit_room_name">Room name</string>
-
     <string name="home_energy_cost_hint" translatable="false">@string/settings_energy_cost_global</string>
 
+    <string name="room_list_summary_of_the_costs">Summary of rooms costs</string>
+    <string name="room_list_table_month" translatable="false">@string/home_table_month</string>
+    <string name="room_list_table_day" translatable="false">24h</string>
+    <string name="room_list_table_year">365 days</string>
+    <string name="room_edit_summary_of_the_costs_room">Summary of room cost</string>
 
+    <string name="menu_home">Energy Cost Calculator</string>
+    <string name="menu_room_list">Room manager</string>
 
     <string name="device_row_device_number">"Device numbers : "</string>
     <string name="device_row_device_time_work">"Working time : "</string>
     <string name="device_row_device_power">"Power Value : "</string>
 
-    <string name="menu_room_list">Room manager</string>
     <string name="home_hint_power_value">Device Power Value (W)</string>
     <string name="home_hint_timework_m">Working Time : Minutes</string>
     <string name="home_hint_timework_h">Working Time : Hours</string>
     <string name="home_table_month">30 days</string>
-    <string name="room_list_table_month" translatable="false">@string/home_table_month</string>
-    <string name="_dialog_edit_device_name">Device name</string>
-    <string name="menu_home">Energy Cost Calculator</string>
 
     <string name="settings_currency_global">Currency</string>
     <string name="settings_energy_cost_global">kWh cost</string>
@@ -60,14 +48,43 @@
     
     <string name="error_name_canot_start_from_number">The name cannot start with a number</string>
     <string name="error_no_data">" Lack of data!"</string>
-    <string name="dialog_hint_new_room_name">Nowa nazwa pokoju</string>
+
+    <string name="dialog_hint_new_room_name">Enter new room name</string>
+    <string name="dialog_edit_device_name">Device name</string>
+    <string name="dialog_edit_device_button_time_work">Working Time</string>
+    <string name="dialog_room_edit_room_name">Room name</string>
+    <string name="dialog_edit_device_power_value" translatable="false">@string/home_hint_power_value</string>
+    <string name="dialog_edit_device_number" translatable="false">@string/home_hint_number_device</string>
+
     <string name="toast_room_added">Room added</string>
     <string name="toast_new_room_name">New room name : </string>
-    <string name="just_templates">Templates</string>
     <string name="toast_device_wokrs_all_day">Device works all day</string>
-    <string name="toast_device_added"></string>
-    <string name="just_room">Room</string>
+    <string name="toast_device_added">Device added</string>
     <string name="toast_device_updated">Device updated</string>
 
+    <string name="just_templates">Templates</string>
+    <string name="just_room">Room</string>
+    <string name="just_room_name">Room name</string>
 
+    <string name="sql_exception_DuplicationRoom">- This room already exists</string>
+    <string name="sql_exception_DuplicationDevice">- This device already exists</string>
+    <string name="sql_exception_WrongTime">Choose work time</string>
+    <string name="sql_exception_EmptyField">"Empty field "</string>
+
+    <string name="default_device_phone_charger_idle">Phone charger (Standby)</string>
+    <string name="default_device_phone_charger">Phone charger</string>
+    <string name="default_device_fridge">Fridge</string>
+    <string name="default_device_led_light">Led Light</string>
+    <string name="default_device_energy_saving_light">energy saving light</string>
+    <string name="default_device_pc" translatable="false">PC</string>
+    <string name="default_device_laptop" translatable="false">Laptop</string>
+    <string name="default_device_tv_qled" translatable="false">TV QLED 60\"</string>
+    <string name="default_device_microvave">Microwave</string>
+    <string name="default_device_game_console">Game console</string>
+    <string name="default_device_game_console_idle">Game console (Standby)</string>
+    <string name="default_device_router" translatable="false">Router</string>
+    <string name="default_device_vacuum_cleaner">Vacuum cleaner</string>
+    <string name="default_device_amp">Amp</string>
+    <string name="default_device_amp_idle">Amp (Standby)</string>
+    <string name="default_device_night_light_led">LED night light</string>
 </resources>

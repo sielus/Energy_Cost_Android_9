@@ -6,14 +6,18 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.example.energii.koszt.R;
 import com.example.energii.koszt.ui.exception.SQLEnergyCostException;
 
 public class SQLLiteDBHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "cost_energy.db";
     private static final int DB_VERSION = 1;
+    private final Context context;
 
     public SQLLiteDBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
+        this.context = context;
     }
 
     @Override
@@ -50,7 +54,7 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
 
         addVariable = "INSERT INTO configuration_variable (name, value) values (\"powerCost\", \"0.60\"), (\"defaultCurrency\", \"zł\")";
         numberAfterDot = "INSERT INTO configuration_variable (name, value) values (\"numberAfterDot\", \"2\")";
-        defaultDevice = "INSERT INTO default_device_settings (name, power_value, work_time, device_number) values (\"Ładowarka do telefonu\", 15, \"2:0\", 1)," +
+        defaultDevice = "INSERT INTO default_device_settings (name, power_value, work_time, device_number) values (+\"" + context.getResources().getString(R.string.app_name) + "\", 15, \"2:0\", 1)," +
                                                                                                                  "(\"Ładowarka do telefonu (stan spoczynku)\", 0.1, \"24:0\", 1)," +
                                                                                                                  "(\"Lodówka\", 35, \"24:0\", 1)," +
                                                                                                                  "(\"Żarówka LED\", 8, \"7:0\", 1)," +
@@ -78,7 +82,7 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
 
     public void addRoom(String roomName) throws SQLEnergyCostException.DuplicationRoom, SQLEnergyCostException.EmptyField {
         if (roomName.isEmpty()) {
-            throw new SQLEnergyCostException.EmptyField("Nazwa pokoju");
+            throw new SQLEnergyCostException.EmptyField(context.getResources().getString(R.string.just_room_name),context);
         }
 
         SQLiteDatabase dbhWrite = getWritableDatabase();
@@ -89,7 +93,7 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         long resultInsert = dbhWrite.insert("room_list", null, contentValues);
 
         if (resultInsert == -1) {
-            throw new SQLEnergyCostException.DuplicationRoom(roomName);
+            throw new SQLEnergyCostException.DuplicationRoom(roomName,context);
         }
 
         addDeviceList(changeSpaceInName(roomName));
@@ -119,9 +123,9 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
 
     public void addDevice(String roomName, String deviceName, double powerValue, int hour, int minutes, int deviceNumber) throws SQLEnergyCostException.EmptyField, SQLEnergyCostException.DuplicationDevice, SQLEnergyCostException.WrongTime {
         if (roomName.isEmpty() || deviceName.isEmpty() || powerValue == 0 || deviceNumber == 0) {
-            throw new SQLEnergyCostException.EmptyField();
+            throw new SQLEnergyCostException.EmptyField(context);
         }else if(hour == 0 && minutes == 0) {
-            throw new SQLEnergyCostException.WrongTime();
+            throw new SQLEnergyCostException.WrongTime(context);
         }
 
         double energyAmount;
@@ -152,7 +156,7 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         long resultInsert = dbhWrite.insert(deviceRoomName, null, contentValues);
 
         if (resultInsert == -1) {
-            throw new SQLEnergyCostException.DuplicationDevice(deviceName);
+            throw new SQLEnergyCostException.DuplicationDevice(deviceName,context);
         }
 
         updateRoomEnergyAmount(changeSpaceInName(roomName), energyAmount);
@@ -204,14 +208,14 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
 
     public void updateDevice(int deviceId, String roomName, String newDeviceName, double powerValue, int deviceNumber, int hour, int minutes) throws SQLEnergyCostException.EmptyField, SQLEnergyCostException.DuplicationDevice, SQLEnergyCostException.WrongTime {
         if (roomName.isEmpty() || newDeviceName.isEmpty() || powerValue == 0 || deviceNumber == 0) {
-            throw new SQLEnergyCostException.EmptyField();
+            throw new SQLEnergyCostException.EmptyField(context);
         }else if(hour == 0 && minutes == 0) {
-             throw new SQLEnergyCostException.WrongTime();
+             throw new SQLEnergyCostException.WrongTime(context);
         }
 
         if (!checkDeviceName(roomName, deviceId).getString(0).equals(newDeviceName)) {
             if(checkDeviceName(roomName, newDeviceName).getCount() == 1) {
-                throw new SQLEnergyCostException.DuplicationDevice(newDeviceName);
+                throw new SQLEnergyCostException.DuplicationDevice(newDeviceName,context);
             }
         }
 
@@ -250,7 +254,7 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
     public void updateRoomName(String oldRoomName, String newRoomName) throws SQLEnergyCostException.DuplicationRoom {
 
         if(checkNameRoom(changeSpaceInName(newRoomName)).getCount() != 0) {
-            throw new SQLEnergyCostException.DuplicationRoom(newRoomName);
+            throw new SQLEnergyCostException.DuplicationRoom(newRoomName,context);
         }
         SQLiteDatabase dbWriter = getWritableDatabase();
 
@@ -391,9 +395,9 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
 
     public void addDefaultDevice(String deviceName, double powerValue, int hour, int minutes, int deviceNumber) throws SQLEnergyCostException.EmptyField, SQLEnergyCostException.DuplicationDevice, SQLEnergyCostException.WrongTime {
         if (deviceName.isEmpty() || powerValue == 0 ||  deviceNumber == 0) {
-            throw new SQLEnergyCostException.EmptyField();
+            throw new SQLEnergyCostException.EmptyField(context);
         }else if(hour == 0 && minutes == 0) {
-            throw new SQLEnergyCostException.WrongTime();
+            throw new SQLEnergyCostException.WrongTime(context);
         }
 
         String workTime = hour + ":" + minutes;
@@ -408,20 +412,20 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         long resultInsert = dbhWrite.insert("default_device_settings", null, contentValues);
 
         if (resultInsert == -1) {
-            throw new SQLEnergyCostException.DuplicationDevice(deviceName);
+            throw new SQLEnergyCostException.DuplicationDevice(deviceName,context);
         }
     }
 
     public void updateDefaultDevice(String newDeviceName, String oldDeviceName, double powerValue, int hour, int minutes, int deviceNumber) throws SQLEnergyCostException.EmptyField, SQLEnergyCostException.DuplicationDevice, SQLEnergyCostException.WrongTime {
         if (newDeviceName.isEmpty() || oldDeviceName.isEmpty() || powerValue == 0 || deviceNumber == 0) {
-            throw new SQLEnergyCostException.EmptyField();
+            throw new SQLEnergyCostException.EmptyField(context);
         }else if(hour == 0 && minutes == 0) {
-            throw new SQLEnergyCostException.WrongTime();
+            throw new SQLEnergyCostException.WrongTime(context);
         }
 
         if(!oldDeviceName.equals(newDeviceName)) {
             if(checkDeviceName(newDeviceName).getCount() == 1) {
-                throw new SQLEnergyCostException.DuplicationDevice(newDeviceName);
+                throw new SQLEnergyCostException.DuplicationDevice(newDeviceName,context);
             }
        }
 

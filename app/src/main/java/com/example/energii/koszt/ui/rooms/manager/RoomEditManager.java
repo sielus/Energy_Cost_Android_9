@@ -33,6 +33,8 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.example.energii.koszt.R;
 import com.example.energii.koszt.ui.settings.SettingActivity;
 import com.example.energii.koszt.ui.rooms.RoomListFragment;
@@ -110,10 +112,17 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
                 break;
             case 16908332:
                 this.onBackPressed();
+                Animatoo.animateSlideRight(this);
+
 
         }
 
         return true;
+    }
+    public void onBackPressed() {
+        super.onBackPressed();
+        Animatoo.animateSlideRight(this);
+
     }
 
     private List<String> roomCostKWH = new ArrayList<>();
@@ -238,7 +247,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
                     text_field_inputRoomNameLayout.setError(view.getContext().getResources().getString(R.string.error_name_canot_start_from_number));
                 }
                 else{
-                        Toast.makeText(view.getContext(),R.string.toast_new_room_name + " " + newRoomName,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(view.getContext(),view.getContext().getResources().getString(R.string.toast_new_room_name) + " " + newRoomName,Toast.LENGTH_SHORT).show();
                         setTitle(view.getContext().getResources().getString(R.string.just_room) + newRoomName);
                         RoomListFragment roomListFragment = new RoomListFragment();
 
@@ -415,13 +424,13 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
                     editTextDeviceNumbers.setText(defaultListDeviceNumber.get(position));
                     h[0] = Integer.parseInt(defaultListDeviceTimeWork.get(position).split(":")[0]);
                     m[0] = Integer.parseInt(defaultListDeviceTimeWork.get(position).split(":")[1]);
-                    buttonTimePicker.setText(view.getContext().getResources().getString(R.string._dialog_edit_device_button_time_work) + "\n " + h[0] + "h" + " " + m[0] + "m");
+                    buttonTimePicker.setText(view.getContext().getResources().getString(R.string.dialog_edit_device_button_time_work) + "\n " + h[0] + "h" + " " + m[0] + "m");
                     if(h[0]==24){
                         is24hSwitch.setChecked(true);
                         buttonTimePicker.setEnabled(false);
                     }else{
                         is24hSwitch.setChecked(false);
-                        buttonTimePicker.setText(view.getContext().getResources().getString(R.string._dialog_edit_device_button_time_work) + "\n " + h[0] + "h" + " " + m[0] + "m");
+                        buttonTimePicker.setText(view.getContext().getResources().getString(R.string.dialog_edit_device_button_time_work) + "\n " + h[0] + "h" + " " + m[0] + "m");
                         buttonTimePicker.setEnabled(true);
 
                     }
@@ -450,11 +459,11 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
                     Toast.makeText(dialog.getContext(),R.string.toast_device_wokrs_all_day,Toast.LENGTH_SHORT).show();
 
                     buttonTimePicker.setEnabled(false);
-                    buttonTimePicker.setText(view.getContext().getResources().getString(R.string._dialog_edit_device_button_time_work) + " \n " + h[0] + "h" + " " + m[0] + "m");
+                    buttonTimePicker.setText(view.getContext().getResources().getString(R.string.dialog_edit_device_button_time_work) + " \n " + h[0] + "h" + " " + m[0] + "m");
 
                 }else{
                     buttonTimePicker.setEnabled(true);
-                    buttonTimePicker.setText(view.getContext().getResources().getString(R.string._dialog_edit_device_button_time_work));
+                    buttonTimePicker.setText(view.getContext().getResources().getString(R.string.dialog_edit_device_button_time_work));
 
                 }
             }
@@ -488,7 +497,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
                         timePickerV.setIs24HourView(true);
                          h[0] = hourOfDay;
                          m[0] = minute;
-                        buttonTimePicker.setText(view.getContext().getResources().getString(R.string._dialog_edit_device_button_time_work) + " \n " + h[0] + "h" + " " + m[0] + "m");
+                        buttonTimePicker.setText(view.getContext().getResources().getString(R.string.dialog_edit_device_button_time_work) + " \n " + h[0] + "h" + " " + m[0] + "m");
                     }
                 } ,h[0],m[0],true);
                 timePickerDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
@@ -698,7 +707,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
       //  editTextDeviceWorkH.setText(device.get(3).split(":")[0]);
         //editTextDeviceWorkM.setText(device.get(3).split(":")[1]);
         Switch is24hSwitch = dialog.findViewById(R.id.switch1);
-        buttonTimePicker.setText(view.getContext().getResources().getString(R.string._dialog_edit_device_button_time_work) +" \n " + h[0] + "h" + " " + m[0] + "m");
+        buttonTimePicker.setText(view.getContext().getResources().getString(R.string.dialog_edit_device_button_time_work) +" \n " + h[0] + "h" + " " + m[0] + "m");
         if(h[0]==24){
             is24hSwitch.setChecked(true);
             buttonTimePicker.setEnabled(false);
@@ -717,13 +726,13 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
                     Toast.makeText(dialog.getContext(),R.string.toast_device_wokrs_all_day,Toast.LENGTH_SHORT).show();
 
                     buttonTimePicker.setEnabled(false);
-                    buttonTimePicker.setText(view.getContext().getResources().getString(R.string._dialog_edit_device_button_time_work) + " \n " + h[0] + "h" + " " + m[0] + "m");
+                    buttonTimePicker.setText(view.getContext().getResources().getString(R.string.dialog_edit_device_button_time_work) + " \n " + h[0] + "h" + " " + m[0] + "m");
 
                 }else{
                     final int[] h = {Integer.parseInt(device.get(3).split(":")[0])};
                     final int[] m = {Integer.parseInt(device.get(3).split(":")[1])};
                     buttonTimePicker.setEnabled(true);
-                    buttonTimePicker.setText(view.getContext().getResources().getString(R.string._dialog_edit_device_button_time_work) + " \n " + h[0] + "h" + " " + m[0] + "m");
+                    buttonTimePicker.setText(view.getContext().getResources().getString(R.string.dialog_edit_device_button_time_work) + " \n " + h[0] + "h" + " " + m[0] + "m");
 
                 }
             }
@@ -739,7 +748,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
                         timePickerV.setIs24HourView(true);
                         h[0] = hourOfDay;
                         m[0] = minute;
-                        buttonTimePicker.setText(view.getContext().getResources().getString(R.string._dialog_edit_device_button_time_work) + " \n " + h[0] + "h" + " " + m[0] + "m");
+                        buttonTimePicker.setText(view.getContext().getResources().getString(R.string.dialog_edit_device_button_time_work) + " \n " + h[0] + "h" + " " + m[0] + "m");
                     }
                 } ,Integer.parseInt(device.get(3).split(":")[0]),Integer.parseInt(device.get(3).split(":")[1]),true);
                 timePickerDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
