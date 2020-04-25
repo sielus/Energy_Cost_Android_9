@@ -66,7 +66,7 @@ public class HomeFragment extends Fragment {
         mAdView = root.findViewById(R.id.adView);
 
         TextInputLayout text_field_inputEnergyCost = root.findViewById(R.id.text_field_inputEnergyCost);
-        text_field_inputEnergyCost.setHint("Koszt kWh / " + defaultCurrency);
+        text_field_inputEnergyCost.setHint(getText(R.string.home_energy_cost_hint) + " / " + defaultCurrency);
 
         ConstraintLayout constraintLayout = root.findViewById(R.id.ConstraintLayoutHome);
         constraintLayout.setOnTouchListener(new View.OnTouchListener() {
@@ -141,7 +141,7 @@ public class HomeFragment extends Fragment {
         inputEnergyCost.setText(ViewpowerCostFromDB(sqlLiteDBHelper.getVariable("powerCost")));
         TextInputLayout text_field_inputEnergyCost = root.findViewById(R.id.text_field_inputEnergyCost);
 
-        text_field_inputEnergyCost.setHint("Koszt kWh / " + ViewdefaultCurrencyFromDB(sqlLiteDBHelper.getVariable("defaultCurrency")));
+        text_field_inputEnergyCost.setHint(root.getContext().getResources().getString(R.string.settings_energy_cost_global)  + " / " + ViewdefaultCurrencyFromDB(sqlLiteDBHelper.getVariable("defaultCurrency")));
 
         TextView outputEnergyCostUser = root.findViewById(R.id.OutputEnergyCostUser);
         TextView outputEnergyCostDay = root.findViewById(R.id.OutputEnergyCostDay);

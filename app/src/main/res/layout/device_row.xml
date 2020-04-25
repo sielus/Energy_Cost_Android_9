@@ -62,7 +62,7 @@
 
                         android:fontFamily="@font/lato_light"
                         android:gravity="right"
-                        android:text="Moc : "
+                        android:text="@string/device_row_device_power"
                         android:textColor="@color/white"
                         android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -97,7 +97,7 @@
                         android:fontFamily="@font/lato_light"
 
                         android:gravity="right"
-                        android:text="Czas pracy : "
+                        android:text="@string/device_row_device_time_work"
                         android:textColor="@color/white"
                         android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -129,7 +129,7 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/lato_light"
                         android:gravity="right"
-                        android:text="Ilość urządzeń : "
+                        android:text="@string/device_row_device_number"
                         android:textColor="@color/white"
                         android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="parent"

@@ -135,7 +135,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_edit_manager);
         // getSupportActionBar().hide();
-        setTitle("Pokój " + room_name.replace("_"," "));
+        setTitle(view.getContext().getResources().getString(R.string.just_room) + " " + room_name.replace("_"," "));
 
 
 
@@ -195,7 +195,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         Button buttonDialogAccept = room_name_dialog.findViewById(R.id.ButtonAddRoom);
         final TextInputEditText text_field_inputRoomName = room_name_dialog.findViewById(R.id.text_field_inputRoomName);
         final TextInputLayout text_field_inputRoomNameLayout = room_name_dialog.findViewById(R.id.text_field_inputRoomNameLayout);
-        text_field_inputRoomNameLayout.setHint("Wprowadź nową nazwę pokoju");
+        text_field_inputRoomNameLayout.setHint(view.getContext().getResources().getString(R.string.dialog_hint_new_room_name));
         text_field_inputRoomName.setText(room_name.replace("_"," "));
 
         text_field_inputRoomName.addTextChangedListener(new TextWatcher() {
@@ -212,7 +212,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
                     char First = roomName.charAt(0);
 
                     if(Character.isDigit(First)){
-                        text_field_inputRoomNameLayout.setError("Nazwa nie może zaczynać się od cyfry");
+                        text_field_inputRoomNameLayout.setError(view.getContext().getResources().getString(R.string.error_name_canot_start_from_number));
                         ifNumberOnStart = true;
                     }else {
                         text_field_inputRoomNameLayout.setError(null);
@@ -233,13 +233,13 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
 
                 String newRoomName = text_field_inputRoomName.getText().toString();
                 if (newRoomName.isEmpty()) {
-                    text_field_inputRoomNameLayout.setError("Brak danych!");
+                    text_field_inputRoomNameLayout.setError(view.getContext().getResources().getString(R.string.error_no_data));
                 }                else if(ifNumberOnStart){
-                    text_field_inputRoomNameLayout.setError("Nazwa nie może zaczynać się od cyfry");
+                    text_field_inputRoomNameLayout.setError(view.getContext().getResources().getString(R.string.error_name_canot_start_from_number));
                 }
                 else{
-                        Toast.makeText(view.getContext(),"Nowa nazwa pokoju : " + newRoomName,Toast.LENGTH_SHORT).show();
-                        setTitle("Pokój " + newRoomName);
+                        Toast.makeText(view.getContext(),R.string.toast_new_room_name + " " + newRoomName,Toast.LENGTH_SHORT).show();
+                        setTitle(view.getContext().getResources().getString(R.string.just_room) + newRoomName);
                         RoomListFragment roomListFragment = new RoomListFragment();
 
 
@@ -319,7 +319,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
     void getDefaultDeviceList(Cursor cursor) {
         if (cursor.getCount() != 0) {
             clearDefaultDeviceList();
-            defaultListDeviceName.add(0,"Szablony");
+            defaultListDeviceName.add(0,view.getContext().getResources().getString(R.string.just_templates));
             defaultListDeviceNumber.add(0,"");
             defaultListDeviceTimeWork.add(0,"0:0");
             defaultListDevicePower.add(0,"");
@@ -404,6 +404,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
 
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(arrayAdapter.getItem(0)==arrayAdapter.getItem(position)){
@@ -414,13 +415,13 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
                     editTextDeviceNumbers.setText(defaultListDeviceNumber.get(position));
                     h[0] = Integer.parseInt(defaultListDeviceTimeWork.get(position).split(":")[0]);
                     m[0] = Integer.parseInt(defaultListDeviceTimeWork.get(position).split(":")[1]);
-                    buttonTimePicker.setText("Czas pracy \n " + h[0] + "h" + " " + m[0] + "m");
+                    buttonTimePicker.setText(view.getContext().getResources().getString(R.string._dialog_edit_device_button_time_work) + "\n " + h[0] + "h" + " " + m[0] + "m");
                     if(h[0]==24){
                         is24hSwitch.setChecked(true);
                         buttonTimePicker.setEnabled(false);
                     }else{
                         is24hSwitch.setChecked(false);
-                        buttonTimePicker.setText("Czas pracy \n " + h[0] + "h" + " " + m[0] + "m");
+                        buttonTimePicker.setText(view.getContext().getResources().getString(R.string._dialog_edit_device_button_time_work) + "\n " + h[0] + "h" + " " + m[0] + "m");
                         buttonTimePicker.setEnabled(true);
 
                     }
@@ -440,19 +441,20 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
 
 
         is24hSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
                     h[0] = 24;
                     m[0] = 0;
-                    Toast.makeText(dialog.getContext(),"Urządzenie pracuje całą dobe",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(dialog.getContext(),R.string.toast_device_wokrs_all_day,Toast.LENGTH_SHORT).show();
 
                     buttonTimePicker.setEnabled(false);
-                    buttonTimePicker.setText("Czas pracy \n " + h[0] + "h" + " " + m[0] + "m");
+                    buttonTimePicker.setText(view.getContext().getResources().getString(R.string._dialog_edit_device_button_time_work) + " \n " + h[0] + "h" + " " + m[0] + "m");
 
                 }else{
                     buttonTimePicker.setEnabled(true);
-                    buttonTimePicker.setText("Czas pracy");
+                    buttonTimePicker.setText(view.getContext().getResources().getString(R.string._dialog_edit_device_button_time_work));
 
                 }
             }
@@ -480,12 +482,13 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
                 TimePickerDialog timePickerDialog = new TimePickerDialog(dialog.getContext() , R.style.TimePickerTheme, new TimePickerDialog.OnTimeSetListener() {
                     
 
+                    @SuppressLint("SetTextI18n")
                     @Override
                     public void onTimeSet(TimePicker timePickerV, int hourOfDay, int minute) {
                         timePickerV.setIs24HourView(true);
                          h[0] = hourOfDay;
                          m[0] = minute;
-                        buttonTimePicker.setText("Czas pracy \n " + h[0] + "h" + " " + m[0] + "m");
+                        buttonTimePicker.setText(view.getContext().getResources().getString(R.string._dialog_edit_device_button_time_work) + " \n " + h[0] + "h" + " " + m[0] + "m");
                     }
                 } ,h[0],m[0],true);
                 timePickerDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
@@ -514,7 +517,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
                             char first = deviceName.charAt(0);
 
                             if (Character.isDigit(first)) {
-                                text_field_inputeditTextDeviceNameLayout.setError("Nazwa nie może zaczynać się od cyfry");
+                                text_field_inputeditTextDeviceNameLayout.setError(view.getContext().getResources().getString(R.string.error_name_canot_start_from_number));
                                 ifNumberOnStart = true;
                             } else {
                                 text_field_inputeditTextDeviceNameLayout.setError(null);
@@ -549,7 +552,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
                     try {
                         try {
                             sqlLiteDBHelper.addDevice(room_name, deviceNameInput, powerValue, h[0], m[0], number);
-                            Toast.makeText(view.getContext(), "Urządzenie dodane", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(view.getContext(), R.string.toast_device_added, Toast.LENGTH_SHORT).show();
                             dialog.dismiss();
 
                             RoomListFragment roomListFragment = new RoomListFragment();
@@ -620,10 +623,10 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
                 boolean isNotEmpty = true;
 
                 if(editTextDeviceName.getText().toString().isEmpty()) {
-                    text_field_inputeditTextDeviceNameLayout.setError("Brak danych!");
+                    text_field_inputeditTextDeviceNameLayout.setError(view.getContext().getResources().getString(R.string.error_no_data));
                     isNotEmpty = false;
                 }else if(ifNumberOnStart){
-                    text_field_inputeditTextDeviceNameLayout.setError("Nazwa nie może zaczynać się od cyfry");
+                    text_field_inputeditTextDeviceNameLayout.setError(view.getContext().getResources().getString(R.string.error_name_canot_start_from_number));
                     isNotEmpty = false;
                 }
                 else {
@@ -631,14 +634,14 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
                 }
 
                 if(editTextDeviceNumbers.getText().toString().isEmpty()) {
-                    text_field_inputeditTextDeviceNumbersLayout.setError("Brak danych!");
+                    text_field_inputeditTextDeviceNumbersLayout.setError(view.getContext().getResources().getString(R.string.error_no_data));
                     isNotEmpty = false;
                 }else {
                     text_field_inputeditTextDeviceNumbersLayout.setError(null);
                 }
 
                 if(editTextDevicePower.getText().toString().isEmpty()) {
-                    text_field_inputeditTextDevicePowerLayout.setError("Brak danych!");
+                    text_field_inputeditTextDevicePowerLayout.setError(view.getContext().getResources().getString(R.string.error_no_data));
                     isNotEmpty = false;
                 }else {
                     text_field_inputeditTextDevicePowerLayout.setError(null);
@@ -657,6 +660,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         defaultListDeviceName.clear();
     }
 
+    @SuppressLint("SetTextI18n")
     public void showUpdateDialog(final View view, final String roomName, String deviceName){
         final Dialog dialog = new Dialog(view.getContext());
 
@@ -694,7 +698,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
       //  editTextDeviceWorkH.setText(device.get(3).split(":")[0]);
         //editTextDeviceWorkM.setText(device.get(3).split(":")[1]);
         Switch is24hSwitch = dialog.findViewById(R.id.switch1);
-        buttonTimePicker.setText("Czas pracy \n " + h[0] + "h" + " " + m[0] + "m");
+        buttonTimePicker.setText(view.getContext().getResources().getString(R.string._dialog_edit_device_button_time_work) +" \n " + h[0] + "h" + " " + m[0] + "m");
         if(h[0]==24){
             is24hSwitch.setChecked(true);
             buttonTimePicker.setEnabled(false);
@@ -710,16 +714,16 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
                 if(isChecked){
                     h[0] = 24;
                     m[0] = 0;
-                    Toast.makeText(dialog.getContext(),"Urządzenie pracuje całą dobe",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(dialog.getContext(),R.string.toast_device_wokrs_all_day,Toast.LENGTH_SHORT).show();
 
                     buttonTimePicker.setEnabled(false);
-                    buttonTimePicker.setText("Czas pracy \n " + h[0] + "h" + " " + m[0] + "m");
+                    buttonTimePicker.setText(view.getContext().getResources().getString(R.string._dialog_edit_device_button_time_work) + " \n " + h[0] + "h" + " " + m[0] + "m");
 
                 }else{
                     final int[] h = {Integer.parseInt(device.get(3).split(":")[0])};
                     final int[] m = {Integer.parseInt(device.get(3).split(":")[1])};
                     buttonTimePicker.setEnabled(true);
-                    buttonTimePicker.setText("Czas pracy \n " + h[0] + "h" + " " + m[0] + "m");
+                    buttonTimePicker.setText(view.getContext().getResources().getString(R.string._dialog_edit_device_button_time_work) + " \n " + h[0] + "h" + " " + m[0] + "m");
 
                 }
             }
@@ -735,7 +739,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
                         timePickerV.setIs24HourView(true);
                         h[0] = hourOfDay;
                         m[0] = minute;
-                        buttonTimePicker.setText("Czas pracy \n " + h[0] + "h" + " " + m[0] + "m");
+                        buttonTimePicker.setText(view.getContext().getResources().getString(R.string._dialog_edit_device_button_time_work) + " \n " + h[0] + "h" + " " + m[0] + "m");
                     }
                 } ,Integer.parseInt(device.get(3).split(":")[0]),Integer.parseInt(device.get(3).split(":")[1]),true);
                 timePickerDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
@@ -764,7 +768,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
                         } catch (SQLEnergyCostException.WrongTime wrongTime) {
                             wrongTime.printStackTrace();
                         }
-                        Toast.makeText(view.getContext(),"Urządzenie zaktualizowane",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(view.getContext(),R.string.toast_device_updated,Toast.LENGTH_SHORT).show();
 
                         dialog.dismiss();
                         ViewDataFromDB(sqlLiteDBHelper.getRoomDeviceList(room_name));
@@ -844,21 +848,21 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
                 boolean isNotEmpty = true;
 
                 if(editTextDeviceName.getText().toString().isEmpty()) {
-                    text_field_inputeditTextDeviceNameLayout.setError("Brak danych!");
+                    text_field_inputeditTextDeviceNameLayout.setError(view.getContext().getResources().getString(R.string.error_no_data));
                     isNotEmpty = false;
                 }else {
                     text_field_inputeditTextDeviceNameLayout.setError(null);
                 }
 
                 if(editTextDeviceNumbers.getText().toString().isEmpty()) {
-                    text_field_inputeditTextDeviceNumbersLayout.setError("Brak danych!");
+                    text_field_inputeditTextDeviceNumbersLayout.setError(view.getContext().getResources().getString(R.string.error_no_data));
                     isNotEmpty = false;
                 }else {
                     text_field_inputeditTextDeviceNumbersLayout.setError(null);
                 }
 
                 if(editTextDevicePower.getText().toString().isEmpty()) {
-                    text_field_inputeditTextDevicePowerLayout.setError("Brak danych!");
+                    text_field_inputeditTextDevicePowerLayout.setError(view.getContext().getResources().getString(R.string.error_no_data));
                     isNotEmpty = false;
                 }else {
                     text_field_inputeditTextDevicePowerLayout.setError(null);
@@ -1008,7 +1012,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
             }
         }
 
-        BarDataSet barDataSet = new BarDataSet(barEntries, "Koszty dobowe urządzeń (" + defaultCurrency + ")");
+        BarDataSet barDataSet = new BarDataSet(barEntries, view.getContext().getResources().getString(R.string.chart_daily_costs) + " (" + defaultCurrency + ")");
 
         barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
         barChart.getAxisLeft().setAxisMinimum(0);
@@ -1055,7 +1059,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         barChart.getLegend().setEnabled(true);
         barChart.animateY(1000);
 
-        PieDataSet pieDataSet = new PieDataSet(pieEntry,"Dane");
+        PieDataSet pieDataSet = new PieDataSet(pieEntry,"");
 
         pieChart.getLegend().setEnabled(false);
         pieDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
@@ -1070,7 +1074,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         pieChart.setHoleRadius(30);
         pieChart.setTransparentCircleRadius(10);
         pieChart.getDescription().setEnabled(false);
-        pieChart.setCenterText("Zużycie kWh");
+        pieChart.setCenterText(view.getContext().getResources().getString(R.string.chart_kwh_consumption));
         pieChart.animate();
     }
 

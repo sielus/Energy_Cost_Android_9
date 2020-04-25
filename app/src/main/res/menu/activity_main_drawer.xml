@@ -14,7 +14,7 @@
         <item
             android:id="@+id/nav_rooms"
             android:icon="@drawable/ic_home_black_24dp"
-            android:title="@string/menu_gallery" />
+            android:title="@string/menu_room_list" />
     </group>
 
         <item android:title="Fotowoltaika">
@@ -23,7 +23,7 @@
                     <item
                         android:id="@+id/nav_fragment_sun_energy_calculator_layout"
                         android:icon="@drawable/ic_wb_sunny_black_24dp"
-                        android:title="Opłacalność" />
+                        android:title="@string/menu_sun_energy_calculator" />
                 </group>
             </menu>
         </item>

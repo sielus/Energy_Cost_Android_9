@@ -210,7 +210,7 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
                     char First = roomName.charAt(0);
 
                     if(Character.isDigit(First)){
-                        text_field_inputRoomNameLayout.setError("Nazwa nie może zaczynać się od cyfry");
+                        text_field_inputRoomNameLayout.setError(root.getContext().getResources().getString(R.string.error_name_canot_start_from_number));
                         ifNumberOnStart = true;
                     }else {
                         text_field_inputRoomNameLayout.setError(null);
@@ -232,10 +232,10 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
             public void onClick(View v) {
                 String roomName = text_field_inputRoomName.getText().toString();
                 if (roomName.isEmpty()) {
-                    text_field_inputRoomNameLayout.setError("Brak danych!");
+                    text_field_inputRoomNameLayout.setError(root.getContext().getResources().getString(R.string.error_no_data));
                 }
                 else if(ifNumberOnStart){
-                    text_field_inputRoomNameLayout.setError("Nazwa nie może zaczynać się od cyfry");
+                    text_field_inputRoomNameLayout.setError(root.getContext().getResources().getString(R.string.error_name_canot_start_from_number));
                 }
                 else{
                     text_field_inputRoomNameLayout.setError(null);
@@ -255,7 +255,7 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
 
                         dialog.dismiss();
 
-                        Toast.makeText(getContext(),"Pokój dodany",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(),R.string.toast_room_added,Toast.LENGTH_SHORT).show();
                     }catch (SQLEnergyCostException.DuplicationRoom | SQLEnergyCostException.EmptyField errorMessage) {
                         text_field_inputRoomNameLayout.setError(errorMessage.getMessage());
                     }
@@ -359,7 +359,6 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
 
         }
 
-        pieChart.setNoDataText("Brak pokojów");
         pieChart.invalidate();
         barChart.invalidate();
         String[] xAxisLables = new String[]{};
@@ -390,7 +389,7 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
             return;
         }
 
-        BarDataSet barDataSet = new BarDataSet(barEntries, "Koszty dobowe pokoi (" + defaultCurrency + ")");
+        BarDataSet barDataSet = new BarDataSet(barEntries,root.getContext().getResources().getString(R.string.chart_daily_costs) + " (" + defaultCurrency + ")");
         barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
         barChart.getLegend().setEnabled(false);
         barChart.getAxisLeft().setAxisMinimum(0);
@@ -438,7 +437,7 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
 
         barChart.animateY(1000);
 
-        PieDataSet pieDataSet = new PieDataSet(pieEntry,"Dane");
+        PieDataSet pieDataSet = new PieDataSet(pieEntry,"Data");
         pieChart.getLegend().setEnabled(false);
 
         pieDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
@@ -452,7 +451,7 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
         pieChart.setTransparentCircleRadius(10);
 
         pieChart.getDescription().setEnabled(false);
-        pieChart.setCenterText("Zużycie kWh ");
+        pieChart.setCenterText(root.getContext().getResources().getString(R.string.chart_kwh_consumption));
         pieChart.animate();
 
     }

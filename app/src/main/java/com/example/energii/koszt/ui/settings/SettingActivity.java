@@ -82,7 +82,6 @@ public class SettingActivity extends AppCompatActivity implements SettingsListAd
 
         roomListFragment = new RoomListFragment();
 
-        setTitle("Ustawienia");
         setContentView(R.layout.activity_setting_);
         seekBar = findViewById(R.id.seekBarNumericDecimal);
         recyclerView = view.findViewById(R.id.RecyckerViewSettings);

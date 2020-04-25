@@ -56,7 +56,7 @@
                 android:layout_marginEnd="127dp"
                 android:layout_marginBottom="10dp"
                 android:fontFamily="@font/lato_light"
-                android:text="Podsumowanie Kosztów"
+                android:text="@string/room_list_summary_of_the_costs"
                 android:textColor="@color/white"
                 android:textSize="20dp"
                 app:layout_constraintBottom_toTopOf="@+id/tableLayout"
@@ -93,7 +93,7 @@
                         android:background="@drawable/border"
                         android:fontFamily="@font/lato_light"
                         android:gravity="center"
-                        android:text="24h"
+                        android:text="@string/room_list_table_day"
                         android:textColor="#FFFFFF"
                         android:textSize="18sp"
 
@@ -111,7 +111,7 @@
                         android:background="@drawable/border"
                         android:fontFamily="@font/lato_light"
                         android:gravity="center"
-                        android:text="30 dni"
+                        android:text="@string/room_list_table_month"
                         android:textColor="#FFFFFF"
                         android:textSize="18sp" />
 
@@ -125,7 +125,7 @@
                         android:background="@drawable/border"
                         android:fontFamily="@font/lato_light"
                         android:gravity="center"
-                        android:text="365 dni"
+                        android:text="@string/room_list_table_year"
                         android:textColor="#FFFFFF"
                         android:textSize="18sp" />
                 </TableRow>

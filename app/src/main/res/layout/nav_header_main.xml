@@ -37,6 +37,6 @@
         android:textSize="16dp"
         android:layout_height="wrap_content"
         android:drawableTint="@color/white"
-        android:text=" devsdreamstudio@gmail.com"/>
+        android:text="@string/studio_email"/>
 
 </LinearLayout>

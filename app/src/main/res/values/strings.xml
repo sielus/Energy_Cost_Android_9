@@ -1,28 +1,73 @@
 <resources>
-    <string name="app_name">Koszty Energii</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Koszty Energii</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Ustawienia</string>
+    <string name="app_name">Energy Cost</string>
+    <string name="banner_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
 
-    <string name="menu_home">Kalkulator kosztów energii</string>
-    <string name="menu_gallery">Menadżer Pokoi</string>
-    <string name="menu_slideshow">Fotowoltaika</string>
+    <string name="nav_header_title" translatable="false">@string/app_name</string>
+    <string name="nav_header_desc" translatable="false">Text obrazka</string>
 
-    <string name="home_second">Home Second</string>
-    <string name="title_activity_room_manager">RoomManager</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
+    <string name="action_settings">Settings</string>
+    <string name="room_settings_change_room_name">Change room name</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="studio_email" translatable="false"> devsdreamstudio@gmail.com</string>
+    <string name="menu_sun_energy_calculator">Energy from sun</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="home_hint_number_device">Device Number</string>
+
+    <string name="home_table_user_time">User time</string>
+    <string name="home_table_day" translatable="false">24h</string>
+    <string name="home_button_calc_it">Calc it</string>
+
+    <string name="room_list_summary_of_the_costs">Summary of rooms costs</string>
+
+    <string name="room_list_table_day" translatable="false">24h</string>
+    <string name="room_list_table_year">365 days</string>
+
+    <string name="room_edit_summary_of_the_costs_room">Summary of room cost</string>
+
+    <string name="_dialog_edit_device_power_value" translatable="false">@string/home_hint_power_value</string>
+    <string name="_dialog_edit_device_number" translatable="false">@string/home_hint_number_device</string>
+
+    <string name="_dialog_edit_device_button_time_work">Working Time</string>
+
+    <string name="_dialog_room_edit_room_name">Room name</string>
+
+    <string name="home_energy_cost_hint" translatable="false">@string/settings_energy_cost_global</string>
+
+
+
+    <string name="device_row_device_number">"Device numbers : "</string>
+    <string name="device_row_device_time_work">"Working time : "</string>
+    <string name="device_row_device_power">"Power Value : "</string>
+
+    <string name="menu_room_list">Room manager</string>
+    <string name="home_hint_power_value">Device Power Value (W)</string>
+    <string name="home_hint_timework_m">Working Time : Minutes</string>
+    <string name="home_hint_timework_h">Working Time : Hours</string>
+    <string name="home_table_month">30 days</string>
+    <string name="room_list_table_month" translatable="false">@string/home_table_month</string>
+    <string name="_dialog_edit_device_name">Device name</string>
+    <string name="menu_home">Energy Cost Calculator</string>
+
+    <string name="settings_currency_global">Currency</string>
+    <string name="settings_energy_cost_global">kWh cost</string>
+    <string name="settings_computational_accuracy_global">Calculation \n accuracy</string>
+    <string name="settings_add_default_device">Add device </string>
+    <string name="settings_default_devices_list">Default devices list </string>
+    <string name="settings_label_title">Settings</string>
+
+    <string name="chart_daily_costs">Daily costs</string>
+    <string name="chart_kwh_consumption">kWh consumption</string>
+    
+    <string name="error_name_canot_start_from_number">The name cannot start with a number</string>
+    <string name="error_no_data">" Lack of data!"</string>
+    <string name="dialog_hint_new_room_name">Nowa nazwa pokoju</string>
+    <string name="toast_room_added">Room added</string>
+    <string name="toast_new_room_name">New room name : </string>
+    <string name="just_templates">Templates</string>
+    <string name="toast_device_wokrs_all_day">Device works all day</string>
+    <string name="toast_device_added"></string>
+    <string name="just_room">Room</string>
+    <string name="toast_device_updated">Device updated</string>
+
+
 </resources>

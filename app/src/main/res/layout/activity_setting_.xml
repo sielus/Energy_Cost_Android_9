@@ -30,7 +30,7 @@
             android:layout_marginStart="22dp"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="22dp"
-            android:hint="Cena prądu kWh (zł)"
+            android:hint="@string/settings_energy_cost_global"
             android:textColorHint="@color/white"
             app:boxBackgroundMode="outline"
             app:counterEnabled="true"
@@ -77,7 +77,7 @@
                 android:maxLength="3"
                 android:id="@+id/inputDefaultCurrencyGlobal"
                 android:textColor="@color/white"
-                android:hint="Waluta" />
+                android:hint="@string/settings_currency_global" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <TableLayout
@@ -111,7 +111,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/lato_light"
                     android:gravity="center"
-                    android:text="Dokładność \n obliczeniowa"
+                    android:text="@string/settings_computational_accuracy_global"
                     android:textColor="@color/white"
                     android:textSize="16dp" />
 
@@ -141,15 +141,12 @@
             android:id="@+id/title_summary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="76dp"
-            android:layout_marginEnd="76dp"
             android:fontFamily="@font/lato_light"
-            android:text="Lista przykładowych urządzeń"
+            android:text="@string/settings_default_devices_list"
             android:textColor="@color/white"
             android:textSize="20dp"
             app:layout_constraintBottom_toTopOf="@+id/RecyckerViewSettings"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/calculatorTable" />
 
@@ -172,7 +169,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:backgroundTint="#57F9FF"
-            android:text="Dodaj urządzenie"
+            android:text="@string/settings_add_default_device"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/RecyckerViewSettings" />

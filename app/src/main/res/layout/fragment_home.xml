@@ -55,7 +55,7 @@
                         android:id="@+id/text_field_inputPowerValue"
                         android:layout_width="wrap_content"
                         android:layout_height="74dp"
-                        android:hint="Moc urządzenia (W)"
+                        android:hint="@string/home_hint_power_value"
                         android:textColorHint="#FFFFFF"
                         app:boxBackgroundMode="outline"
                         app:counterEnabled="true"
@@ -67,7 +67,7 @@
                             android:id="@+id/inputPowerValue"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="numberSigned"
+                            android:inputType="numberDecimal"
                             android:maxLength="8"
                             android:digits="0123456789"
                             android:textColor="@color/white" />
@@ -86,7 +86,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:autoSizeTextType="uniform"
-                        android:hint="Koszt kWh / zł"
                         android:textColorHint="@color/white"
 
                         app:boxBackgroundMode="outline"
@@ -116,7 +115,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:autoSizeTextType="uniform"
-                        android:hint="Ilość urządzeń"
+                        android:hint="@string/home_hint_number_device"
                         android:textColorHint="#FFFFFF"
                         app:boxBackgroundMode="outline"
                         app:counterEnabled="true"
@@ -160,7 +159,7 @@
                         android:id="@+id/text_field_inputHours"
                         android:layout_width="160dp"
                         android:layout_height="match_parent"
-                        android:hint="Czas pracy : Godziny"
+                        android:hint="@string/home_hint_timework_h"
 
                         android:autoSizeTextType="uniform"
                         android:textColorHint="#FFFFFF"
@@ -194,7 +193,7 @@
                         android:layout_height="wrap_content"
                         android:autoSizeTextType="uniform"
 
-                        android:hint="Czas pracy : Minuty"
+                        android:hint="@string/home_hint_timework_m"
                         android:textColorHint="#FFFFFF"
                         ads:counterEnabled="true"
 
@@ -210,7 +209,7 @@
                             android:inputType="numberSigned"
                             android:maxLength="2"
                             android:digits="0123456789"
-
+                            android:text="0"
 
                             android:textColor="@color/white" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -242,7 +241,7 @@
                 android:layout_marginTop="24dp"
                 android:backgroundTint="#57F9FF"
                 android:fontFamily="@font/lato_black"
-                android:text="Oblicz"
+                android:text="@string/home_button_calc_it"
                 android:textColor="#222431"
                 android:textSize="16sp"
                 ads:layout_constraintHorizontal_bias="0.498"
@@ -277,7 +276,7 @@
                         android:background="@drawable/border"
                         android:fontFamily="@font/lato_light"
                         android:gravity="center"
-                        android:text="Użytkownika"
+                        android:text="@string/home_table_user_time"
                         android:textColor="#FFFFFF"
                         android:textSize="18sp"
 
@@ -295,7 +294,7 @@
                         android:background="@drawable/border"
                         android:fontFamily="@font/lato_light"
                         android:gravity="center"
-                        android:text="24h"
+                        android:text="@string/home_table_day"
                         android:textColor="#FFFFFF"
                         android:textSize="18sp" />
 
@@ -309,7 +308,7 @@
                         android:background="@drawable/border"
                         android:fontFamily="@font/lato_light"
                         android:gravity="center"
-                        android:text="30 dni"
+                        android:text="@string/home_table_month"
                         android:textColor="#FFFFFF"
                         android:textSize="18sp" />
                 </TableRow>
@@ -376,8 +375,8 @@
                     <TextView
                         android:id="@+id/OutputEnergyCostUser"
 
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
 
                         android:layout_weight="1"
                         android:autoSizeMaxTextSize="18sp"
@@ -393,8 +392,8 @@
                     <TextView
                         android:id="@+id/OutputEnergyCostDay"
 
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
 
                         android:layout_weight="1"
                         android:autoSizeMaxTextSize="18sp"
@@ -410,7 +409,7 @@
                     <TextView
                         android:id="@+id/OutputEnergyCostMonth"
 
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="50dp"
 
                         android:layout_weight="1"
