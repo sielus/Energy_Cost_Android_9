@@ -45,7 +45,7 @@
 
     <string name="chart_daily_costs">Daily costs</string>
     <string name="chart_kwh_consumption">kWh consumption</string>
-    
+
     <string name="error_name_canot_start_from_number">The name cannot start with a number</string>
     <string name="error_no_data">" Lack of data!"</string>
 
