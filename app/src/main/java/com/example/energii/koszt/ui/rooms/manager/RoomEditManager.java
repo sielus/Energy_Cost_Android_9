@@ -66,8 +66,8 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
     }
     void fullRefreshRoomList(){
         RoomListFragment roomListFragment = new RoomListFragment();
-        roomListFragment.clearRoomList();
-        roomListFragment.ViewDataFromDB(sqlLiteDBHelper.getRoomList());
+      //  roomListFragment.clearRoomList();
+      //  roomListFragment.ViewDataFromDB(sqlLiteDBHelper.getRoomList());
         roomListFragment.refreshListView(RoomListFragment.root);
         roomListFragment.generateChart(RoomListFragment.root);
     }
@@ -106,7 +106,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
 
         recyclerView = findViewById(R.id.RecyckerView);
 
-        dialogs.ViewDataFromDB(sqlLiteDBHelper.getRoomDeviceList(room_name));
+        dialogs.ViewDataDeviceFromDB(sqlLiteDBHelper.getRoomDeviceList(room_name));
         adapter = new RoomEditManagerListAdapter(view.getContext(),Arrays.copyOf(dialogs.deviceName.toArray(), dialogs.deviceName.size(), String[].class),this,Arrays.copyOf(dialogs.devicePower.toArray(), dialogs.devicePower.size(), String[].class),Arrays.copyOf(dialogs.deviceNumber.toArray(),dialogs.deviceNumber.size(), String[].class),Arrays.copyOf(dialogs.deviceTimeWork.toArray(), dialogs.deviceTimeWork.size(), String[].class));
 
         new ItemTouchHelper(itemTouchHelperCallbackDelete).attachToRecyclerView(recyclerView);
@@ -142,7 +142,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
         Dialogs dialogs = new Dialogs(defaultListDeviceName,defaultListDevicePower,defaultListDeviceTimeWork,defaultListDeviceNumber);
 
-        dialogs.ViewDataFromDB(sqlLiteDBHelper.getRoomDeviceList(room_name));
+        dialogs.ViewDataDeviceFromDB(sqlLiteDBHelper.getRoomDeviceList(room_name));
 
         RoomEditManagerListAdapter adapter = new RoomEditManagerListAdapter(view.getContext(),Arrays.copyOf(dialogs.deviceName.toArray(), dialogs.deviceName.size(), String[].class),this,Arrays.copyOf(dialogs.devicePower.toArray(), dialogs.devicePower.size(), String[].class),Arrays.copyOf(dialogs.deviceNumber.toArray(), dialogs.deviceNumber.size(), String[].class),Arrays.copyOf(dialogs.deviceTimeWork.toArray(), dialogs.deviceTimeWork.size(), String[].class));
 
@@ -157,7 +157,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
         SettingActivity settingActivity = new SettingActivity();
 
-        dialogs.ViewDataFromDB(sqlLiteDBHelper.getRoomDeviceList(room_name));
+        dialogs.ViewDataDeviceFromDB(sqlLiteDBHelper.getRoomDeviceList(room_name));
         numberAfterDot = settingActivity.getNumberAfterDot(view);
         defaultCurrency = settingActivity.getdefaultCurrency(view);
         dialogs.showUpdateDialog(RoomEditManager.view,room_name,dialogs.deviceName.get(position),room_name,numberAfterDot,defaultCurrency);
@@ -178,7 +178,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
             generateCharts.generateChartinRoom(view,room_name,numberAfterDot,defaultCurrency);
 
             dialogs.clearRoomList();
-            dialogs.ViewDataFromDB(sqlLiteDBHelper.getRoomDeviceList(room_name));
+            dialogs.ViewDataDeviceFromDB(sqlLiteDBHelper.getRoomDeviceList(room_name));
 
             refreshListView(view);
             adapter.notifyItemChanged(position);

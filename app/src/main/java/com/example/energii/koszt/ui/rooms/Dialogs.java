@@ -1,5 +1,4 @@
 package com.example.energii.koszt.ui.rooms;
-
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
@@ -18,15 +17,16 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
+import androidx.fragment.app.FragmentActivity;
 import com.example.energii.koszt.R;
 import com.example.energii.koszt.ui.SQLLiteDBHelper;
 import com.example.energii.koszt.ui.exception.SQLEnergyCostException;
 import com.example.energii.koszt.ui.rooms.manager.GenerateTableEditRoom;
 import com.example.energii.koszt.ui.rooms.manager.RoomEditManager;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.PieChart;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -46,6 +46,10 @@ public class Dialogs {
     public List<String> deviceName = new ArrayList<>();
     public List<String> deviceTimeWork = new LinkedList<>();
     public List<String> deviceNumber = new LinkedList<>();
+
+    public static List<String> roomNameArray = new ArrayList<>();
+    public static List<String> roomNameKwhArray = new ArrayList<>();
+
     private boolean ifNumberOnStart = false;
     private SQLLiteDBHelper sqlLiteDBHelper;
     public final List<String> device = new LinkedList<>();
@@ -183,7 +187,7 @@ public class Dialogs {
                             Toast.makeText(view.getContext(), R.string.toast_device_added, Toast.LENGTH_SHORT).show();
                             dialog.dismiss();
 
-                            ViewDataFromDB(sqlLiteDBHelper.getRoomDeviceList(room_name));
+                            ViewDataDeviceFromDB(sqlLiteDBHelper.getRoomDeviceList(room_name));
                             GenerateCharts generateCharts = new GenerateCharts();
                             generateCharts.generateChartinRoom(view,room_name,numberAfterDot,defaultCurrency);
 
@@ -266,9 +270,9 @@ public class Dialogs {
         });
     }
 
-    public void ViewDataFromDB(Cursor cursor) {
+    public void ViewDataDeviceFromDB(Cursor cursor) {
         if (cursor.getCount() != 0) {
-            clearRoomList();
+            clearDeviceList();
             while(cursor.moveToNext()) {
                 devicePower.add(cursor.getString(2));
                 deviceTimeWork.add(cursor.getString(3));
@@ -278,7 +282,7 @@ public class Dialogs {
         }
     }
 
-    public void clearRoomList() {
+    public void clearDeviceList() {
         deviceNumber.clear();
         devicePower.clear();
         deviceTimeWork.clear();
@@ -288,7 +292,7 @@ public class Dialogs {
     public void showUpdateDialog(final View view, final String roomName, String deviceName, final String room_name, final int numberAfterDot, final String defaultCurrency){
         final Dialog dialog = new Dialog(view.getContext());
         sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
-        ViewDataFromDB(sqlLiteDBHelper.getRoomDeviceList(room_name));
+        ViewDataDeviceFromDB(sqlLiteDBHelper.getRoomDeviceList(room_name));
 
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.device_edit_dialog_layout_no_spinner);
@@ -324,7 +328,7 @@ public class Dialogs {
             buttonTimePicker.setEnabled(true);
         }
         is24hSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @SuppressLint("ResourceAsColor")
+            @SuppressLint({"ResourceAsColor", "SetTextI18n"})
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
@@ -347,6 +351,7 @@ public class Dialogs {
                 TimePickerDialog timePickerDialog = new TimePickerDialog(dialog.getContext() , R.style.TimePickerTheme, new TimePickerDialog.OnTimeSetListener() {
 
 
+                    @SuppressLint("SetTextI18n")
                     @Override
                     public void onTimeSet(TimePicker timePickerV, int hourOfDay, int minute) {
                         timePickerV.setIs24HourView(true);
@@ -379,14 +384,14 @@ public class Dialogs {
                         Toast.makeText(view.getContext(),R.string.toast_device_updated,Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
 
-                        ViewDataFromDB(sqlLiteDBHelper.getRoomDeviceList(room_name));
+                        ViewDataDeviceFromDB(sqlLiteDBHelper.getRoomDeviceList(room_name));
                         RoomEditManager roomEditManager = new RoomEditManager();
                         GenerateTableEditRoom generateTableEditRoom = new GenerateTableEditRoom();
 
                         generateTableEditRoom.refreshTable(view,defaultCurrency,room_name,numberAfterDot);
                         GenerateCharts generateCharts = new GenerateCharts();
                         generateCharts.generateChartinRoom(view,room_name,numberAfterDot,defaultCurrency);
-                        ViewDataFromDB(sqlLiteDBHelper.getRoomDeviceList(room_name));
+                        ViewDataDeviceFromDB(sqlLiteDBHelper.getRoomDeviceList(room_name));
 
                         roomEditManager.refreshListView(view);
                     }catch (SQLEnergyCostException.EmptyField | SQLEnergyCostException.DuplicationDevice exception) {
@@ -476,7 +481,7 @@ public class Dialogs {
         });
     }
 
-    void viewDeviceInfoFromDB(Cursor cursor) {
+    public void viewDeviceInfoFromDB(Cursor cursor) {
         if (cursor.getCount() != 0) {
             clearRoomList();
             device.clear();
@@ -549,6 +554,104 @@ public class Dialogs {
             }
         });
     }
+
+    public void showRoomListDialog(final View view, final RoomListAdapter adapter, final FragmentActivity activity) {
+        final Dialog dialog;
+        dialog = new Dialog(view.getContext());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.room_list_dialog);
+        dialog.show();
+
+        final RoomListFragment roomListFragment = new RoomListFragment();
+
+        ifNumberOnStart = false;
+
+        Button buttonDialogAccept = dialog.findViewById(R.id.ButtonAddRoom);
+
+        final TextInputEditText text_field_inputRoomName = dialog.findViewById(R.id.text_field_inputRoomName);
+        final TextInputLayout text_field_inputRoomNameLayout = dialog.findViewById(R.id.text_field_inputRoomNameLayout);
+        text_field_inputRoomName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String roomName = text_field_inputRoomName.getText().toString();
+                if(!roomName.isEmpty()){
+                    char First = roomName.charAt(0);
+
+                    if(Character.isDigit(First)){
+                        text_field_inputRoomNameLayout.setError(view.getContext().getResources().getString(R.string.error_name_canot_start_from_number));
+                        ifNumberOnStart = true;
+                    }else {
+                        text_field_inputRoomNameLayout.setError(null);
+                        ifNumberOnStart = false;
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+        buttonDialogAccept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String roomName = text_field_inputRoomName.getText().toString();
+                if (roomName.isEmpty()) {
+                    text_field_inputRoomNameLayout.setError(v.getContext().getResources().getString(R.string.error_no_data));
+                }
+                else if(ifNumberOnStart){
+                    text_field_inputRoomNameLayout.setError(v.getContext().getResources().getString(R.string.error_name_canot_start_from_number));
+                }
+                else{
+                    text_field_inputRoomNameLayout.setError(null);
+                    try {
+                        SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
+                        sqlLiteDBHelper.addRoom(roomName);
+                        clearRoomList();
+                        ViewRoomListFromDB(sqlLiteDBHelper.getRoomList());
+                        roomListFragment.refreshListView(view);
+                        roomListFragment.refreshTable(view);
+                        GenerateCharts generateCharts = new GenerateCharts();
+                        generateCharts.generateChart(view);
+                        adapter.notifyDataSetChanged();
+                        PieChart pieChart;
+                        BarChart barChart;
+                        pieChart =  view.findViewById(R.id.pieChart);
+                        barChart = view.findViewById(R.id.bartChart);
+                        roomNameArray.add(roomName);
+                        barChart.setVisibility(View.VISIBLE);
+                        pieChart.setVisibility(View.VISIBLE);
+                        RoomListFragment.hideKeyboard(activity);
+                        dialog.dismiss();
+                        Toast.makeText(view.getContext(),R.string.toast_room_added,Toast.LENGTH_SHORT).show();
+                    }catch (SQLEnergyCostException.DuplicationRoom | SQLEnergyCostException.EmptyField errorMessage) {
+                        text_field_inputRoomNameLayout.setError(errorMessage.getMessage());
+                    }
+                }
+            }
+        });
+    }
+       public void ViewRoomListFromDB(Cursor cursor) {
+        if (cursor.getCount() != 0) {
+            clearRoomList();
+            while(cursor.moveToNext()) {
+                roomNameArray.add(cursor.getString(1).replace("_"," "));
+                roomNameKwhArray.add(String.valueOf(cursor.getInt(2)));
+            }
+        }
+    }
+
+    public static void clearRoomList() {
+        roomNameArray.clear();
+        roomNameKwhArray.clear();
+    }
+
+
 
 
 }
