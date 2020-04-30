@@ -53,7 +53,7 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
                                     ")";
         db.execSQL(defaultDeviceTable);
 
-        addVariable = "INSERT INTO configuration_variable (name, value) values (\"powerCost\", \"0.60\"), (\"defaultCurrency\", \"zł\")"; // zmienic domyslna walute, wklej mi tu funkcje do pobrania stringu jak w domyslnych
+        addVariable = "INSERT INTO configuration_variable (name, value) values (\"powerCost\", \"0.60\"), (\"defaultCurrency\", ?)"; // zmienic domyslna walute, wklej mi tu funkcje do pobrania stringu jak w domyslnych
         numberAfterDot = "INSERT INTO configuration_variable (name, value) values (\"numberAfterDot\", \"2\")";
         defaultDevice = "INSERT INTO default_device_settings (name, power_value, work_time, device_number) values (?, 15, \"2:0\", 1)," +
                                                                                                                  "(?, 0.1, \"24:0\", 1)," +
@@ -87,7 +87,7 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
                                                 context.getResources().getString(R.string.default_device_vacuum_cleaner),
                                                 context.getResources().getString(R.string.default_device_amp),
                                                 context.getResources().getString(R.string.default_device_amp_idle)});
-        db.execSQL(addVariable);
+        db.execSQL(addVariable, new String[] {context.getResources().getString(R.string.currency_type)});
         db.execSQL(numberAfterDot);
     }
 
@@ -380,7 +380,8 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
                        "power_value," +
                        "work_time," +
                        "device_number " +
-                "FROM default_device_settings";
+                "FROM default_device_settings " +
+                "ORDER BY name";
         cursor = dbhRead.rawQuery(query, null);
 
         return cursor;
@@ -396,7 +397,7 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
                        "work_time," +
                        "device_number " +
                 "FROM  default_device_settings " +
-                "WHERE name = ?";
+                "WHERE name = ? ";
         cursor = dbhRead.rawQuery(query, new String[] {deviceName});
 
         return cursor;

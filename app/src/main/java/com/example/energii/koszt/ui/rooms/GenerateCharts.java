@@ -1,4 +1,5 @@
 package com.example.energii.koszt.ui.rooms;
+
 import android.database.Cursor;
 import android.graphics.Color;
 import android.view.View;
@@ -22,23 +23,25 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-public class GenerateCharts {
 
-    public void generateChartinRoom(View root,String room_name,int numberAfterDot,String defaultCurrency){
+public class GenerateCharts {
+    public void generateChartsInRoom(View root,String room_name,int numberAfterDot,String defaultCurrency){
         TableLayout tableLayout;
         ArrayList<PieEntry> pieEntry = new ArrayList<PieEntry>();
         ArrayList<BarEntry> barEntries = new ArrayList<BarEntry>();
         TextView title_summary;
-
-        SQLLiteDBHelper sqlLiteDBHelper;
-        sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
+        SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
         PieChart pieChart;
         BarChart barChart;
+        int labelNumberIndex = 0;
+        List<String> roomName = new ArrayList<>();
+        Cursor cursor = sqlLiteDBHelper.getDeviceDetails(room_name);
 
         tableLayout = root.findViewById(R.id.tableLayout);
         pieChart =  root.findViewById(R.id.pieChart);
         barChart = root.findViewById(R.id.bartChart);
         title_summary = root.findViewById(R.id.title_summary);
+
         if(sqlLiteDBHelper.getRoomDeviceList(room_name).getCount()==0){
             barChart.setVisibility(View.GONE);
             pieChart.setVisibility(View.GONE);
@@ -50,16 +53,13 @@ public class GenerateCharts {
             pieChart.setVisibility(View.VISIBLE);
             tableLayout.setVisibility(View.VISIBLE);
         }
+
         pieChart.invalidate();
         barChart.invalidate();
-        String[] xAxisLables = new String[]{};
-        List<String> roomName = new ArrayList<>();
         roomName.clear();
-        xAxisLables = null;
-        int labelNumberIndex = 0;
         barEntries.clear();
         pieEntry.clear();
-        Cursor cursor = sqlLiteDBHelper.getDeviceDetails(room_name);
+
         if (cursor.getCount() > 1) {
             while(cursor.moveToNext()) {
                 String name = cursor.getString(0).replace("_"," ");
@@ -78,19 +78,24 @@ public class GenerateCharts {
             }
         }else if(cursor.getCount() == 1){
             cursor.moveToFirst();
+
             String name = cursor.getString(0).replace("_"," ");
+
             if(name.length()>9){
                 pieEntry.add(new PieEntry(cursor.getInt(1), name.substring(0,9) + " " + String.format("%."+ numberAfterDot +"f",((float)cursor.getInt(1) / 1000))));
             }else{
                 pieEntry.add(new PieEntry(cursor.getInt(1), cursor.getString(0).replace("_"," ") + " " + String.format("%."+ numberAfterDot +"f",((float)cursor.getInt(1) / 1000))));
             }
+
             barEntries.add(new BarEntry(labelNumberIndex, Float.parseFloat(String.format("%."+ numberAfterDot +"f", cursor.getFloat(2)).replace(",","."))));
+
             if(cursor.getString(0).length() > 9) {
                 roomName.add(cursor.getString(0).substring(0,9));
             }else {
                 roomName.add(cursor.getString(0));
             }
         }
+
         BarDataSet barDataSet = new BarDataSet(barEntries, root.getContext().getResources().getString(R.string.chart_daily_costs) + " (" + defaultCurrency + ")");
         barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
         barChart.getAxisLeft().setAxisMinimum(0);
@@ -119,9 +124,9 @@ public class GenerateCharts {
         axis.setDrawAxisLine(true);
         axis.setCenterAxisLabels(false);
         axis.setLabelCount(roomName.size());
-        xAxisLables = null;
-        xAxisLables = Arrays.copyOf(roomName.toArray(), roomName.size(), String[].class);
-        axis.setValueFormatter(new IndexAxisValueFormatter(xAxisLables));
+
+        String[] xAxisLabeled = Arrays.copyOf(roomName.toArray(), roomName.size(), String[].class);
+        axis.setValueFormatter(new IndexAxisValueFormatter(xAxisLabeled));
         axis.setGranularity(1f);
         axis.setGranularityEnabled(true);
 
@@ -152,24 +157,24 @@ public class GenerateCharts {
         pieChart.animate();
     }
 
-    ArrayList<PieEntry> pieEntry = new ArrayList<PieEntry>();
-    ArrayList<BarEntry> barEntries = new ArrayList<BarEntry>();
+    private ArrayList<PieEntry> pieEntry = new ArrayList<PieEntry>();
+    private ArrayList<BarEntry> barEntries = new ArrayList<BarEntry>();
 
     public void generateChart(View root){
         PieChart pieChart;
         BarChart barChart;
-
         SQLLiteDBHelper sqlLiteDBHelper;
         sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
-
         SettingActivity settingActivity = new SettingActivity();
         int numberAfterDot = settingActivity.getNumberAfterDot(root);
         String defaultCurrency = settingActivity.getdefaultCurrency(root);
-
         pieChart =  root.findViewById(R.id.pieChart);
         barChart = root.findViewById(R.id.bartChart);
         TableLayout tableLayout = root.findViewById(R.id.tableLayout);
         TextView title_summary = root.findViewById(R.id.title_summary);
+        int labelNumberIndex = 0;
+        List<String> roomName = new ArrayList<>();
+        Cursor cursor = sqlLiteDBHelper.getRoomDetails();
 
         if(sqlLiteDBHelper.getRoomList().getCount()==0){
             barChart.setVisibility(View.GONE);
@@ -181,21 +186,17 @@ public class GenerateCharts {
 
         pieChart.invalidate();
         barChart.invalidate();
-        String[] xAxisLables = new String[]{};
-        List<String> roomName = new ArrayList<>();
         roomName.clear();
-        xAxisLables = null;
-        int labelNumberIndex = 0;
         barEntries.clear();
         pieEntry.clear();
-        Cursor cursor = sqlLiteDBHelper.getRoomDetails();
+
         if (cursor.getCount() > 1) {
             while(cursor.moveToNext()) {
 
                 pieEntry.add(new PieEntry(cursor.getInt(1), cursor.getString(0).replace("_"," ") + " " + String.format("%."+ numberAfterDot +"f",((float)cursor.getInt(1) / 1000))));
                 barEntries.add(new BarEntry(labelNumberIndex, Float.parseFloat(String.format("%."+ numberAfterDot +"f",cursor.getFloat(2)).replace(",","."))));
                 roomName.add(cursor.getString(0).replace("_"," ") + " ");
-                labelNumberIndex = labelNumberIndex + 1;
+                labelNumberIndex++;
 
             }
         }else if(cursor.getCount() == 1){
@@ -238,9 +239,8 @@ public class GenerateCharts {
         axis.setCenterAxisLabels(false);
         axis.setLabelCount(roomName.size());
 
-        xAxisLables = null;
-        xAxisLables = Arrays.copyOf(roomName.toArray(), roomName.size(), String[].class);
-        axis.setValueFormatter(new IndexAxisValueFormatter(xAxisLables));
+        String[] xAxisLabels = Arrays.copyOf(roomName.toArray(), roomName.size(), String[].class);
+        axis.setValueFormatter(new IndexAxisValueFormatter(xAxisLabels));
         axis.setGranularity(1f);
         axis.setGranularityEnabled(true);
 
@@ -285,5 +285,4 @@ public class GenerateCharts {
         pieChart.invalidate();
 
     }
-
 }

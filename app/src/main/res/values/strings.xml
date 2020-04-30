@@ -36,7 +36,7 @@
     <string name="home_hint_timework_h">Working Time : Hours</string>
     <string name="home_table_month">30 days</string>
 
-    <string name="settings_currency_global">Currency</string>
+    <string name="settings_currency_global">currency</string>
     <string name="settings_energy_cost_global">kWh cost</string>
     <string name="settings_computational_accuracy_global">Calculation \n accuracy</string>
     <string name="settings_add_default_device">Add device </string>
@@ -87,4 +87,5 @@
     <string name="default_device_amp">Amp</string>
     <string name="default_device_amp_idle">Amp (Standby)</string>
     <string name="default_device_night_light_led">LED night light</string>
+    <string name="currency_type">$</string>
 </resources>

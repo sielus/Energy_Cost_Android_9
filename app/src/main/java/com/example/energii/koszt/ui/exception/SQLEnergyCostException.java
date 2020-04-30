@@ -1,8 +1,6 @@
 package com.example.energii.koszt.ui.exception;
 
 import android.content.Context;
-
-import com.example.energii.koszt.MainActivity;
 import com.example.energii.koszt.R;
 
 public class SQLEnergyCostException {

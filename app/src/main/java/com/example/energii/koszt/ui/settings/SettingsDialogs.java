@@ -1,5 +1,6 @@
 package com.example.energii.koszt.ui.settings;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.database.Cursor;
@@ -14,24 +15,22 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
 import com.example.energii.koszt.R;
 import com.example.energii.koszt.ui.SQLLiteDBHelper;
 import com.example.energii.koszt.ui.exception.SQLEnergyCostException;
 import com.google.android.material.textfield.TextInputLayout;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 public class SettingsDialogs {
-
     public static List<String> devicePower = new LinkedList<>();
     public static List<String> deviceName = new ArrayList<>();
     public static List<String> deviceTimeWork = new LinkedList<>();
     public static List<String> deviceNumber = new LinkedList<>();
     public static final List<String> device = new LinkedList<>();
-    boolean ifNumberOnStart = false;
+    private boolean ifNumberOnStart = false;
 
     public void showDialogAddDevice(final View view){
         final Dialog dialog = new Dialog(view.getContext());
@@ -46,19 +45,20 @@ public class SettingsDialogs {
         final int[] h = new int[1];
         final int[] m = new int[1];
         is24hSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
                     h[0] = 24;
                     m[0] = 0;
-                    Toast.makeText(dialog.getContext(),"Urządzenie pracuje całą dobe",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(dialog.getContext(),view.getResources().getString(R.string.toast_device_wokrs_all_day),Toast.LENGTH_SHORT).show();
 
                     buttonTimePicker.setEnabled(false);
-                    buttonTimePicker.setText("Czas pracy \n " + h[0] + "h" + " " + m[0] + "m");
+                    buttonTimePicker.setText(view.getResources().getString(R.string.dialog_edit_device_button_time_work) +"\n " + h[0] + "h" + " " + m[0] + "m");
 
                 }else{
                     buttonTimePicker.setEnabled(true);
-                    buttonTimePicker.setText("Czas pracy");
+                    buttonTimePicker.setText(view.getResources().getString(R.string.dialog_edit_device_button_time_work));
 
                 }
             }
@@ -70,15 +70,12 @@ public class SettingsDialogs {
         final EditText editTextDeviceNumbers = dialog.findViewById(R.id.editTextDeviceNumbers);
         // final EditText editTextDeviceWorkH = dialog.findViewById(R.id.editTextDeviceWorkH);
         //  final EditText editTextDeviceWorkM = dialog.findViewById(R.id.editTextDeviceWorkM);
-
-
-
-        final TextInputLayout text_field_inputeditTextDeviceNameLayout = dialog.findViewById(R.id.text_field_inputeditTextDeviceNameLayout);
-        final TextInputLayout text_field_inputeditTextDeviceNumbersLayout = dialog.findViewById(R.id.text_field_inputeditTextDeviceNumbersLayout);
-        final TextInputLayout text_field_inputeditTextDevicePowerLayout = dialog.findViewById(R.id.text_field_inputeditTextDevicePowerLayout);
+        
+        final TextInputLayout text_field_inputEditTextDeviceNameLayout = dialog.findViewById(R.id.text_field_inputeditTextDeviceNameLayout);
+        final TextInputLayout text_field_inputEditTextDeviceNumbersLayout = dialog.findViewById(R.id.text_field_inputeditTextDeviceNumbersLayout);
+        final TextInputLayout text_field_inputEditTextDevicePowerLayout = dialog.findViewById(R.id.text_field_inputeditTextDevicePowerLayout);
         // final TextInputLayout text_field_inputeditTextDeviceWorkHLayout = dialog.findViewById(R.id.text_field_inputeditTextDeviceWorkHLayout);
         //   final TextInputLayout text_field_inputeditTextDeviceWorkMLayout = dialog.findViewById(R.id.text_field_inputeditTextDeviceWorkMLayout);
-
 
         buttonTimePicker.setOnClickListener(new View.OnClickListener() {
 
@@ -88,26 +85,22 @@ public class SettingsDialogs {
                 final TimePickerDialog timePickerDialog = new TimePickerDialog(dialog.getContext() , R.style.TimePickerTheme, new TimePickerDialog.OnTimeSetListener() {
 
 
+                    @SuppressLint("SetTextI18n")
                     @Override
                     public void onTimeSet(TimePicker timePickerV, int hourOfDay, int minute) {
 
                         timePickerV.setIs24HourView(true);
                         h[0] = hourOfDay;
                         m[0] = minute;
-                        buttonTimePicker.setText("Czas pracy \n " + h[0] + "h" + " " + m[0] + "m");
+                        buttonTimePicker.setText(view.getResources().getString(R.string.dialog_edit_device_button_time_work) + " \n " + h[0] + "h" + " " + m[0] + "m");
                     }
                 } ,12,0,true);
-                timePickerDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+                Objects.requireNonNull(timePickerDialog.getWindow()).clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 
                 timePickerDialog.show();
-
-
-
             }
         });
-
-
-
+        
         editTextDeviceName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -124,21 +117,17 @@ public class SettingsDialogs {
                     char first = deviceName.charAt(0);
 
                     if (Character.isDigit(first)) {
-                        text_field_inputeditTextDeviceNameLayout.setError("Nazwa nie może zaczynać się od cyfry");
+                        text_field_inputEditTextDeviceNameLayout.setError(view.getResources().getString(R.string.error_name_canot_start_from_number));
                         ifNumberOnStart = true;
                     } else {
-                        text_field_inputeditTextDeviceNameLayout.setError(null);
+                        text_field_inputEditTextDeviceNameLayout.setError(null);
                         ifNumberOnStart = false;
                     }
-
                 }
-
             }
-
 
             @Override
             public void afterTextChanged(Editable s) {
-
             }
         });
 
@@ -160,7 +149,7 @@ public class SettingsDialogs {
                         try {
                             SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
                             sqlLiteDBHelper.addDefaultDevice(deviceNameInput, powerValue, h[0], m[0], number);
-                            Toast.makeText(view.getContext(), "Urządzenie dodane", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(view.getContext(), view.getResources().getString(R.string.toast_device_added), Toast.LENGTH_SHORT).show();
                             dialog.dismiss();
                             ViewDataFromDB(sqlLiteDBHelper.getDefaultDeviceList());
                             SettingActivity settingActivity = new SettingActivity();
@@ -169,17 +158,12 @@ public class SettingsDialogs {
                         } catch (SQLEnergyCostException.WrongTime wrongTime) {
                             Toast.makeText(view.getContext(),wrongTime.getMessage(),Toast.LENGTH_SHORT).show();
                         }
-
-
-
-
+                        
                     } catch (SQLEnergyCostException.EmptyField | SQLEnergyCostException.DuplicationDevice errorMessage) {
                         Toast.makeText(view.getContext(), errorMessage.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             }
-
-
 
             private TextWatcher roomPowerTextWatcher = new TextWatcher() {
                 @Override
@@ -189,7 +173,7 @@ public class SettingsDialogs {
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    text_field_inputeditTextDevicePowerLayout.setError(null);
+                    text_field_inputEditTextDevicePowerLayout.setError(null);
                 }
 
                 @Override
@@ -206,7 +190,7 @@ public class SettingsDialogs {
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    text_field_inputeditTextDeviceNumbersLayout.setError(null);
+                    text_field_inputEditTextDeviceNumbersLayout.setError(null);
                 }
 
                 @Override
@@ -214,41 +198,41 @@ public class SettingsDialogs {
 
                 }
             };
+            
             private boolean checkInputValue(Dialog dialog) {
 
                 boolean isNotEmpty = true;
 
                 if(editTextDeviceName.getText().toString().isEmpty()) {
-                    text_field_inputeditTextDeviceNameLayout.setError("Brak danych!");
+                    text_field_inputEditTextDeviceNameLayout.setError(view.getResources().getString(R.string.error_no_data));
                     isNotEmpty = false;
                 }else if(ifNumberOnStart){
-                    text_field_inputeditTextDeviceNameLayout.setError("Nazwa nie może zaczynać się od cyfry");
+                    text_field_inputEditTextDeviceNameLayout.setError(view.getResources().getString(R.string.error_name_canot_start_from_number));
                     isNotEmpty = false;
                 }
                 else {
-                    text_field_inputeditTextDeviceNameLayout.setError(null);
+                    text_field_inputEditTextDeviceNameLayout.setError(null);
                 }
 
                 if(editTextDeviceNumbers.getText().toString().isEmpty()) {
-                    text_field_inputeditTextDeviceNumbersLayout.setError("Brak danych!");
+                    text_field_inputEditTextDeviceNumbersLayout.setError(view.getResources().getString(R.string.error_no_data));
                     isNotEmpty = false;
                 }else {
-                    text_field_inputeditTextDeviceNumbersLayout.setError(null);
+                    text_field_inputEditTextDeviceNumbersLayout.setError(null);
                 }
 
                 if(editTextDevicePower.getText().toString().isEmpty()) {
-                    text_field_inputeditTextDevicePowerLayout.setError("Brak danych!");
+                    text_field_inputEditTextDevicePowerLayout.setError(view.getResources().getString(R.string.error_no_data));
                     isNotEmpty = false;
                 }else {
-                    text_field_inputeditTextDevicePowerLayout.setError(null);
+                    text_field_inputEditTextDevicePowerLayout.setError(null);
                 }
                 return isNotEmpty;
             }
-
         })
-        ;}
+    ;}
 
-    void ViewDataFromDB(Cursor cursor) {
+    public void ViewDataFromDB(Cursor cursor) {
         if (cursor.getCount() != 0) {
             clearRoomList();
             while(cursor.moveToNext()) {
@@ -260,7 +244,7 @@ public class SettingsDialogs {
         }
     }
 
-    void clearRoomList() {
+     public void clearRoomList() {
         device.clear();
         deviceNumber.clear();
         devicePower.clear();
@@ -268,7 +252,7 @@ public class SettingsDialogs {
         deviceName.clear();
     }
 
-    void viewDeviceInfoFromDB(Cursor cursor) {
+     private void viewDeviceInfoFromDB(Cursor cursor) {
         clearRoomList();
         device.clear();
         while(cursor.moveToNext()) {
@@ -282,9 +266,8 @@ public class SettingsDialogs {
     public void showUpdateDialog(final View view, final String oldDeviceName, final SettingsListAdapter settings_listAdapter){
         final Dialog dialog = new Dialog(view.getContext());
         SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
-        clearRoomList();
 
-        sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
+        clearRoomList();
 
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.device_edit_dialog_layout_no_spinner);
@@ -300,9 +283,9 @@ public class SettingsDialogs {
         // final EditText editTextDeviceWorkH = dialog.findViewById(R.id.editTextDeviceWorkH);
         //  final EditText editTextDeviceWorkM = dialog.findViewById(R.id.editTextDeviceWorkM);
 
-        final TextInputLayout text_field_inputeditTextDeviceNameLayout = dialog.findViewById(R.id.text_field_inputeditTextDeviceNameLayout);
-        final TextInputLayout text_field_inputeditTextDeviceNumbersLayout = dialog.findViewById(R.id.text_field_inputeditTextDeviceNumbersLayout);
-        final TextInputLayout text_field_inputeditTextDevicePowerLayout = dialog.findViewById(R.id.text_field_inputeditTextDevicePowerLayout);
+        final TextInputLayout text_field_inputEditTextDeviceNameLayout = dialog.findViewById(R.id.text_field_inputeditTextDeviceNameLayout);
+        final TextInputLayout text_field_inputEditTextDeviceNumbersLayout = dialog.findViewById(R.id.text_field_inputeditTextDeviceNumbersLayout);
+        final TextInputLayout text_field_inputEditTextDevicePowerLayout = dialog.findViewById(R.id.text_field_inputeditTextDevicePowerLayout);
         // final TextInputLayout text_field_inputeditTextDeviceWorkHLayout = dialog.findViewById(R.id.text_field_inputeditTextDeviceWorkHLayout);
         //  final TextInputLayout text_field_inputeditTextDeviceWorkMLayout = dialog.findViewById(R.id.text_field_inputeditTextDeviceWorkMLayout);
         final Button buttonTimePicker = dialog.findViewById(R.id.buttonTimePicker);
@@ -316,7 +299,7 @@ public class SettingsDialogs {
         Switch is24hSwitch = dialog.findViewById(R.id.switch1);
         buttonTimePicker.setText("Czas pracy \n " + h[0] + "h" + " " + m[0] + "m");
         if(h[0]==24){
-            Toast.makeText(dialog.getContext(),"Urządzenie pracuje całą dobe",Toast.LENGTH_SHORT).show();
+            Toast.makeText(dialog.getContext(),view.getResources().getString(R.string.toast_device_wokrs_all_day),Toast.LENGTH_SHORT).show();
 
             is24hSwitch.setChecked(true);
             buttonTimePicker.setEnabled(false);
@@ -326,13 +309,14 @@ public class SettingsDialogs {
 
         }
         is24hSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
                     h[0] = 24;
                     m[0] = 0;
                     buttonTimePicker.setEnabled(false);
-                    buttonTimePicker.setText("Czas pracy \n " + h[0] + "h" + " " + m[0] + "m");
+                    buttonTimePicker.setText(view.getResources().getString(R.string.dialog_edit_device_button_time_work)+" \n " + h[0] + "h" + " " + m[0] + "m");
                 }else{
                     buttonTimePicker.setEnabled(true);
                     buttonTimePicker.setText("Czas pracy \n " + h[0] + "h" + " " + m[0] + "m");
@@ -345,16 +329,17 @@ public class SettingsDialogs {
                 TimePickerDialog timePickerDialog = new TimePickerDialog(dialog.getContext() , R.style.TimePickerTheme, new TimePickerDialog.OnTimeSetListener() {
 
 
+                    @SuppressLint("SetTextI18n")
                     @Override
                     public void onTimeSet(TimePicker timePickerV, int hourOfDay, int minute) {
                         timePickerV.setIs24HourView(true);
                         h[0] = hourOfDay;
                         m[0] = minute;
 
-                        buttonTimePicker.setText("Czas pracy \n " + h[0] + "h" + " " + m[0] + "m");
+                        buttonTimePicker.setText(view.getResources().getString(R.string.dialog_edit_device_button_time_work)+" \n " + h[0] + "h" + " " + m[0] + "m");
                     }
                 } ,Integer.parseInt(SettingsDialogs.device.get(2).split(":")[0]),Integer.parseInt(SettingsDialogs.device.get(2).split(":")[1]),true);
-                timePickerDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+                Objects.requireNonNull(timePickerDialog.getWindow()).clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
                 timePickerDialog.show();
             }
         });
@@ -378,7 +363,7 @@ public class SettingsDialogs {
                         } catch (SQLEnergyCostException.WrongTime wrongTime) {
                             wrongTime.printStackTrace();
                         }
-                        Toast.makeText(view.getContext(),"Urządzenie zaktualizowane",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(view.getContext(),view.getResources().getString(R.string.toast_device_updated),Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                         clearRoomList();
                         ViewDataFromDB(finalSqlLiteDBHelper.getDefaultDeviceList());
@@ -400,7 +385,7 @@ public class SettingsDialogs {
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    text_field_inputeditTextDeviceNameLayout.setError(null);
+                    text_field_inputEditTextDeviceNameLayout.setError(null);
                 }
 
                 @Override
@@ -417,7 +402,7 @@ public class SettingsDialogs {
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    text_field_inputeditTextDevicePowerLayout.setError(null);
+                    text_field_inputEditTextDevicePowerLayout.setError(null);
                 }
 
                 @Override
@@ -434,7 +419,7 @@ public class SettingsDialogs {
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    text_field_inputeditTextDeviceNumbersLayout.setError(null);
+                    text_field_inputEditTextDeviceNumbersLayout.setError(null);
                 }
 
                 @Override
@@ -446,28 +431,27 @@ public class SettingsDialogs {
             private boolean checkInputValue(Dialog dialog) {
                 boolean isNotEmpty = true;
                 if(editTextDeviceName.getText().toString().isEmpty()) {
-                    text_field_inputeditTextDeviceNameLayout.setError("Brak danych!");
+                    text_field_inputEditTextDeviceNameLayout.setError(view.getResources().getString(R.string.error_no_data));
                     isNotEmpty = false;
                 }else {
-                    text_field_inputeditTextDeviceNameLayout.setError(null);
+                    text_field_inputEditTextDeviceNameLayout.setError(null);
                 }
 
                 if(editTextDeviceNumbers.getText().toString().isEmpty()) {
-                    text_field_inputeditTextDeviceNumbersLayout.setError("Brak danych!");
+                    text_field_inputEditTextDeviceNumbersLayout.setError(view.getResources().getString(R.string.error_no_data));
                     isNotEmpty = false;
                 }else {
-                    text_field_inputeditTextDeviceNumbersLayout.setError(null);
+                    text_field_inputEditTextDeviceNumbersLayout.setError(null);
                 }
 
                 if(editTextDevicePower.getText().toString().isEmpty()) {
-                    text_field_inputeditTextDevicePowerLayout.setError("Brak danych!");
+                    text_field_inputEditTextDevicePowerLayout.setError(view.getResources().getString(R.string.error_no_data));
                     isNotEmpty = false;
                 }else {
-                    text_field_inputeditTextDevicePowerLayout.setError(null);
+                    text_field_inputEditTextDevicePowerLayout.setError(null);
                 }
                 return isNotEmpty;
             }
         });
     }
-
 }

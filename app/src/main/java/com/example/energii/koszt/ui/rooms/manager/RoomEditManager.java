@@ -26,6 +26,7 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 public class RoomEditManager extends AppCompatActivity implements RoomEditManagerListAdapter.onNoteListener{
@@ -41,38 +42,13 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
     private String defaultCurrency;
     private Dialogs dialogs;
     private RecyclerView recyclerView;
-    private AdView mAdView;
     private int numberAfterDot;
-    
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.room_menu,menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-        switch (id){
-            case R.id.room_settings:
-                dialogs.showDialogEditRoomName(view,room_name,defaultCurrency,numberAfterDot,this);
-                break;
-            case 16908332:
-                this.onBackPressed();
-                Animatoo.animateSlideRight(this);
-        }
-        return true;
-    }
-
-    public void onBackPressed() {
-        fullRefreshRoomList();
-        super.onBackPressed();
-        Animatoo.animateSlideRight(this);
-    }
+    private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         view = this.findViewById(android.R.id.content);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_edit_manager);
         setTitle(view.getContext().getResources().getString(R.string.just_room) + " " + room_name.replace("_"," "));
@@ -93,7 +69,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         tableLayout.setVisibility(View.GONE);
 
         GenerateTableEditRoom generateTableEditRoom = new  GenerateTableEditRoom();
-        generateCharts.generateChartinRoom(view,room_name,numberAfterDot,defaultCurrency);
+        generateCharts.generateChartsInRoom(view,room_name,numberAfterDot,defaultCurrency);
         generateTableEditRoom.refreshTable(view,defaultCurrency,room_name,numberAfterDot);
 
         mAdView = view.findViewById(R.id.adView);
@@ -101,7 +77,8 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         mAdView.loadAd(adRequest);
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+
+        Objects.requireNonNull(actionBar).setDisplayHomeAsUpEnabled(true);
 
         recyclerView = findViewById(R.id.RecyckerView);
 
@@ -122,21 +99,29 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         });
     }
 
-    private void getDefaultDeviceList(Cursor cursor) {
-        if (cursor.getCount() != 0) {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.room_menu,menu);
+        return true;
+    }
 
-            clearDefaultDeviceList();
-            defaultListDeviceName.add(0,view.getContext().getResources().getString(R.string.just_templates));
-            defaultListDeviceNumber.add(0,"");
-            defaultListDeviceTimeWork.add(0,"0:0");
-            defaultListDevicePower.add(0,"");
-            while(cursor.moveToNext()) {
-                defaultListDeviceName.add(cursor.getString(0));
-                defaultListDevicePower.add(cursor.getString(1));
-                defaultListDeviceNumber.add(cursor.getString(3));
-                defaultListDeviceTimeWork.add(cursor.getString(2));
-            }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.room_settings:
+                dialogs.showDialogEditRoomName(view,room_name,defaultCurrency,numberAfterDot,this);
+                break;
+            case 16908332:
+                this.onBackPressed();
+                Animatoo.animateSlideRight(this);
         }
+        return true;
+    }
+
+    public void onBackPressed() {
+        fullRefreshRoomList();
+        super.onBackPressed();
+        Animatoo.animateSlideRight(this);
     }
 
     public void refreshListView(View root) {
@@ -162,22 +147,24 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         dialogs.showUpdateDialog(RoomEditManager.view,room_name,dialogs.deviceName.get(position),room_name,numberAfterDot,defaultCurrency);
     }
 
-    ItemTouchHelper.SimpleCallback itemTouchHelperCallbackDelete = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
+    public ItemTouchHelper.SimpleCallback itemTouchHelperCallbackDelete = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
             return false;
         }
+
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
             sqlLiteDBHelper.deleteDevice(RoomEditManager.room_name,dialogs.deviceName.get(viewHolder.getAdapterPosition()));
             int position = viewHolder.getAdapterPosition();
+
             dialogs.deviceName.remove(position);
 
             GenerateCharts generateCharts = new GenerateCharts();
-            generateCharts.generateChartinRoom(view,room_name,numberAfterDot,defaultCurrency);
+            generateCharts.generateChartsInRoom(view,room_name,numberAfterDot,defaultCurrency);
 
-            dialogs.clearRoomList();
+            Dialogs.clearRoomList();
             dialogs.ViewDataDeviceFromDB(sqlLiteDBHelper.getRoomDeviceList(room_name));
 
             refreshListView(view);
@@ -197,6 +184,23 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
             .decorate();
         }
     };
+
+    private void getDefaultDeviceList(Cursor cursor) {
+        if (cursor.getCount() != 0) {
+            clearDefaultDeviceList();
+            defaultListDeviceName.add(0,view.getContext().getResources().getString(R.string.just_templates));
+            defaultListDeviceNumber.add(0,"");
+            defaultListDeviceTimeWork.add(0,"0:0");
+            defaultListDevicePower.add(0,"");
+
+            while(cursor.moveToNext()) {
+                defaultListDeviceName.add(cursor.getString(0));
+                defaultListDevicePower.add(cursor.getString(1));
+                defaultListDeviceNumber.add(cursor.getString(3));
+                defaultListDeviceTimeWork.add(cursor.getString(2));
+            }
+        }
+    }
 
     private void clearDefaultDeviceList() {
         defaultListDeviceName.clear();

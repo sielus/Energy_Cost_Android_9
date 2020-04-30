@@ -2,7 +2,6 @@ package com.example.energii.koszt.ui.home;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Editable;
@@ -14,8 +13,6 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -28,34 +25,28 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-
-
 import java.util.Map;
 import java.util.Objects;
 
-import static android.content.Context.INPUT_METHOD_SERVICE;
-import static androidx.core.content.ContextCompat.getSystemService;
-import static androidx.core.content.ContextCompat.getSystemServiceName;
-
 public class HomeFragment extends Fragment {
-
     @SuppressLint("StaticFieldLeak")
     public static View root;
     private int numberDevice;
     private int hours;
     private int minutes;
+    private int numberAfterDot;
     private Double energyCost;
     private Double powerValue;
-    private SQLLiteDBHelper sqlLiteDBHelper;
     private String powerCost;
+    private String defaultCurrency;
+    private SQLLiteDBHelper sqlLiteDBHelper;
     private TextInputEditText inputEnergyCost;
-    int numberAfterDot;
     private AdView mAdView;
-    String defaultCurrency;
+
+    @SuppressLint({"ClickableViewAccessibility", "SetTextI18n"})
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_home, container, false);
         Button buttonCalcCostEnergy = root.findViewById(R.id.buttonCalcCostEnergy);
-
 
         sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
         SettingActivity settingActivity = new SettingActivity();
@@ -70,9 +61,10 @@ public class HomeFragment extends Fragment {
 
         ConstraintLayout constraintLayout = root.findViewById(R.id.ConstraintLayoutHome);
         constraintLayout.setOnTouchListener(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                hideKeyboard(getActivity());
+                hideKeyboard(requireActivity());
                 return false;
             }
         });
@@ -99,7 +91,6 @@ public class HomeFragment extends Fragment {
             }
         });
 
-
         TextView outputEnergyCostUser = root.findViewById(R.id.OutputEnergyCostUser);
         TextView outputEnergyCostDay = root.findViewById(R.id.OutputEnergyCostDay);
         TextView outputEnergyCostMonth = root.findViewById(R.id.OutputEnergyCostMonth);
@@ -115,7 +106,7 @@ public class HomeFragment extends Fragment {
         TextInputEditText inputHours = root.findViewById(R.id.inputhours);
         TextInputEditText inputMinutes = root.findViewById(R.id.inputminutes);
 
-        inputEnergyCost.setText(ViewpowerCostFromDB(sqlLiteDBHelper.getVariable("powerCost")));
+        inputEnergyCost.setText(ViewPowerCostFromDB(sqlLiteDBHelper.getVariable("powerCost")));
         inputPowerValue.addTextChangedListener(textWatcher_text_field_inputPowerValue);
         inputNumberDevices.addTextChangedListener(textWatcher_text_field_inputNumberDevices);
         inputEnergyCost.addTextChangedListener(textWatcher_text_field_inputEnergyCost);
@@ -124,35 +115,32 @@ public class HomeFragment extends Fragment {
         return root;
     }
 
-    private String ViewpowerCostFromDB(Cursor cursor) {
-       powerCost = cursor.getString(0);
-       return powerCost;
-    }
-
-    private String ViewdefaultCurrencyFromDB(Cursor cursor) {
-        defaultCurrency = cursor.getString(0);
-        return defaultCurrency;
-    }
-
-
+    @SuppressLint("SetTextI18n")
     public void refresh(View root){
         sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
         inputEnergyCost = root.findViewById(R.id.inputEnergyCost);
-        inputEnergyCost.setText(ViewpowerCostFromDB(sqlLiteDBHelper.getVariable("powerCost")));
+        inputEnergyCost.setText(ViewPowerCostFromDB(sqlLiteDBHelper.getVariable("powerCost")));
         TextInputLayout text_field_inputEnergyCost = root.findViewById(R.id.text_field_inputEnergyCost);
 
-        text_field_inputEnergyCost.setHint(root.getContext().getResources().getString(R.string.settings_energy_cost_global)  + " / " + ViewdefaultCurrencyFromDB(sqlLiteDBHelper.getVariable("defaultCurrency")));
+        text_field_inputEnergyCost.setHint(root.getContext().getResources().getString(R.string.settings_energy_cost_global)  + " / " + ViewDefaultCurrencyFromDB(sqlLiteDBHelper.getVariable("defaultCurrency")));
 
         TextView outputEnergyCostUser = root.findViewById(R.id.OutputEnergyCostUser);
         TextView outputEnergyCostDay = root.findViewById(R.id.OutputEnergyCostDay);
         TextView outputEnergyCostMonth = root.findViewById(R.id.OutputEnergyCostMonth);
-        outputEnergyCostUser.setText("0 " + ViewdefaultCurrencyFromDB(sqlLiteDBHelper.getVariable("defaultCurrency")));
-        outputEnergyCostDay.setText("0 " + ViewdefaultCurrencyFromDB(sqlLiteDBHelper.getVariable("defaultCurrency")));
-        outputEnergyCostMonth.setText("0 " + ViewdefaultCurrencyFromDB(sqlLiteDBHelper.getVariable("defaultCurrency")));
-
+        outputEnergyCostUser.setText("0 " + ViewDefaultCurrencyFromDB(sqlLiteDBHelper.getVariable("defaultCurrency")));
+        outputEnergyCostDay.setText("0 " + ViewDefaultCurrencyFromDB(sqlLiteDBHelper.getVariable("defaultCurrency")));
+        outputEnergyCostMonth.setText("0 " + ViewDefaultCurrencyFromDB(sqlLiteDBHelper.getVariable("defaultCurrency")));
     }
 
+    private String ViewPowerCostFromDB(Cursor cursor) {
+        powerCost = cursor.getString(0);
+        return powerCost;
+    }
 
+    private String ViewDefaultCurrencyFromDB(Cursor cursor) {
+        defaultCurrency = cursor.getString(0);
+        return defaultCurrency;
+    }
 
     private void getInputValue(View root) {
         TextInputEditText inputPowerValue = root.findViewById(R.id.inputPowerValue);
@@ -161,11 +149,11 @@ public class HomeFragment extends Fragment {
         TextInputEditText inputHours = root.findViewById(R.id.inputhours);
         TextInputEditText inputMinutes = root.findViewById(R.id.inputminutes);
 
-        powerValue = Double.parseDouble(inputPowerValue.getText().toString());
-        energyCost = Double.parseDouble(inputEnergyCost.getText().toString());
-        numberDevice = Integer.parseInt(inputNumberDevices.getText().toString());
-        hours = Integer.parseInt(inputHours.getText().toString());
-        minutes = Integer.parseInt(inputMinutes.getText().toString());
+        powerValue = Double.parseDouble(Objects.requireNonNull(inputPowerValue.getText()).toString());
+        energyCost = Double.parseDouble(Objects.requireNonNull(inputEnergyCost.getText()).toString());
+        numberDevice = Integer.parseInt(Objects.requireNonNull(inputNumberDevices.getText()).toString());
+        hours = Integer.parseInt(Objects.requireNonNull(inputHours.getText()).toString());
+        minutes = Integer.parseInt(Objects.requireNonNull(inputMinutes.getText()).toString());
     }
 
     @SuppressLint("SetTextI18n")
@@ -188,14 +176,16 @@ public class HomeFragment extends Fragment {
         hideKeyboard(requireActivity());
     }
 
-    public static void hideKeyboard(Activity activity) {
+    private static void hideKeyboard(Activity activity) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         View view = activity.getCurrentFocus();
+
         if (view == null) {
             view = new View(activity);
         }
+
         activity.getWindow().getDecorView().clearFocus();
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        Objects.requireNonNull(imm).hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     private boolean Check(View root) {
@@ -210,7 +200,6 @@ public class HomeFragment extends Fragment {
         TextInputLayout text_field_inputHours = root.findViewById(R.id.text_field_inputHours);
         TextInputLayout text_field_inputMinutes = root.findViewById(R.id.text_field_inputMinutes);
         boolean isNotEmpty = true;
-
 
         if(inputPowerValue.getText().toString().isEmpty()) {
             text_field_inputPowerValue.setError("Brak danych!");
@@ -342,11 +331,4 @@ public class HomeFragment extends Fragment {
 
         }
     };
-
-
-
-
-
-
 }
-

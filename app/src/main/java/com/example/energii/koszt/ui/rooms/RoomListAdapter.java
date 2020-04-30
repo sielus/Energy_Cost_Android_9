@@ -1,5 +1,6 @@
 package com.example.energii.koszt.ui.rooms;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,41 +9,33 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.energii.koszt.R;
-import com.example.energii.koszt.ui.SQLLiteDBHelper;
 
-public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.MyViewHolder>   {
-    Context context;
-    String roomName[];
-    String roomNameKwh[];
+public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.MyViewHolder> {
+    private String[] roomName;
+    private String[] roomNameKwh;
+    private Context context;
     private onNoteListener onNoteListener;
-    private int lastPosition = -1;
 
-    public RoomListAdapter(Context context, String roomName[],onNoteListener onNoteListener, String roomNameKwh[]){
+    public RoomListAdapter(Context context, String[] roomName, onNoteListener onNoteListener, String[] roomNameKwh){
         this.context = context;
         this.onNoteListener = onNoteListener;
         this.roomName = roomName;
         this.roomNameKwh = roomNameKwh;
     }
 
-
-
-    private RoomListFragment roomlistFragment = new RoomListFragment();
-    private SQLLiteDBHelper sqlLiteDBHelper;
-
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.row, parent,false);
-
-
         return new MyViewHolder(view, onNoteListener);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.textViewName.setText(roomName[position]);
-        holder.textViewSecond.setText(String.valueOf(Float.parseFloat(roomNameKwh[position]) / 1000) + " kWh");
+        holder.textViewSecond.setText(Float.parseFloat(roomNameKwh[position]) / 1000 + " kWh");
     }
 
     @Override
@@ -50,11 +43,7 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.MyView
         return roomName.length;
     }
 
-
-
-
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
         TextView textViewName;
         TextView textViewSecond;
 
@@ -77,6 +66,4 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.MyView
     public interface onNoteListener{
         void onNoteClick(int position);
     }
-
-
 }

@@ -1,28 +1,24 @@
 package com.example.energii.koszt.ui.rooms.manager;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.energii.koszt.R;
-import com.example.energii.koszt.ui.rooms.RoomListFragment;
-import com.example.energii.koszt.ui.SQLLiteDBHelper;
 
-public class RoomEditManagerListAdapter extends RecyclerView.Adapter<RoomEditManagerListAdapter.MyViewHolder>   {
-    Context context;
-    String roomName[];
-    String devicePower[];
-    String deviceTimeWork[];
-    String deviceNumber[];
+public class RoomEditManagerListAdapter extends RecyclerView.Adapter<RoomEditManagerListAdapter.MyViewHolder> {
+    private Context context;
+    private String[] roomName;
+    private String[] devicePower;
+    private String[] deviceTimeWork;
+    private String[] deviceNumber;
     private RoomEditManagerListAdapter.onNoteListener onNoteListener;
-    private int lastPosition = -1;
 
-    public RoomEditManagerListAdapter(Context context, String roomName[], RoomEditManagerListAdapter.onNoteListener onNoteListener,String devicePower[],  String deviceTimeWork[], String deviceNumber[]){
+    public RoomEditManagerListAdapter(Context context, String[] roomName, RoomEditManagerListAdapter.onNoteListener onNoteListener, String[] devicePower, String[] deviceTimeWork, String[] deviceNumber){
         this.context = context;
         this.onNoteListener = onNoteListener;
         this.roomName = roomName;
@@ -31,21 +27,16 @@ public class RoomEditManagerListAdapter extends RecyclerView.Adapter<RoomEditMan
         this.deviceNumber = deviceNumber;
     }
 
-
-
-    private RoomListFragment roomlistFragment = new RoomListFragment();
-    private SQLLiteDBHelper sqlLiteDBHelper;
-
     @NonNull
     @Override
     public RoomEditManagerListAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.device_row, parent,false);
 
-
         return new RoomEditManagerListAdapter.MyViewHolder(view, onNoteListener);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull RoomEditManagerListAdapter.MyViewHolder holder, int position) {
         holder.textViewName.setText(roomName[position]);
@@ -60,11 +51,7 @@ public class RoomEditManagerListAdapter extends RecyclerView.Adapter<RoomEditMan
         return roomName.length;
     }
 
-
-
-
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
         TextView textViewName;
         TextView textViewPower;
         TextView textViewTimeWork;
@@ -92,5 +79,4 @@ public class RoomEditManagerListAdapter extends RecyclerView.Adapter<RoomEditMan
     public interface onNoteListener{
         void onNoteClick(int position);
     }
-
 }

@@ -22,7 +22,7 @@
     <string name="device_row_device_power">"Moc urządzenia  : "</string>
     <string name="device_row_device_time_work">"Czas pracy : "</string>
     <string name="device_row_device_number">"Ilość urządzeń : "</string>
-    <string name="settings_currency_global">Waluta</string>
+    <string name="settings_currency_global">waluta</string>
     <string name="settings_energy_cost_global">Koszt kWh</string>
     <string name="settings_computational_accuracy_global">Dokładność \n obliczeniowa</string>
     <string name="settings_add_default_device">Dodaj urządzenie</string>
@@ -57,4 +57,5 @@
     <string name="default_device_amp">Amplituner</string>
     <string name="default_device_amp_idle">Amplituner (Standby)</string>
     <string name="default_device_night_light_led">Lampka nocka LED</string>
+    <string name="currency_type">zł</string>
 </resources>
