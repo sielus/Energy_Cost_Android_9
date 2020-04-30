@@ -53,7 +53,7 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
                                     ")";
         db.execSQL(defaultDeviceTable);
 
-        addVariable = "INSERT INTO configuration_variable (name, value) values (\"powerCost\", \"0.60\"), (\"defaultCurrency\", \"zł\")";
+        addVariable = "INSERT INTO configuration_variable (name, value) values (\"powerCost\", \"0.60\"), (\"defaultCurrency\", \"zł\")"; // zmienic domyslna walute, wklej mi tu funkcje do pobrania stringu jak w domyslnych
         numberAfterDot = "INSERT INTO configuration_variable (name, value) values (\"numberAfterDot\", \"2\")";
         defaultDevice = "INSERT INTO default_device_settings (name, power_value, work_time, device_number) values (?, 15, \"2:0\", 1)," +
                                                                                                                  "(?, 0.1, \"24:0\", 1)," +

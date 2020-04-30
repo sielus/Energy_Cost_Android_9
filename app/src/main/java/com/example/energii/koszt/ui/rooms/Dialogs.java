@@ -636,6 +636,7 @@ public class Dialogs {
             }
         });
     }
+
        public void ViewRoomListFromDB(Cursor cursor) {
         if (cursor.getCount() != 0) {
             clearRoomList();
@@ -650,8 +651,4 @@ public class Dialogs {
         roomNameArray.clear();
         roomNameKwhArray.clear();
     }
-
-
-
-
 }

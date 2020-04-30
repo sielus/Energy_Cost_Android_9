@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import android.annotation.SuppressLint;
 import android.database.Cursor;
 import android.graphics.Canvas;
 import android.os.Bundle;
@@ -28,24 +29,27 @@ import java.util.Arrays;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 public class RoomEditManager extends AppCompatActivity implements RoomEditManagerListAdapter.onNoteListener{
-    static public View view;
-    public SQLLiteDBHelper sqlLiteDBHelper;
+    @SuppressLint("StaticFieldLeak")
+    public static View view;
     public static String room_name;
-    int numberAfterDot;
-    RoomEditManagerListAdapter adapter;
-    ArrayList<String> defaultListDeviceName = new ArrayList<>();
-    ArrayList<String> defaultListDevicePower= new ArrayList<>();
-    ArrayList<String> defaultListDeviceTimeWork = new ArrayList<>();
-    ArrayList<String> defaultListDeviceNumber = new ArrayList<>();
+    public SQLLiteDBHelper sqlLiteDBHelper;
+    private RoomEditManagerListAdapter adapter;
+    private ArrayList<String> defaultListDeviceName = new ArrayList<>();
+    private ArrayList<String> defaultListDevicePower= new ArrayList<>();
+    private ArrayList<String> defaultListDeviceTimeWork = new ArrayList<>();
+    private ArrayList<String> defaultListDeviceNumber = new ArrayList<>();
+    private String defaultCurrency;
+    private Dialogs dialogs;
     private RecyclerView recyclerView;
-    String defaultCurrency;
-    Dialogs dialogs;
     private AdView mAdView;
+    private int numberAfterDot;
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.room_menu,menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
@@ -59,18 +63,13 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         }
         return true;
     }
+
     public void onBackPressed() {
         fullRefreshRoomList();
         super.onBackPressed();
         Animatoo.animateSlideRight(this);
     }
-    void fullRefreshRoomList(){
-        RoomListFragment roomListFragment = new RoomListFragment();
-      //  roomListFragment.clearRoomList();
-      //  roomListFragment.ViewDataFromDB(sqlLiteDBHelper.getRoomList());
-        roomListFragment.refreshListView(RoomListFragment.root);
-        roomListFragment.generateChart(RoomListFragment.root);
-    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         view = this.findViewById(android.R.id.content);
@@ -122,7 +121,8 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
             }
         });
     }
-    void getDefaultDeviceList(Cursor cursor) {
+
+    private void getDefaultDeviceList(Cursor cursor) {
         if (cursor.getCount() != 0) {
 
             clearDefaultDeviceList();
@@ -138,6 +138,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
             }
         }
     }
+
     public void refreshListView(View root) {
         SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
         Dialogs dialogs = new Dialogs(defaultListDeviceName,defaultListDevicePower,defaultListDeviceTimeWork,defaultListDeviceNumber);
@@ -149,9 +150,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         recyclerView = view.findViewById(R.id.RecyckerView);
         recyclerView.setAdapter(adapter);
     }
-    private void clearDefaultDeviceList() {
-        defaultListDeviceName.clear();
-    }
+
     public void onNoteClick(int position) {
         Dialogs dialogs = new Dialogs(defaultListDeviceName,defaultListDevicePower,defaultListDeviceTimeWork,defaultListDeviceNumber);
         SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
@@ -162,6 +161,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         defaultCurrency = settingActivity.getdefaultCurrency(view);
         dialogs.showUpdateDialog(RoomEditManager.view,room_name,dialogs.deviceName.get(position),room_name,numberAfterDot,defaultCurrency);
     }
+
     ItemTouchHelper.SimpleCallback itemTouchHelperCallbackDelete = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -198,5 +198,15 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         }
     };
 
-}
+    private void clearDefaultDeviceList() {
+        defaultListDeviceName.clear();
+    }
 
+    private void fullRefreshRoomList(){
+        RoomListFragment roomListFragment = new RoomListFragment();
+        //  roomListFragment.clearRoomList();
+        //  roomListFragment.ViewDataFromDB(sqlLiteDBHelper.getRoomList());
+        roomListFragment.refreshListView(RoomListFragment.root);
+        roomListFragment.generateChart(RoomListFragment.root);
+    }
+}

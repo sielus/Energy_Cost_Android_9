@@ -242,9 +242,6 @@ public class SettingsDialogs {
                 }else {
                     text_field_inputeditTextDevicePowerLayout.setError(null);
                 }
-
-
-
                 return isNotEmpty;
             }
 
@@ -254,7 +251,6 @@ public class SettingsDialogs {
     void ViewDataFromDB(Cursor cursor) {
         if (cursor.getCount() != 0) {
             clearRoomList();
-
             while(cursor.moveToNext()) {
                 devicePower.add(cursor.getString(1));
                 deviceTimeWork.add(cursor.getString(2));
@@ -281,8 +277,6 @@ public class SettingsDialogs {
             device.add((cursor.getString(2)));
             device.add((cursor.getString(3)));
         }
-
-
     }
 
     public void showUpdateDialog(final View view, final String oldDeviceName, final SettingsListAdapter settings_listAdapter){
@@ -291,7 +285,6 @@ public class SettingsDialogs {
         clearRoomList();
 
         sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
-
 
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.device_edit_dialog_layout_no_spinner);
@@ -340,11 +333,9 @@ public class SettingsDialogs {
                     m[0] = 0;
                     buttonTimePicker.setEnabled(false);
                     buttonTimePicker.setText("Czas pracy \n " + h[0] + "h" + " " + m[0] + "m");
-
                 }else{
                     buttonTimePicker.setEnabled(true);
                     buttonTimePicker.setText("Czas pracy \n " + h[0] + "h" + " " + m[0] + "m");
-
                 }
             }
         });
@@ -375,11 +366,7 @@ public class SettingsDialogs {
                 editTextDeviceName.addTextChangedListener(roomNameTextWatcher);
                 editTextDevicePower.addTextChangedListener(roomPowerTextWatcher);
                 editTextDeviceNumbers.addTextChangedListener(roomNumberTextWatcher);
-
-
                 if(checkInputValue(dialog)){
-
-
                     try {
                         String newDeviceName = editTextDeviceName.getText().toString();
                         double powerValue = Double.parseDouble(editTextDevicePower.getText().toString());
@@ -398,7 +385,6 @@ public class SettingsDialogs {
                         SettingActivity settingActivity = new SettingActivity();
                         settingActivity.refreshListView(view);
                         settings_listAdapter.notifyDataSetChanged();
-
                     }catch (SQLEnergyCostException.EmptyField | SQLEnergyCostException.DuplicationDevice exception) {
                         Toast.makeText(view.getContext(), exception.getMessage(), Toast.LENGTH_SHORT).show();
                         exception.printStackTrace();
@@ -458,9 +444,7 @@ public class SettingsDialogs {
             };
 
             private boolean checkInputValue(Dialog dialog) {
-
                 boolean isNotEmpty = true;
-
                 if(editTextDeviceName.getText().toString().isEmpty()) {
                     text_field_inputeditTextDeviceNameLayout.setError("Brak danych!");
                     isNotEmpty = false;
