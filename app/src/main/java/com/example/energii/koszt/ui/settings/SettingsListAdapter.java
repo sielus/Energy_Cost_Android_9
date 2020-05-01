@@ -1,27 +1,24 @@
 package com.example.energii.koszt.ui.settings;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.energii.koszt.R;
-import com.example.energii.koszt.ui.SQLLiteDBHelper;
 
 public class SettingsListAdapter extends RecyclerView.Adapter<SettingsListAdapter.MyViewHolder> {
-    Context context;
-    String roomName[];
-    String devicePower[];
-    String deviceTimeWork[];
-    String deviceNumber[];
-    private int lastPosition = -1;
+    private Context context;
+    private String[] roomName;
+    private String[] devicePower;
+    private String[] deviceTimeWork;
+    private String[] deviceNumber;
     private SettingsListAdapter.onNoteListener onNoteListener;
 
-    public SettingsListAdapter(Context context, String roomName[], SettingsListAdapter.onNoteListener onNoteListener, String devicePower[], String deviceTimeWork[], String deviceNumber[]) {
+    public SettingsListAdapter(Context context, String[] roomName, SettingsListAdapter.onNoteListener onNoteListener, String[] devicePower, String[] deviceTimeWork, String[] deviceNumber) {
         this.context = context;
         this.onNoteListener = onNoteListener;
         this.roomName = roomName;
@@ -30,18 +27,16 @@ public class SettingsListAdapter extends RecyclerView.Adapter<SettingsListAdapte
         this.deviceNumber = deviceNumber;
     }
 
-    private SQLLiteDBHelper sqlLiteDBHelper;
-    SettingActivity settingActivity = new SettingActivity();
-
     @NonNull
     @Override
     public SettingsListAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.default_device_list_row, parent,false);
 
-        return new SettingsListAdapter.MyViewHolder(view, onNoteListener);
+        return new MyViewHolder(view, onNoteListener);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull SettingsListAdapter.MyViewHolder holder, int position) {
         holder.textViewName.setText(roomName[position]);
@@ -56,7 +51,7 @@ public class SettingsListAdapter extends RecyclerView.Adapter<SettingsListAdapte
         return roomName.length;
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView textViewName;
         TextView textViewPower;

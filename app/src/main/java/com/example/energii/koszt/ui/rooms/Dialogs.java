@@ -20,8 +20,8 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 import androidx.fragment.app.FragmentActivity;
 import com.example.energii.koszt.R;
-import com.example.energii.koszt.ui.SQLLiteDBHelper;
 import com.example.energii.koszt.ui.exception.SQLEnergyCostException;
+import com.example.energii.koszt.ui.rooms.manager.DeviceManager;
 import com.example.energii.koszt.ui.rooms.manager.GenerateTableEditRoom;
 import com.example.energii.koszt.ui.rooms.manager.RoomEditManager;
 import com.github.mikephil.charting.charts.BarChart;
@@ -46,7 +46,7 @@ public class Dialogs {
     private ArrayList<String> defaultListDeviceTimeWork;
     private ArrayList<String> defaultListDeviceNumber;
     private boolean ifNumberOnStart = false;
-    private SQLLiteDBHelper sqlLiteDBHelper;
+    private DeviceManager deviceManager;
 
     public Dialogs(ArrayList<String> defaultListDeviceName, ArrayList<String> defaultListDevicePower, ArrayList<String> defaultListDeviceTimeWork, ArrayList<String> defaultListDeviceNumber) {
         this.defaultListDeviceName = defaultListDeviceName;
@@ -56,7 +56,7 @@ public class Dialogs {
     }
 
     public void showDialogAddDevice(final View view, final String room_name, final int numberAfterDot, final String defaultCurrency){
-        sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
+        deviceManager = new DeviceManager(view.getContext());
         final Dialog dialog = new Dialog(view.getContext());
 
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -180,17 +180,17 @@ public class Dialogs {
             public void onClick(View v) {
                 editTextDevicePower.addTextChangedListener(roomPowerTextWatcher);
                 editTextDeviceNumbers.addTextChangedListener(roomNumberTextWatcher);
-                if(checkInputValue(dialog)) {
+                if(checkInputValue()) {
                     double powerValue = Double.parseDouble(editTextDevicePower.getText().toString());
                     String deviceNameInput = editTextDeviceName.getText().toString();
                     int number = Integer.parseInt(editTextDeviceNumbers.getText().toString());
                     try {
                         try {
-                            sqlLiteDBHelper.addDevice(room_name, deviceNameInput, powerValue, h[0], m[0], number);
+                            deviceManager.addDevice(room_name, deviceNameInput, powerValue, h[0], m[0], number);
                             Toast.makeText(view.getContext(), R.string.toast_device_added, Toast.LENGTH_SHORT).show();
                             dialog.dismiss();
 
-                            ViewDataDeviceFromDB(sqlLiteDBHelper.getRoomDeviceList(room_name));
+                            ViewDataDeviceFromDB(deviceManager.getRoomDeviceList(room_name));
                             GenerateCharts generateCharts = new GenerateCharts();
                             generateCharts.generateChartsInRoom(view,room_name,numberAfterDot,defaultCurrency);
 
@@ -242,7 +242,7 @@ public class Dialogs {
                 }
             };
 
-            private boolean checkInputValue(Dialog dialog) {
+            private boolean checkInputValue() {
                 boolean isNotEmpty = true;
                 if(editTextDeviceName.getText().toString().isEmpty()) {
                     text_field_inputEditTextDeviceNameLayout.setError(view.getContext().getResources().getString(R.string.error_no_data));
@@ -296,15 +296,15 @@ public class Dialogs {
     @SuppressLint("SetTextI18n")
     public void showUpdateDialog(final View view, final String roomName, String deviceName, final String room_name, final int numberAfterDot, final String defaultCurrency){
         final Dialog dialog = new Dialog(view.getContext());
-        sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
-        ViewDataDeviceFromDB(sqlLiteDBHelper.getRoomDeviceList(room_name));
+        deviceManager = new DeviceManager(view.getContext());
+        ViewDataDeviceFromDB(deviceManager.getRoomDeviceList(room_name));
 
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.device_edit_dialog_layout_no_spinner);
         dialog.setCancelable(false);
         dialog.show();
 
-        viewDeviceInfoFromDB(sqlLiteDBHelper.getDeviceInfo(roomName,deviceName));
+        viewDeviceInfoFromDB(deviceManager.getDeviceInfo(roomName,deviceName));
 
         Button buttonDialogAccept = dialog.findViewById(R.id.buttonDialogAccept);
         final EditText editTextDeviceName = dialog.findViewById(R.id.editTextDeviceName);
@@ -376,27 +376,27 @@ public class Dialogs {
                 editTextDeviceName.addTextChangedListener(roomNameTextWatcher);
                 editTextDevicePower.addTextChangedListener(roomPowerTextWatcher);
                 editTextDeviceNumbers.addTextChangedListener(roomNumberTextWatcher);
-                if(checkInputValue(dialog)){
+                if(checkInputValue()){
                     String deviceName = editTextDeviceName.getText().toString();
                     double powerValue = Double.parseDouble(editTextDevicePower.getText().toString());
                     int number = Integer.parseInt(editTextDeviceNumbers.getText().toString());
                     try {
                         try {
-                            sqlLiteDBHelper.updateDevice(Integer.parseInt(device.get(0)),roomName,deviceName,powerValue,number, h[0], m[0]);
+                            deviceManager.updateDevice(Integer.parseInt(device.get(0)),roomName,deviceName,powerValue,number, h[0], m[0]);
                         } catch (SQLEnergyCostException.WrongTime wrongTime) {
                             wrongTime.printStackTrace();
                         }
                         Toast.makeText(view.getContext(),R.string.toast_device_updated,Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
 
-                        ViewDataDeviceFromDB(sqlLiteDBHelper.getRoomDeviceList(room_name));
+                        ViewDataDeviceFromDB(deviceManager.getRoomDeviceList(room_name));
                         RoomEditManager roomEditManager = new RoomEditManager();
                         GenerateTableEditRoom generateTableEditRoom = new GenerateTableEditRoom();
 
                         generateTableEditRoom.refreshTable(view,defaultCurrency,room_name,numberAfterDot);
                         GenerateCharts generateCharts = new GenerateCharts();
                         generateCharts.generateChartsInRoom(view,room_name,numberAfterDot,defaultCurrency);
-                        ViewDataDeviceFromDB(sqlLiteDBHelper.getRoomDeviceList(room_name));
+                        ViewDataDeviceFromDB(deviceManager.getRoomDeviceList(room_name));
 
                         roomEditManager.refreshListView(view);
                     }catch (SQLEnergyCostException.EmptyField | SQLEnergyCostException.DuplicationDevice exception) {
@@ -457,7 +457,7 @@ public class Dialogs {
                 }
             };
 
-            private boolean checkInputValue(Dialog dialog) {
+            private boolean checkInputValue() {
 
                 boolean isNotEmpty = true;
 
@@ -513,7 +513,7 @@ public class Dialogs {
         text_field_inputRoomNameLayout.setHint(view.getContext().getResources().getString(R.string.dialog_hint_new_room_name));
         text_field_inputRoomName.setText(room_name.replace("_"," "));
 
-        final SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
+        final RoomManager roomManager = new RoomManager(view.getContext());
         text_field_inputRoomName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -542,7 +542,7 @@ public class Dialogs {
         buttonDialogAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String newRoomName = text_field_inputRoomName.getText().toString();
+                String newRoomName = Objects.requireNonNull(text_field_inputRoomName.getText()).toString();
                 if (newRoomName.isEmpty()) {
                     text_field_inputRoomNameLayout.setError(view.getContext().getResources().getString(R.string.error_no_data));
                 }else if(ifNumberOnStart){
@@ -551,7 +551,7 @@ public class Dialogs {
                     roomEditManager.setTitle("Room" + " " + newRoomName.replace("_"," "));
                     room_name_dialog.dismiss();
                     try {
-                        sqlLiteDBHelper.updateRoomName(room_name,newRoomName);
+                        roomManager.updateRoomName(room_name,newRoomName);
                         RoomEditManager.room_name = newRoomName;
                         Toast.makeText(view.getContext(),view.getContext().getResources().getString(R.string.toast_new_room_name) + " " + newRoomName,Toast.LENGTH_SHORT).show();
                     } catch (SQLEnergyCostException.DuplicationRoom duplicationRoom) {
@@ -607,7 +607,7 @@ public class Dialogs {
         buttonDialogAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String roomName = text_field_inputRoomName.getText().toString();
+                String roomName = Objects.requireNonNull(text_field_inputRoomName.getText()).toString();
                 if (roomName.isEmpty()) {
                     text_field_inputRoomNameLayout.setError(v.getContext().getResources().getString(R.string.error_no_data));
                 }
@@ -617,10 +617,10 @@ public class Dialogs {
                 else{
                     text_field_inputRoomNameLayout.setError(null);
                     try {
-                        SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
-                        sqlLiteDBHelper.addRoom(roomName);
+                        RoomManager roomManager = new RoomManager(view.getContext());
+                        roomManager.addRoom(roomName);
                         clearRoomList();
-                        ViewRoomListFromDB(sqlLiteDBHelper.getRoomList());
+                        ViewRoomListFromDB(roomManager.getRoomList());
                         roomListFragment.refreshListView(view);
                         roomListFragment.refreshTable(view);
                         GenerateCharts generateCharts = new GenerateCharts();

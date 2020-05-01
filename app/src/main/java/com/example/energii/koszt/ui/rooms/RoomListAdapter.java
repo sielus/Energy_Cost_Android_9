@@ -43,7 +43,7 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.MyView
         return roomName.length;
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView textViewName;
         TextView textViewSecond;
 

@@ -28,13 +28,11 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.Arrays;
 import java.util.Objects;
-import com.example.energii.koszt.ui.SQLLiteDBHelper;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 public class RoomListFragment extends Fragment implements RoomListAdapter.onNoteListener {
     @SuppressLint("StaticFieldLeak")
     public static View root;
-    private SQLLiteDBHelper sqlLiteDBHelper;
     private RoomListAdapter adapter;
     private Dialogs dialogs;
     private PieChart pieChart;
@@ -42,7 +40,7 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_rooms, container, false);
-        sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
+        RoomManager roomManager = new RoomManager(root.getContext());
         TableLayout tableLayout = root.findViewById(R.id.tableLayout);
 
         pieChart =  root.findViewById(R.id.pieChart);
@@ -58,7 +56,7 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
 
         hideKeyboard(requireActivity());
         dialogs = new Dialogs(null,null,null,null);
-        dialogs.ViewRoomListFromDB(sqlLiteDBHelper.getRoomList());
+        dialogs.ViewRoomListFromDB(roomManager.getRoomList());
 
         adapter = new RoomListAdapter(root.getContext(),Arrays.copyOf(Dialogs.roomNameArray.toArray(), Dialogs.roomNameArray.size(), String[].class),this,Arrays.copyOf(Dialogs.roomNameKwhArray.toArray(), Dialogs.roomNameKwhArray.size(), String[].class));
 
@@ -95,8 +93,8 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
 
     public void refreshListView(View root) {
         Dialogs dialogs = new Dialogs(null,null,null,null);
-        SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
-        dialogs.ViewRoomListFromDB(sqlLiteDBHelper.getRoomList());
+        RoomManager roomManager = new RoomManager(root.getContext());
+        dialogs.ViewRoomListFromDB(roomManager.getRoomList());
         RoomListAdapter adapter;
         adapter = new RoomListAdapter(root.getContext(),Arrays.copyOf(Dialogs.roomNameArray.toArray(),  Dialogs.roomNameArray.size(), String[].class),this,Arrays.copyOf(Dialogs.roomNameKwhArray.toArray(), Dialogs.roomNameKwhArray.size(), String[].class));
         RecyclerView recyclerView = root.findViewById(R.id.RecyckerView);
@@ -137,11 +135,12 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             pieChart.invalidate();
-            sqlLiteDBHelper.deleteRoom(Dialogs.roomNameArray.get(viewHolder.getAdapterPosition()).replace(" ","_"));
+            RoomManager roomManager = new RoomManager(root.getContext());
+            roomManager.deleteRoom(Dialogs.roomNameArray.get(viewHolder.getAdapterPosition()).replace(" ","_"));
             int position = viewHolder.getAdapterPosition();
             Dialogs.roomNameArray.remove(position);
             Dialogs.clearRoomList();
-            dialogs.ViewRoomListFromDB(sqlLiteDBHelper.getRoomList());
+            dialogs.ViewRoomListFromDB(roomManager.getRoomList());
             refreshListView(root);
             generateChart(root);
             refreshTable(root);

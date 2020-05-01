@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import com.example.energii.koszt.R;
-import com.example.energii.koszt.ui.SQLLiteDBHelper;
+import com.example.energii.koszt.ui.rooms.manager.DeviceManager;
 import com.example.energii.koszt.ui.settings.SettingActivity;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
@@ -30,19 +30,19 @@ public class GenerateCharts {
         ArrayList<PieEntry> pieEntry = new ArrayList<PieEntry>();
         ArrayList<BarEntry> barEntries = new ArrayList<BarEntry>();
         TextView title_summary;
-        SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
+        DeviceManager deviceManager = new DeviceManager(root.getContext());
         PieChart pieChart;
         BarChart barChart;
         int labelNumberIndex = 0;
         List<String> roomName = new ArrayList<>();
-        Cursor cursor = sqlLiteDBHelper.getDeviceDetails(room_name);
+        Cursor cursor = deviceManager.getDeviceDetails(room_name);
 
         tableLayout = root.findViewById(R.id.tableLayout);
         pieChart =  root.findViewById(R.id.pieChart);
         barChart = root.findViewById(R.id.bartChart);
         title_summary = root.findViewById(R.id.title_summary);
 
-        if(sqlLiteDBHelper.getRoomDeviceList(room_name).getCount()==0){
+        if(deviceManager.getRoomDeviceList(room_name).getCount()==0){
             barChart.setVisibility(View.GONE);
             pieChart.setVisibility(View.GONE);
             tableLayout.setVisibility(View.GONE);
@@ -163,20 +163,19 @@ public class GenerateCharts {
     public void generateChart(View root){
         PieChart pieChart;
         BarChart barChart;
-        SQLLiteDBHelper sqlLiteDBHelper;
-        sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
+        RoomManager roomManager = new RoomManager(root.getContext());
         SettingActivity settingActivity = new SettingActivity();
         int numberAfterDot = settingActivity.getNumberAfterDot(root);
-        String defaultCurrency = settingActivity.getdefaultCurrency(root);
+        String defaultCurrency = settingActivity.getDefaultCurrency(root);
         pieChart =  root.findViewById(R.id.pieChart);
         barChart = root.findViewById(R.id.bartChart);
         TableLayout tableLayout = root.findViewById(R.id.tableLayout);
         TextView title_summary = root.findViewById(R.id.title_summary);
         int labelNumberIndex = 0;
         List<String> roomName = new ArrayList<>();
-        Cursor cursor = sqlLiteDBHelper.getRoomDetails();
+        Cursor cursor = roomManager.getRoomDetails();
 
-        if(sqlLiteDBHelper.getRoomList().getCount()==0){
+        if(roomManager.getRoomList().getCount()==0){
             barChart.setVisibility(View.GONE);
             pieChart.setVisibility(View.GONE);
             tableLayout.setVisibility(View.GONE);
@@ -273,16 +272,6 @@ public class GenerateCharts {
         pieChart.getDescription().setEnabled(false);
         pieChart.setCenterText(root.getContext().getResources().getString(R.string.chart_kwh_consumption));
         pieChart.animate();
-
-    }
-
-    public void invalidateCharts(View view){
-        PieChart pieChart;
-        BarChart barChart;
-        barChart = view.findViewById(R.id.bartChart);
-        pieChart = view.findViewById(R.id.pieChart);
-        barChart.invalidate();
-        pieChart.invalidate();
 
     }
 }

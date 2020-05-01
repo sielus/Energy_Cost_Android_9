@@ -1,4 +1,5 @@
 package com.example.energii.koszt.ui.rooms.manager;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,9 +19,9 @@ import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.example.energii.koszt.R;
 import com.example.energii.koszt.ui.rooms.Dialogs;
 import com.example.energii.koszt.ui.rooms.GenerateCharts;
+import com.example.energii.koszt.ui.settings.DefaultDeviceManager;
 import com.example.energii.koszt.ui.settings.SettingActivity;
 import com.example.energii.koszt.ui.rooms.RoomListFragment;
-import com.example.energii.koszt.ui.SQLLiteDBHelper;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -33,7 +34,8 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
     @SuppressLint("StaticFieldLeak")
     public static View view;
     public static String room_name;
-    public SQLLiteDBHelper sqlLiteDBHelper;
+    public DeviceManager deviceManager;
+    public DefaultDeviceManager defaultDeviceManager;
     private RoomEditManagerListAdapter adapter;
     private ArrayList<String> defaultListDeviceName = new ArrayList<>();
     private ArrayList<String> defaultListDevicePower= new ArrayList<>();
@@ -48,6 +50,8 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         view = this.findViewById(android.R.id.content);
+        defaultDeviceManager = new DefaultDeviceManager(view.getContext());
+        deviceManager = new DeviceManager(view.getContext());
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_edit_manager);
@@ -55,13 +59,13 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         SettingActivity settingActivity = new SettingActivity();
 
         numberAfterDot = settingActivity.getNumberAfterDot(view);
-        defaultCurrency = settingActivity.getdefaultCurrency(view);
-        sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
+        defaultCurrency = settingActivity.getDefaultCurrency(view);
+        defaultDeviceManager= new DefaultDeviceManager(view.getContext());
 
         GenerateCharts generateCharts = new GenerateCharts();
 
         clearDefaultDeviceList();
-        getDefaultDeviceList(sqlLiteDBHelper.getDefaultDeviceList());
+        getDefaultDeviceList(defaultDeviceManager.getDefaultDeviceList());
 
         dialogs = new Dialogs(defaultListDeviceName,defaultListDevicePower,defaultListDeviceTimeWork,defaultListDeviceNumber);
 
@@ -82,7 +86,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
 
         recyclerView = findViewById(R.id.RecyckerView);
 
-        dialogs.ViewDataDeviceFromDB(sqlLiteDBHelper.getRoomDeviceList(room_name));
+        dialogs.ViewDataDeviceFromDB(deviceManager.getRoomDeviceList(room_name));
         adapter = new RoomEditManagerListAdapter(view.getContext(),Arrays.copyOf(dialogs.deviceName.toArray(), dialogs.deviceName.size(), String[].class),this,Arrays.copyOf(dialogs.devicePower.toArray(), dialogs.devicePower.size(), String[].class),Arrays.copyOf(dialogs.deviceNumber.toArray(),dialogs.deviceNumber.size(), String[].class),Arrays.copyOf(dialogs.deviceTimeWork.toArray(), dialogs.deviceTimeWork.size(), String[].class));
 
         new ItemTouchHelper(itemTouchHelperCallbackDelete).attachToRecyclerView(recyclerView);
@@ -125,10 +129,10 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
     }
 
     public void refreshListView(View root) {
-        SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
+        DeviceManager deviceManager = new DeviceManager(view.getContext());
         Dialogs dialogs = new Dialogs(defaultListDeviceName,defaultListDevicePower,defaultListDeviceTimeWork,defaultListDeviceNumber);
 
-        dialogs.ViewDataDeviceFromDB(sqlLiteDBHelper.getRoomDeviceList(room_name));
+        dialogs.ViewDataDeviceFromDB(deviceManager.getRoomDeviceList(room_name));
 
         RoomEditManagerListAdapter adapter = new RoomEditManagerListAdapter(view.getContext(),Arrays.copyOf(dialogs.deviceName.toArray(), dialogs.deviceName.size(), String[].class),this,Arrays.copyOf(dialogs.devicePower.toArray(), dialogs.devicePower.size(), String[].class),Arrays.copyOf(dialogs.deviceNumber.toArray(), dialogs.deviceNumber.size(), String[].class),Arrays.copyOf(dialogs.deviceTimeWork.toArray(), dialogs.deviceTimeWork.size(), String[].class));
 
@@ -138,12 +142,12 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
 
     public void onNoteClick(int position) {
         Dialogs dialogs = new Dialogs(defaultListDeviceName,defaultListDevicePower,defaultListDeviceTimeWork,defaultListDeviceNumber);
-        SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
+        DeviceManager deviceManager = new DeviceManager(view.getContext());
         SettingActivity settingActivity = new SettingActivity();
 
-        dialogs.ViewDataDeviceFromDB(sqlLiteDBHelper.getRoomDeviceList(room_name));
+        dialogs.ViewDataDeviceFromDB(deviceManager.getRoomDeviceList(room_name));
         numberAfterDot = settingActivity.getNumberAfterDot(view);
-        defaultCurrency = settingActivity.getdefaultCurrency(view);
+        defaultCurrency = settingActivity.getDefaultCurrency(view);
         dialogs.showUpdateDialog(RoomEditManager.view,room_name,dialogs.deviceName.get(position),room_name,numberAfterDot,defaultCurrency);
     }
 
@@ -155,8 +159,8 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
 
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-            sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
-            sqlLiteDBHelper.deleteDevice(RoomEditManager.room_name,dialogs.deviceName.get(viewHolder.getAdapterPosition()));
+            deviceManager = new DeviceManager(view.getContext());
+            deviceManager.deleteDevice(RoomEditManager.room_name,dialogs.deviceName.get(viewHolder.getAdapterPosition()));
             int position = viewHolder.getAdapterPosition();
 
             dialogs.deviceName.remove(position);
@@ -165,7 +169,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
             generateCharts.generateChartsInRoom(view,room_name,numberAfterDot,defaultCurrency);
 
             Dialogs.clearRoomList();
-            dialogs.ViewDataDeviceFromDB(sqlLiteDBHelper.getRoomDeviceList(room_name));
+            dialogs.ViewDataDeviceFromDB(deviceManager.getRoomDeviceList(room_name));
 
             refreshListView(view);
             adapter.notifyItemChanged(position);
@@ -208,8 +212,6 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
 
     private void fullRefreshRoomList(){
         RoomListFragment roomListFragment = new RoomListFragment();
-        //  roomListFragment.clearRoomList();
-        //  roomListFragment.ViewDataFromDB(sqlLiteDBHelper.getRoomList());
         roomListFragment.refreshListView(RoomListFragment.root);
         roomListFragment.generateChart(RoomListFragment.root);
     }

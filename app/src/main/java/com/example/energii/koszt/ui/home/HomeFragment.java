@@ -37,7 +37,6 @@ public class HomeFragment extends Fragment {
     private int numberAfterDot;
     private Double energyCost;
     private Double powerValue;
-    private String powerCost;
     private String defaultCurrency;
     private SQLLiteDBHelper sqlLiteDBHelper;
     private TextInputEditText inputEnergyCost;
@@ -52,7 +51,7 @@ public class HomeFragment extends Fragment {
         SettingActivity settingActivity = new SettingActivity();
         numberAfterDot = settingActivity.getNumberAfterDot(root);
 
-        defaultCurrency = settingActivity.getdefaultCurrency(root);
+        defaultCurrency = settingActivity.getDefaultCurrency(root);
 
         mAdView = root.findViewById(R.id.adView);
 
@@ -133,7 +132,7 @@ public class HomeFragment extends Fragment {
     }
 
     private String ViewPowerCostFromDB(Cursor cursor) {
-        powerCost = cursor.getString(0);
+        String powerCost = cursor.getString(0);
         return powerCost;
     }
 

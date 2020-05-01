@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import com.example.energii.koszt.R;
-import com.example.energii.koszt.ui.SQLLiteDBHelper;
+import com.example.energii.koszt.ui.rooms.RoomManager;
 import com.example.energii.koszt.ui.settings.SettingActivity;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,15 +16,15 @@ public class GenerateTableEditRoom {
 
     @SuppressLint("SetTextI18n")
     public void refreshTable(View view, String defaultCurrency, String room_name, int numberAfterDot) {
-        SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
+        RoomManager roomManager = new RoomManager(view.getContext());
         TextView outputEnergyCostUser = view.findViewById(R.id.OutputEnergyCostUser);
         TextView outputEnergyCostMonth = view.findViewById(R.id.OutputEnergyCostDay);
         TextView outputEnergyCostYeah = view.findViewById(R.id.OutputEnergyCostMonth);
         TextView outputEnergyCostUserKwh = view.findViewById(R.id.OutputEnergyCostUserKwh);
         TextView outputEnergyCostMonthKwh = view.findViewById(R.id.OutputEnergyCostDayKwh);
         TextView outputEnergyCostYeahKwh= view.findViewById(R.id.OutputEnergyCostMonthKwh);
-        if(sqlLiteDBHelper.getRoomDeviceList(room_name).getCount() != 0){
-            getRoomCostKwh(sqlLiteDBHelper.getRoomCost(room_name));
+        if(roomManager.getRoomDeviceList(room_name).getCount() != 0){
+            getRoomCostKwh(roomManager.getRoomCost(room_name));
             outputEnergyCostUser.setText(String.format("%."+ numberAfterDot +"f", Float.parseFloat(roomCostKWH.get(0)) / 1000) + " kWh");
             outputEnergyCostUserKwh.setText(String.format("%."+ numberAfterDot +"f", Float.parseFloat(roomCostKWH.get(1))) + " " +defaultCurrency);
             outputEnergyCostMonth.setText(String.format("%."+ numberAfterDot +"f", Float.parseFloat(roomCostKWH.get(0)) / 1000 * 30) + " kWh");
@@ -47,10 +47,10 @@ public class GenerateTableEditRoom {
 
     @SuppressLint("SetTextI18n")
     public void generateTableRoomList(View view){
-        SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
+        RoomManager roomManager = new RoomManager(view.getContext());
         SettingActivity settingActivity = new SettingActivity();
         int numberAfterDot = settingActivity.getNumberAfterDot(view);
-        String defaultCurrency = settingActivity.getdefaultCurrency(view);
+        String defaultCurrency = settingActivity.getDefaultCurrency(view);
 
         TableLayout tableLayout = view.findViewById(R.id.tableLayout);
         TextView title_summary = view.findViewById(R.id.title_summary);
@@ -62,24 +62,24 @@ public class GenerateTableEditRoom {
         TextView OutputEnergyCostMonthKwh = view.findViewById(R.id.OutputEnergyCostMonthKwh);
         TextView OutputEnergyCostYearKwh= view.findViewById(R.id.OutputEnergyCostYearKwh);
 
-        if(sqlLiteDBHelper.getRoomList().getCount()!=0){
+        if(roomManager.getRoomList().getCount()!=0){
             tableLayout.setVisibility(View.VISIBLE);
             title_summary.setVisibility(View.VISIBLE);
-            getAllRoomsCostFromDB(sqlLiteDBHelper.getHouseCost());
+            getAllRoomsCostFromDB(roomManager.getHouseCost());
 
-            OutputEnergyCostDayKwh.setText(String.format("%."+ numberAfterDot +"f", getAllRoomsKwHFromDB(sqlLiteDBHelper.getHouseCost()) / 1000) + " kWh");
-            OutputEnergyCostDay.setText(String.format("%."+ numberAfterDot +"f", getAllRoomsCostFromDB(sqlLiteDBHelper.getHouseCost())) + " " +defaultCurrency);
+            OutputEnergyCostDayKwh.setText(String.format("%."+ numberAfterDot +"f", getAllRoomsKwHFromDB(roomManager.getHouseCost()) / 1000) + " kWh");
+            OutputEnergyCostDay.setText(String.format("%."+ numberAfterDot +"f", getAllRoomsCostFromDB(roomManager.getHouseCost())) + " " +defaultCurrency);
 
-            OutputEnergyCostMonthKwh.setText(String.format("%."+ numberAfterDot +"f", getAllRoomsKwHFromDB(sqlLiteDBHelper.getHouseCost()) / 1000 * 30 ) + " kWh");
-            OutputEnergyCostMonth.setText(String.format("%."+ numberAfterDot +"f",getAllRoomsCostFromDB(sqlLiteDBHelper.getHouseCost()) * 30 ) + " " + defaultCurrency);
+            OutputEnergyCostMonthKwh.setText(String.format("%."+ numberAfterDot +"f", getAllRoomsKwHFromDB(roomManager.getHouseCost()) / 1000 * 30 ) + " kWh");
+            OutputEnergyCostMonth.setText(String.format("%."+ numberAfterDot +"f",getAllRoomsCostFromDB(roomManager.getHouseCost()) * 30 ) + " " + defaultCurrency);
 
-            OutputEnergyCostYearKwh.setText(String.format("%."+ numberAfterDot +"f", getAllRoomsKwHFromDB(sqlLiteDBHelper.getHouseCost()) / 1000 * 365 ) + " kWh");
-            OutputEnergyCostYear.setText(String.format("%."+ numberAfterDot +"f", getAllRoomsCostFromDB(sqlLiteDBHelper.getHouseCost())  * 365 ) + " " + defaultCurrency);
+            OutputEnergyCostYearKwh.setText(String.format("%."+ numberAfterDot +"f", getAllRoomsKwHFromDB(roomManager.getHouseCost()) / 1000 * 365 ) + " kWh");
+            OutputEnergyCostYear.setText(String.format("%."+ numberAfterDot +"f", getAllRoomsCostFromDB(roomManager.getHouseCost())  * 365 ) + " " + defaultCurrency);
 
         }
     }
 
-    private boolean getRoomCostKwh(Cursor cursor){
+    private void getRoomCostKwh(Cursor cursor){
         roomCostKWH.clear();
 
         if (cursor.getCount() != 0) {
@@ -87,11 +87,7 @@ public class GenerateTableEditRoom {
                 roomCostKWH.add(cursor.getString(0));
                 roomCostKWH.add(cursor.getString(1));
             }
-
-            return true;
         }
-
-        return false;
     }
 
     private float getAllRoomsKwHFromDB(Cursor cursor){

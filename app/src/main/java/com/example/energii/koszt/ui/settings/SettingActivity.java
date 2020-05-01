@@ -1,4 +1,5 @@
 package com.example.energii.koszt.ui.settings;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,25 +30,24 @@ import com.example.energii.koszt.ui.rooms.RoomListFragment;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import java.util.Arrays;
+import java.util.Objects;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 @SuppressLint("Registered")
 public class SettingActivity extends AppCompatActivity implements SettingsListAdapter.onNoteListener {
+    public static String numberAfterDot;
+    public static String defaultCurrency;
     private TextInputEditText inputEnergyCostGlobal;
     private TextInputLayout inputEnergyCostGlobalLayout;
     private TextInputLayout inputDefaultCurrencyGlobalLayout;
     private TextInputEditText inputDefaultCurrencyGlobal;
-    private String powerCost;
     private HomeFragment homeFragment;
-    RoomListFragment roomListFragment;
+    private RoomListFragment roomListFragment;
     private SQLLiteDBHelper sqlLiteDBHelper;
-    SeekBar seekBar;
-    static View view;
-    public static String numberAfterDot;
-    private RecyclerView recyclerView;
-    SettingsListAdapter settings_listAdapter;
-    public static String defaultCurrency;
-    SettingsDialogs settingsDialogs;
+    private DefaultDeviceManager defaultDeviceManager;
+    private SettingsListAdapter settings_listAdapter;
+    @SuppressLint("StaticFieldLeak")
+    private static View view;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -55,16 +55,17 @@ public class SettingActivity extends AppCompatActivity implements SettingsListAd
         homeFragment = new HomeFragment();
         super.onCreate(savedInstanceState);
         view = this.findViewById(android.R.id.content);
-        sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
 
+        sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
+        defaultDeviceManager = new DefaultDeviceManager(view.getContext());
         roomListFragment = new RoomListFragment();
 
         setContentView(R.layout.activity_setting_);
-        seekBar = findViewById(R.id.seekBarNumericDecimal);
-        recyclerView = view.findViewById(R.id.RecyckerViewSettings);
+        SeekBar seekBar = findViewById(R.id.seekBarNumericDecimal);
+        RecyclerView recyclerView = view.findViewById(R.id.RecyckerViewSettings);
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(actionBar).setDisplayHomeAsUpEnabled(true);
 
         recyclerView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -82,8 +83,8 @@ public class SettingActivity extends AppCompatActivity implements SettingsListAd
             }
         });
 
-        settingsDialogs = new SettingsDialogs();
-        settingsDialogs.ViewDataFromDB(sqlLiteDBHelper.getDefaultDeviceList());
+        SettingsDialogs settingsDialogs = new SettingsDialogs();
+        settingsDialogs.ViewDataFromDB(defaultDeviceManager.getDefaultDeviceList());
 
         new ItemTouchHelper(itemTouchHelperCallbackDelete).attachToRecyclerView(recyclerView);
 
@@ -92,7 +93,7 @@ public class SettingActivity extends AppCompatActivity implements SettingsListAd
         recyclerView.setAdapter(settings_listAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
-        Button adddefaultDevice = view.findViewById(R.id.addDefaultDevice);
+        Button addDefaultDevice = view.findViewById(R.id.addDefaultDevice);
 
         inputDefaultCurrencyGlobal = view.findViewById(R.id.inputDefaultCurrencyGlobal);
         inputDefaultCurrencyGlobalLayout = view.findViewById(R.id.text_field_inputinputDefaultCurrencyGlobal);
@@ -106,21 +107,21 @@ public class SettingActivity extends AppCompatActivity implements SettingsListAd
             }
             @Override
             public void afterTextChanged(Editable s) {
-                checkifEmptydefaultCurrency();
+                checkIfEmptyDefaultCurrency();
             }
         });
 
-        inputDefaultCurrencyGlobal.setText(getdefaultCurrencyFromDB(sqlLiteDBHelper.getVariable("defaultCurrency")));
+        inputDefaultCurrencyGlobal.setText(getDefaultCurrencyFromDB(sqlLiteDBHelper.getVariable("defaultCurrency")));
         inputEnergyCostGlobal = view.findViewById(R.id.inputEnergyCostGlobal);
         inputEnergyCostGlobalLayout = view.findViewById(R.id.text_field_inputinputEnergyCostGlobal);
-        int progres = Integer.parseInt(getnumberAfterDotFromDB(sqlLiteDBHelper.getVariable("numberAfterDot")));
+        int progress = Integer.parseInt(getNumberAfterDotFromDB(sqlLiteDBHelper.getVariable("numberAfterDot")));
 
-        seekBar.setProgress(progres);
+        seekBar.setProgress(progress);
 
         inputEnergyCostGlobal.setText(ViewDataPowerCostFromDB(sqlLiteDBHelper.getVariable("powerCost")));
 
         final TextView textView = view.findViewById(R.id.textViewNumericView);
-        String text = String.format("%." + progres + "f", 0.1000);
+        String text = String.format("%." + progress + "f", 0.1000);
         textView.setText(text);
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -146,7 +147,7 @@ public class SettingActivity extends AppCompatActivity implements SettingsListAd
             }
         });
 
-        adddefaultDevice.setOnClickListener(new View.OnClickListener() {
+        addDefaultDevice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 hideKeyboard(SettingActivity.this);
@@ -171,7 +172,7 @@ public class SettingActivity extends AppCompatActivity implements SettingsListAd
             }
             @Override
             public void afterTextChanged(Editable s) {
-                checkIfEmptInputEnergyCosty();
+                checkIfEmptyInputEnergyCost();
             }
         });
     }
@@ -190,74 +191,75 @@ public class SettingActivity extends AppCompatActivity implements SettingsListAd
         return inputEnergyCostGlobal.getText().toString();
     }
 
-    void checkIfEmptInputEnergyCosty() {
+    public void checkIfEmptyInputEnergyCost() {
         String value = getValue();
         if (value.isEmpty() | value.equals(".")) {
             inputEnergyCostGlobalLayout.setError("Wprowadź dane!");
         } else {
             value = getValue();
             sqlLiteDBHelper.setVariable("powerCost", value);
-            // sqlLiteDBHelper.setVariable("numberAfterDot", numberAfterDot);
             homeFragment.refresh(HomeFragment.root);
             if (RoomListFragment.root != null) {
                 roomListFragment.generateChart(RoomListFragment.root);
                 roomListFragment.refreshTable(RoomListFragment.root);
             }
-            //finish();
         }
     }
-    String getDefaultCurrency(){
+
+    public String getDefaultCurrency(){
         return  inputDefaultCurrencyGlobal.getText().toString();
     }
-    void checkifEmptydefaultCurrency() {
+
+    public void checkIfEmptyDefaultCurrency() {
         String defaultCurrency = getDefaultCurrency();
         if (defaultCurrency.isEmpty()) {
             inputDefaultCurrencyGlobalLayout.setError("Wprowadź dane!");
         } else {
             defaultCurrency = getDefaultCurrency();
             sqlLiteDBHelper.setVariable("defaultCurrency", defaultCurrency);
-            // sqlLiteDBHelper.setVariable("numberAfterDot", numberAfterDot);
-
             homeFragment.refresh(HomeFragment.root);
 
             if (RoomListFragment.root != null) {
                 roomListFragment.generateChart(RoomListFragment.root);
                 roomListFragment.refreshTable(RoomListFragment.root);
             }
-            //finish();
         }
     }
-    String ViewDataPowerCostFromDB(Cursor cursor) {
+
+    public String ViewDataPowerCostFromDB(Cursor cursor) {
         cursor.moveToFirst();
-        powerCost = cursor.getString(0);
-        return powerCost;
+        return cursor.getString(0);
     }
-    String getnumberAfterDotFromDB(Cursor cursor) {
+
+    public String getNumberAfterDotFromDB(Cursor cursor) {
         cursor.moveToFirst();
         numberAfterDot = cursor.getString(0);
         return numberAfterDot;
     }
+
     public int getNumberAfterDot(View root) {
         SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
-        numberAfterDot = getnumberAfterDotFromDB(sqlLiteDBHelper.getVariable("numberAfterDot"));
+        numberAfterDot = getNumberAfterDotFromDB(sqlLiteDBHelper.getVariable("numberAfterDot"));
 
         return Integer.parseInt(numberAfterDot);
     }
+
     @Override
     public void onNoteClick(int position) {
         SettingsDialogs settingsDialogs = new SettingsDialogs();
         settingsDialogs.showUpdateDialog(view, SettingsDialogs.deviceName.get(position),settings_listAdapter);
 
     }
-    ItemTouchHelper.SimpleCallback itemTouchHelperCallbackDelete = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+
+    public ItemTouchHelper.SimpleCallback itemTouchHelperCallbackDelete = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
             return false;
         }
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-            sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
-            sqlLiteDBHelper.deleteDefaultDevice(SettingsDialogs.deviceName.get(viewHolder.getAdapterPosition()));
+            defaultDeviceManager = new DefaultDeviceManager(view.getContext());
+            defaultDeviceManager.deleteDefaultDevice(SettingsDialogs.deviceName.get(viewHolder.getAdapterPosition()));
             int position = viewHolder.getAdapterPosition();
             SettingsDialogs.deviceName.remove(position);
             SettingsDialogs settingsDialogs = new SettingsDialogs();
@@ -275,15 +277,17 @@ public class SettingActivity extends AppCompatActivity implements SettingsListAd
                     .decorate();
         }
     };
-    void refreshListView(View root) {
+
+    public void refreshListView(View root) {
         SettingsDialogs settingsDialogs = new SettingsDialogs();
-        SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
+        DefaultDeviceManager defaultDeviceManager = new DefaultDeviceManager(root.getContext());
         settingsDialogs.clearRoomList();
-        settingsDialogs.ViewDataFromDB(sqlLiteDBHelper.getDefaultDeviceList());
+        settingsDialogs.ViewDataFromDB(defaultDeviceManager.getDefaultDeviceList());
         settings_listAdapter = new SettingsListAdapter(view.getContext(), Arrays.copyOf(SettingsDialogs.deviceName.toArray(), SettingsDialogs.deviceName.size(), String[].class), this, Arrays.copyOf(SettingsDialogs.devicePower.toArray(), SettingsDialogs.devicePower.size(), String[].class), Arrays.copyOf(SettingsDialogs.deviceNumber.toArray(), SettingsDialogs.deviceNumber.size(), String[].class), Arrays.copyOf(SettingsDialogs.deviceTimeWork.toArray(), SettingsDialogs.deviceTimeWork.size(), String[].class));
         RecyclerView recyclerView = root.findViewById(R.id.RecyckerViewSettings);
         recyclerView.setAdapter(settings_listAdapter);
     }
+
     public static void hideKeyboard(Activity activity) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         View view = activity.getCurrentFocus();
@@ -291,16 +295,18 @@ public class SettingActivity extends AppCompatActivity implements SettingsListAd
             view = new View(activity);
         }
         activity.getWindow().getDecorView().clearFocus();
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        Objects.requireNonNull(imm).hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
-    String getdefaultCurrencyFromDB(Cursor cursor) {
+
+    public String getDefaultCurrencyFromDB(Cursor cursor) {
         cursor.moveToFirst();
         defaultCurrency = cursor.getString(0);
         return defaultCurrency;
     }
-    public String getdefaultCurrency(View view) {
+
+    public String getDefaultCurrency(View view) {
         SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
-        defaultCurrency = getdefaultCurrencyFromDB(sqlLiteDBHelper.getVariable("defaultCurrency"));
+        defaultCurrency = getDefaultCurrencyFromDB(sqlLiteDBHelper.getVariable("defaultCurrency"));
 
         return defaultCurrency;
     }
