@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_rooms, R.id.nav_fragment_sun_energy_calculator_layout)
+                R.id.nav_home, R.id.nav_rooms, R.id.nav_fragment_sun_energy_calculator_layout, R.id.nav_fragment_sun_energy_rooms_layout)
                 .setDrawerLayout(drawer)
 
                 .build();
