@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -14,6 +15,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import androidx.appcompat.widget.SearchView;
@@ -49,7 +51,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         view = this.findViewById(android.R.id.content);
-
 
         SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_fragment);
 
@@ -96,11 +97,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         supportMapFragment.getMapAsync(this);
 
-
-
-
-
-
     }
 
     @Override
@@ -139,6 +135,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 gMap.addMarker(markerOptions);
                 longitude = latLng.longitude;
                 latitude = latLng.latitude;
+                hideKeyboard(MapActivity.this);
             }
         });
     }
@@ -171,7 +168,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     public void onBackPressed() {
         SunEnergyCalculatorFragment sunEnergyCalculatorFragment = new SunEnergyCalculatorFragment();
-        sunEnergyCalculatorFragment.setTextViewText(longitude,latitude,SunEnergyCalculatorFragment.root);
+        sunEnergyCalculatorFragment.setTextViewText(latitude,longitude,SunEnergyCalculatorFragment.root);
         super.onBackPressed();
         Animatoo.animateSlideRight(this);
     }
@@ -183,4 +180,18 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         latitude = 0;
         return false;
     }
+
+
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        View view = activity.getCurrentFocus();
+
+        if (view == null) {
+            view = new View(activity);
+        }
+        activity.getWindow().getDecorView().clearFocus();
+        Objects.requireNonNull(imm).hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
 }
+

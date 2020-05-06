@@ -24,7 +24,7 @@
         android:label="@string/menu_sun_energy_calculator"
         tools:layout="@layout/fragment_sun_energy_calculator_layout"/>
     <fragment
-        android:id="@+id/sunEnergyBasedOnRooms"
+        android:id="@+id/nav_fragment_sun_energy_rooms_layout"
         android:name="com.example.energii.koszt.ui.sunEnergyCalculator.SunEnergyBasedOnRooms"
         android:label="fragment_sun_energy_based_on_rooms"
         tools:layout="@layout/fragment_sun_energy_based_on_rooms" />
