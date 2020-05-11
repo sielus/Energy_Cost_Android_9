@@ -34,7 +34,7 @@
     <string name="toast_room_added">Pokój dodany</string>
     <string name="chart_kwh_consumption">Zużycie kWh</string>
     <string name="just_room">Pokój</string>
-    <string name="toast_device_updated">"Urządzenie usunięte "</string>
+    <string name="toast_device_updated">Urządzenie zaktualizowano</string>
     <string name="toast_device_added">Urządzenie dodane</string>
     <string name="toast_device_wokrs_all_day">Urządzenie pracuje całą dobę</string>
     <string name="just_templates">Szablony</string>
