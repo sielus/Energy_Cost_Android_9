@@ -44,7 +44,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
     private String defaultCurrency;
     private Dialogs dialogs;
     private RecyclerView recyclerView;
-    private int numberAfterDot;
+    static public int numberAfterDot;
     private AdView mAdView;
 
     @Override
@@ -91,6 +91,8 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
 
         new ItemTouchHelper(itemTouchHelperCallbackDelete).attachToRecyclerView(recyclerView);
 
+        generateTableEditRoom.generateDeviceTable(view,room_name);
+
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
@@ -129,6 +131,9 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
     }
 
     public void refreshListView(View root) {
+        GenerateTableEditRoom generateTableEditRoom = new  GenerateTableEditRoom();
+        generateTableEditRoom.generateDeviceTable(view,room_name);
+
         DeviceManager deviceManager = new DeviceManager(view.getContext());
         Dialogs dialogs = new Dialogs(defaultListDeviceName,defaultListDevicePower,defaultListDeviceTimeWork,defaultListDeviceNumber);
 
@@ -165,6 +170,9 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
 
             dialogs.deviceName.remove(position);
 
+            GenerateTableEditRoom generateTableEditRoom = new  GenerateTableEditRoom();
+            generateTableEditRoom.generateDeviceTable(view,room_name);
+
             GenerateCharts generateCharts = new GenerateCharts();
             generateCharts.generateChartsInRoom(view,room_name,numberAfterDot,defaultCurrency);
 
@@ -174,7 +182,6 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
             refreshListView(view);
             adapter.notifyItemChanged(position);
 
-            GenerateTableEditRoom generateTableEditRoom = new GenerateTableEditRoom();
             generateTableEditRoom.refreshTable(view,defaultCurrency,room_name,numberAfterDot);
         }
 

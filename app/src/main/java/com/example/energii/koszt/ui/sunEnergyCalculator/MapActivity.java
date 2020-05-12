@@ -153,7 +153,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
     }
 
-
     @Override
     public boolean onMyLocationButtonClick() {
         Toast.makeText(this,"zaznacz dokładne dane",Toast.LENGTH_SHORT).show();

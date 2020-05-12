@@ -5,6 +5,8 @@ import android.graphics.Color;
 import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.example.energii.koszt.R;
 import com.example.energii.koszt.ui.rooms.manager.DeviceManager;
 import com.example.energii.koszt.ui.settings.SettingActivity;
@@ -14,11 +16,14 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.renderer.BarChartRenderer;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
@@ -28,17 +33,17 @@ import java.util.List;
 import java.util.Random;
 
 public class GenerateCharts {
-    public void generateChartsInRoom(View root,String room_name,int numberAfterDot,String defaultCurrency){
+    public void generateChartsInRoom(final View root, String room_name, int numberAfterDot, String defaultCurrency){
         TableLayout tableLayout;
-        ArrayList<PieEntry> pieEntry = new ArrayList<PieEntry>();
+        final ArrayList<PieEntry> pieEntry = new ArrayList<PieEntry>();
         ArrayList<BarEntry> barEntries = new ArrayList<BarEntry>();
         ArrayList<Integer> colorList = new ArrayList<>();
         TextView title_summary;
         DeviceManager deviceManager = new DeviceManager(root.getContext());
-        PieChart pieChart;
+        final PieChart pieChart;
         BarChart barChart;
         int labelNumberIndex = 0;
-        List<String> roomName = new ArrayList<>();
+        final List<String> deviceName = new ArrayList<>();
         Cursor cursor = deviceManager.getDeviceDetails(room_name);
 
         tableLayout = root.findViewById(R.id.tableLayout);
@@ -63,18 +68,18 @@ public class GenerateCharts {
 
         pieChart.invalidate();
         barChart.invalidate();
-        roomName.clear();
+        deviceName.clear();
         barEntries.clear();
         pieEntry.clear();
-        Random rnd = new Random();
 
+        final Random rnd = new Random();
 
         if (cursor.getCount() > 1) {
             while(cursor.moveToNext()) {
                 pieEntry.add(new PieEntry(cursor.getInt(1), String.format("%."+ numberAfterDot +"f",((float)cursor.getInt(1) / 1000)) + " kWh"));
                 barEntries.add(new BarEntry(labelNumberIndex, Float.parseFloat(String.format("%."+ numberAfterDot +"f", cursor.getFloat(2)).replace(",","."))));
                 colorList.add(Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256)));
-                roomName.add(cursor.getString(0));
+                deviceName.add(cursor.getString(0));
 
                 labelNumberIndex++;
             }
@@ -87,7 +92,7 @@ public class GenerateCharts {
 
             barEntries.add(new BarEntry(labelNumberIndex, Float.parseFloat(String.format("%."+ numberAfterDot +"f", cursor.getFloat(2)).replace(",","."))));
 
-            roomName.add(cursor.getString(0));
+            deviceName.add(cursor.getString(0));
 
 
         }
@@ -126,11 +131,11 @@ public class GenerateCharts {
         axis.setTextColor(Color.WHITE);
         axis.setDrawAxisLine(true);
         axis.setCenterAxisLabels(false);
-        axis.setLabelCount(roomName.size());
+        axis.setLabelCount(deviceName.size());
 
 
 
-        String[] xAxisLabeled = Arrays.copyOf(roomName.toArray(), roomName.size(), String[].class);
+        String[] xAxisLabeled = Arrays.copyOf(deviceName.toArray(), deviceName.size(), String[].class);
         axis.setValueFormatter(new IndexAxisValueFormatter(xAxisLabeled));
         axis.setGranularity(1);
         axis.setGranularityEnabled(true);
@@ -153,7 +158,7 @@ public class GenerateCharts {
 
 
 
-        PieDataSet pieDataSet = new PieDataSet(pieEntry,"");
+        final PieDataSet pieDataSet = new PieDataSet(pieEntry,"");
         pieDataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
         pieDataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
 
@@ -169,8 +174,9 @@ public class GenerateCharts {
 //        pieDataSet.setValueLinePart1Length(.10f);
 //        pieDataSet.setValueLinePart2Length(.50f);
 
-        PieData pieData = new PieData(pieDataSet);
+        final PieData pieData = new PieData(pieDataSet);
 
+        pieChart.setTouchEnabled(true);
 
         pieData.setValueFormatter(new PercentFormatter(pieChart));
         pieChart.setUsePercentValues(true);
@@ -181,8 +187,20 @@ public class GenerateCharts {
         pieChart.setTransparentCircleRadius(10);
         pieChart.getDescription().setEnabled(false);
         pieChart.setCenterText(root.getContext().getResources().getString(R.string.chart_kwh_consumption));
-        pieChart.animate();
+        pieChart.animateY(1000);
 
+
+        pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                Toast.makeText(root.getContext(), deviceName.get((int) h.getX()) + " : " + e.getY() / 1000 + " kWh", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected() {
+
+            }
+        });
 
         //barChart.setXAxisRenderer(new CustomXAxisRenderer(barChart.getViewPortHandler(), barChart.getXAxis(), barChart.getTransformer(YAxis.AxisDependency.LEFT)));
 

@@ -1,9 +1,14 @@
 package com.example.energii.koszt.ui.rooms;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -18,20 +23,34 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import androidx.annotation.ColorInt;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+
+import com.example.energii.koszt.MainActivity;
 import com.example.energii.koszt.R;
 import com.example.energii.koszt.ui.exception.SQLEnergyCostException;
 import com.example.energii.koszt.ui.rooms.manager.DeviceManager;
 import com.example.energii.koszt.ui.rooms.manager.GenerateTableEditRoom;
 import com.example.energii.koszt.ui.rooms.manager.RoomEditManager;
+
+
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
+
+import top.defaults.colorpicker.ColorObserver;
+import top.defaults.colorpicker.ColorPickerView;
+
 
 public class Dialogs {
     public List<String> devicePower = new LinkedList<>();
@@ -63,6 +82,27 @@ public class Dialogs {
         dialog.setContentView(R.layout.manage_device_dialog_layout);
         dialog.show();
         dialog.setCanceledOnTouchOutside(true);
+
+        final Random rnd = new Random();
+        final int colorInit = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+
+        final Button buttonColorPicker = dialog.findViewById(R.id.buttonColorPicker);
+        buttonColorPicker.setBackgroundColor(colorInit);
+
+        buttonColorPicker.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                ColorDrawable buttonColor = (ColorDrawable) buttonColorPicker.getBackground();
+
+                showColorPicker(v,buttonColorPicker,buttonColor.getColor());
+            }
+
+        });
+
+
+
+
 
         Spinner spinner = dialog.findViewById(R.id.spinner);
 
@@ -199,6 +239,7 @@ public class Dialogs {
 
                             GenerateTableEditRoom generateTableEditRoom = new GenerateTableEditRoom();
                             generateTableEditRoom.refreshTable(view,defaultCurrency,room_name,numberAfterDot);
+                            generateTableEditRoom.generateDeviceTable(view,room_name);
                         } catch (SQLEnergyCostException.WrongTime wrongTime) {
                             Toast.makeText(view.getContext(),wrongTime.getMessage(),Toast.LENGTH_SHORT).show();
                         }
@@ -397,6 +438,7 @@ public class Dialogs {
                         GenerateCharts generateCharts = new GenerateCharts();
                         generateCharts.generateChartsInRoom(view,room_name,numberAfterDot,defaultCurrency);
                         ViewDataDeviceFromDB(deviceManager.getRoomDeviceList(room_name));
+                        generateTableEditRoom.generateDeviceTable(view,room_name);
 
                         roomEditManager.refreshListView(view);
                     }catch (SQLEnergyCostException.EmptyField | SQLEnergyCostException.DuplicationDevice exception) {
@@ -644,7 +686,37 @@ public class Dialogs {
         });
     }
 
-       void ViewRoomListFromDB(Cursor cursor) {
+    public void showColorPicker(final View view, final Button showColorPicker,int colorInit) {
+        final Dialog dialog;
+        dialog = new Dialog(view.getContext());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_color_picker);
+        final int[] color = new int[1];
+        final View viewtest = dialog.findViewById(R.id.viewUp);
+        viewtest.setBackgroundColor(colorInit);
+        ColorPickerView colorPickerView = dialog.findViewById(R.id.colorPicker);
+        colorPickerView.setInitialColor(colorInit);
+        colorPickerView.subscribe(new ColorObserver() {
+            @Override
+            public void onColor(int c, boolean fromUser, boolean shouldPropagate) {
+                viewtest.setBackgroundColor(c);
+                color[0] = c;
+            }
+        });
+        Button buttonColorPickerAccept = dialog.findViewById(R.id.buttonColorPickerAccept);
+        buttonColorPickerAccept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //ustawienie koloru do bazy itd
+                showColorPicker.setBackgroundColor(color[0]);
+                dialog.dismiss();
+            }
+        });
+        Objects.requireNonNull(dialog.getWindow()).clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        dialog.show();
+    }
+
+    void ViewRoomListFromDB(Cursor cursor) {
         if (cursor.getCount() != 0) {
             clearRoomList();
             while(cursor.moveToNext()) {
