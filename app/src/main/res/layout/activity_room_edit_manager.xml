@@ -276,33 +276,22 @@
                 android:layout_height="280dp"
                 android:layout_marginTop="8dp"
 
-                app:layout_constraintBottom_toTopOf="@+id/tableLayoutDeviceDetails"
+                app:layout_constraintBottom_toTopOf="@+id/recycleViewDeviceDetailsList"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/bartChart">
 
             </com.github.mikephil.charting.charts.PieChart>
 
-            <TableLayout
-
-                android:id="@+id/tableLayoutDeviceDetails"
+            <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-                android:layout_marginStart="5dp"
-
-                android:layout_marginTop="25dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginBottom="100dp"
-                android:stretchColumns="*"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_height="match_parent"
+                android:id="@+id/recycleViewDeviceDetailsList"
+                android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/pieChart">
+                app:layout_constraintTop_toBottomOf="@+id/pieChart"/>
 
-
-
-            </TableLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

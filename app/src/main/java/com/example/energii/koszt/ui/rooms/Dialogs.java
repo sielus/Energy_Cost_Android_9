@@ -239,7 +239,6 @@ public class Dialogs {
 
                             GenerateTableEditRoom generateTableEditRoom = new GenerateTableEditRoom();
                             generateTableEditRoom.refreshTable(view,defaultCurrency,room_name,numberAfterDot);
-                            generateTableEditRoom.generateDeviceTable(view,room_name);
                         } catch (SQLEnergyCostException.WrongTime wrongTime) {
                             Toast.makeText(view.getContext(),wrongTime.getMessage(),Toast.LENGTH_SHORT).show();
                         }
@@ -438,7 +437,6 @@ public class Dialogs {
                         GenerateCharts generateCharts = new GenerateCharts();
                         generateCharts.generateChartsInRoom(view,room_name,numberAfterDot,defaultCurrency);
                         ViewDataDeviceFromDB(deviceManager.getRoomDeviceList(room_name));
-                        generateTableEditRoom.generateDeviceTable(view,room_name);
 
                         roomEditManager.refreshListView(view);
                     }catch (SQLEnergyCostException.EmptyField | SQLEnergyCostException.DuplicationDevice exception) {

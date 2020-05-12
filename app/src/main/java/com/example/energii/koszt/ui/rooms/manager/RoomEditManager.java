@@ -84,14 +84,14 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
 
         Objects.requireNonNull(actionBar).setDisplayHomeAsUpEnabled(true);
 
-        recyclerView = findViewById(R.id.RecyckerView);
+        recyclerView = view.findViewById(R.id.RecyckerView);
 
         dialogs.ViewDataDeviceFromDB(deviceManager.getRoomDeviceList(room_name));
         adapter = new RoomEditManagerListAdapter(view.getContext(),Arrays.copyOf(dialogs.deviceName.toArray(), dialogs.deviceName.size(), String[].class),this,Arrays.copyOf(dialogs.devicePower.toArray(), dialogs.devicePower.size(), String[].class),Arrays.copyOf(dialogs.deviceNumber.toArray(),dialogs.deviceNumber.size(), String[].class),Arrays.copyOf(dialogs.deviceTimeWork.toArray(), dialogs.deviceTimeWork.size(), String[].class));
 
-        new ItemTouchHelper(itemTouchHelperCallbackDelete).attachToRecyclerView(recyclerView);
+        generateDevicesListDetails(view,room_name);
 
-        generateTableEditRoom.generateDeviceTable(view,room_name);
+        new ItemTouchHelper(itemTouchHelperCallbackDelete).attachToRecyclerView(recyclerView);
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
@@ -124,6 +124,13 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         return true;
     }
 
+    void generateDevicesListDetails(View view, String room_name){
+        RoomEditManagerDeviceDetailsListAdapter roomEditManagerDeviceDetailsListAdapter = new RoomEditManagerDeviceDetailsListAdapter(view,room_name);
+        RecyclerView recycleViewDeviceDetailsList = view.findViewById(R.id.recycleViewDeviceDetailsList);
+        roomEditManagerDeviceDetailsListAdapter.generateDeviceTable();
+        recycleViewDeviceDetailsList.setAdapter(roomEditManagerDeviceDetailsListAdapter);
+        recycleViewDeviceDetailsList.setLayoutManager(new LinearLayoutManager(view.getContext()));
+    }
     public void onBackPressed() {
         fullRefreshRoomList();
         super.onBackPressed();
@@ -131,8 +138,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
     }
 
     public void refreshListView(View root) {
-        GenerateTableEditRoom generateTableEditRoom = new  GenerateTableEditRoom();
-        generateTableEditRoom.generateDeviceTable(view,room_name);
+        generateDevicesListDetails(view,room_name);
 
         DeviceManager deviceManager = new DeviceManager(view.getContext());
         Dialogs dialogs = new Dialogs(defaultListDeviceName,defaultListDevicePower,defaultListDeviceTimeWork,defaultListDeviceNumber);
@@ -171,7 +177,6 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
             dialogs.deviceName.remove(position);
 
             GenerateTableEditRoom generateTableEditRoom = new  GenerateTableEditRoom();
-            generateTableEditRoom.generateDeviceTable(view,room_name);
 
             GenerateCharts generateCharts = new GenerateCharts();
             generateCharts.generateChartsInRoom(view,room_name,numberAfterDot,defaultCurrency);
