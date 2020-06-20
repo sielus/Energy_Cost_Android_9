@@ -39,16 +39,29 @@
             android:textColor="@color/white"
             android:textSize="14dp" />
 
-        <Switch
-            android:id="@+id/switch1"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:fontFamily="@font/lato_light"
-            android:scaleType="fitCenter"
-            android:text="24h "
-            android:textColor="@color/white"
-            android:textSize="20dp" />
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            android:gravity="center">
+
+            <Switch
+                android:id="@+id/switch1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lato_light"
+                android:scaleType="fitCenter"
+                android:text="24h "
+                android:layout_marginRight="5dp"
+                android:textColor="@color/white"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/buttonColorPicker"
+                android:layout_width="35dp"
+                android:layout_height="35dp" />
+        </LinearLayout>
 
         <Button
             android:id="@+id/buttonDialogAccept"

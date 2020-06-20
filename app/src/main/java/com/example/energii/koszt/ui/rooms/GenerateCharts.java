@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.energii.koszt.R;
 import com.example.energii.koszt.ui.rooms.manager.DeviceManager;
 import com.example.energii.koszt.ui.settings.SettingActivity;
@@ -24,9 +23,7 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.renderer.BarChartRenderer;
 import com.github.mikephil.charting.utils.ColorTemplate;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -100,31 +97,24 @@ public class GenerateCharts {
         BarDataSet barDataSet = new BarDataSet(barEntries, root.getContext().getResources().getString(R.string.chart_daily_costs) + " (" + defaultCurrency + ")");
 
         barDataSet.setColors(Arrays.asList(Arrays.copyOf(colorList.toArray(), colorList.size(), Integer[].class)));
-//        barChart.getAxisLeft().setAxisMinimum(30);
-//        barChart.getAxisRight().setAxisMinimum(30);
-
 
         XAxis axis = barChart.getXAxis();
 
         barChart.getAxisLeft().setTextColor(Color.WHITE);
-        barChart.getAxisRight().setTextColor(Color.WHITE);
         barChart.getAxisLeft().setAxisMinimum(0);
-        barChart.getAxisRight().setAxisMinimum(0);
 
-        barChart.getAxisRight().setTextSize(14);
         barChart.getAxisLeft().setTextSize(14);
         barChart.getLegend().setTextSize(14f);
         barChart.getLegend().setTextColor(Color.WHITE);
-        barChart.setTouchEnabled(false);
+        barChart.setTouchEnabled(true);
         barChart.setFitBars(true);
         barChart.setDragEnabled(false);
-        barChart.setScaleEnabled(true);
+        barChart.setScaleEnabled(false);
         barChart.setDrawGridBackground(false);
         barChart.getXAxis().setTextColor(Color.WHITE);
         barChart.isAutoScaleMinMaxEnabled();
 
         axis.setPosition(XAxis.XAxisPosition.TOP_INSIDE);
-        //axis.setXOffset(-20);
 
         axis.setTextSize(16);
         axis.setDrawGridLines(true);
@@ -132,8 +122,6 @@ public class GenerateCharts {
         axis.setDrawAxisLine(true);
         axis.setCenterAxisLabels(false);
         axis.setLabelCount(deviceName.size());
-
-
 
         String[] xAxisLabeled = Arrays.copyOf(deviceName.toArray(), deviceName.size(), String[].class);
         axis.setValueFormatter(new IndexAxisValueFormatter(xAxisLabeled));
@@ -147,16 +135,12 @@ public class GenerateCharts {
         barDataSet.setValueTextColor(Color.WHITE);
 
         BarData barData = new BarData(barDataSet);
-       //barData.setBarWidth(0.5f);
-
 
         barChart.setData(barData);
         barChart.invalidate();
         barChart.getDescription().setText("");
         barChart.getLegend().setEnabled(true);
         barChart.animateY(1000);
-
-
 
         final PieDataSet pieDataSet = new PieDataSet(pieEntry,"");
         pieDataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
@@ -168,11 +152,6 @@ public class GenerateCharts {
         pieDataSet.setValueLineColor(Color.WHITE);
         pieDataSet.setValueTextColor(Color.WHITE);
         pieDataSet.setValueTextSize(14);
-
-
-//        pieDataSet.setValueLinePart1OffsetPercentage(90.f);
-//        pieDataSet.setValueLinePart1Length(.10f);
-//        pieDataSet.setValueLinePart2Length(.50f);
 
         final PieData pieData = new PieData(pieDataSet);
 
@@ -189,6 +168,18 @@ public class GenerateCharts {
         pieChart.setCenterText(root.getContext().getResources().getString(R.string.chart_kwh_consumption));
         pieChart.animateY(1000);
 
+        barChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                Toast.makeText(root.getContext(), deviceName.get((int) h.getX()) + " : " + e.getY() + root.getResources().getString(R.string.currency_type), Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onNothingSelected() {
+
+            }
+        });
 
         pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override

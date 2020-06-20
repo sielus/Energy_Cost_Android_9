@@ -50,7 +50,7 @@ public class RoomEditManagerDeviceDetailsListAdapter extends RecyclerView.Adapte
             }
         }else if(cursor.getCount() == 1){
             cursor.moveToFirst();
-            deviceKwh.add(cursor.getInt(1), String.format("%."+ RoomEditManager.numberAfterDot +"f",((float)cursor.getInt(1) / 1000)) + " kWh");
+            deviceKwh.add( String.format("%."+ RoomEditManager.numberAfterDot +"f",((float)cursor.getInt(1) / 1000)) + " kWh");
             deviceCost.add(String.format("%."+ RoomEditManager.numberAfterDot +"f", cursor.getFloat(2)).replace(",","."));
             deviceName.add(cursor.getString(0));
         }
@@ -74,7 +74,9 @@ public class RoomEditManagerDeviceDetailsListAdapter extends RecyclerView.Adapte
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.testTextview.setText(deviceName[position] + " " + deviceCost[position]);
+        holder.textViewDeviceName.setText(deviceName[position]);
+        holder.textViewDeviceKwh.setText(deviceKwh[position]);
+        holder.textViewDeviceCost.setText(deviceCost[position] + view.getResources().getString(R.string.currency_type));
 
     }
 
@@ -85,10 +87,15 @@ public class RoomEditManagerDeviceDetailsListAdapter extends RecyclerView.Adapte
 
 
     static class MyViewHolder extends RecyclerView.ViewHolder{
-        TextView testTextview;
+        TextView textViewDeviceName;
+        TextView textViewDeviceKwh;
+        TextView textViewDeviceCost;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            testTextview = itemView.findViewById(R.id.testTextView);
+            textViewDeviceName = itemView.findViewById(R.id.textViewDeviceName);
+            textViewDeviceKwh = itemView.findViewById(R.id.textViewDeviceKwh);
+            textViewDeviceCost = itemView.findViewById(R.id.textViewDeviceCost);
+
         }
     }
 }
