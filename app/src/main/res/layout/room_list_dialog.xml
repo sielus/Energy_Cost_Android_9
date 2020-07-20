@@ -58,4 +58,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/roomButtonColorPicker"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="9dp"
+        android:layout_marginBottom="9dp"
+        android:text=""
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.641"
+        app:layout_constraintStart_toEndOf="@+id/ButtonAddRoom"
+        app:layout_constraintTop_toBottomOf="@+id/text_field_inputRoomNameLayout"
+        app:layout_constraintVertical_bias="0.461" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

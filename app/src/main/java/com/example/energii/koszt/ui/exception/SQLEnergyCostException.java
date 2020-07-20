@@ -6,7 +6,7 @@ import com.example.energii.koszt.R;
 public class SQLEnergyCostException {
     public static class DuplicationRoom extends Exception {
         public DuplicationRoom(String roomName, Context context) {
-            super(roomName + " " +context.getResources().getString(R.string.sql_exception_DuplicationRoom));
+            super(roomName + " " + context.getResources().getString(R.string.sql_exception_DuplicationRoom));
         }
     }
 

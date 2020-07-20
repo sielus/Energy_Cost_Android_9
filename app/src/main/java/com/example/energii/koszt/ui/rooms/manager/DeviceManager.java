@@ -14,7 +14,7 @@ public class DeviceManager extends SQLLiteDBHelper {
         super(context);
     }
 
-    public void addDevice(String roomName, String deviceName, double powerValue, int hour, int minutes, int deviceNumber) throws SQLEnergyCostException.EmptyField, SQLEnergyCostException.DuplicationDevice, SQLEnergyCostException.WrongTime {
+    public void addDevice(String roomName, String deviceName, double powerValue, int hour, int minutes, int deviceNumber, int colorId) throws SQLEnergyCostException.EmptyField, SQLEnergyCostException.DuplicationDevice, SQLEnergyCostException.WrongTime {
         if (roomName.isEmpty() || deviceName.isEmpty() || powerValue == 0 || deviceNumber == 0) {
             throw new SQLEnergyCostException.EmptyField(context);
         }else if(hour == 0 && minutes == 0) {
@@ -44,7 +44,8 @@ public class DeviceManager extends SQLLiteDBHelper {
         contentValues.put("work_time", workTime);
         contentValues.put("device_number", deviceNumber);
         contentValues.put("energy_amount", energyAmount);
-        contentValues.put("energy_cost_zl", energyCostCurrency);
+        contentValues.put("energy_cost", energyCostCurrency);
+        contentValues.put("color_id", colorId);
 
         long resultInsert = dbhWrite.insert(deviceRoomName, null, contentValues);
 
@@ -65,7 +66,8 @@ public class DeviceManager extends SQLLiteDBHelper {
                 "name, " +
                 "power_value, " +
                 "work_time, " +
-                "device_number " +
+                "device_number, " +
+                "color_id " +
                 "FROM " + deviceRoomName;
         cursor = dbhRead.rawQuery(query, null);
 
@@ -91,7 +93,8 @@ public class DeviceManager extends SQLLiteDBHelper {
                 "name, " +
                 "power_value, " +
                 "work_time, " +
-                "device_number " +
+                "device_number, " +
+                "color_id " +
                 "FROM " + deviceRoomName +
                 " WHERE name = ?";
         cursor = dbhRead.rawQuery(query, new String[]{deviceName});
@@ -99,7 +102,7 @@ public class DeviceManager extends SQLLiteDBHelper {
         return cursor;
     }
 
-    public void updateDevice(int deviceId, String roomName, String newDeviceName, double powerValue, int deviceNumber, int hour, int minutes) throws SQLEnergyCostException.EmptyField, SQLEnergyCostException.DuplicationDevice, SQLEnergyCostException.WrongTime {
+    public void updateDevice(int deviceId, String roomName, String newDeviceName, double powerValue, int deviceNumber, int hour, int minutes, int colorId) throws SQLEnergyCostException.EmptyField, SQLEnergyCostException.DuplicationDevice, SQLEnergyCostException.WrongTime {
         if (roomName.isEmpty() || newDeviceName.isEmpty() || powerValue == 0 || deviceNumber == 0) {
             throw new SQLEnergyCostException.EmptyField(context);
         }else if(hour == 0 && minutes == 0) {
@@ -136,7 +139,8 @@ public class DeviceManager extends SQLLiteDBHelper {
         contentValues.put("work_time", workTime);
         contentValues.put("device_number", deviceNumber);
         contentValues.put("energy_amount", energyAmount);
-        contentValues.put("energy_cost_zl", energyCostCurrency);
+        contentValues.put("energy_cost", energyCostCurrency);
+        contentValues.put("color_id", colorId);
 
         updateRoomEnergyAmount(changeSpaceInName(roomName), (energyAmount - getDeviceAmountEnergy(deviceId, deviceRoomName)));
         updateRoomEnergyCostCurrency(changeSpaceInName(roomName), (energyCostCurrency - getDeviceCostEnergy(deviceId, deviceRoomName)));
@@ -152,7 +156,8 @@ public class DeviceManager extends SQLLiteDBHelper {
 
         query = "SELECT name," +
                 "energy_amount," +
-                "energy_cost_zl " +
+                "energy_cost, " +
+                "color_id " +
                 "FROM " + deviceRoomName;
 
         cursor = dbhRead.rawQuery(query, null);
@@ -206,7 +211,7 @@ public class DeviceManager extends SQLLiteDBHelper {
         String query;
 
         query = "UPDATE room_list " +
-                "SET    energy_cost_zl = energy_cost_zl + (?) " +
+                "SET    energy_cost = energy_cost + (?) " +
                 "WHERE  name = ?";
 
         dbWriter.execSQL(query, new String[] {String.valueOf(energyCost), roomName});
@@ -252,7 +257,7 @@ public class DeviceManager extends SQLLiteDBHelper {
         Cursor cursor;
         String query;
 
-        query = "SELECT energy_cost_zl " +
+        query = "SELECT energy_cost " +
                 "FROM " + deviceRoomName +
                 " WHERE  name = ?";
 
@@ -268,7 +273,7 @@ public class DeviceManager extends SQLLiteDBHelper {
         Cursor cursor;
         String query;
 
-        query = "SELECT energy_cost_zl " +
+        query = "SELECT energy_cost " +
                 "FROM " + deviceRoomName +
                 " WHERE  id = ?";
 

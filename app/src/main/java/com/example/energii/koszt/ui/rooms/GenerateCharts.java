@@ -23,7 +23,6 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -75,7 +74,7 @@ public class GenerateCharts {
             while(cursor.moveToNext()) {
                 pieEntry.add(new PieEntry(cursor.getInt(1), String.format("%."+ numberAfterDot +"f",((float)cursor.getInt(1) / 1000)) + " kWh"));
                 barEntries.add(new BarEntry(labelNumberIndex, Float.parseFloat(String.format("%."+ numberAfterDot +"f", cursor.getFloat(2)).replace(",","."))));
-                colorList.add(Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256)));
+                colorList.add(cursor.getInt(3));
                 deviceName.add(cursor.getString(0));
 
                 labelNumberIndex++;
@@ -85,7 +84,7 @@ public class GenerateCharts {
 
             pieEntry.add(new PieEntry(cursor.getInt(1), String.format("%."+ numberAfterDot +"f",((float)cursor.getInt(1) / 1000)) + " kWh"));
 
-            colorList.add(Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256)));
+            colorList.add(cursor.getInt(3));
 
             barEntries.add(new BarEntry(labelNumberIndex, Float.parseFloat(String.format("%."+ numberAfterDot +"f", cursor.getFloat(2)).replace(",","."))));
 
@@ -203,6 +202,7 @@ public class GenerateCharts {
 
 
     public void generateChart(View root){
+
         PieChart pieChart;
         BarChart barChart;
         RoomManager roomManager = new RoomManager(root.getContext());
@@ -214,8 +214,10 @@ public class GenerateCharts {
         TableLayout tableLayout = root.findViewById(R.id.tableLayout);
         TextView title_summary = root.findViewById(R.id.title_summary);
         int labelNumberIndex = 0;
+
         List<String> roomName = new ArrayList<>();
         Cursor cursor = roomManager.getRoomDetails();
+        ArrayList<Integer> colorList = new ArrayList<>();
 
         if(roomManager.getRoomList().getCount()==0){
             barChart.setVisibility(View.GONE);
@@ -237,6 +239,7 @@ public class GenerateCharts {
                 pieEntry.add(new PieEntry(cursor.getInt(1), cursor.getString(0).replace("_"," ") + " " + String.format("%."+ numberAfterDot +"f",((float)cursor.getInt(1) / 1000))));
                 barEntries.add(new BarEntry(labelNumberIndex, Float.parseFloat(String.format("%."+ numberAfterDot +"f",cursor.getFloat(2)).replace(",","."))));
                 roomName.add(cursor.getString(0).replace("_"," ") + " ");
+                colorList.add(cursor.getInt(3));
                 labelNumberIndex++;
 
             }
@@ -246,13 +249,15 @@ public class GenerateCharts {
             pieEntry.add(new PieEntry(cursor.getInt(1), cursor.getString(0).replace("_"," ") + " " + String.format("%."+ numberAfterDot +"f",((float)cursor.getInt(1) / 1000)) ));
             barEntries.add(new BarEntry(labelNumberIndex, Float.parseFloat(String.format("%."+ numberAfterDot +"f",cursor.getFloat(2)).replace(",","."))));
             roomName.add(cursor.getString(0).replace("_"," ") + " ");
+            colorList.add(cursor.getInt(3));
+
 
         }else {
             return;
         }
 
         BarDataSet barDataSet = new BarDataSet(barEntries,root.getContext().getResources().getString(R.string.chart_daily_costs) + " (" + defaultCurrency + ")");
-        barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+        barDataSet.setColors(Arrays.asList(Arrays.copyOf(colorList.toArray(), colorList.size(), Integer[].class)));
         barChart.getLegend().setEnabled(false);
         barChart.getAxisLeft().setAxisMinimum(0);
         barChart.getAxisRight().setAxisMinimum(0);
@@ -301,7 +306,7 @@ public class GenerateCharts {
         PieDataSet pieDataSet = new PieDataSet(pieEntry,"Data");
         pieChart.getLegend().setEnabled(false);
 
-        pieDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+        pieDataSet.setColors(Arrays.asList(Arrays.copyOf(colorList.toArray(), colorList.size(), Integer[].class)));
         pieDataSet.setValueLineColor(R.color.colorAccent);
         pieDataSet.setValueTextSize(14);
         PieData pieData = new PieData(pieDataSet);

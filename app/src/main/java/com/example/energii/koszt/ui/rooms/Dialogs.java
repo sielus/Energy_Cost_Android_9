@@ -226,13 +226,17 @@ public class Dialogs {
                     int number = Integer.parseInt(editTextDeviceNumbers.getText().toString());
                     try {
                         try {
-                            deviceManager.addDevice(room_name, deviceNameInput, powerValue, h[0], m[0], number);
+                            ColorDrawable viewColor = (ColorDrawable) buttonColorPicker.getBackground();
+                            int colorId = viewColor.getColor();
+                            deviceManager.addDevice(room_name, deviceNameInput, powerValue, h[0], m[0], number,colorId);
                             Toast.makeText(view.getContext(), R.string.toast_device_added, Toast.LENGTH_SHORT).show();
                             dialog.dismiss();
 
                             ViewDataDeviceFromDB(deviceManager.getRoomDeviceList(room_name));
                             GenerateCharts generateCharts = new GenerateCharts();
                             generateCharts.generateChartsInRoom(view,room_name,numberAfterDot,defaultCurrency);
+
+
 
                             RoomEditManager roomEditManager = new RoomEditManager();
                             roomEditManager.refreshListView(view);
@@ -354,7 +358,16 @@ public class Dialogs {
         final TextInputLayout text_field_inputEditTextDeviceNumbersLayout = dialog.findViewById(R.id.text_field_inputeditTextDeviceNumbersLayout);
         final TextInputLayout text_field_inputEditTextDevicePowerLayout = dialog.findViewById(R.id.text_field_inputeditTextDevicePowerLayout);
         final Button buttonTimePicker = dialog.findViewById(R.id.buttonTimePicker);
+        final Button buttonColorPicker = dialog.findViewById(R.id.buttonColorPicker);
+        buttonColorPicker.setBackgroundColor(Integer.parseInt(device.get(5)));
 
+        buttonColorPicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ColorDrawable buttonColor = (ColorDrawable) buttonColorPicker.getBackground();
+                showColorPicker(view,buttonColorPicker,buttonColor.getColor());
+            }
+        });
         editTextDeviceName.setText(device.get(1));
         editTextDevicePower.setText(device.get(2));
         editTextDeviceNumbers.setText(device.get(4));
@@ -422,7 +435,9 @@ public class Dialogs {
                     int number = Integer.parseInt(editTextDeviceNumbers.getText().toString());
                     try {
                         try {
-                            deviceManager.updateDevice(Integer.parseInt(device.get(0)),roomName,deviceName,powerValue,number, h[0], m[0]);
+                            ColorDrawable viewColor = (ColorDrawable) buttonColorPicker.getBackground();
+                            int colorId = viewColor.getColor();
+                            deviceManager.updateDevice(Integer.parseInt(device.get(0)),roomName,deviceName,powerValue,number, h[0], m[0],colorId);
                         } catch (SQLEnergyCostException.WrongTime wrongTime) {
                             wrongTime.printStackTrace();
                         }
@@ -536,12 +551,16 @@ public class Dialogs {
                 device.add((cursor.getString(2)));
                 device.add((cursor.getString(3)));
                 device.add((cursor.getString(4)));
+                device.add(String.valueOf(cursor.getInt(5)));
+
             }
         }
     }
 
     public void showDialogEditRoomName(final View view, final String room_name, final String defaultCurrency, final int numberAfterDot, final RoomEditManager roomEditManager) {
         final Dialog room_name_dialog = new Dialog(view.getContext());
+        final RoomManager roomManager = new RoomManager(view.getContext());
+
         room_name_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         room_name_dialog.setContentView(R.layout.room_list_dialog);
         room_name_dialog.show();
@@ -553,7 +572,19 @@ public class Dialogs {
         text_field_inputRoomNameLayout.setHint(view.getContext().getResources().getString(R.string.dialog_hint_new_room_name));
         text_field_inputRoomName.setText(room_name.replace("_"," "));
 
-        final RoomManager roomManager = new RoomManager(view.getContext());
+
+        final Random rnd = new Random();
+        final Button buttonColorPicker = room_name_dialog.findViewById(R.id.roomButtonColorPicker);
+        buttonColorPicker.setBackgroundColor(roomManager.getRoomColor(room_name).getInt(1));
+
+        buttonColorPicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ColorDrawable buttonColor = (ColorDrawable) buttonColorPicker.getBackground();
+                showColorPicker(view,buttonColorPicker,buttonColor.getColor());
+            }
+        });
+
         text_field_inputRoomName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -591,6 +622,10 @@ public class Dialogs {
                     roomEditManager.setTitle("Room" + " " + newRoomName.replace("_"," "));
                     room_name_dialog.dismiss();
                     try {
+                        ColorDrawable viewColor = (ColorDrawable) buttonColorPicker.getBackground();
+                        int colorId = viewColor.getColor();
+                        roomManager.updateRoomColor(room_name,colorId);
+
                         roomManager.updateRoomName(room_name,newRoomName);
                         RoomEditManager.room_name = newRoomName;
                         Toast.makeText(view.getContext(),view.getContext().getResources().getString(R.string.toast_new_room_name) + " " + newRoomName,Toast.LENGTH_SHORT).show();
@@ -614,6 +649,20 @@ public class Dialogs {
         ifNumberOnStart = false;
 
         Button buttonDialogAccept = dialog.findViewById(R.id.ButtonAddRoom);
+
+        final Random rnd = new Random();
+        final int colorInit = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+
+        final Button buttonColorPicker = dialog.findViewById(R.id.roomButtonColorPicker);
+        buttonColorPicker.setBackgroundColor(colorInit);
+
+        buttonColorPicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ColorDrawable buttonColor = (ColorDrawable) buttonColorPicker.getBackground();
+                showColorPicker(view,buttonColorPicker,buttonColor.getColor());
+            }
+        });
 
         final TextInputEditText text_field_inputRoomName = dialog.findViewById(R.id.text_field_inputRoomName);
         final TextInputLayout text_field_inputRoomNameLayout = dialog.findViewById(R.id.text_field_inputRoomNameLayout);
@@ -658,7 +707,9 @@ public class Dialogs {
                     text_field_inputRoomNameLayout.setError(null);
                     try {
                         RoomManager roomManager = new RoomManager(view.getContext());
-                        roomManager.addRoom(roomName);
+                        ColorDrawable viewColor = (ColorDrawable) buttonColorPicker.getBackground();
+                        int colorId = viewColor.getColor();
+                        roomManager.addRoom(roomName,colorId);
                         clearRoomList();
                         ViewRoomListFromDB(roomManager.getRoomList());
                         roomListFragment.refreshListView(view);
@@ -707,6 +758,7 @@ public class Dialogs {
             public void onClick(View v) {
                 //ustawienie koloru do bazy itd
                 showColorPicker.setBackgroundColor(color[0]);
+
                 dialog.dismiss();
             }
         });
