@@ -33,11 +33,11 @@ public class DeviceManager extends SQLLiteDBHelper {
 
         if(minutes != 0) {
             energyAmount = powerValue * deviceNumber * (hour + (double) minutes / 60);
-            energyCostCurrency = energyCost * energyAmount / 1000;
         }else {
             energyAmount = powerValue * deviceNumber * hour;
-            energyCostCurrency = energyCost * energyAmount / 1000;
         }
+
+        energyCostCurrency = energyCost * energyAmount / 1000;
 
         contentValues.put("name", deviceName);
         contentValues.put("power_value", powerValue);
@@ -59,7 +59,6 @@ public class DeviceManager extends SQLLiteDBHelper {
 
     public Cursor getRoomDeviceList(String roomName) {
         SQLiteDatabase dbhRead = getReadableDatabase();
-        Cursor cursor;
         String deviceRoomName = changeSpaceInName(roomName) + "_device";
 
         String query = "SELECT id, " +
@@ -69,9 +68,8 @@ public class DeviceManager extends SQLLiteDBHelper {
                 "device_number, " +
                 "color_id " +
                 "FROM " + deviceRoomName;
-        cursor = dbhRead.rawQuery(query, null);
 
-        return cursor;
+        return dbhRead.rawQuery(query, null);
     }
 
     public void deleteDevice(String roomName, String deviceName) {
@@ -86,7 +84,6 @@ public class DeviceManager extends SQLLiteDBHelper {
 
     public Cursor getDeviceInfo(String roomName, String deviceName) {
         SQLiteDatabase dbhRead = getReadableDatabase();
-        Cursor cursor;
         String deviceRoomName = changeSpaceInName(roomName) + "_device";
 
         String query = "SELECT id, " +
@@ -97,9 +94,8 @@ public class DeviceManager extends SQLLiteDBHelper {
                 "color_id " +
                 "FROM " + deviceRoomName +
                 " WHERE name = ?";
-        cursor = dbhRead.rawQuery(query, new String[]{deviceName});
 
-        return cursor;
+        return dbhRead.rawQuery(query, new String[]{deviceName});
     }
 
     public void updateDevice(int deviceId, String roomName, String newDeviceName, double powerValue, int deviceNumber, int hour, int minutes, int colorId) throws SQLEnergyCostException.EmptyField, SQLEnergyCostException.DuplicationDevice, SQLEnergyCostException.WrongTime {
@@ -128,11 +124,11 @@ public class DeviceManager extends SQLLiteDBHelper {
 
         if(minutes != 0) {
             energyAmount = powerValue * deviceNumber * (hour + (double) minutes / 60);
-            energyCostCurrency = energyCost * energyAmount / 1000;
         }else {
             energyAmount = powerValue * deviceNumber * hour;
-            energyCostCurrency = energyCost * energyAmount / 1000;
         }
+
+        energyCostCurrency = energyCost * energyAmount / 1000;
 
         contentValues.put("name", newDeviceName);
         contentValues.put("power_value", powerValue);
@@ -174,9 +170,10 @@ public class DeviceManager extends SQLLiteDBHelper {
         query = "SELECT name " +
                 "FROM " + deviceRoomName +
                 " WHERE  id = ?";
-        cursor = dbhRead.rawQuery(query, new String[] {String.valueOf(deviceId)});
 
+        cursor = dbhRead.rawQuery(query, new String[] {String.valueOf(deviceId)});
         cursor.moveToFirst();
+
         return cursor;
     }
 
@@ -189,9 +186,10 @@ public class DeviceManager extends SQLLiteDBHelper {
         query = "SELECT id " +
                 "FROM " + deviceRoomName +
                 " WHERE  name = ?";
-        cursor = dbhRead.rawQuery(query, new String[] {newDeviceName});
 
+        cursor = dbhRead.rawQuery(query, new String[] {newDeviceName});
         cursor.moveToFirst();
+
         return cursor;
     }
 
@@ -228,7 +226,6 @@ public class DeviceManager extends SQLLiteDBHelper {
                 " WHERE  name = ?";
 
         cursor = dbhRead.rawQuery(query, new String[]{deviceName});
-
         cursor.moveToFirst();
 
         return cursor.getDouble(0);
@@ -245,7 +242,6 @@ public class DeviceManager extends SQLLiteDBHelper {
                 " WHERE  id = ?";
 
         cursor = dbhRead.rawQuery(query, new String[]{String.valueOf(deviceId)});
-
         cursor.moveToFirst();
 
         return cursor.getDouble(0);

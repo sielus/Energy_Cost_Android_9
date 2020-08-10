@@ -1,75 +1,359 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/AppBackGroudColor">
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="340dp"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
+    android:background="@drawable/sunny_gradient">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/text_input_layout_longitude"
-
+    <ScrollView
+        android:id="@+id/scrollView5"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="74dp"
-        android:layout_marginEnd="16dp"
-        app:boxBackgroundMode="outline"
-        app:errorEnabled="true"
-        android:textColorHint="@color/white"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layoutConstr"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/edit_text_longitude"
-            android:textColor="@color/white"
-            android:inputType="numberDecimal"
-            android:digits="1234567890.-"
 
-            android:hint="Długość" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_height="wrap_content">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="16dp"
-        app:boxBackgroundMode="outline"
-        app:errorEnabled="true"
+            <LinearLayout
+                android:id="@+id/toplayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-        android:textColorHint="@color/white"
-        android:id="@+id/text_input_layout_latitude"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_input_layout_longitude">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:orientation="vertical">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/edit_text_latitude"
-            android:textColor="@color/white"
-            android:digits="1234567890.-"
+                    <Button
+                        android:id="@+id/getHomeKWHButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="54dp"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:width="10dp"
+                        android:background="#37BCE4"
+                        android:text="Pobierz dane z pokoi" />
 
-            android:inputType="numberDecimal"
-            android:hint="Szerokość" />
-    </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/homePowerCostLayout"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:textColorHint="@color/white"
+                        app:boxBackgroundMode="outline"
+                        app:errorEnabled="true">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/homePowerCostText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Miesięczny rachunek za prąd zł"
+                            android:inputType="numberDecimal"
+
+                            android:textColor="@color/white" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
 
+                </LinearLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/kwhCostLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="16dp"
+                    android:textColorHint="@color/white"
+
+                    app:boxBackgroundMode="outline"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/kwhCost"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Koszt kwh"
+
+                        android:inputType="numberDecimal"
+                        android:textColor="@color/white" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/moduleCostLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:textColorHint="@color/white"
+                app:boxBackgroundMode="outline"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/modulePowerLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/moduleCostText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Cena 1x modół"
+                    android:text="1200"
+                    android:textColor="@color/white" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/targetPowerLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:textColorHint="@color/white"
+                app:boxBackgroundMode="outline"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/toplayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/targetPowerText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Docelowa moc Instalacji"
+                    android:textColor="@color/white" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/modulePowerLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:textColorHint="@color/white"
+                app:boxBackgroundMode="outline"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/modulePowerText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Moc panelu (W) "
+                    android:inputType="numberSigned"
+                    android:text="250"
+                    android:textColor="@color/white" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout3"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/targetPowerLayout">
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:text="Wydajność Panelu"
+                    android:textColor="@color/white"
+                    android:textSize="16dp" />
+
+                <SeekBar
+                    android:id="@+id/moduleEfficiency"
+                    android:layout_width="184dp"
+                    android:layout_height="match_parent"
+                    android:max="95"
+                    android:min="30"
+                    android:progress="85" />
+
+                <TextView
+                    android:id="@+id/moduleEfficiencyPercect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text=" %"
+
+                    android:textColor="@color/white"
+                    android:textSize="20dp" />
+            </LinearLayout>
+
+            <TableLayout
+
+                android:id="@+id/sunnyTable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:stretchColumns="*"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/moduleCostLayout">
+
+
+                <TableRow>
+
+                    <TextView
+                        android:id="@+id/textView9"
+
+                        android:layout_width="match_parent"
+
+                        android:layout_height="match_parent"
+
+                        android:layout_weight="1"
+                        android:background="@drawable/border"
+                        android:fontFamily="@font/lato_light"
+                        android:gravity="center"
+                        android:text="Ilość paneli"
+                        android:textColor="#FFFFFF"
+                        android:textSize="18sp"
+
+                        />
+
+                    <TextView
+
+                        android:id="@+id/moduleCountText"
+
+
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+
+                        android:layout_weight="1"
+                        android:background="@drawable/border"
+                        android:fontFamily="@font/lato_light"
+                        android:gravity="center"
+                        android:text="0"
+                        android:textColor="#FFFFFF"
+                        android:textSize="18sp" />
+
+
+                </TableRow>
+
+
+                <TableRow
+                    android:id="@+id/task1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/textView22"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+
+                        android:autoSizeMaxTextSize="18sp"
+                        android:autoSizeMinTextSize="9sp"
+                        android:autoSizeTextType="uniform"
+                        android:background="@drawable/border"
+                        android:fontFamily="@font/lato_light"
+                        android:gravity="center"
+                        android:minHeight="50dp"
+                        android:text="Koszt Instalacji"
+                        android:textColor="#FFFFFF"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/instalationCost"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+
+                        android:layout_weight="1"
+                        android:autoSizeMaxTextSize="18sp"
+                        android:autoSizeMinTextSize="9sp"
+                        android:autoSizeTextType="uniform"
+                        android:background="@drawable/border"
+                        android:fontFamily="@font/lato_light"
+                        android:gravity="center"
+                        android:text="0 "
+                        android:textColor="#FFFFFF"
+                        android:textSize="18sp" />
+
+
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/task11"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/textView232"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+
+                        android:autoSizeMaxTextSize="18sp"
+                        android:autoSizeMinTextSize="9sp"
+                        android:autoSizeTextType="uniform"
+                        android:background="@drawable/border"
+                        android:fontFamily="@font/lato_light"
+                        android:gravity="center"
+                        android:minHeight="50dp"
+                        android:text="Moc pobierana (Kwh)"
+                        android:textColor="#FFFFFF"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/kwhUsage"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+
+                        android:autoSizeMaxTextSize="18sp"
+                        android:autoSizeMinTextSize="9sp"
+                        android:autoSizeTextType="uniform"
+                        android:background="@drawable/border"
+                        android:fontFamily="@font/lato_light"
+                        android:gravity="center"
+                        android:minHeight="50dp"
+                        android:text="0"
+                        android:textColor="#FFFFFF"
+                        android:textSize="18sp" />
+
+
+                </TableRow>
+
+
+            </TableLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

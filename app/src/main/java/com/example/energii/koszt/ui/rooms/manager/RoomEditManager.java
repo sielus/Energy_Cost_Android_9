@@ -69,7 +69,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
 
         dialogs = new Dialogs(defaultListDeviceName,defaultListDevicePower,defaultListDeviceTimeWork,defaultListDeviceNumber);
 
-        TableLayout tableLayout = view.findViewById(R.id.tableLayout);
+        TableLayout tableLayout = view.findViewById(R.id.sunnyTable);
         tableLayout.setVisibility(View.GONE);
 
         GenerateTableEditRoom generateTableEditRoom = new  GenerateTableEditRoom();

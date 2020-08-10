@@ -9,6 +9,8 @@
     <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">#fff</color>
     <color name="white">#FFFFFF</color>
     <color name="AppBackGroudColor">#222431</color>
+    <color name="orange">#248198</color>
+    <color name="disabled">#B7B9BA</color>
 
 
 

@@ -6,7 +6,7 @@
     <string name="nav_header_desc" translatable="false">Text obrazka</string>
 
     <string name="action_settings">Settings</string>
-    <string name="room_settings_change_room_name">Change room name</string>
+    <string name="room_settings_change_room_name">Room settings</string>
 
     <string name="studio_email" translatable="false"> devsdreamstudio@gmail.com</string>
     <string name="menu_sun_energy_calculator">Energy from sun</string>

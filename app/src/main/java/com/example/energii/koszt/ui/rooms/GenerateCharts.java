@@ -42,7 +42,7 @@ public class GenerateCharts {
         final List<String> deviceName = new ArrayList<>();
         Cursor cursor = deviceManager.getDeviceDetails(room_name);
 
-        tableLayout = root.findViewById(R.id.tableLayout);
+        tableLayout = root.findViewById(R.id.sunnyTable);
         pieChart =  root.findViewById(R.id.pieChart);
         barChart = root.findViewById(R.id.bartChart);
         title_summary = root.findViewById(R.id.title_summary);
@@ -201,7 +201,7 @@ public class GenerateCharts {
 
 
 
-    public void generateChart(View root){
+    public void generateChart(final View root){
 
         PieChart pieChart;
         BarChart barChart;
@@ -211,11 +211,11 @@ public class GenerateCharts {
         String defaultCurrency = settingActivity.getDefaultCurrency(root);
         pieChart =  root.findViewById(R.id.pieChart);
         barChart = root.findViewById(R.id.bartChart);
-        TableLayout tableLayout = root.findViewById(R.id.tableLayout);
+        TableLayout tableLayout = root.findViewById(R.id.sunnyTable);
         TextView title_summary = root.findViewById(R.id.title_summary);
         int labelNumberIndex = 0;
 
-        List<String> roomName = new ArrayList<>();
+        final List<String> roomName = new ArrayList<>();
         Cursor cursor = roomManager.getRoomDetails();
         ArrayList<Integer> colorList = new ArrayList<>();
 
@@ -258,67 +258,101 @@ public class GenerateCharts {
 
         BarDataSet barDataSet = new BarDataSet(barEntries,root.getContext().getResources().getString(R.string.chart_daily_costs) + " (" + defaultCurrency + ")");
         barDataSet.setColors(Arrays.asList(Arrays.copyOf(colorList.toArray(), colorList.size(), Integer[].class)));
-        barChart.getLegend().setEnabled(false);
-        barChart.getAxisLeft().setAxisMinimum(0);
-        barChart.getAxisRight().setAxisMinimum(0);
         XAxis axis = barChart.getXAxis();
-
+        barChart.getAxisLeft().setEnabled(true);
+        barChart.getAxisRight().setEnabled(false);
         barChart.getAxisLeft().setTextColor(Color.WHITE);
-        barChart.getAxisRight().setTextColor(Color.WHITE);
-        barChart.getAxisRight().setTextSize(14);
-        barChart.getAxisLeft().setTextSize(14);
+        barChart.getAxisLeft().setAxisMinimum(0);
 
+        barChart.getAxisLeft().setTextSize(14);
         barChart.getLegend().setTextSize(14f);
         barChart.getLegend().setTextColor(Color.WHITE);
-        barChart.setTouchEnabled(false);
+        barChart.setTouchEnabled(true);
         barChart.setFitBars(true);
         barChart.setDragEnabled(false);
-        barChart.setScaleEnabled(true);
+        barChart.setScaleEnabled(false);
         barChart.setDrawGridBackground(false);
         barChart.getXAxis().setTextColor(Color.WHITE);
+        barChart.isAutoScaleMinMaxEnabled();
 
-        axis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        axis.setTextSize(16f);
+        axis.setPosition(XAxis.XAxisPosition.TOP_INSIDE);
+
+        axis.setTextSize(16);
         axis.setDrawGridLines(true);
         axis.setTextColor(Color.WHITE);
         axis.setDrawAxisLine(true);
         axis.setCenterAxisLabels(false);
         axis.setLabelCount(roomName.size());
 
-        String[] xAxisLabels = Arrays.copyOf(roomName.toArray(), roomName.size(), String[].class);
-        axis.setValueFormatter(new IndexAxisValueFormatter(xAxisLabels));
-        axis.setGranularity(1f);
+        String[] xAxisLabeled = Arrays.copyOf(roomName.toArray(), roomName.size(), String[].class);
+        axis.setValueFormatter(new IndexAxisValueFormatter(xAxisLabeled));
+        axis.setGranularity(1);
         axis.setGranularityEnabled(true);
+
+        barChart.setDrawValueAboveBar(false);
+        barDataSet.setDrawValues(false);
 
         barDataSet.setValueTextSize(14);
         barDataSet.setValueTextColor(Color.WHITE);
 
         BarData barData = new BarData(barDataSet);
-        barData.setBarWidth(0.5f);
 
         barChart.setData(barData);
         barChart.invalidate();
         barChart.getDescription().setText("");
         barChart.getLegend().setEnabled(true);
-
         barChart.animateY(1000);
 
-        PieDataSet pieDataSet = new PieDataSet(pieEntry,"Data");
+        final PieDataSet pieDataSet = new PieDataSet(pieEntry,"");
+        pieDataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+        pieDataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+
         pieChart.getLegend().setEnabled(false);
 
         pieDataSet.setColors(Arrays.asList(Arrays.copyOf(colorList.toArray(), colorList.size(), Integer[].class)));
-        pieDataSet.setValueLineColor(R.color.colorAccent);
+        pieDataSet.setValueLineColor(Color.WHITE);
+        pieDataSet.setValueTextColor(Color.WHITE);
         pieDataSet.setValueTextSize(14);
-        PieData pieData = new PieData(pieDataSet);
+
+        final PieData pieData = new PieData(pieDataSet);
+
+        pieChart.setTouchEnabled(true);
+
         pieData.setValueFormatter(new PercentFormatter(pieChart));
         pieChart.setUsePercentValues(true);
+        pieChart.setEntryLabelColor(Color.WHITE);
+        pieChart.setDrawEntryLabels(false);
         pieChart.setData(pieData);
         pieChart.setHoleRadius(30);
         pieChart.setTransparentCircleRadius(10);
-
         pieChart.getDescription().setEnabled(false);
         pieChart.setCenterText(root.getContext().getResources().getString(R.string.chart_kwh_consumption));
-        pieChart.animate();
+        pieChart.animateY(1000);
+
+        barChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                Toast.makeText(root.getContext(), roomName.get((int) h.getX()) + " : " + e.getY() + root.getResources().getString(R.string.currency_type), Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onNothingSelected() {
+
+            }
+        });
+
+        pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                Toast.makeText(root.getContext(), roomName.get((int) h.getX()) + " : " + e.getY() / 1000 + " kWh", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected() {
+
+            }
+        });
 
     }
 }

@@ -96,6 +96,7 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    @SuppressLint("Recycle")
     public Cursor getVariable(String variableName) {
         SQLiteDatabase dbhRead = getReadableDatabase();
         Cursor cursor;
@@ -104,6 +105,7 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         query = "SELECT value " +
                 "FROM   configuration_variable " +
                 "WHERE  name = ?";
+
         cursor = dbhRead.rawQuery(query, new String[]{variableName});
         cursor.moveToFirst();
 

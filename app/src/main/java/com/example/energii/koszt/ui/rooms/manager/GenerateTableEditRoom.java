@@ -2,12 +2,9 @@ package com.example.energii.koszt.ui.rooms.manager;
 
 import android.annotation.SuppressLint;
 import android.database.Cursor;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.energii.koszt.R;
 import com.example.energii.koszt.ui.rooms.RoomManager;
@@ -36,7 +33,7 @@ public class GenerateTableEditRoom {
             outputEnergyCostYeah.setText(String.format("%."+ numberAfterDot +"f", Float.parseFloat(roomCostKWH.get(0)) / 1000 * 365 )+ " kWh");
             outputEnergyCostYeahKwh.setText(String.format("%."+ numberAfterDot +"f", Float.parseFloat(roomCostKWH.get(1)) * 365 )+ " " + defaultCurrency);
         }else{
-            TableLayout tableLayout = view.findViewById(R.id.tableLayout);
+            TableLayout tableLayout = view.findViewById(R.id.sunnyTable);
             tableLayout.setVisibility(View.GONE);
             TextView titleSummary = view.findViewById(R.id.title_summary);
             titleSummary.setVisibility(View.GONE);
@@ -56,7 +53,7 @@ public class GenerateTableEditRoom {
         int numberAfterDot = settingActivity.getNumberAfterDot(view);
         String defaultCurrency = settingActivity.getDefaultCurrency(view);
 
-        TableLayout tableLayout = view.findViewById(R.id.tableLayout);
+        TableLayout tableLayout = view.findViewById(R.id.sunnyTable);
         TextView title_summary = view.findViewById(R.id.title_summary);
         TextView OutputEnergyCostDay = view.findViewById(R.id.OutputEnergyCostDay);
         TextView OutputEnergyCostMonth = view.findViewById(R.id.OutputEnergyCostMonth);

@@ -12,9 +12,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.sunEnergyCalculator.MapActivity">
-
-        </activity>
         <activity
             android:name=".ui.settings.SettingActivity"
             android:label="@string/settings_label_title"

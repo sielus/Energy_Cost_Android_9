@@ -67,7 +67,7 @@
                 android:text="@string/room_edit_summary_of_the_costs_room"
                 android:textColor="@color/white"
                 android:textSize="20dp"
-                app:layout_constraintBottom_toTopOf="@+id/tableLayout"
+                app:layout_constraintBottom_toTopOf="@+id/sunnyTable"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/RecyckerView"
@@ -75,7 +75,7 @@
 
             <TableLayout
 
-                android:id="@+id/tableLayout"
+                android:id="@+id/sunnyTable"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
@@ -265,7 +265,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/pieChart"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tableLayout">
+                app:layout_constraintTop_toBottomOf="@+id/sunnyTable">
 
 
             </com.github.mikephil.charting.charts.HorizontalBarChart>

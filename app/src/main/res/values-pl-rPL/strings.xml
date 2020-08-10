@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">Koszty Energii</string>
     <string name="action_settings">Ustawienia</string>
-    <string name="room_settings_change_room_name">Zmień nazwę pokoju</string>
+    <string name="room_settings_change_room_name">Ustawienia pokoju</string>
     <string name="menu_room_list">Menadżer Pokoi</string>
     <string name="menu_sun_energy_calculator">Fotowoltaika</string>
     <string name="home_hint_power_value">Moc urządzenia (W)</string>

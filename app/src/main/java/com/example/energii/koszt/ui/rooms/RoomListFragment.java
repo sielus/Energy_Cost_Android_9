@@ -41,7 +41,7 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_rooms, container, false);
         RoomManager roomManager = new RoomManager(root.getContext());
-        TableLayout tableLayout = root.findViewById(R.id.tableLayout);
+        TableLayout tableLayout = root.findViewById(R.id.sunnyTable);
 
         pieChart =  root.findViewById(R.id.pieChart);
         BarChart barChart = root.findViewById(R.id.bartChart);
