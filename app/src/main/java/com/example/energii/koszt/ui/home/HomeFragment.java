@@ -16,6 +16,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import com.example.energii.koszt.R;
@@ -52,6 +54,11 @@ public class HomeFragment extends Fragment {
         numberAfterDot = settingActivity.getNumberAfterDot(root);
 
         defaultCurrency = settingActivity.getDefaultCurrency(root);
+
+        ActionBar actionBar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
+        assert actionBar != null;
+        actionBar.setBackgroundDrawable(getResources().getDrawable(R.color.startBart,null));
+        requireActivity().getWindow().setStatusBarColor(getActivity().getResources().getColor(R.color.startBart));
 
         mAdView = root.findViewById(R.id.adView);
 

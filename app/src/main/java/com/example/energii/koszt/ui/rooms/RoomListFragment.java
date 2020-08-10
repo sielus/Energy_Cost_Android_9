@@ -12,6 +12,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -46,6 +48,11 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
         pieChart =  root.findViewById(R.id.pieChart);
         BarChart barChart = root.findViewById(R.id.bartChart);
         TextView titleSummary = root.findViewById(R.id.title_summary);
+
+        ActionBar actionBar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
+        assert actionBar != null;
+        actionBar.setBackgroundDrawable(getResources().getDrawable(R.color.startBart,null));
+        requireActivity().getWindow().setStatusBarColor(getActivity().getResources().getColor(R.color.startBart));
 
         RecyclerView recyclerView = root.findViewById(R.id.RecyckerView);
 
