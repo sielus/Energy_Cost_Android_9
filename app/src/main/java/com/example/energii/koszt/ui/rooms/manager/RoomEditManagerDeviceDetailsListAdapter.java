@@ -17,9 +17,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class RoomEditManagerDeviceDetailsListAdapter extends RecyclerView.Adapter<RoomEditManagerDeviceDetailsListAdapter.MyViewHolder> {
-    private String deviceName[];
-    private String deviceKwh[];
-    private String deviceCost[];
+    private String[] deviceName;
+    private String[] deviceKwh;
+    private String[] deviceCost;
 
     public RoomEditManagerDeviceDetailsListAdapter(View view,String room_name) {
         this.room_name = room_name;

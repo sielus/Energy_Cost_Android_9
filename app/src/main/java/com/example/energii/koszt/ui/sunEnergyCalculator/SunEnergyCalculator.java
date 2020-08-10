@@ -49,7 +49,7 @@ public class SunEnergyCalculator extends SQLLiteDBHelper {
         profitability[0] =  amountOfModule * costPerModule * -1;
 
         for(int i = 1; i < 20; i++) {
-            profitability[i] = profitability[i - 1] + yearsProfit;
+            profitability[i] = profitability[i - 1] + yearsProfit / 1000;
         }
 
         return profitability;
