@@ -44,7 +44,7 @@ public class SunEnergyCalculator extends SQLLiteDBHelper {
 
     public double[] calculateProfitability(int amountOfModule, int costPerModule, int modulePower, double moduleEfficiency, double energyCost) {
         double[] profitability = new double[20];
-        double yearsProfit = amountOfModule * modulePower * moduleEfficiency  * energyCost * 1.5;
+        double yearsProfit = amountOfModule * modulePower * (moduleEfficiency/100)  * energyCost * 1.5;
 
         profitability[0] =  amountOfModule * costPerModule * -1;
 

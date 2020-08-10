@@ -226,19 +226,16 @@ public class SunEnergyCalculatorFragment extends Fragment {
 
 
         profit =  sunEnergyCalculator.calculateProfitability(Integer.parseInt(ammountModule),Integer.parseInt(moduleCost),Integer.parseInt(modulePower),moduleEffeciency,Double.parseDouble(homePowerCostText));
-        for (int i = 0; i < profit.length - 6; i++) {
+        System.out.println("dziwne" + moduleEffeciency / 100);
+        for (int i = 0; i < profit.length; i++) {
 
             yValues.add(new Entry(i, (float) profit[i]));
             System.out.println("profit " + profit[i]);
         }
 
+        lineChart.setScaleEnabled(false);
 
-
-
-
-
-
-        LineDataSet lineDataSet = new LineDataSet(yValues,"Zwrot");
+        LineDataSet lineDataSet = new LineDataSet(yValues,"Koszty");
         lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
         lineDataSet.setDrawCircleHole(false);
         lineDataSet.setDrawCircles(false);
@@ -253,6 +250,7 @@ public class SunEnergyCalculatorFragment extends Fragment {
         YAxis leftAxis = lineChart.getAxisLeft();
         YAxis rightAyis = lineChart.getAxisRight();
         XAxis xAxis = lineChart.getXAxis();
+
 
         LimitLine lineZero = new LimitLine(0,"Zwrot Inwestycji");
         lineZero.setLineWidth(4f);
@@ -269,7 +267,8 @@ public class SunEnergyCalculatorFragment extends Fragment {
         lineChart.getLegend().setTextSize(14f);
         leftAxis.setTextSize(13);
         rightAyis.setTextSize(13);
-
+        xAxis.setAxisMaximum(21);
+        xAxis.setDrawGridLines(true);
         xAxis.setTextColor(getResources().getColor(R.color.white));
         rightAyis.setTextColor(getResources().getColor(R.color.white));
         leftAxis.setTextColor(getResources().getColor(R.color.white));
