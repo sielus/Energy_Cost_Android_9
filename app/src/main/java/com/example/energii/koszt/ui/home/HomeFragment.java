@@ -92,7 +92,7 @@ public class HomeFragment extends Fragment {
 
                     displayCostEnergy(costValueMap, root);
 
-                    Toast.makeText(getContext(),"Policzono!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(),getResources().getString(R.string.calculate), Toast.LENGTH_SHORT).show();
                 }
             }
         });

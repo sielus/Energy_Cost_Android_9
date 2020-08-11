@@ -70,4 +70,5 @@
     <string name="investition_toast">"Bilans inwestycyjny : "</string>
     <string name="investition_return">Zwrot inwestycji</string>
     <string name="download_data_from_house">Pobierz dane z domu</string>
+    <string name="calculate">Obliczono!</string>
 </resources>
