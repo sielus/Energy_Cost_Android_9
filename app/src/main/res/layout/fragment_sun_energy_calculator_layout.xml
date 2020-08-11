@@ -68,6 +68,7 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/homePowerCostText"
                             android:layout_width="match_parent"
+                            android:maxLength="6"
                             android:layout_height="wrap_content"
                             android:hint="@string/Month_billing"
                             android:inputType="numberDecimal"
@@ -94,10 +95,11 @@
                         android:id="@+id/kwhCost"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+
                         android:hint="@string/settings_energy_cost_global"
                         android:inputType="numberDecimal"
 
-                        android:maxLength="5"
+                        android:maxLength="4"
                         android:textColor="@color/white" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -123,6 +125,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/module_price"
+                    android:maxLength="5"
+
                     android:inputType="numberSigned"
 
                     android:text="1200"
@@ -149,6 +153,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/module_power"
+                    android:maxLength="4"
+
                     android:inputType="numberSigned"
                     android:text="250"
                     android:textColor="@color/white" />
@@ -156,8 +162,8 @@
 
             <LinearLayout
                 android:id="@+id/linearLayout3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="377dp"
+                android:layout_height="25dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:orientation="horizontal"
@@ -177,7 +183,7 @@
 
                 <SeekBar
                     android:id="@+id/moduleEfficiency"
-                    android:layout_width="176dp"
+                    android:layout_width="158dp"
                     android:layout_height="match_parent"
                     android:max="95"
                     android:min="50"
@@ -216,7 +222,9 @@
                         android:layout_width="match_parent"
 
                         android:layout_height="match_parent"
-
+                        android:autoSizeMaxTextSize="16sp"
+                        android:autoSizeMinTextSize="9sp"
+                        android:autoSizeTextType="uniform"
                         android:layout_weight="1"
                         android:background="@drawable/border"
                         android:fontFamily="@font/lato_light"
@@ -230,7 +238,9 @@
                     <TextView
 
                         android:id="@+id/moduleCountText"
-
+                        android:autoSizeMaxTextSize="16sp"
+                        android:autoSizeMinTextSize="9sp"
+                        android:autoSizeTextType="uniform"
 
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
@@ -259,7 +269,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
 
-                        android:autoSizeMaxTextSize="18sp"
+                        android:autoSizeMaxTextSize="16sp"
                         android:autoSizeMinTextSize="9sp"
                         android:autoSizeTextType="uniform"
                         android:background="@drawable/border"
@@ -277,7 +287,7 @@
                         android:layout_height="match_parent"
 
                         android:layout_weight="1"
-                        android:autoSizeMaxTextSize="18sp"
+                        android:autoSizeMaxTextSize="16sp"
                         android:autoSizeMinTextSize="9sp"
                         android:autoSizeTextType="uniform"
                         android:background="@drawable/border"
@@ -302,7 +312,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
 
-                        android:autoSizeMaxTextSize="18sp"
+                        android:autoSizeMaxTextSize="16sp"
                         android:autoSizeMinTextSize="9sp"
                         android:autoSizeTextType="uniform"
                         android:background="@drawable/border"
@@ -320,7 +330,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
 
-                        android:autoSizeMaxTextSize="18sp"
+                        android:autoSizeMaxTextSize="16sp"
                         android:autoSizeMinTextSize="9sp"
                         android:autoSizeTextType="uniform"
                         android:background="@drawable/border"
@@ -346,7 +356,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
 
-                        android:autoSizeMaxTextSize="18sp"
+                        android:autoSizeMaxTextSize="16sp"
                         android:autoSizeMinTextSize="9sp"
                         android:autoSizeTextType="uniform"
                         android:background="@drawable/border"
@@ -364,7 +374,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
 
-                        android:autoSizeMaxTextSize="18sp"
+                        android:autoSizeMaxTextSize="16sp"
                         android:autoSizeMinTextSize="9sp"
                         android:autoSizeTextType="uniform"
                         android:background="@drawable/border"
