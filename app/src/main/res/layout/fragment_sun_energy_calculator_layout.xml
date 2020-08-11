@@ -43,12 +43,16 @@
                         android:layout_width="match_parent"
                         android:layout_height="54dp"
                         android:layout_gravity="center"
+                        android:autoSizeMaxTextSize="15dp"
+                        android:autoSizeMinTextSize="9sp"
+                        android:autoSizeTextType="uniform"
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="16dp"
                         android:layout_marginBottom="16dp"
                         android:width="10dp"
+                        android:textColor="@color/white"
                         android:background="#37BCE4"
-                        android:text="Pobierz dane z pokoi" />
+                        android:text="@string/download_data_from_house" />
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/homePowerCostLayout"
@@ -153,9 +157,8 @@
             <LinearLayout
                 android:id="@+id/linearLayout3"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -166,13 +169,15 @@
                     android:id="@+id/textView"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
+
+
                     android:text="@string/installation_performance"
                     android:textColor="@color/white"
-                    android:textSize="15dp" />
+                    android:textSize="14dp" />
 
                 <SeekBar
                     android:id="@+id/moduleEfficiency"
-                    android:layout_width="192dp"
+                    android:layout_width="176dp"
                     android:layout_height="match_parent"
                     android:max="95"
                     android:min="50"
@@ -182,9 +187,8 @@
                     android:id="@+id/moduleEfficiencyPercect"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="0"
                     android:text=" %"
-
                     android:textColor="@color/white"
                     android:textSize="20dp" />
             </LinearLayout>

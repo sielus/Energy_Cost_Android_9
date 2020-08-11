@@ -101,8 +101,9 @@
     <string name="instalation_title">Instalation cost</string>
     <string name="installation_performance">Installation performance</string>
     <string name="year">Year : </string>
-    <string name="investition_toast">Investition</string>
+    <string name="investition_toast">"Investment balance : "</string>
     <string name="investition_return">Return on investment</string>
+    <string name="download_data_from_house">Download data from house</string>
 
 
 

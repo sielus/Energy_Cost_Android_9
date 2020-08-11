@@ -84,7 +84,7 @@ public class SunEnergyCalculatorFragment extends Fragment {
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
         });
-        moduleEfficiencyPercectText.setText(moduleEfficiency.getProgress() + " %");
+        moduleEfficiencyPercectText.setText(moduleEfficiency.getProgress() + "%");
         checkIfEmpty(root);
         kwhCost.setText(sqlLiteDBHelper.getVariable("powerCost").getString(0));
 
@@ -93,7 +93,7 @@ public class SunEnergyCalculatorFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 double homeKwhCost = sunEnergyCalculator.getHouseEnergyCost();
-                homePowerCostText.setText(String.valueOf(String.format("%.2f",homeKwhCost)));
+                homePowerCostText.setText(String.valueOf(String.format("%.2f",homeKwhCost).replace(",",".")));
             }
         });
 
@@ -105,13 +105,13 @@ public class SunEnergyCalculatorFragment extends Fragment {
             @SuppressLint("DefaultLocale")
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String newHomePowerCost = homePowerCostText.getText().toString();
+                String newHomePowerCost = homePowerCostText.getText().toString().replace(",",".");
                 if (!newHomePowerCost.isEmpty()) {
                     if (newHomePowerCost.equals(".")) {
-                        homePowerCostText.append("0");
+                        //homePowerCostText.append("0");
                     } else {
-                        kwhUsage.setText(String.valueOf(String.format("%.2f",Double.parseDouble(newHomePowerCost) /
-                                Double.parseDouble(kwhCost.getText().toString()))));
+                        kwhUsage.setText(String.valueOf(String.format("%.2f",Double.parseDouble(newHomePowerCost.replace(",",".")) /
+                                Double.parseDouble(kwhCost.getText().toString().replace(",",".")))));
 
                         doSomeCalc(root, sunEnergyCalculator, targetPower, kwhUsage);
                     }
@@ -135,8 +135,8 @@ public class SunEnergyCalculatorFragment extends Fragment {
                 String newkwhCost = kwhCost.getText().toString();
                 if (!newkwhCost.isEmpty()) {
                     if (!newkwhCost.equals(".")) {
-                        kwhUsage.setText(String.format("%.2f",Double.parseDouble(homePowerCostText.getText().toString()) /
-                                Double.parseDouble(newkwhCost)));
+                        kwhUsage.setText(String.format("%.2f",Double.parseDouble(homePowerCostText.getText().toString().replace(",",".")) /
+                                Double.parseDouble(newkwhCost.replace(",","."))));
                         doSomeCalc(root, sunEnergyCalculator, targetPower, kwhUsage);
                     }
                 }
@@ -157,7 +157,7 @@ public class SunEnergyCalculatorFragment extends Fragment {
                 String newmoduleCost = moduleCostText.getText().toString();
                 if (!newmoduleCost.isEmpty()) {
                     if (newmoduleCost.equals(".")) {
-                        homePowerCostText.append("0");
+                       // homePowerCostText.append("0");
                     } else {
                         doSomeCalc(root, sunEnergyCalculator, targetPower, kwhUsage);
                     }
@@ -191,8 +191,8 @@ public class SunEnergyCalculatorFragment extends Fragment {
     }
     @SuppressLint("DefaultLocale")
     private void doSomeCalc(View root, SunEnergyCalculator sunEnergyCalculator, TextView targetPower, TextView kwhUsage) {
-        Double targetValue = Double.parseDouble(kwhUsage.getText().toString()) * 1.1;
-        targetPower.setText(String.format("%.2f", targetValue));
+        Double targetValue = Double.parseDouble(kwhUsage.getText().toString().replace(",",".")) * 1.1;
+        targetPower.setText(String.format("%.2f", targetValue).replace(",","."));
 
         EditText modulePowerText = root.findViewById(R.id.modulePowerText);
         TextView moduleCountText = root.findViewById(R.id.moduleCountText);
@@ -207,8 +207,8 @@ public class SunEnergyCalculatorFragment extends Fragment {
                     Integer.parseInt(modulePower),
                     (double) (moduleEfficiency.getProgress()) / 100,
                     targetValue)));
-            instalationCostText.setText(String.valueOf(Double.valueOf(moduleCountText.getText().toString()) *
-                    Double.valueOf(moduleCostText.getText().toString())));
+            instalationCostText.setText(String.valueOf(Double.valueOf(moduleCountText.getText().toString().replace(",",".")) *
+                    Double.valueOf(moduleCostText.getText().toString().replace(",",".")) * 1.2));
 
             generateChart(root,sunEnergyCalculator,moduleCostText.getText().toString(),moduleCountText.getText().toString(),modulePowerText.getText().toString(),moduleEfficiency.getProgress(),homePowerCostText.getText().toString());
         }
@@ -219,13 +219,16 @@ public class SunEnergyCalculatorFragment extends Fragment {
         double profit[];
         LineChart lineChart = root.findViewById(R.id.lineChart);
         ArrayList<Entry> yValues = new ArrayList<>();
-        profit =  sunEnergyCalculator.calculateProfitability(Double.parseDouble(ammountModule),Integer.parseInt(moduleCost),Integer.parseInt(modulePower),moduleEffeciency);
+        profit =  sunEnergyCalculator.calculateProfitability(Double.parseDouble(ammountModule.replace(",",".")),
+                Integer.parseInt(moduleCost.replace(",",".")),
+                Integer.parseInt(modulePower.replace(",",".")),
+                moduleEffeciency);
+
         for (int i = 0; i < profit.length; i++) {
             yValues.add(new Entry(i, (float) profit[i]));
-            System.out.println("profit " + profit[i]);
         }
         lineChart.setScaleEnabled(false);
-        LineDataSet lineDataSet = new LineDataSet(yValues,"Koszty");
+        LineDataSet lineDataSet = new LineDataSet(yValues,"cost");
         lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
         lineDataSet.setDrawCircleHole(false);
         lineDataSet.setDrawCircles(false);
@@ -280,7 +283,7 @@ public class SunEnergyCalculatorFragment extends Fragment {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
                 Toast.makeText(root.getContext(),getResources().getString(R.string.year)  + " " + String.valueOf(xAxisValues.get((int) e.getX()))
-                        + " " + getResources().getString(R.string.investition_toast) + " " + String.valueOf(e.getY()) + settingActivity.getDefaultCurrency(root),Toast.LENGTH_SHORT).show();
+                        + "\n" + getResources().getString(R.string.investition_toast) + " " + String.valueOf(e.getY()) + " " + settingActivity.getDefaultCurrency(root),Toast.LENGTH_SHORT).show();
 
             }
 

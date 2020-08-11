@@ -67,6 +67,7 @@
     <string name="instalation_title">Koszt instalacji</string>
     <string name="installation_performance">Wydajność instaltacji</string>
     <string name="year">"Rok : "</string>
-    <string name="investition_toast">Inwestycja</string>
+    <string name="investition_toast">"Bilans inwestycyjny : "</string>
     <string name="investition_return">Zwrot inwestycji</string>
+    <string name="download_data_from_house">Pobierz dane z domu</string>
 </resources>
