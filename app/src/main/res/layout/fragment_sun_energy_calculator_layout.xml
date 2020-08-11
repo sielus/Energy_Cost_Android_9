@@ -65,7 +65,7 @@
                             android:id="@+id/homePowerCostText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Miesięczny rachunek za prąd zł"
+                            android:hint="@string/Month_billing"
                             android:inputType="numberDecimal"
 
                             android:textColor="@color/white" />
@@ -90,9 +90,10 @@
                         android:id="@+id/kwhCost"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Koszt kwh"
-
+                        android:hint="@string/settings_energy_cost_global"
                         android:inputType="numberDecimal"
+
+                        android:maxLength="5"
                         android:textColor="@color/white" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -117,13 +118,12 @@
                     android:id="@+id/moduleCostText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Cena 1x modół"
+                    android:hint="@string/module_price"
                     android:inputType="numberSigned"
 
                     android:text="1200"
                     android:textColor="@color/white" />
             </com.google.android.material.textfield.TextInputLayout>
-
 
 
             <com.google.android.material.textfield.TextInputLayout
@@ -144,7 +144,7 @@
                     android:id="@+id/modulePowerText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Moc panelu (W) "
+                    android:hint="@string/module_power"
                     android:inputType="numberSigned"
                     android:text="250"
                     android:textColor="@color/white" />
@@ -166,17 +166,17 @@
                     android:id="@+id/textView"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
-                    android:text="Efektywnośc Panelu"
+                    android:text="@string/installation_performance"
                     android:textColor="@color/white"
-                    android:textSize="16dp" />
+                    android:textSize="15dp" />
 
                 <SeekBar
                     android:id="@+id/moduleEfficiency"
                     android:layout_width="192dp"
                     android:layout_height="match_parent"
                     android:max="95"
-                    android:min="10"
-                    android:progress="20" />
+                    android:min="50"
+                    android:progress="80" />
 
                 <TextView
                     android:id="@+id/moduleEfficiencyPercect"
@@ -217,7 +217,7 @@
                         android:background="@drawable/border"
                         android:fontFamily="@font/lato_light"
                         android:gravity="center"
-                        android:text="Ilość paneli"
+                        android:text="@string/number_of_modules"
                         android:textColor="#FFFFFF"
                         android:textSize="18sp"
 
@@ -249,7 +249,7 @@
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:id="@+id/textView22"
+                        android:id="@+id/instalationCostTitleTextView"
 
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -262,7 +262,7 @@
                         android:fontFamily="@font/lato_light"
                         android:gravity="center"
                         android:minHeight="50dp"
-                        android:text="Koszt Instalacji"
+                        android:text="@string/instalation_title"
                         android:textColor="#FFFFFF"
                         android:textSize="18sp" />
 
@@ -305,7 +305,7 @@
                         android:fontFamily="@font/lato_light"
                         android:gravity="center"
                         android:minHeight="50dp"
-                        android:text="kwh miesieczne"
+                        android:text="@string/kWh_consumption"
                         android:textColor="#FFFFFF"
                         android:textSize="18sp" />
 
@@ -349,7 +349,7 @@
                         android:fontFamily="@font/lato_light"
                         android:gravity="center"
                         android:minHeight="50dp"
-                        android:text="Docelowa moc instalacji "
+                        android:text="@string/target_instalation_power"
                         android:textColor="#FFFFFF"
                         android:textSize="18sp" />
 

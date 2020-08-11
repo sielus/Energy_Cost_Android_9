@@ -58,4 +58,15 @@
     <string name="default_device_amp_idle">Amplituner (Standby)</string>
     <string name="default_device_night_light_led">Lampka nocka LED</string>
     <string name="currency_type">zł</string>
+    <string name="module_power">"Moc modułu (W) "</string>
+    <string name="module_price">Cena 1x modułu</string>
+    <string name="number_of_modules">Liczba modułów</string>
+    <string name="kWh_consumption">Miesięczny pobór kwh</string>
+    <string name="target_instalation_power">Docelowa moc instalacji</string>
+    <string name="Month_billing">Miesięczny rachunek za prąd</string>
+    <string name="instalation_title">Koszt instalacji</string>
+    <string name="installation_performance">Wydajność instaltacji</string>
+    <string name="year">"Rok : "</string>
+    <string name="investition_toast">Inwestycja</string>
+    <string name="investition_return">Zwrot inwestycji</string>
 </resources>

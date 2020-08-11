@@ -88,7 +88,24 @@
     <string name="default_device_amp_idle">Amp (Standby)</string>
     <string name="default_device_night_light_led">LED night light</string>
     <string name="currency_type">$</string>
+    <string name="module_power">Module power (W)</string>
+    <string name="module_price">1x module price</string>
+    <string name="number_of_modules">Number of modules</string>
+    <string name="kWh_consumption">Monthly kWh consumption</string>
+    <string name="target_instalation_power">Target installation power (Kwh)</string>
+
+
+    
+    <string name="Month_billing">Month billing per energy</string>
+
+    <string name="instalation_title">Instalation cost</string>
+    <string name="installation_performance">Installation performance</string>
+    <string name="year">Year : </string>
+    <string name="investition_toast">Investition</string>
+    <string name="investition_return">Return on investment</string>
+
+
+
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

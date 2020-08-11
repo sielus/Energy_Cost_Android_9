@@ -24,10 +24,7 @@
                         android:id="@+id/nav_fragment_sun_energy_calculator_layout"
                         android:icon="@drawable/ic_wb_sunny_black_24dp"
                         android:title="@string/menu_sun_energy_calculator" />
-                    <item
-                        android:id="@+id/nav_fragment_sun_energy_rooms_layout"
-                        android:icon="@drawable/ic_wb_sunny_black_24dp"
-                        android:title="Fotowoltaika rooms" />
+
 
                 </group>
             </menu>

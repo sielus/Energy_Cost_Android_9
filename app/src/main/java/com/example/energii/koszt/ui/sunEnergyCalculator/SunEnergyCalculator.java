@@ -42,11 +42,11 @@ public class SunEnergyCalculator extends SQLLiteDBHelper {
         return energyCost.getDouble(0) * 30;
     }
 
-    public double[] calculateProfitability(double amountOfModule, int costPerModule, int modulePower, double moduleEfficiency, double energyCost) {
+    public double[] calculateProfitability(double amountOfModule, int costPerModule, int modulePower, double moduleEfficiency) {
         double[] profitability = new double[20];
-        double yearsProfit = amountOfModule * modulePower * (100 - moduleEfficiency) / 100  * 0.65;
+        double yearsProfit = amountOfModule * modulePower * (moduleEfficiency) / 100  * 0.65;
 
-        profitability[0] =  amountOfModule * costPerModule * -1;
+        profitability[0] =  amountOfModule * costPerModule * -1 * 1.2;
 
         for(int i = 1; i < 20; i++) {
             profitability[i] = profitability[i - 1] + yearsProfit;
@@ -56,21 +56,11 @@ public class SunEnergyCalculator extends SQLLiteDBHelper {
     }
 
     public int howManyModuleNeed(double modulePower, double moduleEfficiency, double houseEnergyAmount) {
+        double modulePowerGenerator = houseEnergyAmount / (4.38 * 30);
 
-        System.out.println("modulePower" + modulePower);
-        System.out.println("+++houseEnergyAmount" + houseEnergyAmount);
-
-        System.out.println("moduleEfficiency" + moduleEfficiency);
-
-        double modulePowerGenerator = houseEnergyAmount / (4.38 * 30); //4.38 ilość średniych dni nasłończenienia w pl
         modulePowerGenerator = modulePowerGenerator + modulePowerGenerator * 0.1 + modulePowerGenerator * (1 - moduleEfficiency);
 
-
         double amountOfModule = modulePowerGenerator / (modulePower / 1000);
-
-
-
-
 
         return (int)Math.ceil(amountOfModule);
     }
