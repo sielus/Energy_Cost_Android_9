@@ -1,6 +1,7 @@
 package com.example.energii.koszt.ui.sunEnergyCalculator;
 
 import android.annotation.SuppressLint;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.renderscript.Element;
 import android.text.Editable;
@@ -32,6 +33,8 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.google.android.material.textfield.TextInputLayout;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -57,10 +60,12 @@ public class SunEnergyCalculatorFragment extends Fragment {
         final EditText kwhCost = root.findViewById(R.id.kwhCost);
         final SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(getContext());
 
-        final EditText targetPower = root.findViewById(R.id.targetPowerText);
+        final TextView targetPower = root.findViewById(R.id.targetPowerText);
 
         SeekBar moduleEfficiency = root.findViewById(R.id.moduleEfficiency);
         final TextView moduleEfficiencyPercectText = root.findViewById(R.id.moduleEfficiencyPercect);
+
+
 
         moduleEfficiency.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -85,7 +90,7 @@ public class SunEnergyCalculatorFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 double homeKwhCost = sunEnergyCalculator.getHouseEnergyCost();
-                homePowerCostText.setText(String.valueOf(homeKwhCost));
+                homePowerCostText.setText(String.valueOf(String.format("%.2f",homeKwhCost)));
             }
         });
 
@@ -101,8 +106,8 @@ public class SunEnergyCalculatorFragment extends Fragment {
                     if (newHomePowerCost.equals(".")) {
                         homePowerCostText.append("0");
                     } else {
-                        kwhUsage.setText(String.valueOf(Double.parseDouble(newHomePowerCost) /
-                                Double.valueOf(kwhCost.getText().toString())));
+                        kwhUsage.setText(String.valueOf(String.format("%.2f",Double.parseDouble(newHomePowerCost) /
+                                Double.valueOf(kwhCost.getText().toString()))));
 
                         doSomeCalc(root, sunEnergyCalculator, targetPower, kwhUsage);
                     }
@@ -189,7 +194,7 @@ public class SunEnergyCalculatorFragment extends Fragment {
     }
 
     @SuppressLint("DefaultLocale")
-    private void doSomeCalc(View root, SunEnergyCalculator sunEnergyCalculator, EditText targetPower, TextView kwhUsage) {
+    private void doSomeCalc(View root, SunEnergyCalculator sunEnergyCalculator, TextView targetPower, TextView kwhUsage) {
         Double targetValue = Double.parseDouble(kwhUsage.getText().toString()) * 1.1;
         targetPower.setText(String.format("%.2f", targetValue));
 
@@ -199,34 +204,32 @@ public class SunEnergyCalculatorFragment extends Fragment {
         EditText homePowerCostText = root.findViewById(R.id.homePowerCostText);
 
         TextView instalationCostText = root.findViewById(R.id.instalationCost);
-
         SeekBar moduleEfficiency = root.findViewById(R.id.moduleEfficiency);
         String modulePower = modulePowerText.getText().toString();
         if (!modulePower.isEmpty()) {
             moduleCountText.setText(String.valueOf(sunEnergyCalculator.howManyModuleNeed(
                     Integer.parseInt(modulePower),
-                    (double) moduleEfficiency.getProgress() / 100,
+                    (double) (100 - moduleEfficiency.getProgress()) / 100,
                     targetValue)));
             instalationCostText.setText(String.valueOf(Double.valueOf(moduleCountText.getText().toString()) *
                     Double.valueOf(moduleCostText.getText().toString())));
-                    generateChart(root,sunEnergyCalculator,moduleCostText.getText().toString(),moduleCountText.getText().toString(),modulePowerText.getText().toString(),moduleEfficiency.getProgress(),homePowerCostText.getText().toString());
+
+            generateChart(root,sunEnergyCalculator,moduleCostText.getText().toString(),moduleCountText.getText().toString(),modulePowerText.getText().toString(),moduleEfficiency.getProgress(),homePowerCostText.getText().toString());
+
+
         }
     }
 
     private void generateChart(View root, SunEnergyCalculator sunEnergyCalculator, String moduleCost, String ammountModule, String modulePower, int moduleEffeciency, String homePowerCostText){
-
+        SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(getContext()) ;
         double profit[];
         LineChart lineChart = root.findViewById(R.id.lineChart);
         ArrayList<Entry> yValues = new ArrayList<>();
-        System.out.println("ammountModule " + Integer.parseInt(ammountModule));
-        System.out.println("moduleCost " + Integer.parseInt(moduleCost));
-        System.out.println("modulePower " + Integer.parseInt(modulePower));
-        System.out.println("moduleEffeciency " + moduleEffeciency);
-        System.out.println("homePowerCostText " + Double.parseDouble(homePowerCostText));
 
 
-        profit =  sunEnergyCalculator.calculateProfitability(Integer.parseInt(ammountModule),Integer.parseInt(moduleCost),Integer.parseInt(modulePower),moduleEffeciency,Double.parseDouble(homePowerCostText));
-        System.out.println("dziwne" + moduleEffeciency / 100);
+
+        profit =  sunEnergyCalculator.calculateProfitability(Double.parseDouble(ammountModule),Integer.parseInt(moduleCost),Integer.parseInt(modulePower),moduleEffeciency, Double.parseDouble(sqlLiteDBHelper.getVariable("powerCost").getString(0)));
+
         for (int i = 0; i < profit.length; i++) {
 
             yValues.add(new Entry(i, (float) profit[i]));
@@ -284,7 +287,7 @@ public class SunEnergyCalculatorFragment extends Fragment {
         TextInputLayout kwhCostLayout = root.findViewById(R.id.kwhCostLayout);
         EditText kwhCost = root.findViewById(R.id.kwhCost);
 
-        EditText targetPower = root.findViewById(R.id.targetPowerText);
+        TextView targetPower = root.findViewById(R.id.targetPowerText);
 
         EditText modulePowerText = root.findViewById(R.id.modulePowerText);
         TextView moduleCountText = root.findViewById(R.id.moduleCountText);
@@ -293,7 +296,6 @@ public class SunEnergyCalculatorFragment extends Fragment {
         TextView moduleEfficiencyPercect = root.findViewById(R.id.moduleEfficiencyPercect);
         SeekBar moduleEfficiency = root.findViewById(R.id.moduleEfficiency);
 
-        TextInputLayout targetPowerLayout = root.findViewById(R.id.targetPowerLayout);
         TextInputLayout modulePowerLayout = root.findViewById(R.id.modulePowerLayout);
         TextInputLayout moduleCostLayout = root.findViewById(R.id.moduleCostLayout);
 
@@ -315,7 +317,7 @@ public class SunEnergyCalculatorFragment extends Fragment {
             title.setEnabled(false);
             sunnyTable.setEnabled(false);
             moduleEfficiencyPercect.setEnabled(false);
-            targetPowerLayout.setEnabled(false);
+            targetPower.setEnabled(false);
             moduleEfficiency.setEnabled(false);
 
             kwhCostLayout.setEnabled(false);
@@ -334,7 +336,7 @@ public class SunEnergyCalculatorFragment extends Fragment {
             title.setEnabled(true);
             sunnyTable.setEnabled(true);
             moduleEfficiencyPercect.setEnabled(true);
-            targetPowerLayout.setEnabled(true);
+            targetPower.setEnabled(true);
             moduleEfficiency.setEnabled(true);
 
             kwhCostLayout.setEnabled(true);

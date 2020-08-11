@@ -39,32 +39,39 @@ public class SunEnergyCalculator extends SQLLiteDBHelper {
         energyCost = dbhRead.rawQuery(query, null);
         energyCost.moveToFirst();
 
-        return energyCost.getDouble(0);
+        return energyCost.getDouble(0) * 30;
     }
 
-    public double[] calculateProfitability(int amountOfModule, int costPerModule, int modulePower, double moduleEfficiency, double energyCost) {
+    public double[] calculateProfitability(double amountOfModule, int costPerModule, int modulePower, double moduleEfficiency, double energyCost) {
         double[] profitability = new double[20];
-        double yearsProfit = amountOfModule * modulePower * (moduleEfficiency/100)  * energyCost * 1.5;
+        double yearsProfit = amountOfModule * modulePower * (100 - moduleEfficiency) / 100  * 0.65;
 
         profitability[0] =  amountOfModule * costPerModule * -1;
 
         for(int i = 1; i < 20; i++) {
-            profitability[i] = profitability[i - 1] + yearsProfit / 1000;
+            profitability[i] = profitability[i - 1] + yearsProfit;
         }
 
         return profitability;
     }
 
-    public int howManyModuleNeed(int modulePower, double moduleEfficiency, double houseEnergyAmount) {
-        int amountOfModule = 0;
-        double currencyModulePower = 0;
-        houseEnergyAmount *= 12;
+    public int howManyModuleNeed(double modulePower, double moduleEfficiency, double houseEnergyAmount) {
 
-        while(currencyModulePower < houseEnergyAmount) {
-            currencyModulePower += modulePower * moduleEfficiency * 1.5;
-            amountOfModule++;
-        }
+        System.out.println("modulePower" + modulePower);
+        System.out.println("+++houseEnergyAmount" + houseEnergyAmount);
 
-        return amountOfModule;
+        System.out.println("moduleEfficiency" + moduleEfficiency);
+
+        double modulePowerGenerator = houseEnergyAmount / (4.38 * 30); //4.38 ilość średniych dni nasłończenienia w pl
+        modulePowerGenerator = modulePowerGenerator + modulePowerGenerator * 0.1 + modulePowerGenerator * (1 - moduleEfficiency);
+
+
+        double amountOfModule = modulePowerGenerator / (modulePower / 1000);
+
+
+
+
+
+        return (int)Math.ceil(amountOfModule);
     }
 }
