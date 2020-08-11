@@ -135,9 +135,12 @@ public class SunEnergyCalculatorFragment extends Fragment {
                 String newkwhCost = kwhCost.getText().toString();
                 if (!newkwhCost.isEmpty()) {
                     if (!newkwhCost.equals(".")) {
-                        kwhUsage.setText(String.format("%.2f",Double.parseDouble(homePowerCostText.getText().toString().replace(",",".")) /
-                                Double.parseDouble(newkwhCost.replace(",","."))));
-                        doSomeCalc(root, sunEnergyCalculator, targetPower, kwhUsage);
+                        if(!homePowerCostText.getText().toString().isEmpty()){
+                            kwhUsage.setText(String.format("%.2f",Double.parseDouble(homePowerCostText.getText().toString().replace(",",".")) /
+                                    Double.parseDouble(newkwhCost.replace(",","."))));
+                            doSomeCalc(root, sunEnergyCalculator, targetPower, kwhUsage);
+                        }
+
                     }
                 }
             }
