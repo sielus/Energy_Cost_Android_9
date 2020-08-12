@@ -206,7 +206,7 @@
                 android:layout_height="wrap_content"
 
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:stretchColumns="*"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -222,10 +222,10 @@
                         android:layout_width="match_parent"
 
                         android:layout_height="match_parent"
+                        android:layout_weight="1"
                         android:autoSizeMaxTextSize="16sp"
                         android:autoSizeMinTextSize="9sp"
                         android:autoSizeTextType="uniform"
-                        android:layout_weight="1"
                         android:background="@drawable/border"
                         android:fontFamily="@font/lato_light"
                         android:gravity="center"
@@ -238,14 +238,14 @@
                     <TextView
 
                         android:id="@+id/moduleCountText"
-                        android:autoSizeMaxTextSize="16sp"
-                        android:autoSizeMinTextSize="9sp"
-                        android:autoSizeTextType="uniform"
-
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
-
                         android:layout_weight="1"
+
+                        android:autoSizeMaxTextSize="16sp"
+                        android:autoSizeMinTextSize="9sp"
+
+                        android:autoSizeTextType="uniform"
                         android:background="@drawable/border"
                         android:fontFamily="@font/lato_light"
                         android:gravity="center"
