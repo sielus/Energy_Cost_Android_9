@@ -3,8 +3,8 @@
     <string name="app_name">Koszty Energii</string>
     <string name="action_settings">Ustawienia</string>
     <string name="room_settings_change_room_name">Ustawienia pokoju</string>
-    <string name="menu_room_list">Menadżer Pokoi</string>
-    <string name="menu_sun_energy_calculator">Fotowoltaika</string>
+    <string name="menu_room_list">Menadżer domu</string>
+    <string name="menu_sun_energy_calculator">Kalkulator opłacalności</string>
     <string name="home_hint_power_value">Moc urządzenia (W)</string>
     <string name="home_hint_number_device">"Ilość urządzeń "</string>
     <string name="home_hint_timework_m">Czas pracy : Minuty</string>
@@ -70,4 +70,9 @@
     <string name="investition_toast">"Bilans inwestycyjny : "</string>
     <string name="investition_return">Zwrot inwestycji</string>
     <string name="download_data_from_house">Pobierz dane z domu</string>
+    <string name="calculate">Obliczono!</string>
+    <string name="menu_sun_energy_title">Fotowoltaika</string>
+    <string name="menu_information">Informacje</string>
+    <string name="nav_about_us">"O nas "</string>
+    <string name="mail">Mail deva skopiowany!</string>
 </resources>

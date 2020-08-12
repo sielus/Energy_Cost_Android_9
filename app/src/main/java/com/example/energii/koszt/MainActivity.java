@@ -58,9 +58,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_rooms, R.id.nav_fragment_sun_energy_calculator_layout, R.id.nav_fragment_sun_energy_rooms_layout)
+                R.id.nav_home, R.id.nav_rooms, R.id.nav_fragment_sun_energy_calculator_layout, R.id.nav_about_us)
                 .setDrawerLayout(drawer)
-
                 .build();
         NavController navController = Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(MainActivity.this, navController, mAppBarConfiguration);
@@ -98,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         String text = studioMail.getText().toString();
         myClip = ClipData.newPlainText("text", text);
         Objects.requireNonNull(myClipboard).setPrimaryClip(myClip);
-        Toast.makeText(this,"Mail skopiowany!",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,getResources().getString(R.string.mail),Toast.LENGTH_SHORT).show();
 
     }
 }

@@ -22,26 +22,20 @@ import com.example.energii.koszt.R;
 import com.example.energii.koszt.ui.SQLLiteDBHelper;
 import com.example.energii.koszt.ui.settings.SettingActivity;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.google.android.material.textfield.TextInputLayout;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collection;
-import java.util.List;
+
 
 public class SunEnergyCalculatorFragment extends Fragment {
     static View root;
@@ -135,9 +129,11 @@ public class SunEnergyCalculatorFragment extends Fragment {
                 String newkwhCost = kwhCost.getText().toString();
                 if (!newkwhCost.isEmpty()) {
                     if (!newkwhCost.equals(".")) {
-                        kwhUsage.setText(String.format("%.2f",Double.parseDouble(homePowerCostText.getText().toString().replace(",",".")) /
-                                Double.parseDouble(newkwhCost.replace(",","."))));
-                        doSomeCalc(root, sunEnergyCalculator, targetPower, kwhUsage);
+                        if(!homePowerCostText.getText().toString().isEmpty()){
+                            kwhUsage.setText(String.format("%.2f",Double.parseDouble(homePowerCostText.getText().toString().replace(",",".")) /
+                                    Double.parseDouble(newkwhCost.replace(",","."))));
+                            doSomeCalc(root, sunEnergyCalculator, targetPower, kwhUsage);
+                        }
                     }
                 }
             }

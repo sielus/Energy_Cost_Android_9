@@ -9,7 +9,12 @@
     <string name="room_settings_change_room_name">Room settings</string>
 
     <string name="studio_email" translatable="false"> devsdreamstudio@gmail.com</string>
-    <string name="menu_sun_energy_calculator">Energy from sun</string>
+    <string name="menu_sun_energy_calculator">Profitability calculator</string>
+    <string name="menu_sun_energy_title">Photovoltaics</string>
+    <string name="menu_information">Information</string>
+    <string name="nav_about_us">About us</string>
+
+    <string name="mail">Dev e-mail copied!</string>
 
     <string name="home_hint_number_device">Device Number</string>
 
@@ -25,7 +30,7 @@
     <string name="room_edit_summary_of_the_costs_room">Summary of room cost</string>
 
     <string name="menu_home">Energy Cost Calculator</string>
-    <string name="menu_room_list">Room manager</string>
+    <string name="menu_room_list">House manager</string>
 
     <string name="device_row_device_number">"Device numbers : "</string>
     <string name="device_row_device_time_work">"Working time : "</string>
@@ -95,7 +100,6 @@
     <string name="target_instalation_power">Target installation power (Kwh)</string>
 
 
-    
     <string name="Month_billing">Month billing per energy</string>
 
     <string name="instalation_title">Instalation cost</string>
@@ -105,7 +109,9 @@
     <string name="investition_return">Return on investment</string>
     <string name="download_data_from_house">Download data from house</string>
 
-
+    <string name="calculate">Calculated</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->
