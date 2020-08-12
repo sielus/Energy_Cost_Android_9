@@ -246,6 +246,7 @@ public class SettingsDialogs {
         deviceName.clear();
     }
 
+    @SuppressLint("SetTextI18n")
     public void showUpdateDialog(final View view, final String oldDeviceName, final SettingsListAdapter settings_listAdapter){
         final Dialog dialog = new Dialog(view.getContext());
         final DefaultDeviceManager defaultDeviceManager = new DefaultDeviceManager(view.getContext());
@@ -276,8 +277,8 @@ public class SettingsDialogs {
         final int[] h = {Integer.parseInt(SettingsDialogs.device.get(2).split(":")[0])};
         final int[] m = {Integer.parseInt(SettingsDialogs.device.get(2).split(":")[1])};
 
-        Switch is24hSwitch = dialog.findViewById(R.id.switch1);
-        buttonTimePicker.setText("Czas pracy \n " + h[0] + "h" + " " + m[0] + "m");
+        @SuppressLint("UseSwitchCompatOrMaterialCode") Switch is24hSwitch = dialog.findViewById(R.id.switch1);
+        buttonTimePicker.setText(view.getResources().getString(R.string.dialog_edit_device_button_time_work) + "\n " + h[0] + "h" + " " + m[0] + "m");
         if(h[0]==24){
             Toast.makeText(dialog.getContext(),view.getResources().getString(R.string.toast_device_wokrs_all_day),Toast.LENGTH_SHORT).show();
 
@@ -299,7 +300,7 @@ public class SettingsDialogs {
                     buttonTimePicker.setText(view.getResources().getString(R.string.dialog_edit_device_button_time_work)+" \n " + h[0] + "h" + " " + m[0] + "m");
                 }else{
                     buttonTimePicker.setEnabled(true);
-                    buttonTimePicker.setText("Czas pracy \n " + h[0] + "h" + " " + m[0] + "m");
+                    buttonTimePicker.setText(view.getResources().getString(R.string.dialog_edit_device_button_time_work) + "\n " + h[0] + "h" + " " + m[0] + "m");
                 }
             }
         });

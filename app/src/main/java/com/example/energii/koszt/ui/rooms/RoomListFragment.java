@@ -69,7 +69,7 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
 
         FloatingActionButton floatingActionButtonAddRoomDialog = root.findViewById(R.id.buttonAddRoom);
 
-        mAdView = root.findViewById(R.id.adView);
+        mAdView = root.findViewById(R.id.adViewRooms);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 

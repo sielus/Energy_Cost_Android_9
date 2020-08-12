@@ -68,15 +68,20 @@ public class SunEnergyCalculator extends SQLLiteDBHelper {
         String modulePower = modulePowerText.getText().toString();
 
         if (!modulePower.isEmpty()) {
-            moduleCountText.setText(String.valueOf(sunEnergyCalculator.howManyModuleNeed(Integer.parseInt(modulePower),
-                                                                          (double) (moduleEfficiency.getProgress()) / 100,
-                                                                                         targetValue)));
-            installationCostText.setText(String.valueOf(Double.parseDouble(moduleCountText.getText().toString().replace(",",".")) *
-                    Double.parseDouble(moduleCostText.getText().toString().replace(",",".")) * 1.2));
+            if(!moduleCostText.getText().toString().isEmpty()) {
 
-            SunEnergyChartGenerator sunEnergyChartGenerator = new SunEnergyChartGenerator();
-            sunEnergyChartGenerator.generateChart(root,sunEnergyCalculator,moduleCostText.getText().toString(),
-                    moduleCountText.getText().toString(),modulePowerText.getText().toString(),moduleEfficiency.getProgress());
+
+                moduleCountText.setText(String.valueOf(sunEnergyCalculator.howManyModuleNeed(Integer.parseInt(modulePower),
+                        (double) (moduleEfficiency.getProgress()) / 100,
+                        targetValue)));
+                installationCostText.setText(String.valueOf(Double.parseDouble(moduleCountText.getText().toString().replace(",", ".")) *
+                        Double.parseDouble(moduleCostText.getText().toString().replace(",", ".")) * 1.2));
+
+                SunEnergyChartGenerator sunEnergyChartGenerator = new SunEnergyChartGenerator();
+                sunEnergyChartGenerator.generateChart(root, sunEnergyCalculator, moduleCostText.getText().toString(),
+                        moduleCountText.getText().toString(), modulePowerText.getText().toString(), moduleEfficiency.getProgress());
+
+            }
         }
     }
 }

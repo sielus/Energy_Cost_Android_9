@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
                 copyMailtoCopyBoard(studioMail);
             }
         });
-
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(InitializationStatus initializationStatus) {

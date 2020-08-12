@@ -20,11 +20,15 @@ import com.example.energii.koszt.R;
 import com.example.energii.koszt.ui.SQLLiteDBHelper;
 import com.example.energii.koszt.ui.settings.SettingActivity;
 import com.github.mikephil.charting.charts.LineChart;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class SunEnergyCalculatorFragment extends Fragment {
     @SuppressLint("StaticFieldLeak")
     public static View root;
+    private AdView mAdView;
+
 
     @SuppressLint({"CutPasteId", "SetTextI18n"})
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -33,6 +37,12 @@ public class SunEnergyCalculatorFragment extends Fragment {
         root = inflater.inflate(R.layout.fragment_sun_energy_calculator_layout, container, false);
         Button getHomeKWHButton = root.findViewById(R.id.getHomeKWHButton);
         setNewDefaultCurrency(root);
+
+        mAdView = root.findViewById(R.id.adViewSun);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
+
         final TextView kwhUsage = root.findViewById(R.id.kwhUsage);
         final SunEnergyCalculator sunEnergyCalculator = new SunEnergyCalculator(root.getContext());
         ActionBar actionBar = ((AppCompatActivity) requireActivity()).getSupportActionBar();

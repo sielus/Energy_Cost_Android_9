@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "950214363476",
-    "firebase_url": "https://kosztenergiipelicoop.firebaseio.com",
-    "project_id": "kosztenergiipelicoop",
-    "storage_bucket": "kosztenergiipelicoop.appspot.com"
+    "project_number": "853496459596",
+    "firebase_url": "https://koszty-energii---fotowoltaika.firebaseio.com",
+    "project_id": "koszty-energii---fotowoltaika",
+    "storage_bucket": "koszty-energii---fotowoltaika.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:950214363476:android:763488f7c8a151f687a0c1",
+        "mobilesdk_app_id": "1:853496459596:android:09ba8abaeebf99ec65dfe9",
         "android_client_info": {
-          "package_name": "com.example.energii.koszt"
+          "package_name": "com.example.energy.cost"
         }
       },
       "oauth_client": [
         {
-          "client_id": "950214363476-sn3hpl01qv809vgb2ld3qat0btqf7mha.apps.googleusercontent.com",
+          "client_id": "853496459596-nfmov5g6klhapr8khbreb1730abidjv6.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDkG0ENntMMbtriXuJqcBZFlXsXAp-VABY"
+          "current_key": "AIzaSyDfQS9RrkkP9ZiYnmdThDw56G5gIj3EjpU"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "950214363476-sn3hpl01qv809vgb2ld3qat0btqf7mha.apps.googleusercontent.com",
+              "client_id": "853496459596-nfmov5g6klhapr8khbreb1730abidjv6.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

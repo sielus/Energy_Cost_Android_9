@@ -52,10 +52,11 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/lato_light"
                 android:scaleType="fitCenter"
-                android:text="24h "
+                android:text="24h"
                 android:layout_marginRight="5dp"
                 android:textColor="@color/white"
-                android:textSize="20dp" />
+                android:textSize="19dp"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
 
             <Button
                 android:id="@+id/buttonColorPicker"

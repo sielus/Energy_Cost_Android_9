@@ -60,7 +60,6 @@ public class HomeFragment extends Fragment {
         actionBar.setBackgroundDrawable(getResources().getDrawable(R.color.startBart,null));
         requireActivity().getWindow().setStatusBarColor(getActivity().getResources().getColor(R.color.startBart));
 
-        mAdView = root.findViewById(R.id.adView);
 
         TextInputLayout text_field_inputEnergyCost = root.findViewById(R.id.text_field_inputEnergyCost);
         text_field_inputEnergyCost.setHint(getText(R.string.home_energy_cost_hint) + " / " + defaultCurrency);
@@ -75,6 +74,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        mAdView = root.findViewById(R.id.adViewHome);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 

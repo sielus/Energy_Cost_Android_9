@@ -76,7 +76,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         generateCharts.generateChartsInRoom(view,room_name,numberAfterDot,defaultCurrency);
         generateTableEditRoom.refreshTable(view,defaultCurrency,room_name,numberAfterDot);
 
-        mAdView = view.findViewById(R.id.adView);
+        mAdView = view.findViewById(R.id.adViewEditManager);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 

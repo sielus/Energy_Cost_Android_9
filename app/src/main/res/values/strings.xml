@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">Energy Cost</string>
-    <string name="banner_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="app_name">Energy cost - Photovoltaics</string>
 
     <string name="nav_header_title" translatable="false">@string/app_name</string>
     <string name="nav_header_desc" translatable="false">Text obrazka</string>
@@ -103,7 +102,7 @@
     <string name="Month_billing">Month billing per energy</string>
 
     <string name="instalation_title">Instalation cost</string>
-    <string name="installation_performance">Installation performance</string>
+    <string name="installation_performance">Installation \nperformance</string>
     <string name="year">Year : </string>
     <string name="investition_toast">"Investment balance : "</string>
     <string name="investition_return">Return on investment</string>
@@ -112,5 +111,5 @@
     <string name="calculate">Calculated</string>
 
     <string name="about_us_note">We\'re a young team fascinated by programming and trying to learn! We hope that you will like our app and that it will help your calculations. Thank you for your download, and we\'re waiting for your reviews! Best regards</string>
-    <string name="devs">~DevsDreams team</string>
+    <string name="devs" translatable="false">~DevsDreams team</string>
 </resources>

@@ -193,13 +193,20 @@
 
                 <SeekBar
                     android:id="@+id/moduleEfficiency"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="178dp"
+                    android:layout_height="match_parent"
                     android:max="95"
                     android:min="50"
                     android:progress="80" />
 
-
+                <TextView
+                    android:id="@+id/moduleEfficiencyPercect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:text=" %"
+                    android:textColor="@color/white"
+                    android:textSize="16dp" />
             </LinearLayout>
 
             <TableLayout

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Koszty Energii</string>
+    <string name="app_name">Koszty Energii - Fotowoltaika</string>
     <string name="action_settings">Ustawienia</string>
     <string name="room_settings_change_room_name">Ustawienia pokoju</string>
     <string name="menu_room_list">Menadżer domu</string>
@@ -65,7 +65,7 @@
     <string name="target_instalation_power">Docelowa moc instalacji (kWh)</string>
     <string name="Month_billing">Miesięczny rachunek za prąd</string>
     <string name="instalation_title">Koszt instalacji</string>
-    <string name="installation_performance">Wydajność instaltacji</string>
+    <string name="installation_performance">Wydajność \ninstaltacji</string>
     <string name="year">"Rok : "</string>
     <string name="investition_toast">"Bilans inwestycyjny : "</string>
     <string name="investition_return">Zwrot inwestycji</string>
