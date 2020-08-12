@@ -50,7 +50,7 @@ public class DefaultDeviceManager extends SQLLiteDBHelper {
         dbWriter.delete("default_device_settings", where, new String[]{deviceName});
     }
 
-    public void addDefaultDevice(String deviceName, double powerValue, int hour, int minutes, int deviceNumber) throws SQLEnergyCostException.EmptyField, SQLEnergyCostException.DuplicationDevice, SQLEnergyCostException.WrongTime {
+    public void addDefaultDevice(String deviceName, long powerValue, int hour, int minutes, int deviceNumber) throws SQLEnergyCostException.EmptyField, SQLEnergyCostException.DuplicationDevice, SQLEnergyCostException.WrongTime {
         if (deviceName.isEmpty() || powerValue == 0 ||  deviceNumber == 0) {
             throw new SQLEnergyCostException.EmptyField(context);
         }else if(hour == 0 && minutes == 0) {
@@ -73,7 +73,7 @@ public class DefaultDeviceManager extends SQLLiteDBHelper {
         }
     }
 
-    public void updateDefaultDevice(String newDeviceName, String oldDeviceName, double powerValue, int hour, int minutes, int deviceNumber) throws SQLEnergyCostException.EmptyField, SQLEnergyCostException.DuplicationDevice, SQLEnergyCostException.WrongTime {
+    public void updateDefaultDevice(String newDeviceName, String oldDeviceName, long powerValue, int hour, int minutes, int deviceNumber) throws SQLEnergyCostException.EmptyField, SQLEnergyCostException.DuplicationDevice, SQLEnergyCostException.WrongTime {
         if (newDeviceName.isEmpty() || oldDeviceName.isEmpty() || powerValue == 0 || deviceNumber == 0) {
             throw new SQLEnergyCostException.EmptyField(context);
         }else if(hour == 0 && minutes == 0) {

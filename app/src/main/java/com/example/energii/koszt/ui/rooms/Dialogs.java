@@ -207,7 +207,7 @@ public class Dialogs {
                 editTextDevicePower.addTextChangedListener(roomPowerTextWatcher);
                 editTextDeviceNumbers.addTextChangedListener(roomNumberTextWatcher);
                 if(checkInputValue()) {
-                    double powerValue = Double.parseDouble(editTextDevicePower.getText().toString());
+                    long powerValue = Long.parseLong(editTextDevicePower.getText().toString());
                     String deviceNameInput = editTextDeviceName.getText().toString();
                     int number = Integer.parseInt(editTextDeviceNumbers.getText().toString());
                     try {
@@ -417,7 +417,7 @@ public class Dialogs {
                 editTextDeviceNumbers.addTextChangedListener(roomNumberTextWatcher);
                 if(checkInputValue()){
                     String deviceName = editTextDeviceName.getText().toString();
-                    double powerValue = Double.parseDouble(editTextDevicePower.getText().toString());
+                    long powerValue = Long.parseLong(editTextDevicePower.getText().toString());
                     int number = Integer.parseInt(editTextDeviceNumbers.getText().toString());
                     try {
                         try {
@@ -756,7 +756,7 @@ public class Dialogs {
             clearRoomList();
             while(cursor.moveToNext()) {
                 roomNameArray.add(cursor.getString(1).replace("_"," "));
-                roomNameKwhArray.add(String.valueOf(cursor.getInt(2)));
+                roomNameKwhArray.add(String.valueOf(cursor.getLong(2)));
             }
         }
     }

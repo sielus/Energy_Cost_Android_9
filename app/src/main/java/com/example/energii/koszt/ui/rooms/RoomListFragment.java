@@ -65,7 +65,9 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
         dialogs = new Dialogs(null,null,null,null);
         dialogs.ViewRoomListFromDB(roomManager.getRoomList());
 
-        adapter = new RoomListAdapter(root.getContext(),Arrays.copyOf(Dialogs.roomNameArray.toArray(), Dialogs.roomNameArray.size(), String[].class),this,Arrays.copyOf(Dialogs.roomNameKwhArray.toArray(), Dialogs.roomNameKwhArray.size(), String[].class));
+        adapter = new RoomListAdapter(root.getContext(),Arrays.copyOf(Dialogs.roomNameArray.toArray(),
+                Dialogs.roomNameArray.size(), String[].class),this,
+                Arrays.copyOf(Dialogs.roomNameKwhArray.toArray(), Dialogs.roomNameKwhArray.size(), String[].class));
 
         FloatingActionButton floatingActionButtonAddRoomDialog = root.findViewById(R.id.buttonAddRoom);
 

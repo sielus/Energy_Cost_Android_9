@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -22,7 +23,7 @@
             android:id="@+id/layoutConstr"
             android:layout_width="match_parent"
 
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:id="@+id/toplayout"
@@ -36,8 +37,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
                     android:orientation="vertical">
+
                     <com.google.android.gms.ads.AdView
                         android:id="@+id/adViewSun"
                         android:layout_width="wrap_content"
@@ -49,21 +50,22 @@
                         ads:adUnitId="ca-app-pub-8486454550638664/2259915454">
 
                     </com.google.android.gms.ads.AdView>
+
                     <Button
                         android:id="@+id/getHomeKWHButton"
                         android:layout_width="match_parent"
                         android:layout_height="54dp"
                         android:layout_gravity="center"
-                        android:autoSizeMaxTextSize="15dp"
-                        android:autoSizeMinTextSize="9sp"
-                        android:autoSizeTextType="uniform"
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="16dp"
                         android:layout_marginBottom="16dp"
                         android:width="10dp"
-                        android:textColor="@color/white"
+                        android:autoSizeMaxTextSize="15dp"
+                        android:autoSizeMinTextSize="9sp"
+                        android:autoSizeTextType="uniform"
                         android:background="#37BCE4"
-                        android:text="@string/download_data_from_house" />
+                        android:text="@string/download_data_from_house"
+                        android:textColor="@color/white" />
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/homePowerCostLayout"
@@ -74,15 +76,19 @@
                         android:layout_marginEnd="16dp"
                         android:textColorHint="@color/white"
                         app:boxBackgroundMode="outline"
+                        app:counterEnabled="true"
+                        app:counterMaxLength="6"
+                        app:counterTextAppearance="@style/CounterStyle"
                         app:errorEnabled="true">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/homePowerCostText"
                             android:layout_width="match_parent"
-                            android:maxLength="6"
                             android:layout_height="wrap_content"
+
                             android:hint="@string/Month_billing"
                             android:inputType="numberDecimal"
+                            android:maxLength="6"
 
                             android:textColor="@color/white" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -95,11 +101,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="10dp"
                     android:layout_marginEnd="16dp"
                     android:textColorHint="@color/white"
-
                     app:boxBackgroundMode="outline"
+                    app:counterEnabled="true"
+
+                    app:counterMaxLength="4"
+                    app:counterTextAppearance="@style/CounterStyle"
                     app:errorEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -123,10 +131,13 @@
                 android:layout_height="wrap_content"
 
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:textColorHint="@color/white"
                 app:boxBackgroundMode="outline"
+                app:counterEnabled="true"
+                app:counterMaxLength="5"
+                app:counterTextAppearance="@style/CounterStyle"
+
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/modulePowerLayout">
@@ -135,10 +146,10 @@
                     android:id="@+id/moduleCostText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/module_price"
-                    android:maxLength="5"
                     android:digits="0123456789"
+                    android:hint="@string/module_price"
                     android:inputType="numberSigned"
+                    android:maxLength="5"
                     android:text="1200"
                     android:textColor="@color/white" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -150,10 +161,14 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:textColorHint="@color/white"
                 app:boxBackgroundMode="outline"
+                app:counterEnabled="true"
+                app:counterMaxLength="4"
+
+                app:counterTextAppearance="@style/CounterStyle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
@@ -162,24 +177,34 @@
                     android:id="@+id/modulePowerText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/module_power"
-                    android:maxLength="4"
                     android:digits="0123456789"
+                    android:hint="@string/module_power"
                     android:inputType="numberSigned"
+                    android:maxLength="4"
                     android:text="250"
                     android:textColor="@color/white" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/linearLayout3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/toplayout">
+
+                <TextView
+                    android:id="@+id/moduleEfficiencyPercect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="%"
+                    android:textColor="@color/white"
+                    android:textSize="15dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/moduleEfficiency"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/textView"
@@ -189,18 +214,23 @@
 
                     android:text="@string/installation_performance"
                     android:textColor="@color/white"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <SeekBar
                     android:id="@+id/moduleEfficiency"
-                    android:layout_width="match_parent"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:max="95"
-                    android:min="50"
-                    android:progress="80" />
+                    android:progress="80"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView"
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TableLayout
 
@@ -219,42 +249,53 @@
 
                 <TableRow>
 
-                    <TextView
-                        android:id="@+id/textView9"
-
-                        android:layout_width="match_parent"
-
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:autoSizeMaxTextSize="16sp"
-                        android:autoSizeMinTextSize="9sp"
-                        android:autoSizeTextType="uniform"
-                        android:background="@drawable/border"
-                        android:fontFamily="@font/lato_light"
-                        android:gravity="center"
-                        android:text="@string/number_of_modules"
-                        android:textColor="#FFFFFF"
-                        android:textSize="18sp"
-
-                        />
-
-                    <TextView
-
-                        android:id="@+id/moduleCountText"
-                        android:layout_width="match_parent"
+                    <LinearLayout
+                        android:layout_width="150dp"
                         android:layout_height="50dp"
-                        android:layout_weight="1"
+                        android:orientation="vertical">
 
-                        android:autoSizeMaxTextSize="16sp"
-                        android:autoSizeMinTextSize="9sp"
+                        <TextView
+                            android:id="@+id/textView9"
 
-                        android:autoSizeTextType="uniform"
-                        android:background="@drawable/border"
-                        android:fontFamily="@font/lato_light"
-                        android:gravity="center"
-                        android:text="0"
-                        android:textColor="#FFFFFF"
-                        android:textSize="18sp" />
+                            android:layout_width="match_parent"
+
+                            android:layout_height="match_parent"
+                            android:autoSizeMaxTextSize="16sp"
+                            android:autoSizeMinTextSize="9sp"
+                            android:autoSizeTextType="uniform"
+                            android:background="@drawable/border"
+                            android:fontFamily="@font/lato_light"
+                            android:gravity="center"
+                            android:text="@string/number_of_modules"
+                            android:textColor="#FFFFFF"
+                            android:textSize="18sp"
+
+                            />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="140dp"
+                        android:layout_height="50dp"
+                        android:orientation="vertical">
+
+                        <TextView
+
+                            android:id="@+id/moduleCountText"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+
+                            android:autoSizeMaxTextSize="16sp"
+                            android:autoSizeMinTextSize="9sp"
+
+                            android:autoSizeTextType="uniform"
+                            android:background="@drawable/border"
+                            android:fontFamily="@font/lato_light"
+                            android:gravity="center"
+                            android:text="0"
+                            android:textColor="#FFFFFF"
+                            android:textSize="18sp" />
+                    </LinearLayout>
 
 
                 </TableRow>
@@ -262,87 +303,111 @@
 
                 <TableRow
                     android:id="@+id/task1"
-                    android:layout_width="match_parent"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content">
 
-                    <TextView
-                        android:id="@+id/instalationCostTitleTextView"
+                    <LinearLayout
+                        android:layout_width="150dp"
+                        android:layout_height="50dp"
+                        android:orientation="vertical">
 
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
+                        <TextView
+                            android:id="@+id/instalationCostTitleTextView"
 
-                        android:autoSizeMaxTextSize="16sp"
-                        android:autoSizeMinTextSize="9sp"
-                        android:autoSizeTextType="uniform"
-                        android:background="@drawable/border"
-                        android:fontFamily="@font/lato_light"
-                        android:gravity="center"
-                        android:minHeight="50dp"
-                        android:text="@string/instalation_title"
-                        android:textColor="#FFFFFF"
-                        android:textSize="18sp" />
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
 
-                    <TextView
-                        android:id="@+id/instalationCost"
+                            android:autoSizeMaxTextSize="16sp"
+                            android:autoSizeMinTextSize="9sp"
+                            android:autoSizeTextType="uniform"
+                            android:background="@drawable/border"
+                            android:fontFamily="@font/lato_light"
+                            android:gravity="center"
+                            android:minHeight="50dp"
+                            android:text="@string/instalation_title"
+                            android:textColor="#FFFFFF"
+                            android:textSize="18sp" />
+                    </LinearLayout>
 
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                    <LinearLayout
+                        android:layout_width="140dp"
+                        android:layout_height="50dp"
+                        android:orientation="vertical">
 
-                        android:layout_weight="1"
-                        android:autoSizeMaxTextSize="16sp"
-                        android:autoSizeMinTextSize="9sp"
-                        android:autoSizeTextType="uniform"
-                        android:background="@drawable/border"
-                        android:fontFamily="@font/lato_light"
-                        android:gravity="center"
-                        android:text="0 "
-                        android:textColor="#FFFFFF"
-                        android:textSize="18sp" />
+                        <TextView
+                            android:id="@+id/instalationCost"
+
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+
+                            android:layout_weight="1"
+                            android:autoSizeMaxTextSize="16sp"
+                            android:autoSizeMinTextSize="9sp"
+                            android:autoSizeTextType="uniform"
+                            android:background="@drawable/border"
+                            android:fontFamily="@font/lato_light"
+                            android:gravity="center"
+                            android:text="0 "
+                            android:textColor="#FFFFFF"
+                            android:textSize="18sp" />
+                    </LinearLayout>
 
 
                 </TableRow>
 
                 <TableRow
                     android:id="@+id/task11"
-                    android:layout_width="match_parent"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content">
 
-                    <TextView
-                        android:id="@+id/textView232"
+                    <LinearLayout
+                        android:layout_width="150dp"
+                        android:layout_height="50dp"
+                        android:orientation="vertical">
 
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
+                        <TextView
+                            android:id="@+id/textView232"
 
-                        android:autoSizeMaxTextSize="16sp"
-                        android:autoSizeMinTextSize="9sp"
-                        android:autoSizeTextType="uniform"
-                        android:background="@drawable/border"
-                        android:fontFamily="@font/lato_light"
-                        android:gravity="center"
-                        android:minHeight="50dp"
-                        android:text="@string/kWh_consumption"
-                        android:textColor="#FFFFFF"
-                        android:textSize="18sp" />
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
 
-                    <TextView
-                        android:id="@+id/kwhUsage"
+                            android:autoSizeMaxTextSize="16sp"
+                            android:autoSizeMinTextSize="9sp"
+                            android:autoSizeTextType="uniform"
+                            android:background="@drawable/border"
+                            android:fontFamily="@font/lato_light"
+                            android:gravity="center"
+                            android:minHeight="50dp"
+                            android:text="@string/kWh_consumption"
+                            android:textColor="#FFFFFF"
+                            android:textSize="18sp" />
+                    </LinearLayout>
 
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
+                    <LinearLayout
+                        android:layout_width="150dp"
+                        android:layout_height="50dp"
+                        android:orientation="vertical">
 
-                        android:autoSizeMaxTextSize="16sp"
-                        android:autoSizeMinTextSize="9sp"
-                        android:autoSizeTextType="uniform"
-                        android:background="@drawable/border"
-                        android:fontFamily="@font/lato_light"
-                        android:gravity="center"
-                        android:minHeight="50dp"
-                        android:text="0"
-                        android:textColor="#FFFFFF"
-                        android:textSize="18sp" />
+                        <TextView
+                            android:id="@+id/kwhUsage"
+
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+
+                            android:autoSizeMaxTextSize="16sp"
+                            android:autoSizeMinTextSize="9sp"
+                            android:autoSizeTextType="uniform"
+                            android:background="@drawable/border"
+                            android:fontFamily="@font/lato_light"
+                            android:gravity="center"
+                            android:minHeight="50dp"
+                            android:text="0"
+                            android:textColor="#FFFFFF"
+                            android:textSize="18sp" />
+                    </LinearLayout>
 
 
                 </TableRow>
@@ -352,41 +417,53 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <TextView
-                        android:id="@+id/textView2322"
-
-                        android:layout_width="match_parent"
+                    <LinearLayout
+                        android:layout_width="150dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
+                        android:orientation="vertical">
 
-                        android:autoSizeMaxTextSize="16sp"
-                        android:autoSizeMinTextSize="9sp"
-                        android:autoSizeTextType="uniform"
-                        android:background="@drawable/border"
-                        android:fontFamily="@font/lato_light"
-                        android:gravity="center"
-                        android:minHeight="50dp"
-                        android:text="@string/target_instalation_power"
-                        android:textColor="#FFFFFF"
-                        android:textSize="18sp" />
+                        <TextView
+                            android:id="@+id/textView2322"
 
-                    <TextView
-                        android:id="@+id/targetPowerText"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
 
-                        android:layout_width="match_parent"
+                            android:autoSizeMaxTextSize="16sp"
+                            android:autoSizeMinTextSize="9sp"
+                            android:autoSizeTextType="uniform"
+                            android:background="@drawable/border"
+                            android:fontFamily="@font/lato_light"
+                            android:gravity="center"
+                            android:minHeight="50dp"
+                            android:text="@string/target_instalation_power"
+                            android:textColor="#FFFFFF"
+                            android:textSize="18sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="140dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
+                        android:orientation="vertical">
 
-                        android:autoSizeMaxTextSize="16sp"
-                        android:autoSizeMinTextSize="9sp"
-                        android:autoSizeTextType="uniform"
-                        android:background="@drawable/border"
-                        android:fontFamily="@font/lato_light"
-                        android:gravity="center"
-                        android:minHeight="50dp"
-                        android:text="0"
-                        android:textColor="#FFFFFF"
-                        android:textSize="18sp" />
+                        <TextView
+                            android:id="@+id/targetPowerText"
+
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+
+                            android:autoSizeMaxTextSize="16sp"
+                            android:autoSizeMinTextSize="9sp"
+                            android:autoSizeTextType="uniform"
+                            android:background="@drawable/border"
+                            android:fontFamily="@font/lato_light"
+                            android:gravity="center"
+                            android:minHeight="50dp"
+                            android:text="0"
+                            android:textColor="#FFFFFF"
+                            android:textSize="18sp" />
+                    </LinearLayout>
 
 
                 </TableRow>
@@ -410,4 +487,3 @@
     </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-

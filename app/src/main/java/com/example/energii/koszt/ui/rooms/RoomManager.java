@@ -179,11 +179,11 @@ public class RoomManager extends SQLLiteDBHelper {
                 " (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "name varchar(100) NOT NULL UNIQUE, " +
-                "power_value NUMERIC(8,2) NOT NULL, " +
+                "power_value NUMERIC(60,2) NOT NULL, " +
                 "work_time text NOT NULL, " +
-                "device_number NUMERIC(3,0) NOT NULL, " +
-                "energy_amount NUMERIC(6,2) NOT NULL DEFAULT 0," +
-                "energy_cost NUMERIC(6,2) NOT NULL DEFAULT 0," +
+                "device_number NUMERIC(60,0) NOT NULL, " +
+                "energy_amount NUMERIC(60,2) NOT NULL DEFAULT 0," +
+                "energy_cost NUMERIC(60,2) NOT NULL DEFAULT 0," +
                 "color_id NUMERIC(30,0)" +
                 ")";
 

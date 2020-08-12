@@ -2,9 +2,11 @@ package com.example.energii.koszt.ui.rooms.manager;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -43,7 +45,7 @@ public class RoomEditManagerListAdapter extends RecyclerView.Adapter<RoomEditMan
         holder.textViewPower.setText(devicePower[position] + "W");
         holder.textViewTimeWork.setText(deviceTimeWork[position]);
         holder.textViewNumber.setText( deviceNumber[position]);
-
+        holder.imageView3bin.setColorFilter(Color.RED);
     }
 
     @Override
@@ -56,6 +58,8 @@ public class RoomEditManagerListAdapter extends RecyclerView.Adapter<RoomEditMan
         TextView textViewPower;
         TextView textViewTimeWork;
         TextView textViewNumber;
+        ImageView imageView3bin;
+
 
         RoomEditManagerListAdapter.onNoteListener onNoteListener;
 
@@ -65,6 +69,7 @@ public class RoomEditManagerListAdapter extends RecyclerView.Adapter<RoomEditMan
             textViewPower = itemView.findViewById(R.id.rowTextViewPower);
             textViewTimeWork = itemView.findViewById(R.id.rowTextViewTimeWork);
             textViewNumber = itemView.findViewById(R.id.rowTextViewNumber);
+            imageView3bin = itemView.findViewById(R.id.imageView3bin);
 
             itemView.setOnClickListener(this);
             this.onNoteListener = onNoteListener;

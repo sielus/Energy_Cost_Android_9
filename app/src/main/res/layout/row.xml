@@ -68,11 +68,11 @@
                 android:layout_marginTop="9dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="9dp"
-                android:src="@drawable/ic_remove_black_24dp"
-                android:tint="@color/white"
+                android:src="@drawable/bin"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/red" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>

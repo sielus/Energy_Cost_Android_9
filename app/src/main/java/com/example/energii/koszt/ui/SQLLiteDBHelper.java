@@ -30,8 +30,8 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
                                     "(" +
                                         "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                                         "name varchar(100) NOT NULL UNIQUE, " +
-                                        "energy_amount NUMERIC(6,2) NOT NULL DEFAULT 0," +
-                                        "energy_cost NUMERIC(6,2) NOT NULL DEFAULT 0," +
+                                        "energy_amount NUMERIC(60,2) NOT NULL DEFAULT 0," +
+                                        "energy_cost NUMERIC(60,2) NOT NULL DEFAULT 0," +
                                         "color_id NUMERIC(30,0)" +
                                     ")";
         db.execSQL(roomListTable);
@@ -47,7 +47,7 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
                                     "(" +
                                         "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                                         "name varchar(100) NOT NULL UNIQUE, " +
-                                        "power_value NUMERIC(8,2) NOT NULL, " +
+                                        "power_value NUMERIC(60,2) NOT NULL, " +
                                         "work_time text NOT NULL, " +
                                         "device_number NUMERIC(3,0) NOT NULL " +
                                     ")";

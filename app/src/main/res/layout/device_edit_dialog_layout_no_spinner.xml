@@ -24,11 +24,9 @@
 
         <Button
             android:id="@+id/buttonTimePicker"
-            android:layout_width="124dp"
-            android:layout_height="65dp"
+            android:layout_width="118dp"
+            android:layout_height="61dp"
             android:text="@string/dialog_edit_device_button_time_work"
-            android:autoSizeTextType="uniform"
-            android:autoSizeMaxTextSize="14dp"
 
             android:drawableTint="@color/white"
             android:backgroundTint="#1683B1"
@@ -37,7 +35,7 @@
             android:scaleType="fitEnd"
 
             android:textColor="@color/white"
-            android:textSize="14dp" />
+            android:textSize="13dp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -78,12 +76,12 @@
 
     <TableLayout
         android:id="@+id/tableLayout2"
-        android:layout_width="200dp"
+        android:layout_width="150dp"
         android:layout_height="match_parent"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:stretchColumns="*"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.075"
+        app:layout_constraintHorizontal_bias="0.028"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -96,12 +94,12 @@
                 android:id="@+id/text_field_inputeditTextDeviceNameLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:overScrollMode="always"
-                android:scrollbarStyle="insideInset"
-                android:scrollbars="vertical"
-
                 android:autoSizeTextType="uniform"
                 android:hint="@string/dialog_edit_device_name"
+                android:overScrollMode="always"
+
+                android:scrollbarStyle="insideInset"
+                android:scrollbars="vertical"
                 android:textColorHint="#FFFFFF"
                 app:boxBackgroundMode="outline"
                 app:counterEnabled="true"
@@ -139,7 +137,7 @@
 
                 app:boxBackgroundMode="outline"
                 app:counterEnabled="true"
-                app:counterMaxLength="8"
+                app:counterMaxLength="6"
                 app:counterTextAppearance="@style/CounterOverFlow"
                 app:errorEnabled="true">
 
@@ -147,10 +145,11 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextDevicePower"
                     android:layout_width="match_parent"
+                    android:digits="0123456789"
 
                     android:layout_height="wrap_content"
                     android:inputType="numberDecimal"
-                    android:maxLength="8"
+                    android:maxLength="6"
                     android:textColor="@color/white" />
 
 

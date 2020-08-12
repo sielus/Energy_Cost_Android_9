@@ -134,7 +134,7 @@ public class SettingsDialogs {
 
                 if(checkInputValue()) {
 
-                    double powerValue = Double.parseDouble(editTextDevicePower.getText().toString());
+                    long powerValue = Long.parseLong(editTextDevicePower.getText().toString());
                     String deviceNameInput = editTextDeviceName.getText().toString();
 
                     int number = Integer.parseInt(editTextDeviceNumbers.getText().toString());
@@ -334,7 +334,7 @@ public class SettingsDialogs {
                 if(checkInputValue()){
                     try {
                         String newDeviceName = editTextDeviceName.getText().toString();
-                        double powerValue = Double.parseDouble(editTextDevicePower.getText().toString());
+                        long powerValue = Long.parseLong(editTextDevicePower.getText().toString());
 
                         int number = Integer.parseInt(editTextDeviceNumbers.getText().toString());
 

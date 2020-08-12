@@ -67,6 +67,7 @@ public class SunEnergyCalculator extends SQLLiteDBHelper {
         SeekBar moduleEfficiency = root.findViewById(R.id.moduleEfficiency);
         String modulePower = modulePowerText.getText().toString();
 
+
         if (!modulePower.isEmpty()) {
             if(!moduleCostText.getText().toString().isEmpty()) {
 

@@ -15,7 +15,7 @@
 
     <string name="mail">Dev e-mail copied!</string>
 
-    <string name="home_hint_number_device">Device Number</string>
+    <string name="home_hint_number_device">Device Number*</string>
 
     <string name="home_table_user_time">User time</string>
     <string name="home_table_day" translatable="false">24h</string>
@@ -31,17 +31,17 @@
     <string name="menu_home">Energy Cost Calculator</string>
     <string name="menu_room_list">House manager</string>
 
-    <string name="device_row_device_number">"Device numbers : "</string>
-    <string name="device_row_device_time_work">"Working time : "</string>
-    <string name="device_row_device_power">"Power Value : "</string>
+    <string name="device_row_device_number">"Device numbers :* "</string>
+    <string name="device_row_device_time_work">"Working time :* "</string>
+    <string name="device_row_device_power">"Power Value (W) :* "</string>
 
-    <string name="home_hint_power_value">Device Power Value (W)</string>
-    <string name="home_hint_timework_m">Working Time : Minutes</string>
-    <string name="home_hint_timework_h">Working Time : Hours</string>
+    <string name="home_hint_power_value">Device Power Value (W)*</string>
+    <string name="home_hint_timework_m">Working Time : Minutes*</string>
+    <string name="home_hint_timework_h">Working Time : Hours*</string>
     <string name="home_table_month">30 days</string>
 
     <string name="settings_currency_global">currency</string>
-    <string name="settings_energy_cost_global">kWh cost</string>
+    <string name="settings_energy_cost_global">kWh cost*</string>
     <string name="settings_computational_accuracy_global">Calculation \n accuracy</string>
     <string name="settings_add_default_device">Add device </string>
     <string name="settings_default_devices_list">Default devices list </string>

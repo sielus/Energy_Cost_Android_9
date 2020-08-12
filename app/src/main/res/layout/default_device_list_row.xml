@@ -157,16 +157,16 @@
             <ImageView
                 android:id="@+id/imageView3"
                 android:layout_width="36dp"
-                android:tint="@color/white"
-
                 android:layout_height="29dp"
+
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="4dp"
                 android:layout_marginBottom="20dp"
-                android:src="@drawable/ic_remove_black_24dp"
+                android:src="@drawable/bin"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/red" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
