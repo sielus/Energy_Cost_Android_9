@@ -61,8 +61,8 @@
     <string name="module_power">"Moc modułu (W) "</string>
     <string name="module_price">Cena 1x modułu</string>
     <string name="number_of_modules">Liczba modułów</string>
-    <string name="kWh_consumption">Miesięczny pobór kwh</string>
-    <string name="target_instalation_power">Docelowa moc instalacji</string>
+    <string name="kWh_consumption">Miesięczny pobór kWh</string>
+    <string name="target_instalation_power">Docelowa moc instalacji (kWh)</string>
     <string name="Month_billing">Miesięczny rachunek za prąd</string>
     <string name="instalation_title">Koszt instalacji</string>
     <string name="installation_performance">Wydajność instaltacji</string>
@@ -75,4 +75,5 @@
     <string name="menu_information">Informacje</string>
     <string name="nav_about_us">"O nas "</string>
     <string name="mail">Mail deva skopiowany!</string>
+    <string name="about_us_note">Jesteśmy młodym fascynującym się programowaniem zespołem, który stara się rozwijać i uczyć się! Mamy nadzieję, że nasza aplikacja wam się spodoba oraz zwyczajnie pomoże w dokonaniu obliczeń. Dziękujemy za pobranie i czekamy na oceny! Pozdrawiamy!</string>
 </resources>

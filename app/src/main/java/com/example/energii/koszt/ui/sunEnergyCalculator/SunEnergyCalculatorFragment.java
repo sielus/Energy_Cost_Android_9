@@ -12,8 +12,6 @@ import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TableLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,23 +20,11 @@ import com.example.energii.koszt.R;
 import com.example.energii.koszt.ui.SQLLiteDBHelper;
 import com.example.energii.koszt.ui.settings.SettingActivity;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.LimitLine;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.google.android.material.textfield.TextInputLayout;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-
-
 public class SunEnergyCalculatorFragment extends Fragment {
-    static View root;
+    @SuppressLint("StaticFieldLeak")
+    public static View root;
 
     @SuppressLint({"CutPasteId", "SetTextI18n"})
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -46,28 +32,27 @@ public class SunEnergyCalculatorFragment extends Fragment {
 
         root = inflater.inflate(R.layout.fragment_sun_energy_calculator_layout, container, false);
         Button getHomeKWHButton = root.findViewById(R.id.getHomeKWHButton);
+        setNewDefaultCurrency(root);
         final TextView kwhUsage = root.findViewById(R.id.kwhUsage);
         final SunEnergyCalculator sunEnergyCalculator = new SunEnergyCalculator(root.getContext());
         ActionBar actionBar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
         assert actionBar != null;
         actionBar.setBackgroundDrawable(getResources().getDrawable(R.color.orange, null));
-        requireActivity().getWindow().setStatusBarColor(getActivity().getResources().getColor(R.color.orange));
+        requireActivity().getWindow().setStatusBarColor(requireActivity().getResources().getColor(R.color.orange));
         final EditText homePowerCostText = root.findViewById(R.id.homePowerCostText);
         final EditText kwhCost = root.findViewById(R.id.kwhCost);
         final SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(getContext());
         final TextView targetPower = root.findViewById(R.id.targetPowerText);
         SeekBar moduleEfficiency = root.findViewById(R.id.moduleEfficiency);
-        final TextView moduleEfficiencyPercectText = root.findViewById(R.id.moduleEfficiencyPercect);
-        TextView instalationCostTitle = root.findViewById(R.id.instalationCostTitleTextView);
-        final SettingActivity settingActivity = new SettingActivity();
-        instalationCostTitle.setText(getResources().getText(R.string.instalation_title) + " " +settingActivity.getDefaultCurrency(root));
+        final TextView moduleEfficiencyPercentText = root.findViewById(R.id.moduleEfficiencyPercect);
+
 
         moduleEfficiency.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                doSomeCalc(root, sunEnergyCalculator, targetPower, kwhUsage);
-                moduleEfficiencyPercectText.setText(i + " %");
 
+                sunEnergyCalculator.doSomeCalc(root, sunEnergyCalculator, targetPower, kwhUsage);
+                moduleEfficiencyPercentText.setText(i + " %");
             }
 
             @Override
@@ -78,7 +63,7 @@ public class SunEnergyCalculatorFragment extends Fragment {
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
         });
-        moduleEfficiencyPercectText.setText(moduleEfficiency.getProgress() + "%");
+        moduleEfficiencyPercentText.setText(moduleEfficiency.getProgress() + "%");
         checkIfEmpty(root);
         kwhCost.setText(sqlLiteDBHelper.getVariable("powerCost").getString(0));
 
@@ -101,13 +86,11 @@ public class SunEnergyCalculatorFragment extends Fragment {
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 String newHomePowerCost = homePowerCostText.getText().toString().replace(",",".");
                 if (!newHomePowerCost.isEmpty()) {
-                    if (newHomePowerCost.equals(".")) {
-                        //homePowerCostText.append("0");
-                    } else {
-                        kwhUsage.setText(String.valueOf(String.format("%.2f",Double.parseDouble(newHomePowerCost.replace(",",".")) /
-                                Double.parseDouble(kwhCost.getText().toString().replace(",",".")))));
+                    if (!newHomePowerCost.equals(".")) {
+                        kwhUsage.setText(String.format("%.2f", Double.parseDouble(newHomePowerCost.replace(",", ".")) /
+                                Double.parseDouble(kwhCost.getText().toString().replace(",", "."))));
 
-                        doSomeCalc(root, sunEnergyCalculator, targetPower, kwhUsage);
+                        sunEnergyCalculator.doSomeCalc(root, sunEnergyCalculator, targetPower, kwhUsage);
                     }
                 }
             }
@@ -118,6 +101,8 @@ public class SunEnergyCalculatorFragment extends Fragment {
             }
         });
 
+
+
         kwhCost.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -126,13 +111,13 @@ public class SunEnergyCalculatorFragment extends Fragment {
             @SuppressLint("DefaultLocale")
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String newkwhCost = kwhCost.getText().toString();
-                if (!newkwhCost.isEmpty()) {
-                    if (!newkwhCost.equals(".")) {
+                String newKwhCost = kwhCost.getText().toString();
+                if (!newKwhCost.isEmpty()) {
+                    if (!newKwhCost.equals(".")) {
                         if(!homePowerCostText.getText().toString().isEmpty()){
                             kwhUsage.setText(String.format("%.2f",Double.parseDouble(homePowerCostText.getText().toString().replace(",",".")) /
-                                    Double.parseDouble(newkwhCost.replace(",","."))));
-                            doSomeCalc(root, sunEnergyCalculator, targetPower, kwhUsage);
+                                    Double.parseDouble(newKwhCost.replace(",","."))));
+                            sunEnergyCalculator.doSomeCalc(root, sunEnergyCalculator, targetPower, kwhUsage);
                         }
                     }
                 }
@@ -150,12 +135,10 @@ public class SunEnergyCalculatorFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String newmoduleCost = moduleCostText.getText().toString();
-                if (!newmoduleCost.isEmpty()) {
-                    if (newmoduleCost.equals(".")) {
-                       // homePowerCostText.append("0");
-                    } else {
-                        doSomeCalc(root, sunEnergyCalculator, targetPower, kwhUsage);
+                String newModuleCost = moduleCostText.getText().toString();
+                if (!newModuleCost.isEmpty()) {
+                    if (!newModuleCost.equals(".")) {
+                        sunEnergyCalculator.doSomeCalc(root, sunEnergyCalculator, targetPower, kwhUsage);
                     }
                 }
             }
@@ -173,9 +156,9 @@ public class SunEnergyCalculatorFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String newmodulePower = modulePowerText.getText().toString();
-                if (!newmodulePower.isEmpty()) {
-                    doSomeCalc(root, sunEnergyCalculator, targetPower, kwhUsage);
+                String newModulePower = modulePowerText.getText().toString();
+                if (!newModulePower.isEmpty()) {
+                    sunEnergyCalculator.doSomeCalc(root, sunEnergyCalculator, targetPower, kwhUsage);
                 }
             }
 
@@ -185,113 +168,6 @@ public class SunEnergyCalculatorFragment extends Fragment {
         });
         return root;
     }
-    @SuppressLint("DefaultLocale")
-    private void doSomeCalc(View root, SunEnergyCalculator sunEnergyCalculator, TextView targetPower, TextView kwhUsage) {
-        Double targetValue = Double.parseDouble(kwhUsage.getText().toString().replace(",",".")) * 1.1;
-        targetPower.setText(String.format("%.2f", targetValue).replace(",","."));
-
-        EditText modulePowerText = root.findViewById(R.id.modulePowerText);
-        TextView moduleCountText = root.findViewById(R.id.moduleCountText);
-        EditText moduleCostText = root.findViewById(R.id.moduleCostText);
-        EditText homePowerCostText = root.findViewById(R.id.homePowerCostText);
-
-        TextView instalationCostText = root.findViewById(R.id.instalationCost);
-        SeekBar moduleEfficiency = root.findViewById(R.id.moduleEfficiency);
-        String modulePower = modulePowerText.getText().toString();
-        if (!modulePower.isEmpty()) {
-            moduleCountText.setText(String.valueOf(sunEnergyCalculator.howManyModuleNeed(
-                    Integer.parseInt(modulePower),
-                    (double) (moduleEfficiency.getProgress()) / 100,
-                    targetValue)));
-            instalationCostText.setText(String.valueOf(Double.valueOf(moduleCountText.getText().toString().replace(",",".")) *
-                    Double.valueOf(moduleCostText.getText().toString().replace(",",".")) * 1.2));
-
-            generateChart(root,sunEnergyCalculator,moduleCostText.getText().toString(),moduleCountText.getText().toString(),modulePowerText.getText().toString(),moduleEfficiency.getProgress(),homePowerCostText.getText().toString());
-        }
-    }
-
-    private void generateChart(final View root, SunEnergyCalculator sunEnergyCalculator, String moduleCost, String ammountModule, String modulePower, int moduleEffeciency, String homePowerCostText){
-        SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(getContext()) ;
-        double profit[];
-        LineChart lineChart = root.findViewById(R.id.lineChart);
-        ArrayList<Entry> yValues = new ArrayList<>();
-        profit =  sunEnergyCalculator.calculateProfitability(Double.parseDouble(ammountModule.replace(",",".")),
-                Integer.parseInt(moduleCost.replace(",",".")),
-                Integer.parseInt(modulePower.replace(",",".")),
-                moduleEffeciency);
-
-        for (int i = 0; i < profit.length; i++) {
-            yValues.add(new Entry(i, (float) profit[i]));
-        }
-        lineChart.setScaleEnabled(false);
-        LineDataSet lineDataSet = new LineDataSet(yValues,"cost");
-        lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-        lineDataSet.setDrawCircleHole(false);
-        lineDataSet.setDrawCircles(false);
-        lineChart.setDrawGridBackground(false);
-        lineChart.setDrawBorders(false);
-        lineDataSet.setFillAlpha(100);
-        lineDataSet.setLineWidth(1.5f);
-        lineDataSet.setDrawValues(false);
-        YAxis leftAxis = lineChart.getAxisLeft();
-        YAxis rightAyis = lineChart.getAxisRight();
-        XAxis xAxis = lineChart.getXAxis();
-
-        final ArrayList xAxisValues = new ArrayList();
-
-        int year = Calendar.getInstance().get(Calendar.YEAR);
-        for(int x = 0; x<21; x++){
-            xAxisValues.add(String.valueOf(year + x));
-        }
-
-        lineChart.getXAxis().setValueFormatter(new com.github.mikephil.charting.formatter.IndexAxisValueFormatter(xAxisValues));
-
-
-        LimitLine lineZero = new LimitLine(0,getResources().getString(R.string.investition_return));
-        lineZero.setLineWidth(4f);
-        lineZero.setTextColor(getResources().getColor(R.color.white));
-        lineZero.enableDashedLine(10f,10f,0f);
-        lineZero.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
-        lineZero.setTextSize(15f);
-        leftAxis.removeAllLimitLines();
-        leftAxis.addLimitLine(lineZero);
-        lineChart.getDescription().setEnabled(false);
-        lineChart.getLegend().setEnabled(false);
-        leftAxis.setTextSize(13);
-        rightAyis.setTextSize(13);
-        xAxis.setAxisMaximum(21);
-        xAxis.setDrawGridLines(true);
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-
-        xAxis.setTextSize(12f);
-        xAxis.setTextColor(getResources().getColor(R.color.white));
-        rightAyis.setTextColor(getResources().getColor(R.color.white));
-        leftAxis.setTextColor(getResources().getColor(R.color.white));
-        final ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-        dataSets.add(lineDataSet);
-        LineData data = new LineData(dataSets);
-        lineChart.setData(data);
-        lineChart.invalidate();
-
-        final SettingActivity settingActivity = new SettingActivity();
-
-        lineChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
-            @Override
-            public void onValueSelected(Entry e, Highlight h) {
-                Toast.makeText(root.getContext(),getResources().getString(R.string.year)  + " " + String.valueOf(xAxisValues.get((int) e.getX()))
-                        + "\n" + getResources().getString(R.string.investition_toast) + " " + String.valueOf(e.getY()) + " " + settingActivity.getDefaultCurrency(root),Toast.LENGTH_SHORT).show();
-
-            }
-
-            @Override
-            public void onNothingSelected() {
-
-            }
-        });
-
-
-    }
-
     private void checkIfEmpty(View root) {
         EditText homePowerCostText = root.findViewById(R.id.homePowerCostText);
         TextInputLayout kwhCostLayout = root.findViewById(R.id.kwhCostLayout);
@@ -301,7 +177,7 @@ public class SunEnergyCalculatorFragment extends Fragment {
         TextView moduleCountText = root.findViewById(R.id.moduleCountText);
         EditText moduleCostText = root.findViewById(R.id.moduleCostText);
         TextView title = root.findViewById(R.id.textView);
-        TextView moduleEfficiencyPercect = root.findViewById(R.id.moduleEfficiencyPercect);
+        TextView moduleEfficiencyPercent = root.findViewById(R.id.moduleEfficiencyPercect);
         SeekBar moduleEfficiency = root.findViewById(R.id.moduleEfficiency);
         TextInputLayout modulePowerLayout = root.findViewById(R.id.modulePowerLayout);
         TextInputLayout moduleCostLayout = root.findViewById(R.id.moduleCostLayout);
@@ -310,7 +186,7 @@ public class SunEnergyCalculatorFragment extends Fragment {
         TableLayout sunnyTable = root.findViewById(R.id.sunnyTable);
         if (homePowerCostText.getText().toString().isEmpty() || kwhCost.getText().toString().isEmpty()) {
             title.setTextColor(getResources().getColor(R.color.disabled));
-            moduleEfficiencyPercect.setTextColor(getResources().getColor(R.color.disabled));
+            moduleEfficiencyPercent.setTextColor(getResources().getColor(R.color.disabled));
             kwhCost.setTextColor(getResources().getColor(R.color.disabled));
             targetPower.setTextColor(getResources().getColor(R.color.disabled));
             modulePowerText.setTextColor(getResources().getColor(R.color.disabled));
@@ -323,14 +199,14 @@ public class SunEnergyCalculatorFragment extends Fragment {
             moduleCostLayout.setEnabled(false);
             title.setEnabled(false);
             sunnyTable.setEnabled(false);
-            moduleEfficiencyPercect.setEnabled(false);
+            moduleEfficiencyPercent.setEnabled(false);
             targetPower.setEnabled(false);
             moduleEfficiency.setEnabled(false);
             kwhCostLayout.setEnabled(false);
 
         } else {
             title.setTextColor(getResources().getColor(R.color.white));
-            moduleEfficiencyPercect.setTextColor(getResources().getColor(R.color.white));
+            moduleEfficiencyPercent.setTextColor(getResources().getColor(R.color.white));
             kwhCost.setTextColor(getResources().getColor(R.color.white));
             targetPower.setTextColor(getResources().getColor(R.color.white));
             modulePowerText.setTextColor(getResources().getColor(R.color.white));
@@ -340,12 +216,18 @@ public class SunEnergyCalculatorFragment extends Fragment {
             moduleCostLayout.setEnabled(true);
             title.setEnabled(true);
             sunnyTable.setEnabled(true);
-            moduleEfficiencyPercect.setEnabled(true);
+            moduleEfficiencyPercent.setEnabled(true);
             targetPower.setEnabled(true);
             moduleEfficiency.setEnabled(true);
             kwhCostLayout.setEnabled(true);
             lineChart.setEnabled(true);
             lineChart.setVisibility(View.VISIBLE);
         }
+    }
+    @SuppressLint("SetTextI18n")
+    public static void setNewDefaultCurrency(View root){
+        final SettingActivity settingActivity = new SettingActivity();
+        TextView installationCostTitle = root.findViewById(R.id.instalationCostTitleTextView);
+        installationCostTitle.setText(root.getResources().getString(R.string.instalation_title) + " " + settingActivity.getDefaultCurrency(root));
     }
 }

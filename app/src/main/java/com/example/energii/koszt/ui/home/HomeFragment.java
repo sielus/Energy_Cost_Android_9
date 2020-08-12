@@ -208,35 +208,35 @@ public class HomeFragment extends Fragment {
         boolean isNotEmpty = true;
 
         if(inputPowerValue.getText().toString().isEmpty()) {
-            text_field_inputPowerValue.setError("Brak danych!");
+            text_field_inputPowerValue.setError(getResources().getString(R.string.error_no_data));
             isNotEmpty = false;
         }else {
             text_field_inputPowerValue.setError(null);
         }
 
         if(inputNumberDevices.getText().toString().isEmpty()) {
-            text_field_inputNumberDevices.setError("Brak danych!");
+            text_field_inputNumberDevices.setError(getResources().getString(R.string.error_no_data));
             isNotEmpty = false;
         }else {
             text_field_inputNumberDevices.setError(null);
         }
 
         if(inputEnergyCost.getText().toString().isEmpty()) {
-            text_field_inputEnergyCost.setError("Brak danych!");
+            text_field_inputEnergyCost.setError(getResources().getString(R.string.error_no_data));
             isNotEmpty = false;
         }else {
             text_field_inputEnergyCost.setError(null);
         }
 
         if(inputHours.getText().toString().isEmpty()) {
-            text_field_inputHours.setError("Brak danych!");
+            text_field_inputHours.setError(getResources().getString(R.string.error_no_data));
             isNotEmpty = false;
         }else {
             text_field_inputHours.setError(null);
         }
 
         if(inputMinutes.getText().toString().isEmpty()) {
-            text_field_inputMinutes.setError("Brak danych!");
+            text_field_inputMinutes.setError(getResources().getString(R.string.error_no_data) );
             isNotEmpty = false;
         }else {
             text_field_inputMinutes.setError(null);

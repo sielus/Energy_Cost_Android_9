@@ -26,7 +26,6 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 public class GenerateCharts {
     public void generateChartsInRoom(final View root, String room_name, int numberAfterDot, String defaultCurrency){
@@ -68,8 +67,6 @@ public class GenerateCharts {
         barEntries.clear();
         pieEntry.clear();
 
-        final Random rnd = new Random();
-
         if (cursor.getCount() > 1) {
             while(cursor.moveToNext()) {
                 pieEntry.add(new PieEntry(cursor.getInt(1), String.format("%."+ numberAfterDot +"f",((float)cursor.getInt(1) / 1000)) + " kWh"));
@@ -89,8 +86,6 @@ public class GenerateCharts {
             barEntries.add(new BarEntry(labelNumberIndex, Float.parseFloat(String.format("%."+ numberAfterDot +"f", cursor.getFloat(2)).replace(",","."))));
 
             deviceName.add(cursor.getString(0));
-
-
         }
 
         BarDataSet barDataSet = new BarDataSet(barEntries, root.getContext().getResources().getString(R.string.chart_daily_costs) + " (" + defaultCurrency + ")");
@@ -191,9 +186,6 @@ public class GenerateCharts {
 
             }
         });
-
-        //barChart.setXAxisRenderer(new CustomXAxisRenderer(barChart.getViewPortHandler(), barChart.getXAxis(), barChart.getTransformer(YAxis.AxisDependency.LEFT)));
-
     }
 
     private ArrayList<PieEntry> pieEntry = new ArrayList<PieEntry>();
@@ -353,7 +345,6 @@ public class GenerateCharts {
 
             }
         });
-
     }
 }
 

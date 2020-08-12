@@ -97,7 +97,7 @@
     <string name="module_price">1x module price</string>
     <string name="number_of_modules">Number of modules</string>
     <string name="kWh_consumption">Monthly kWh consumption</string>
-    <string name="target_instalation_power">Target installation power (Kwh)</string>
+    <string name="target_instalation_power">Target installation power (kWh)</string>
 
 
     <string name="Month_billing">Month billing per energy</string>
@@ -110,9 +110,7 @@
     <string name="download_data_from_house">Download data from house</string>
 
     <string name="calculate">Calculated</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
-
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="about_us_note">We\'re a young team fascinated by programming and trying to learn! We hope that you will like our app and that it will help your calculations. Thank you for your download, and we\'re waiting for your reviews! Best regards</string>
+    <string name="devs">~DevsDreams team</string>
 </resources>

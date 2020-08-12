@@ -15,8 +15,6 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.navigation.NavigationView;
-
-import androidx.appcompat.app.ActionBar;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -98,6 +96,5 @@ public class MainActivity extends AppCompatActivity {
         myClip = ClipData.newPlainText("text", text);
         Objects.requireNonNull(myClipboard).setPrimaryClip(myClip);
         Toast.makeText(this,getResources().getString(R.string.mail),Toast.LENGTH_SHORT).show();
-
     }
 }

@@ -27,6 +27,7 @@ import com.example.energii.koszt.R;
 import com.example.energii.koszt.ui.SQLLiteDBHelper;
 import com.example.energii.koszt.ui.home.HomeFragment;
 import com.example.energii.koszt.ui.rooms.RoomListFragment;
+import com.example.energii.koszt.ui.sunEnergyCalculator.SunEnergyCalculatorFragment;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import java.util.Arrays;
@@ -194,7 +195,7 @@ public class SettingActivity extends AppCompatActivity implements SettingsListAd
     public void checkIfEmptyInputEnergyCost() {
         String value = getValue();
         if (value.isEmpty() | value.equals(".")) {
-            inputEnergyCostGlobalLayout.setError("Wprowadź dane!");
+            inputEnergyCostGlobalLayout.setError(getResources().getString(R.string.error_no_data));
         } else {
             value = getValue();
             sqlLiteDBHelper.setVariable("powerCost", value);
@@ -213,7 +214,7 @@ public class SettingActivity extends AppCompatActivity implements SettingsListAd
     public void checkIfEmptyDefaultCurrency() {
         String defaultCurrency = getDefaultCurrency();
         if (defaultCurrency.isEmpty()) {
-            inputDefaultCurrencyGlobalLayout.setError("Wprowadź dane!");
+            inputDefaultCurrencyGlobalLayout.setError(getResources().getString(R.string.error_no_data));
         } else {
             defaultCurrency = getDefaultCurrency();
             sqlLiteDBHelper.setVariable("defaultCurrency", defaultCurrency);
@@ -222,6 +223,10 @@ public class SettingActivity extends AppCompatActivity implements SettingsListAd
             if (RoomListFragment.root != null) {
                 roomListFragment.generateChart(RoomListFragment.root);
                 roomListFragment.refreshTable(RoomListFragment.root);
+            }
+
+            if (SunEnergyCalculatorFragment.root != null) {
+                SunEnergyCalculatorFragment.setNewDefaultCurrency(SunEnergyCalculatorFragment.root);
             }
         }
     }

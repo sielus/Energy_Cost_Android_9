@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TextView;
-
 import com.example.energii.koszt.R;
 import com.example.energii.koszt.ui.rooms.RoomManager;
 import com.example.energii.koszt.ui.settings.SettingActivity;
@@ -100,7 +99,4 @@ public class GenerateTableEditRoom {
         cursor.moveToFirst();
         return cursor.getFloat(1);
     }
-
-
-
 }

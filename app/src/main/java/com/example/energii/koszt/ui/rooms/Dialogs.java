@@ -1,11 +1,8 @@
 package com.example.energii.koszt.ui.rooms;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
-import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -23,34 +20,23 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
-import androidx.annotation.ColorInt;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-
-import com.example.energii.koszt.MainActivity;
 import com.example.energii.koszt.R;
 import com.example.energii.koszt.ui.exception.SQLEnergyCostException;
 import com.example.energii.koszt.ui.rooms.manager.DeviceManager;
 import com.example.energii.koszt.ui.rooms.manager.GenerateTableEditRoom;
 import com.example.energii.koszt.ui.rooms.manager.RoomEditManager;
-
-
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
-
 import top.defaults.colorpicker.ColorObserver;
 import top.defaults.colorpicker.ColorPickerView;
-
 
 public class Dialogs {
     public List<String> devicePower = new LinkedList<>();
@@ -756,7 +742,6 @@ public class Dialogs {
         buttonColorPickerAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //ustawienie koloru do bazy itd
                 showColorPicker.setBackgroundColor(color[0]);
 
                 dialog.dismiss();
