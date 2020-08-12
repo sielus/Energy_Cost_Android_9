@@ -40,8 +40,8 @@ public class RoomEditManagerDeviceDetailsListAdapter extends RecyclerView.Adapte
 
         if (cursor.getCount() > 1) {
             while(cursor.moveToNext()) {
-                deviceKwh.add( String.format("%."+ RoomEditManager.numberAfterDot +"f",((float)cursor.getInt(1) / 1000)) + " kWh");
-                deviceCost.add(String.format("%."+ RoomEditManager.numberAfterDot +"f", cursor.getFloat(2)).replace(",","."));
+                deviceKwh.add( String.format("%."+ RoomEditManager.numberAfterDot +"f",(cursor.getDouble(1) / 1000)) + " kWh");
+                deviceCost.add(String.format("%."+ RoomEditManager.numberAfterDot +"f", cursor.getDouble(2)).replace(",","."));
                 deviceName.add(cursor.getString(0));
             }
         }else if(cursor.getCount() == 1){

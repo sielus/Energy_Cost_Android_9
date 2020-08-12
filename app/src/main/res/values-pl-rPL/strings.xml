@@ -19,7 +19,7 @@
     <string name="dialog_room_edit_room_name">Nazwa pokoju</string>
     <string name="dialog_edit_device_name">Nazwa urządzenia</string>
     <string name="menu_home">Kalkulator kosztów energii</string>
-    <string name="device_row_device_power">"Moc urządzenia (W) :* "</string>
+    <string name="device_row_device_power">"Moc urządzenia :* "</string>
     <string name="device_row_device_time_work">"Czas pracy :* "</string>
     <string name="device_row_device_number">"Ilość urządzeń :* "</string>
     <string name="settings_currency_global">waluta</string>

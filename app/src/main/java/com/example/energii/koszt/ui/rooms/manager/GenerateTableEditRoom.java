@@ -25,12 +25,12 @@ public class GenerateTableEditRoom {
         TextView outputEnergyCostYeahKwh= view.findViewById(R.id.OutputEnergyCostMonthKwh);
         if(roomManager.getRoomDeviceList(room_name).getCount() != 0){
             getRoomCostKwh(roomManager.getRoomCost(room_name));
-            outputEnergyCostUser.setText(String.format("%."+ numberAfterDot +"f", Float.parseFloat(roomCostKWH.get(0)) / 1000) + " kWh");
-            outputEnergyCostUserKwh.setText(String.format("%."+ numberAfterDot +"f", Float.parseFloat(roomCostKWH.get(1))) + " " +defaultCurrency);
-            outputEnergyCostMonth.setText(String.format("%."+ numberAfterDot +"f", Float.parseFloat(roomCostKWH.get(0)) / 1000 * 30) + " kWh");
-            outputEnergyCostMonthKwh.setText(String.format("%."+ numberAfterDot +"f", Float.parseFloat(roomCostKWH.get(1)) * 30) + " " +defaultCurrency);
-            outputEnergyCostYeah.setText(String.format("%."+ numberAfterDot +"f", Float.parseFloat(roomCostKWH.get(0)) / 1000 * 365 )+ " kWh");
-            outputEnergyCostYeahKwh.setText(String.format("%."+ numberAfterDot +"f", Float.parseFloat(roomCostKWH.get(1)) * 365 )+ " " + defaultCurrency);
+            outputEnergyCostUser.setText(String.format("%."+ numberAfterDot +"f", Double.parseDouble(roomCostKWH.get(0)) / 1000) + " kWh");
+            outputEnergyCostUserKwh.setText(String.format("%."+ numberAfterDot +"f", Double.parseDouble(roomCostKWH.get(1))) + " " +defaultCurrency);
+            outputEnergyCostMonth.setText(String.format("%."+ numberAfterDot +"f", Double.parseDouble(roomCostKWH.get(0)) / 1000 * 30) + " kWh");
+            outputEnergyCostMonthKwh.setText(String.format("%."+ numberAfterDot +"f", Double.parseDouble(roomCostKWH.get(1)) * 30) + " " +defaultCurrency);
+            outputEnergyCostYeah.setText(String.format("%."+ numberAfterDot +"f", Double.parseDouble(roomCostKWH.get(0)) / 1000 * 365 )+ " kWh");
+            outputEnergyCostYeahKwh.setText(String.format("%."+ numberAfterDot +"f", Double.parseDouble(roomCostKWH.get(1)) * 365 )+ " " + defaultCurrency);
         }else{
             TableLayout tableLayout = view.findViewById(R.id.sunnyTable);
             tableLayout.setVisibility(View.GONE);
@@ -90,13 +90,13 @@ public class GenerateTableEditRoom {
         }
     }
 
-    private float getAllRoomsKwHFromDB(Cursor cursor){
+    private double getAllRoomsKwHFromDB(Cursor cursor){
         cursor.moveToFirst();
-        return cursor.getFloat(0);
+        return cursor.getDouble(0);
     }
 
-    private float getAllRoomsCostFromDB(Cursor cursor){
+    private double getAllRoomsCostFromDB(Cursor cursor){
         cursor.moveToFirst();
-        return cursor.getFloat(1);
+        return cursor.getDouble(1);
     }
 }

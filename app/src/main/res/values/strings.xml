@@ -33,7 +33,7 @@
 
     <string name="device_row_device_number">"Device numbers :* "</string>
     <string name="device_row_device_time_work">"Working time :* "</string>
-    <string name="device_row_device_power">"Power Value (W) :* "</string>
+    <string name="device_row_device_power">"Power Value :* "</string>
 
     <string name="home_hint_power_value">Device Power Value (W)*</string>
     <string name="home_hint_timework_m">Working Time : Minutes*</string>

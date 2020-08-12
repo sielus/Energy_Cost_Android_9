@@ -241,7 +241,7 @@ public class GenerateCharts {
 
             cursor.moveToFirst();
             pieEntry.add(new PieEntry(cursor.getInt(1), cursor.getString(0).replace("_"," ") + " " +
-                    String.format("%."+ numberAfterDot +"f",((float)cursor.getInt(1) / 1000)) ));
+                    String.format("%."+ numberAfterDot +"f",(cursor.getFloat(1) / 1000)) ));
             barEntries.add(new BarEntry(labelNumberIndex, Float.parseFloat(String.format("%."+ numberAfterDot +"f",
                     cursor.getDouble(2)).replace(",","."))));
             roomName.add(cursor.getString(0).replace("_"," ") + " ");

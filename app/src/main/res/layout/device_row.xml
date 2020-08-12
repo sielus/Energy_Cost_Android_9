@@ -28,12 +28,12 @@
                 android:layout_width="126dp"
 
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="8dp"
+                android:autoSizeTextType="uniform"
                 android:fontFamily="@font/lato_black"
                 android:text="TextView"
                 android:textColor="@color/white"
-                android:textSize="20dp"
-                android:autoSizeTextType="uniform"
+                android:textSize="16dp"
 
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -42,12 +42,14 @@
 
             <TableLayout
                 android:id="@+id/sunnyTable"
-                android:layout_width="191dp"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="70dp"
+                android:layout_marginStart="18dp"
+                android:layout_marginEnd="50dp"
                 android:layout_marginBottom="13dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/rowTextViewDeviceName"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="1.0">
 
@@ -72,9 +74,9 @@
 
                     <TextView
                         android:id="@+id/rowTextViewPower"
-                        android:layout_width="wrap_content"
+                        android:layout_width="70dp"
                         android:layout_weight="1"
-
+                        android:autoSizeTextType="uniform"
                         android:fontFamily="@font/lato_light"
                         android:text="TextView"
                         android:textColor="@color/white"
@@ -107,10 +109,10 @@
 
                     <TextView
                         android:id="@+id/rowTextViewNumber"
-                        android:layout_width="wrap_content"
+                        android:layout_width="70dp"
                         android:layout_weight="1"
                         android:fontFamily="@font/lato_light"
-
+                        android:autoSizeTextType="uniform"
                         android:text="TextView"
                         android:textColor="@color/white"
                         android:textSize="14sp"
@@ -139,10 +141,10 @@
 
                     <TextView
                         android:id="@+id/rowTextViewTimeWork"
-                        android:layout_width="wrap_content"
+                        android:layout_width="70dp"
                         android:layout_weight="1"
                         android:fontFamily="@font/lato_light"
-
+                        android:autoSizeTextType="uniform"
                         android:text="TextView"
                         android:textColor="@color/white"
                         android:textSize="14sp"

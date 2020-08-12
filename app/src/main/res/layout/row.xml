@@ -28,24 +28,23 @@
                 android:id="@+id/rowTextViewTitle"
                 android:layout_width="125dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="3dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:autoSizeTextType="uniform"
                 android:fontFamily="@font/lato_black"
                 android:text="TextView"
                 android:textColor="@color/white"
-                android:textSize="24sp"
+                android:textSize="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/rowTextViewSecond"
+                app:layout_constraintHorizontal_bias="0.126"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.529" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/rowTextViewSecond"
                 android:layout_width="139dp"
-                android:layout_height="32dp"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="68dp"
 
                 android:autoSizeMaxTextSize="24sp"
@@ -54,11 +53,11 @@
                 android:fontFamily="@font/lato_light"
                 android:text="TextView"
                 android:textColor="@color/white"
-                android:textSize="24sp"
+                android:textSize="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.529" />
+                app:layout_constraintVertical_bias="0.483" />
 
             <ImageView
                 android:id="@+id/imageView2"
