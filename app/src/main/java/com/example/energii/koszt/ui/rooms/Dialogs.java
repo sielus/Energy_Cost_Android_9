@@ -206,36 +206,43 @@ public class Dialogs {
             public void onClick(View v) {
                 editTextDevicePower.addTextChangedListener(roomPowerTextWatcher);
                 editTextDeviceNumbers.addTextChangedListener(roomNumberTextWatcher);
-                if(checkInputValue()) {
-                    long powerValue = Long.parseLong(editTextDevicePower.getText().toString());
-                    String deviceNameInput = editTextDeviceName.getText().toString();
-                    int number = Integer.parseInt(editTextDeviceNumbers.getText().toString());
-                    try {
+                if(editTextDevicePower.getText().toString().equals(".")){
+                    text_field_inputEditTextDevicePowerLayout.setError(view.getResources().getString(R.string.error_no_data));
+                }else {
+                    if(checkInputValue()) {
+                        text_field_inputEditTextDevicePowerLayout.setError(null);
+                        double powerValue = Double.parseDouble(editTextDevicePower.getText().toString());
+                        String deviceNameInput = editTextDeviceName.getText().toString();
+                        int number = Integer.parseInt(editTextDeviceNumbers.getText().toString());
                         try {
-                            ColorDrawable viewColor = (ColorDrawable) buttonColorPicker.getBackground();
-                            int colorId = viewColor.getColor();
-                            deviceManager.addDevice(room_name, deviceNameInput, powerValue, h[0], m[0], number,colorId);
-                            Toast.makeText(view.getContext(), R.string.toast_device_added, Toast.LENGTH_SHORT).show();
-                            dialog.dismiss();
+                            try {
+                                ColorDrawable viewColor = (ColorDrawable) buttonColorPicker.getBackground();
+                                int colorId = viewColor.getColor();
+                                deviceManager.addDevice(room_name, deviceNameInput, powerValue, h[0], m[0], number,colorId);
+                                Toast.makeText(view.getContext(), R.string.toast_device_added, Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
 
-                            ViewDataDeviceFromDB(deviceManager.getRoomDeviceList(room_name));
-                            GenerateCharts generateCharts = new GenerateCharts();
-                            generateCharts.generateChartsInRoom(view,room_name,numberAfterDot,defaultCurrency);
+                                ViewDataDeviceFromDB(deviceManager.getRoomDeviceList(room_name));
+                                GenerateCharts generateCharts = new GenerateCharts();
+                                generateCharts.generateChartsInRoom(view,room_name,numberAfterDot,defaultCurrency);
 
 
 
-                            RoomEditManager roomEditManager = new RoomEditManager();
-                            roomEditManager.refreshListView(view);
+                                RoomEditManager roomEditManager = new RoomEditManager();
+                                roomEditManager.refreshListView(view);
 
-                            GenerateTableEditRoom generateTableEditRoom = new GenerateTableEditRoom();
-                            generateTableEditRoom.refreshTable(view,defaultCurrency,room_name,numberAfterDot);
-                        } catch (SQLEnergyCostException.WrongTime wrongTime) {
-                            Toast.makeText(view.getContext(),wrongTime.getMessage(),Toast.LENGTH_SHORT).show();
+                                GenerateTableEditRoom generateTableEditRoom = new GenerateTableEditRoom();
+                                generateTableEditRoom.refreshTable(view,defaultCurrency,room_name,numberAfterDot);
+                            } catch (SQLEnergyCostException.WrongTime wrongTime) {
+                                Toast.makeText(view.getContext(),wrongTime.getMessage(),Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (SQLEnergyCostException.EmptyField | SQLEnergyCostException.DuplicationDevice errorMessage) {
+                            Toast.makeText(view.getContext(), errorMessage.getMessage(), Toast.LENGTH_SHORT).show();
                         }
-                    } catch (SQLEnergyCostException.EmptyField | SQLEnergyCostException.DuplicationDevice errorMessage) {
-                        Toast.makeText(view.getContext(), errorMessage.getMessage(), Toast.LENGTH_SHORT).show();
                     }
+
                 }
+
             }
 
             private TextWatcher roomPowerTextWatcher = new TextWatcher() {
@@ -415,36 +422,44 @@ public class Dialogs {
                 editTextDeviceName.addTextChangedListener(roomNameTextWatcher);
                 editTextDevicePower.addTextChangedListener(roomPowerTextWatcher);
                 editTextDeviceNumbers.addTextChangedListener(roomNumberTextWatcher);
-                if(checkInputValue()){
-                    String deviceName = editTextDeviceName.getText().toString();
-                    long powerValue = Long.parseLong(editTextDevicePower.getText().toString());
-                    int number = Integer.parseInt(editTextDeviceNumbers.getText().toString());
-                    try {
+                if(editTextDevicePower.getText().toString().equals(".")){
+                   text_field_inputEditTextDevicePowerLayout.setError(view.getResources().getString(R.string.error_no_data));
+                }else {
+                    text_field_inputEditTextDevicePowerLayout.setError(null);
+                    if(checkInputValue()) {
+                        String deviceName = editTextDeviceName.getText().toString();
+                        double powerValue = Double.parseDouble(editTextDevicePower.getText().toString());
+                        int number = Integer.parseInt(editTextDeviceNumbers.getText().toString());
                         try {
-                            ColorDrawable viewColor = (ColorDrawable) buttonColorPicker.getBackground();
-                            int colorId = viewColor.getColor();
-                            deviceManager.updateDevice(Integer.parseInt(device.get(0)),roomName,deviceName,powerValue,number, h[0], m[0],colorId);
-                        } catch (SQLEnergyCostException.WrongTime wrongTime) {
-                            wrongTime.printStackTrace();
+                            try {
+                                ColorDrawable viewColor = (ColorDrawable) buttonColorPicker.getBackground();
+                                int colorId = viewColor.getColor();
+                                deviceManager.updateDevice(Integer.parseInt(device.get(0)), roomName, deviceName, powerValue, number, h[0], m[0], colorId);
+                            } catch (SQLEnergyCostException.WrongTime wrongTime) {
+                                wrongTime.printStackTrace();
+                            }
+                            Toast.makeText(view.getContext(), R.string.toast_device_updated, Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
+
+                            ViewDataDeviceFromDB(deviceManager.getRoomDeviceList(room_name));
+                            RoomEditManager roomEditManager = new RoomEditManager();
+                            GenerateTableEditRoom generateTableEditRoom = new GenerateTableEditRoom();
+
+                            generateTableEditRoom.refreshTable(view, defaultCurrency, room_name, numberAfterDot);
+                            GenerateCharts generateCharts = new GenerateCharts();
+                            generateCharts.generateChartsInRoom(view, room_name, numberAfterDot, defaultCurrency);
+                            ViewDataDeviceFromDB(deviceManager.getRoomDeviceList(room_name));
+
+                            roomEditManager.refreshListView(view);
+                        } catch (SQLEnergyCostException.EmptyField | SQLEnergyCostException.DuplicationDevice exception) {
+                            Toast.makeText(view.getContext(), exception.getMessage(), Toast.LENGTH_SHORT).show();
+                            exception.printStackTrace();
                         }
-                        Toast.makeText(view.getContext(),R.string.toast_device_updated,Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
 
-                        ViewDataDeviceFromDB(deviceManager.getRoomDeviceList(room_name));
-                        RoomEditManager roomEditManager = new RoomEditManager();
-                        GenerateTableEditRoom generateTableEditRoom = new GenerateTableEditRoom();
-
-                        generateTableEditRoom.refreshTable(view,defaultCurrency,room_name,numberAfterDot);
-                        GenerateCharts generateCharts = new GenerateCharts();
-                        generateCharts.generateChartsInRoom(view,room_name,numberAfterDot,defaultCurrency);
-                        ViewDataDeviceFromDB(deviceManager.getRoomDeviceList(room_name));
-
-                        roomEditManager.refreshListView(view);
-                    }catch (SQLEnergyCostException.EmptyField | SQLEnergyCostException.DuplicationDevice exception) {
-                        Toast.makeText(view.getContext(), exception.getMessage(), Toast.LENGTH_SHORT).show();
-                        exception.printStackTrace();
                     }
                 }
+
+
             }
 
             private TextWatcher roomNameTextWatcher = new TextWatcher() {
