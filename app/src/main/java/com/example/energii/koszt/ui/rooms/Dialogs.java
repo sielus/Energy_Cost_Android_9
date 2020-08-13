@@ -455,11 +455,8 @@ public class Dialogs {
                             Toast.makeText(view.getContext(), exception.getMessage(), Toast.LENGTH_SHORT).show();
                             exception.printStackTrace();
                         }
-
                     }
                 }
-
-
             }
 
             private TextWatcher roomNameTextWatcher = new TextWatcher() {
