@@ -617,7 +617,7 @@ public class Dialogs {
                 }else if(ifNumberOnStart){
                     text_field_inputRoomNameLayout.setError(view.getContext().getResources().getString(R.string.error_name_canot_start_from_number));
                 }else{
-                    roomEditManager.setTitle("Room" + " " + newRoomName.replace("_"," "));
+                    roomEditManager.setTitle(view.getResources().getString(R.string.just_room) + " " + newRoomName.replace("_"," "));
                     room_name_dialog.dismiss();
                     try {
                         ColorDrawable viewColor = (ColorDrawable) buttonColorPicker.getBackground();
