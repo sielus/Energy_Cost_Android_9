@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:853496459596:android:09ba8abaeebf99ec65dfe9",
+        "mobilesdk_app_id": "1:853496459596:android:b04a15bfeef8e7e765dfe9",
         "android_client_info": {
-          "package_name": "com.example.energy.cost"
+          "package_name": "com.devdreams.energy.cost"
         }
       },
       "oauth_client": [

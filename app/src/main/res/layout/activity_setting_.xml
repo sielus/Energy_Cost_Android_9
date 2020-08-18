@@ -121,7 +121,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
                     android:max="6"
-                    android:min="1" />
+                  />
 
                 <TextView
                     android:id="@+id/textViewNumericView"
