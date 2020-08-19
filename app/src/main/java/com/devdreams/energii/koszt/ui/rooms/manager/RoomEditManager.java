@@ -55,7 +55,9 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_edit_manager);
-        setTitle(view.getContext().getResources().getString(R.string.just_room) + " " + room_name.replace("_"," "));
+        if(!room_name.isEmpty()){
+            setTitle(view.getContext().getResources().getString(R.string.just_room) + " " + room_name.replace("_"," "));
+        }
         SettingActivity settingActivity = new SettingActivity();
 
         numberAfterDot = settingActivity.getNumberAfterDot(view);

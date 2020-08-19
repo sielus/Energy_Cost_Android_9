@@ -11,9 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.devdreams.energii.koszt.ui.settings.SettingActivity;
-
 import com.google.android.gms.ads.MobileAds;
-
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.navigation.NavigationView;
@@ -49,13 +47,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(InitializationStatus initializationStatus) {
             }
         });
-
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home, R.id.nav_rooms, R.id.nav_fragment_sun_energy_calculator_layout, R.id.nav_about_us)
@@ -76,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
-
     }
 
     @Override

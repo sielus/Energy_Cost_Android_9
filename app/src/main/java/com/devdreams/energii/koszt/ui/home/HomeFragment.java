@@ -24,7 +24,6 @@ import com.devdreams.energii.koszt.R;
 import com.devdreams.energii.koszt.ui.SQLLiteDBHelper;
 import com.devdreams.energii.koszt.ui.settings.SettingActivity;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -60,7 +59,6 @@ public class HomeFragment extends Fragment {
         assert actionBar != null;
         actionBar.setBackgroundDrawable(getResources().getDrawable(R.color.startBart,null));
         requireActivity().getWindow().setStatusBarColor(getActivity().getResources().getColor(R.color.startBart));
-
 
         TextInputLayout text_field_inputEnergyCost = root.findViewById(R.id.text_field_inputEnergyCost);
         text_field_inputEnergyCost.setHint(getText(R.string.home_energy_cost_hint) + " / " + defaultCurrency);
@@ -344,4 +342,9 @@ public class HomeFragment extends Fragment {
 
         }
     };
+
+
+
+
+
 }

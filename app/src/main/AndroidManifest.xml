@@ -5,7 +5,6 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
 
-
     <application
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
@@ -13,14 +12,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-8486454550638664~2704313179"/>
+
         <activity
             android:name="com.devdreams.energii.koszt.ui.settings.SettingActivity"
             android:label="@string/settings_label_title"
             android:theme="@style/AppTheme"/>
         <activity android:name="com.devdreams.energii.koszt.ui.rooms.manager.RoomEditManager" />
-        <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-8486454550638664~2704313179"/>
+
         <activity
 
             android:name="com.devdreams.energii.koszt.SplashScreen"

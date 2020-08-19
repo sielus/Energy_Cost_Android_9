@@ -12,3 +12,9 @@
 /captures
 .externalNativeBuild
 .cxx
+
+/key0/
+*.jks
+app/build.gradle
+
+

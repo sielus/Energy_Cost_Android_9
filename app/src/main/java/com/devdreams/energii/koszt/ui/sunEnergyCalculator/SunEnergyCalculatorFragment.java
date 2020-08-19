@@ -56,6 +56,8 @@ public class SunEnergyCalculatorFragment extends Fragment {
         SeekBar moduleEfficiency = root.findViewById(R.id.moduleEfficiency);
         final TextView moduleEfficiencyPercentText = root.findViewById(R.id.moduleEfficiencyPercect);
 
+        final TextInputLayout kwhCostLayout = root.findViewById(R.id.kwhCostLayout);
+
 
         moduleEfficiency.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
