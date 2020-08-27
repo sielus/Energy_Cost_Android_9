@@ -44,10 +44,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="32dp"
+                        android:layout_marginTop="0dp"
+                        android:layout_marginBottom="8dp"
                         ads:adSize="LARGE_BANNER"
-                        ads:adUnitId="ca-app-pub-8486454550638664/2259915454">
+                        ads:adUnitId="@string/banner_sun_energy">
 
                     </com.google.android.gms.ads.AdView>
 

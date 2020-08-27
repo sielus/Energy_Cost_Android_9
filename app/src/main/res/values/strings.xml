@@ -40,7 +40,7 @@
     <string name="home_hint_timework_h">Working Time : Hours*</string>
     <string name="home_table_month">30 days</string>
 
-    <string name="settings_currency_global">currency</string>
+    <string name="settings_currency_global">Currency</string>
     <string name="settings_energy_cost_global">kWh cost*</string>
     <string name="settings_computational_accuracy_global">Calculation \n accuracy</string>
     <string name="settings_add_default_device">Add device </string>
@@ -112,4 +112,24 @@
 
     <string name="about_us_note">We\'re a young team fascinated by programming and trying to learn! We hope that you will like our app and that it will help your calculations. Thank you for your download, and we\'re waiting for your reviews! Best regards</string>
     <string name="devs" translatable="false">~DevsDreams team</string>
+
+
+    <string name="tutorial_welcome_in_room_start">You are in</string>
+    <string name="tutorial_welcome_in_room_end">From there, you can manage it freely by : \n-adding  \n-editing(click on it!) \n-removing(slide to left!) \ndevices contained in it.</string>
+
+    <string name="tutorial_new_device_title">To add a new device, click here!</string>
+    <string name="tutorial_new_device_desc">You can also choose from the list of default devices. You can manage the default list of devices from the application settings</string>
+
+    <string name="tutorial_settings_start">"Here is the list of default devices. As with home / room management, you can freely edit the default devices by clicking on them. To remove them, slide left. On begin, we have implemented "</string>
+    <string name="tutorial_settings_end">default devices.</string>
+    <string name="tutorial_device_list">"To edit a device / room, click on it. If you want to delete an item, slide it to the left "</string>
+
+    <string name="tutorial_room_list_title">"Welcome to the house manager! "</string>
+    <string name="tutorial_room_list_desc">To add a new room, click here!</string>
+    <string name="banner_calculator" translatable="false">ca-app-pub-8486454550638664/8407231843</string>
+    <string name="banner_room_list" translatable="false">ca-app-pub-8486454550638664/5510439914</string>
+    <string name="banner_sun_energy" translatable="false">ca-app-pub-8486454550638664/2259915454</string>
+    <string name="banner_room_edit" translatable="false">ca-app-pub-8486454550638664/7512242131</string>
+
+
 </resources>

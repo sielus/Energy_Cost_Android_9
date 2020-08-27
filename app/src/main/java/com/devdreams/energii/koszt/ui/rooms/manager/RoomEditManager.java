@@ -3,11 +3,14 @@ package com.devdreams.energii.koszt.ui.rooms.manager;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.database.Cursor;
 import android.graphics.Canvas;
 import android.os.Bundle;
@@ -17,6 +20,8 @@ import android.view.View;
 import android.widget.TableLayout;
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.devdreams.energii.koszt.R;
+import com.devdreams.energii.koszt.ui.SQLLiteDBHelper;
+import com.devdreams.energii.koszt.ui.TutorialShowcase;
 import com.devdreams.energii.koszt.ui.rooms.Dialogs;
 import com.devdreams.energii.koszt.ui.rooms.GenerateCharts;
 import com.devdreams.energii.koszt.ui.settings.DefaultDeviceManager;
@@ -28,6 +33,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
+
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 public class RoomEditManager extends AppCompatActivity implements RoomEditManagerListAdapter.onNoteListener{
@@ -46,6 +52,10 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
     private RecyclerView recyclerView;
     static public int numberAfterDot;
     private AdView mAdView;
+    public static Activity activity;
+
+    public RoomEditManager() {
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,10 +88,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         generateCharts.generateChartsInRoom(view,room_name,numberAfterDot,defaultCurrency);
         generateTableEditRoom.refreshTable(view,defaultCurrency,room_name,numberAfterDot);
 
-        mAdView = view.findViewById(R.id.adViewEditManager);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
-
+        activity  = this;
         ActionBar actionBar = getSupportActionBar();
 
         Objects.requireNonNull(actionBar).setDisplayHomeAsUpEnabled(true);
@@ -98,7 +105,23 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
-        FloatingActionButton floatingActionButtonAddDevice = findViewById(R.id.addButonfl);
+        if(deviceManager.getRoomDeviceList(room_name).getCount()!=0){
+            mAdView = view.findViewById(R.id.adViewEditManager);
+            AdRequest adRequest = new AdRequest.Builder().build();
+            mAdView.loadAd(adRequest);
+        }else{
+            ConstraintLayout constraintLayout = view.findViewById(R.id.deviceListConstraintLayout);
+            ConstraintSet constraintSet = new ConstraintSet();
+            constraintSet.clone(constraintLayout);
+            constraintSet.connect(recyclerView.getId(),ConstraintSet.TOP,ConstraintSet.PARENT_ID,ConstraintSet.TOP,0);
+            constraintSet.applyTo(constraintLayout);
+        }
+
+        final FloatingActionButton floatingActionButtonAddDevice = findViewById(R.id.addButonfl);
+        if(deviceManager.getRoomDeviceList(room_name).getCount()==0){
+            checkFirstRun(view,floatingActionButtonAddDevice);
+        }
+
         floatingActionButtonAddDevice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,8 +136,27 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         return true;
     }
 
+    public void checkFirstRun(View root,FloatingActionButton floatingActionButton) {
+        SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
+        Cursor cursor = sqlLiteDBHelper.getVariable("runTutFir");
+        if(cursor.getCount()!=0) {
+            if(cursor.getString(0).equals("false")){
+                sqlLiteDBHelper.setVariable("runTutFir", "true");
+                startTutorial(root,floatingActionButton);
+            }
+        }
+    }
+
+    private void startTutorial(View view,FloatingActionButton floatingActionButtonAddDevice) {
+        TutorialShowcase tutorialShowcase = new TutorialShowcase(this);
+        tutorialShowcase.tutorialWithNoListener(floatingActionButtonAddDevice,
+                getResources().getString(R.string.tutorial_welcome_in_room_start) + " '" + room_name+"'",
+                getResources().getString(R.string.tutorial_welcome_in_room_end));
+    }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
         switch (item.getItemId()){
             case R.id.room_settings:
                 dialogs.showDialogEditRoomName(view,room_name,defaultCurrency,numberAfterDot,this);
@@ -126,6 +168,15 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         return true;
     }
 
+    private void fixLayoutAds(AdView mAdView) {
+        RecyclerView recyclerView = RoomListFragment.root.findViewById(R.id.RecyckerView);
+        ConstraintLayout constraintLayout = RoomListFragment.root.findViewById(R.id.ConstraintLayoutRoomList);
+        ConstraintSet constraintSet = new ConstraintSet();
+        constraintSet.clone(constraintLayout);
+        constraintSet.connect(recyclerView.getId(),ConstraintSet.TOP, mAdView.getId(),ConstraintSet.BOTTOM,0);
+        constraintSet.applyTo(constraintLayout);
+    }
+
     void generateDevicesListDetails(View view, String room_name){
         RoomEditManagerDeviceDetailsListAdapter roomEditManagerDeviceDetailsListAdapter = new RoomEditManagerDeviceDetailsListAdapter(view,room_name);
         RecyclerView recycleViewDeviceDetailsList = view.findViewById(R.id.recycleViewDeviceDetailsList);
@@ -134,6 +185,13 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         recycleViewDeviceDetailsList.setLayoutManager(new LinearLayoutManager(view.getContext()));
     }
     public void onBackPressed() {
+        AdView mAdView;
+        mAdView = RoomListFragment.root.findViewById(R.id.adViewRooms);
+        if(RoomListFragment.adRequest == null){
+            RoomListFragment.adRequest = new AdRequest.Builder().build();
+            mAdView.loadAd(RoomListFragment.adRequest);
+        }
+        fixLayoutAds(mAdView);
         fullRefreshRoomList();
         super.onBackPressed();
         Animatoo.animateSlideRight(this);

@@ -25,6 +25,8 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         String addVariable;
         String numberAfterDot;
         String defaultDevice;
+        String firstRunTutFirst;
+
 
         String roomListTable = "CREATE TABLE room_list " +
                                     "(" +
@@ -53,7 +55,9 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
                                     ")";
         db.execSQL(defaultDeviceTable);
 
-        addVariable = "INSERT INTO configuration_variable (name, value) values (\"powerCost\", \"0.60\"), (\"defaultCurrency\", ?)"; // zmienic domyslna walute, wklej mi tu funkcje do pobrania stringu jak w domyslnych
+        firstRunTutFirst = "INSERT INTO configuration_variable (name, value) values (\"runTutFir\", \"false\")";
+
+        addVariable = "INSERT INTO configuration_variable (name, value) values (\"powerCost\", \"0.60\"), (\"defaultCurrency\", ?)";
         numberAfterDot = "INSERT INTO configuration_variable (name, value) values (\"numberAfterDot\", \"2\")";
         defaultDevice = "INSERT INTO default_device_settings (name, power_value, work_time, device_number) values (?, 15, \"2:0\", 1)," +
                                                                                                                  "(?, 0.1, \"24:0\", 1)," +
@@ -89,6 +93,8 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
                                                 context.getResources().getString(R.string.default_device_amp_idle)});
         db.execSQL(addVariable, new String[] {context.getResources().getString(R.string.currency_type)});
         db.execSQL(numberAfterDot);
+        db.execSQL(firstRunTutFirst);
+
     }
 
     @Override
@@ -96,6 +102,13 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    public void checkFirstRunApp(){
+        String firstRunTutFirst = "INSERT INTO configuration_variable (name, value) values (\"runTutFir\", \"false\")";
+        SQLiteDatabase dbWriter = getWritableDatabase();
+        if(getVariable("runTutFir").getCount()==0){
+            dbWriter.execSQL(firstRunTutFirst);
+        }
+    }
     @SuppressLint("Recycle")
     public Cursor getVariable(String variableName) {
         SQLiteDatabase dbhRead = getReadableDatabase();

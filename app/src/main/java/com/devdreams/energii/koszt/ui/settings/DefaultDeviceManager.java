@@ -99,6 +99,20 @@ public class DefaultDeviceManager extends SQLLiteDBHelper {
         dbWriter.update("default_device_settings", contentValues, where, new String[] {oldDeviceName});
     }
 
+    public int countDefaultDevices() {
+        SQLiteDatabase dbhRead = getReadableDatabase();
+        String query;
+        Cursor numberOfDevice;
+
+        query = "SELECT COUNT(id) " +
+                "FROM   default_device_settings";
+
+        numberOfDevice = dbhRead.rawQuery(query, null);
+        numberOfDevice.moveToFirst();
+
+        return numberOfDevice.getInt(0);
+    }
+
     private Cursor checkDeviceName(String deviceName) {
         SQLiteDatabase dbhRead = getReadableDatabase();
         Cursor cursor;

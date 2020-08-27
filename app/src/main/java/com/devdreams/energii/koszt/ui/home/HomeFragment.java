@@ -30,6 +30,8 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.util.Map;
 import java.util.Objects;
 
+
+
 public class HomeFragment extends Fragment {
     @SuppressLint("StaticFieldLeak")
     public static View root;
@@ -77,6 +79,9 @@ public class HomeFragment extends Fragment {
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 
+
+
+
         buttonCalcCostEnergy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,7 +126,8 @@ public class HomeFragment extends Fragment {
 
     @SuppressLint("SetTextI18n")
     public void refresh(View root){
-        sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
+
+        SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
         inputEnergyCost = root.findViewById(R.id.inputEnergyCost);
         inputEnergyCost.setText(ViewPowerCostFromDB(sqlLiteDBHelper.getVariable("powerCost")));
         TextInputLayout text_field_inputEnergyCost = root.findViewById(R.id.text_field_inputEnergyCost);

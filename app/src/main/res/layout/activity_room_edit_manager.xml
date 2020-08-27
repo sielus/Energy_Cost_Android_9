@@ -24,11 +24,13 @@
 
 
     <ScrollView
+        android:id="@+id/scrollView4"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
+            android:id="@+id/deviceListConstraintLayout"
             android:layout_height="match_parent">
 
             <com.google.android.gms.ads.AdView
@@ -39,8 +41,7 @@
 
 
                 app:adSize="LARGE_BANNER"
-                app:adUnitId="ca-app-pub-8486454550638664/7512242131"
-                app:layout_constraintBottom_toTopOf="@+id/RecyckerView"
+                app:adUnitId="@string/banner_room_edit"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -50,10 +51,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
 
-                android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.019"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/adView">
+                app:layout_constraintTop_toBottomOf="@+id/adViewEditManager">
 
             </androidx.recyclerview.widget.RecyclerView>
 
@@ -342,18 +343,17 @@
             </com.github.mikephil.charting.charts.PieChart>
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycleViewDeviceDetailsList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/recycleViewDeviceDetailsList"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="100dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/pieChart"/>
+                app:layout_constraintTop_toBottomOf="@+id/pieChart" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
     </ScrollView>

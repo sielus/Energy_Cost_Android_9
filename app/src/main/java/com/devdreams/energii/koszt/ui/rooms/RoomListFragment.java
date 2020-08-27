@@ -3,24 +3,31 @@ package com.devdreams.energii.koszt.ui.rooms;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+import com.devdreams.energii.koszt.MainActivity;
 import com.devdreams.energii.koszt.R;
+import com.devdreams.energii.koszt.ui.SQLLiteDBHelper;
+import com.devdreams.energii.koszt.ui.TutorialShowcase;
 import com.devdreams.energii.koszt.ui.rooms.manager.GenerateTableEditRoom;
 import com.devdreams.energii.koszt.ui.rooms.manager.RoomEditManager;
 import com.github.mikephil.charting.charts.BarChart;
@@ -30,6 +37,10 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.Arrays;
 import java.util.Objects;
+import android.content.SharedPreferences;
+import android.widget.Toast;
+
+
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 public class RoomListFragment extends Fragment implements RoomListAdapter.onNoteListener {
@@ -39,6 +50,9 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
     private Dialogs dialogs;
     private PieChart pieChart;
     private AdView mAdView;
+    public  static AdRequest adRequest;
+    public static Activity activity;
+    public FloatingActionButton floatingActionButtonAddRoomDialog;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_rooms, container, false);
@@ -54,7 +68,7 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
         actionBar.setBackgroundDrawable(getResources().getDrawable(R.color.startBart,null));
         requireActivity().getWindow().setStatusBarColor(getActivity().getResources().getColor(R.color.startBart));
 
-        RecyclerView recyclerView = root.findViewById(R.id.RecyckerView);
+        final RecyclerView recyclerView = root.findViewById(R.id.RecyckerView);
 
         pieChart.setVisibility(View.GONE);
         barChart.setVisibility(View.GONE);
@@ -69,11 +83,15 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
                 Dialogs.roomNameArray.size(), String[].class),this,
                 Arrays.copyOf(Dialogs.roomNameKwhArray.toArray(), Dialogs.roomNameKwhArray.size(), String[].class));
 
-        FloatingActionButton floatingActionButtonAddRoomDialog = root.findViewById(R.id.buttonAddRoom);
+         floatingActionButtonAddRoomDialog = root.findViewById(R.id.buttonAddRoom);
 
-        mAdView = root.findViewById(R.id.adViewRooms);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
+        if(roomManager.getRoomList().getCount()!=0){
+            mAdView = root.findViewById(R.id.adViewRooms);
+            adRequest = new AdRequest.Builder().build();
+            mAdView.loadAd(adRequest);
+        }else{
+            fixLayoutAds(recyclerView);
+        }
 
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
 
@@ -85,13 +103,64 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
 
+        SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
+        sqlLiteDBHelper.checkFirstRunApp();
+        if(roomManager.getRoomList().getCount()==0){
+           if(checkFirstRun(root,sqlLiteDBHelper)){
+               startTutorial(root);
+           }
+        }else {
+            Cursor cursor = sqlLiteDBHelper.getVariable("runTutFir");
+            if(cursor.getCount()!=0) {
+                if(cursor.getString(0).equals("false")){
+                    sqlLiteDBHelper.setVariable("runTutFir", "true");
+                }
+            }
+        }
+
+        activity = getActivity();
+
         floatingActionButtonAddRoomDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialogs.showRoomListDialog(root,adapter,getActivity());
+//                dialogs.showRoomListDialog(root,adapter,getActivity());
+                showDialogAddRoom();
+
             }
         });
         return root;
+    }
+
+    public void startTutorial(View view) {
+        TutorialShowcase tutorialShowcase = new TutorialShowcase(this.getActivity());
+        FloatingActionButton floatingActionButtonAddRoomDialog = view.findViewById(R.id.buttonAddRoom);
+        tutorialShowcase.tutorial(floatingActionButtonAddRoomDialog,getResources().getString(R.string.tutorial_room_list_title),
+                getResources().getString(R.string.tutorial_room_list_desc),
+                R.color.tutorial);
+    }
+
+
+    public Boolean checkFirstRun(View root, SQLLiteDBHelper sqlLiteDBHelper) {
+        Cursor cursor = sqlLiteDBHelper.getVariable("runTutFir");
+        if(cursor.getCount()!=0){
+            if(cursor.getString(0).equals("false")){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void showDialogAddRoom() {
+        dialogs.showRoomListDialog(root,adapter,getActivity());
+    }
+
+
+    private void fixLayoutAds(RecyclerView recyclerView) {
+        ConstraintLayout constraintLayout = root.findViewById(R.id.ConstraintLayoutRoomList);
+        ConstraintSet constraintSet = new ConstraintSet();
+        constraintSet.clone(constraintLayout);
+        constraintSet.connect(recyclerView.getId(),ConstraintSet.TOP,ConstraintSet.PARENT_ID,ConstraintSet.TOP,0);
+        constraintSet.applyTo(constraintLayout);
     }
 
     @SuppressLint("SetTextI18n")
@@ -105,7 +174,9 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
         RoomManager roomManager = new RoomManager(root.getContext());
         dialogs.ViewRoomListFromDB(roomManager.getRoomList());
         RoomListAdapter adapter;
-        adapter = new RoomListAdapter(root.getContext(),Arrays.copyOf(Dialogs.roomNameArray.toArray(),  Dialogs.roomNameArray.size(), String[].class),this,Arrays.copyOf(Dialogs.roomNameKwhArray.toArray(), Dialogs.roomNameKwhArray.size(), String[].class));
+        adapter = new RoomListAdapter(root.getContext(),Arrays.copyOf(Dialogs.roomNameArray.toArray(),
+                Dialogs.roomNameArray.size(), String[].class),this,Arrays.copyOf(Dialogs.roomNameKwhArray.toArray(),
+                Dialogs.roomNameKwhArray.size(), String[].class));
         RecyclerView recyclerView = root.findViewById(R.id.RecyckerView);
         refreshTable(root);
         recyclerView.setAdapter(adapter);
@@ -113,10 +184,12 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
 
     @Override
     public void onNoteClick(int position) {
-        RoomEditManager.room_name =  Dialogs.roomNameArray.get(position).replace(" ","_");
-        Intent intent = new Intent(root.getContext() , RoomEditManager.class);
-        root.getContext().startActivity(intent);
-        Animatoo.animateSlideLeft(root.getContext());
+        if(!Dialogs.roomNameArray.get(position).isEmpty()){
+            RoomEditManager.room_name =  Dialogs.roomNameArray.get(position).replace(" ","_");
+            Intent intent = new Intent(root.getContext() , RoomEditManager.class);
+            root.getContext().startActivity(intent);
+            Animatoo.animateSlideLeft(root.getContext());
+        }
     }
 
     public static void hideKeyboard(Activity activity) {
@@ -165,4 +238,5 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
                     .decorate();
         }
     };
+
 }

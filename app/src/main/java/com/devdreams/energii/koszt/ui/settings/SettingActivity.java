@@ -22,9 +22,12 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.devdreams.energii.koszt.R;
 import com.devdreams.energii.koszt.ui.SQLLiteDBHelper;
+import com.devdreams.energii.koszt.ui.TutorialShowcase;
 import com.devdreams.energii.koszt.ui.home.HomeFragment;
 import com.devdreams.energii.koszt.ui.rooms.RoomListFragment;
 import com.devdreams.energii.koszt.ui.sunEnergyCalculator.SunEnergyCalculatorFragment;
@@ -32,6 +35,9 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import java.util.Arrays;
 import java.util.Objects;
+
+
+import co.mobiwise.materialintro.shape.ShapeType;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 @SuppressLint("Registered")
@@ -61,12 +67,26 @@ public class SettingActivity extends AppCompatActivity implements SettingsListAd
         defaultDeviceManager = new DefaultDeviceManager(view.getContext());
         roomListFragment = new RoomListFragment();
 
+
+
         setContentView(R.layout.activity_setting_);
         SeekBar seekBar = findViewById(R.id.seekBarNumericDecimal);
         RecyclerView recyclerView = view.findViewById(R.id.RecyckerViewSettings);
 
+        TutorialShowcase tutorialShowcase = new TutorialShowcase(this);
+        tutorialShowcase.tutorialSettings(recyclerView, ShapeType.RECTANGLE,getResources().getString(R.string.tutorial_settings_start)
+                + String.valueOf(defaultDeviceManager.countDefaultDevices()) + " "
+                + getResources().getString(R.string.tutorial_settings_end) ,"settings");
+
+
+
+
         ActionBar actionBar = getSupportActionBar();
         Objects.requireNonNull(actionBar).setDisplayHomeAsUpEnabled(true);
+
+        TextView titleTextView = view.findViewById(R.id.title_summary);
+        titleTextView.setText(getResources().getString(R.string.settings_default_devices_list) + " : " + String.valueOf(defaultDeviceManager.countDefaultDevices()));
+
 
         recyclerView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -89,7 +109,10 @@ public class SettingActivity extends AppCompatActivity implements SettingsListAd
 
         new ItemTouchHelper(itemTouchHelperCallbackDelete).attachToRecyclerView(recyclerView);
 
-        settings_listAdapter = new SettingsListAdapter(view.getContext(), Arrays.copyOf(SettingsDialogs.deviceName.toArray(), SettingsDialogs.deviceName.size(), String[].class), this, Arrays.copyOf(SettingsDialogs.devicePower.toArray(), SettingsDialogs.devicePower.size(), String[].class), Arrays.copyOf(SettingsDialogs.deviceNumber.toArray(), SettingsDialogs.deviceNumber.size(), String[].class), Arrays.copyOf(SettingsDialogs.deviceTimeWork.toArray(), SettingsDialogs.deviceTimeWork.size(), String[].class));
+        settings_listAdapter = new SettingsListAdapter(view.getContext(), Arrays.copyOf(SettingsDialogs.deviceName.toArray(),
+                SettingsDialogs.deviceName.size(), String[].class), this, Arrays.copyOf(SettingsDialogs.devicePower.toArray(),
+                SettingsDialogs.devicePower.size(), String[].class), Arrays.copyOf(SettingsDialogs.deviceNumber.toArray(), SettingsDialogs.deviceNumber.size(),
+                String[].class), Arrays.copyOf(SettingsDialogs.deviceTimeWork.toArray(), SettingsDialogs.deviceTimeWork.size(), String[].class));
 
         recyclerView.setAdapter(settings_listAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
@@ -204,7 +227,10 @@ public class SettingActivity extends AppCompatActivity implements SettingsListAd
             if(!getValue().isEmpty()){
                 value = getValue();
                 sqlLiteDBHelper.setVariable("powerCost", value);
-                homeFragment.refresh(HomeFragment.root);
+                if (HomeFragment.root != null) {
+                    homeFragment.refresh(HomeFragment.root);
+                }
+
                 if (RoomListFragment.root != null) {
                     roomListFragment.generateChart(RoomListFragment.root);
                     roomListFragment.refreshTable(RoomListFragment.root);
@@ -225,7 +251,10 @@ public class SettingActivity extends AppCompatActivity implements SettingsListAd
         } else {
             defaultCurrency = getDefaultCurrency();
             sqlLiteDBHelper.setVariable("defaultCurrency", defaultCurrency);
-            homeFragment.refresh(HomeFragment.root);
+
+            if (HomeFragment.root != null) {
+                homeFragment.refresh(HomeFragment.root);
+            }
 
             if (RoomListFragment.root != null) {
                 roomListFragment.generateChart(RoomListFragment.root);
@@ -280,7 +309,9 @@ public class SettingActivity extends AppCompatActivity implements SettingsListAd
             settings_listAdapter.notifyItemChanged(position);
         }
         @Override
-        public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+        public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView,
+                                @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY,
+                                int actionState, boolean isCurrentlyActive) {
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
             new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
                     .addBackgroundColor(ContextCompat.getColor(view.getContext(), R.color.red))
@@ -295,9 +326,17 @@ public class SettingActivity extends AppCompatActivity implements SettingsListAd
         DefaultDeviceManager defaultDeviceManager = new DefaultDeviceManager(root.getContext());
         settingsDialogs.clearRoomList();
         settingsDialogs.ViewDataFromDB(defaultDeviceManager.getDefaultDeviceList());
-        settings_listAdapter = new SettingsListAdapter(view.getContext(), Arrays.copyOf(SettingsDialogs.deviceName.toArray(), SettingsDialogs.deviceName.size(), String[].class), this, Arrays.copyOf(SettingsDialogs.devicePower.toArray(), SettingsDialogs.devicePower.size(), String[].class), Arrays.copyOf(SettingsDialogs.deviceNumber.toArray(), SettingsDialogs.deviceNumber.size(), String[].class), Arrays.copyOf(SettingsDialogs.deviceTimeWork.toArray(), SettingsDialogs.deviceTimeWork.size(), String[].class));
+        settings_listAdapter = new SettingsListAdapter(view.getContext(), Arrays.copyOf(SettingsDialogs.deviceName.toArray(),
+                SettingsDialogs.deviceName.size(), String[].class), this, Arrays.copyOf(SettingsDialogs.devicePower.toArray(),
+                SettingsDialogs.devicePower.size(), String[].class), Arrays.copyOf(SettingsDialogs.deviceNumber.toArray(),
+                SettingsDialogs.deviceNumber.size(), String[].class), Arrays.copyOf(SettingsDialogs.deviceTimeWork.toArray(),
+                SettingsDialogs.deviceTimeWork.size(), String[].class));
         RecyclerView recyclerView = root.findViewById(R.id.RecyckerViewSettings);
         recyclerView.setAdapter(settings_listAdapter);
+
+        TextView titleTextView = view.findViewById(R.id.title_summary);
+        titleTextView.setText(root.getResources().getString(R.string.settings_default_devices_list) + " : " + String.valueOf(defaultDeviceManager.countDefaultDevices()));
+
     }
 
     public static void hideKeyboard(Activity activity) {

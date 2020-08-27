@@ -40,6 +40,10 @@ public class SettingsDialogs {
 
         final Button buttonTimePicker = dialog.findViewById(R.id.buttonTimePicker);
 
+        Button buttonColorPicker = dialog.findViewById(R.id.buttonColorPicker);
+        buttonColorPicker.setEnabled(false);
+        buttonColorPicker.setVisibility(View.INVISIBLE);
+
         Switch is24hSwitch = dialog.findViewById(R.id.switch1);
         final int[] h = new int[1];
         final int[] m = new int[1];
@@ -260,6 +264,10 @@ public class SettingsDialogs {
         dialog.setContentView(R.layout.device_edit_dialog_layout_no_spinner);
         dialog.setCancelable(false);
         dialog.show();
+
+        Button buttonColorPicker = dialog.findViewById(R.id.buttonColorPicker);
+        buttonColorPicker.setEnabled(false);
+        buttonColorPicker.setVisibility(View.INVISIBLE);
 
         viewDeviceInfoFromDB(defaultDeviceManager.getDetailsDefaultDevice(oldDeviceName));
         Button buttonDialogAccept = dialog.findViewById(R.id.buttonDialogAccept);

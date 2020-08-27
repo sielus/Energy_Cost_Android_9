@@ -69,6 +69,7 @@
                             android:layout_height="wrap_content"
                             android:inputType="numberDecimal"
                             android:maxLength="8"
+
                             android:digits="0123456789"
                             android:textColor="@color/white" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -225,7 +226,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="8dp"
                 ads:adSize="LARGE_BANNER"
-                ads:adUnitId="ca-app-pub-8486454550638664/8407231843"
+                ads:adUnitId="@string/banner_calculator"
                 ads:layout_constraintEnd_toEndOf="parent"
                 ads:layout_constraintStart_toStartOf="parent"
                 ads:layout_constraintTop_toBottomOf="@+id/buttonCalcCostEnergy">

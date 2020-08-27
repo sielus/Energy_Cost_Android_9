@@ -35,6 +35,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
+
+
 import top.defaults.colorpicker.ColorObserver;
 import top.defaults.colorpicker.ColorPickerView;
 
@@ -233,6 +235,20 @@ public class Dialogs {
 
                                 GenerateTableEditRoom generateTableEditRoom = new GenerateTableEditRoom();
                                 generateTableEditRoom.refreshTable(view,defaultCurrency,room_name,numberAfterDot);
+
+//                                new MaterialIntroView.Builder(RoomEditManager.activity)
+//                                        .enableDotAnimation(true)
+//                                        .enableIcon(false)
+//                                        .setFocusGravity(FocusGravity.RIGHT)
+//                                        .setFocusType(Focus.MINIMUM)
+//                                        .setDelayMillis(500)
+//                                        .enableFadeAnimation(true)
+//                                        .performClick(false)
+//                                        .setInfoText(v.getResources().getString(R.string.tutorial_new_device))
+//                                        .setShape(ShapeType.RECTANGLE)
+//                                        .setTarget(RoomEditManager.view.findViewById(R.id.RecyckerView))
+//                                        .setUsageId("editRoomDeviceListTut") //THIS SHOULD BE UNIQUE ID
+//                                        .show();
                             } catch (SQLEnergyCostException.WrongTime wrongTime) {
                                 Toast.makeText(view.getContext(),wrongTime.getMessage(),Toast.LENGTH_SHORT).show();
                             }
@@ -641,6 +657,8 @@ public class Dialogs {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.room_list_dialog);
         dialog.show();
+        
+        // TODO: 8/20/2020 Dodać listę domyślnych pokoi
 
         final RoomListFragment roomListFragment = new RoomListFragment();
 
@@ -724,6 +742,9 @@ public class Dialogs {
                         pieChart.setVisibility(View.VISIBLE);
                         RoomListFragment.hideKeyboard(activity);
                         dialog.dismiss();
+
+
+
                         Toast.makeText(view.getContext(),R.string.toast_room_added,Toast.LENGTH_SHORT).show();
                     }catch (SQLEnergyCostException.DuplicationRoom | SQLEnergyCostException.EmptyField errorMessage) {
                         text_field_inputRoomNameLayout.setError(errorMessage.getMessage());

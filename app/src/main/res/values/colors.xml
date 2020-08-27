@@ -11,6 +11,12 @@
     <color name="startBart">#330867</color>
     <color name="disabled">#B7B9BA</color>
     <color name="about_us">#7605FF</color>
+    <color name="tutorial">#AD0CDA</color>
+    <color name="tutorialWithNoListener">#16C6C6</color>
+    <color name="tutorialWithNoListenerSecond">#092ACF</color>
+    <color name="tutorialSetingsColor">#16C6C6</color>
+
+
 </resources>
 
 

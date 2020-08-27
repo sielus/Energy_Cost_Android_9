@@ -10,10 +10,13 @@
 
     tools:context=".ui.rooms.RoomListFragment">
 
+
     <ScrollView
         android:id="@+id/scrollView3"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="39dp"
+        tools:layout_editor_absoluteY="0dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/ConstraintLayoutRoomList"
@@ -21,31 +24,14 @@
             android:layout_height="match_parent">
 
 
-            <com.google.android.gms.ads.AdView
-                android:id="@+id/adViewRooms"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-
-
-                android:layout_marginBottom="8dp"
-                app:adSize="LARGE_BANNER"
-                app:adUnitId="ca-app-pub-8486454550638664/5510439914"
-                app:layout_constraintBottom_toTopOf="@+id/RecyckerView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/RecyckerView"
                 android:layout_width="match_parent"
                 android:layout_height="234dp"
-
-                android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/adView">
+                app:layout_constraintTop_toBottomOf="@+id/adViewRooms">
 
             </androidx.recyclerview.widget.RecyclerView>
 
@@ -54,6 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="127dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="127dp"
                 android:layout_marginBottom="10dp"
                 android:fontFamily="@font/lato_light"
@@ -331,11 +318,23 @@
 
             </com.github.mikephil.charting.charts.PieChart>
 
+            <com.google.android.gms.ads.AdView
+                android:id="@+id/adViewRooms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+
+
+                app:adSize="LARGE_BANNER"
+                app:adUnitId="@string/banner_room_list"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
-
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/buttonAddRoom"

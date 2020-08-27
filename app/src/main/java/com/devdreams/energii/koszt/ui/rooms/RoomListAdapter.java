@@ -9,12 +9,18 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.devdreams.energii.koszt.R;
+import com.devdreams.energii.koszt.ui.SQLLiteDBHelper;
+import com.devdreams.energii.koszt.ui.TutorialShowcase;
+
+import co.mobiwise.materialintro.shape.ShapeType;
+
 
 public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.MyViewHolder> {
     private String[] roomName;
     private String[] roomNameKwh;
     private Context context;
     private onNoteListener onNoteListener;
+    static public View view;
 
     public RoomListAdapter(Context context, String[] roomName, onNoteListener onNoteListener, String[] roomNameKwh){
         this.context = context;
@@ -27,7 +33,15 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.MyView
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.row, parent,false);
+        view = inflater.inflate(R.layout.row, parent,false);
+
+        SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
+        RoomListFragment roomListFragment = new RoomListFragment();
+        if(roomListFragment.checkFirstRun(view,sqlLiteDBHelper)){
+            TutorialShowcase tutorialShowcase = new TutorialShowcase(RoomListFragment.activity);
+            tutorialShowcase.tutorialBright(view, ShapeType.RECTANGLE,null,"roomRow");
+        }
+
         return new MyViewHolder(view, onNoteListener);
     }
 
@@ -36,6 +50,7 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.MyView
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.textViewName.setText(roomName[position]);
         holder.textViewSecond.setText(Float.parseFloat(roomNameKwh[position]) / 1000 + " kWh");
+
     }
 
     @Override
