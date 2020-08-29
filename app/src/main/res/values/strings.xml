@@ -130,6 +130,7 @@
     <string name="banner_room_list" translatable="false">ca-app-pub-8486454550638664/5510439914</string>
     <string name="banner_sun_energy" translatable="false">ca-app-pub-8486454550638664/2259915454</string>
     <string name="banner_room_edit" translatable="false">ca-app-pub-8486454550638664/7512242131</string>
+    <string name="disable_ads">Disable Ads</string>
 
 
 </resources>
