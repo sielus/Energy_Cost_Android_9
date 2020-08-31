@@ -4,10 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.view.menu.ActionMenuItemView;
-
 import com.android.billingclient.api.AcknowledgePurchaseParams;
 import com.android.billingclient.api.AcknowledgePurchaseResponseListener;
 import com.android.billingclient.api.BillingClient;
@@ -21,6 +19,7 @@ import com.android.billingclient.api.SkuDetailsParams;
 import com.android.billingclient.api.SkuDetailsResponseListener;
 import com.devdreams.energii.koszt.MainActivity;
 import com.devdreams.energii.koszt.R;
+import com.devdreams.energii.koszt.ui.rooms.RoomListFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +27,7 @@ import java.util.List;
 public class BillingManage {
     public static BillingClient billingClient;
     Context context;
+
     BillingClientStateListener billingClientStateListener;
     final PurchasesUpdatedListener purchaseUpdateListener = new PurchasesUpdatedListener() {
         @Override
@@ -62,7 +62,9 @@ public class BillingManage {
         billingClientStateListener = new BillingClientStateListener() {
             @Override
             public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
-
+                if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.ERROR){
+                Toast.makeText(context,billingResult.getDebugMessage(),Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
@@ -110,29 +112,27 @@ public class BillingManage {
     }
 
     void disableAds() {
-        //TODO po sprawdzeniu zapłaty zgodnie z tokenem, wykonać odpowiednie czynnosci
-        //Dodac wpis do bazy w stylu loadAds = false | zrobić update (nie insert) tzn funkcje za kazdym razem są odpalane
         Toast.makeText(context, "disableAds", Toast.LENGTH_SHORT).show();
         ActionMenuItemView menuItem = MainActivity.view.findViewById(R.id.disable_ads);
         if(menuItem != null){
             menuItem.setVisibility(View.INVISIBLE);
         }
+        MainActivity.runAds = false;
 
     }
     void enableAds(){
         Toast.makeText(context, "enableAds", Toast.LENGTH_SHORT).show();
-        //TODO po sprawdzeniu zapłaty zgodnie z tokenem, wykonać odpowiednie czynnosci
-        //Dodac wpis do bazy w stylu loadAds = true | zrobić update (nie insert) tzn funkcje za kazdym razem są odpalane
         ActionMenuItemView menuItem = MainActivity.view.findViewById(R.id.disable_ads);
         if(menuItem != null){
             menuItem.setVisibility(View.VISIBLE);
         }
+        MainActivity.runAds = true; // TODO dodac do bazy sql
+
     }
 
     public void startPurchase(final Activity activity) {
-
         List<String> skuList = new ArrayList<>();
-        skuList.add("xxxx.xddd.test");
+        skuList.add("xddddddd.testttt");
         final SkuDetailsParams.Builder params = SkuDetailsParams.newBuilder();
         params.setSkusList(skuList).setType(BillingClient.SkuType.INAPP);
         billingClient.querySkuDetailsAsync(params.build(),
@@ -147,6 +147,4 @@ public class BillingManage {
                     }
                 });
     }
-
-
 }

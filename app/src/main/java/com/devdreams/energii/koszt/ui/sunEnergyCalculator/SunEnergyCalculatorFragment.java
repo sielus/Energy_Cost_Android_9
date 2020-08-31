@@ -16,6 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+
+import com.devdreams.energii.koszt.MainActivity;
 import com.devdreams.energii.koszt.R;
 import com.devdreams.energii.koszt.ui.SQLLiteDBHelper;
 import com.devdreams.energii.koszt.ui.settings.SettingActivity;
@@ -37,11 +39,11 @@ public class SunEnergyCalculatorFragment extends Fragment {
         root = inflater.inflate(R.layout.fragment_sun_energy_calculator_layout, container, false);
         Button getHomeKWHButton = root.findViewById(R.id.getHomeKWHButton);
         setNewDefaultCurrency(root);
-
-        mAdView = root.findViewById(R.id.adViewSun);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
-
+        if(MainActivity.runAds){
+            mAdView = root.findViewById(R.id.adViewSun);
+            AdRequest adRequest = new AdRequest.Builder().build();
+            mAdView.loadAd(adRequest);
+        }
 
         final TextView kwhUsage = root.findViewById(R.id.kwhUsage);
         final SunEnergyCalculator sunEnergyCalculator = new SunEnergyCalculator(root.getContext());
@@ -57,7 +59,6 @@ public class SunEnergyCalculatorFragment extends Fragment {
         final TextView moduleEfficiencyPercentText = root.findViewById(R.id.moduleEfficiencyPercect);
 
         final TextInputLayout kwhCostLayout = root.findViewById(R.id.kwhCostLayout);
-
 
         moduleEfficiency.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override

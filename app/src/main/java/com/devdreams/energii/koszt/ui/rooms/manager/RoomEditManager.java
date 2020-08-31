@@ -18,7 +18,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TableLayout;
+import android.widget.Toast;
+
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+import com.devdreams.energii.koszt.MainActivity;
 import com.devdreams.energii.koszt.R;
 import com.devdreams.energii.koszt.ui.SQLLiteDBHelper;
 import com.devdreams.energii.koszt.ui.TutorialShowcase;
@@ -104,17 +107,20 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
 
-        if(deviceManager.getRoomDeviceList(room_name).getCount()!=0){
-            mAdView = view.findViewById(R.id.adViewEditManager);
-            AdRequest adRequest = new AdRequest.Builder().build();
-            mAdView.loadAd(adRequest);
+        if(!RoomListFragment.checkFirstRun(view,sqlLiteDBHelper)){
+            if(MainActivity.runAds){
+                mAdView = view.findViewById(R.id.adViewEditManager);
+                AdRequest adRequest = new AdRequest.Builder().build();
+                mAdView.loadAd(adRequest);
+                Toast.makeText(this,"urucho",Toast.LENGTH_SHORT).show();
+            }else {
+                Toast.makeText(this,"fix",Toast.LENGTH_SHORT).show();
+                fixLayoutAds();
+            }
         }else{
-            ConstraintLayout constraintLayout = view.findViewById(R.id.deviceListConstraintLayout);
-            ConstraintSet constraintSet = new ConstraintSet();
-            constraintSet.clone(constraintLayout);
-            constraintSet.connect(recyclerView.getId(),ConstraintSet.TOP,ConstraintSet.PARENT_ID,ConstraintSet.TOP,0);
-            constraintSet.applyTo(constraintLayout);
+                fixLayoutAds();
         }
 
         final FloatingActionButton floatingActionButtonAddDevice = findViewById(R.id.addButonfl);
@@ -128,6 +134,14 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
                 dialogs.showDialogAddDevice(view,room_name,numberAfterDot,defaultCurrency);
             }
         });
+    }
+
+    private void fixLayoutAds() {
+        ConstraintLayout constraintLayout = view.findViewById(R.id.deviceListConstraintLayout);
+        ConstraintSet constraintSet = new ConstraintSet();
+        constraintSet.clone(constraintLayout);
+        constraintSet.connect(recyclerView.getId(),ConstraintSet.TOP,ConstraintSet.PARENT_ID,ConstraintSet.TOP,0);
+        constraintSet.applyTo(constraintLayout);
     }
 
     @Override
@@ -168,12 +182,13 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         return true;
     }
 
-    private void fixLayoutAds(AdView mAdView) {
+    private void reloadAdsLayout(AdView mAdView) {
         RecyclerView recyclerView = RoomListFragment.root.findViewById(R.id.RecyckerView);
         ConstraintLayout constraintLayout = RoomListFragment.root.findViewById(R.id.ConstraintLayoutRoomList);
         ConstraintSet constraintSet = new ConstraintSet();
         constraintSet.clone(constraintLayout);
         constraintSet.connect(recyclerView.getId(),ConstraintSet.TOP, mAdView.getId(),ConstraintSet.BOTTOM,0);
+
         constraintSet.applyTo(constraintLayout);
     }
 
@@ -191,7 +206,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
             RoomListFragment.adRequest = new AdRequest.Builder().build();
             mAdView.loadAd(RoomListFragment.adRequest);
         }
-        fixLayoutAds(mAdView);
+        reloadAdsLayout(mAdView);
         fullRefreshRoomList();
         super.onBackPressed();
         Animatoo.animateSlideRight(this);

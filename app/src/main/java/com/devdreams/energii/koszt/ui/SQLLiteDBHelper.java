@@ -26,7 +26,7 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         String numberAfterDot;
         String defaultDevice;
         String firstRunTutFirst;
-
+        String token;
 
         String roomListTable = "CREATE TABLE room_list " +
                                     "(" +
@@ -41,7 +41,7 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         String configurationVariableTable = "CREATE TABLE configuration_variable " +
                                                 "(" +
                                                     " name varchar(100) PRIMARY KEY, " +
-                                                    " value varchar(100) NOT NULL UNIQUE " +
+                                                    " value varchar(300) NOT NULL UNIQUE " +
                                                 ");";
         db.execSQL(configurationVariableTable);
 
@@ -56,9 +56,10 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         db.execSQL(defaultDeviceTable);
 
         firstRunTutFirst = "INSERT INTO configuration_variable (name, value) values (\"runTutFir\", \"false\")";
-
         addVariable = "INSERT INTO configuration_variable (name, value) values (\"powerCost\", \"0.60\"), (\"defaultCurrency\", ?)";
         numberAfterDot = "INSERT INTO configuration_variable (name, value) values (\"numberAfterDot\", \"2\")";
+        token = "INSERT INTO configuration_variable (name, value) values (\"token\", \"\")";
+
         defaultDevice = "INSERT INTO default_device_settings (name, power_value, work_time, device_number) values (?, 15, \"2:0\", 1)," +
                                                                                                                  "(?, 0.1, \"24:0\", 1)," +
                                                                                                                  "(?, 35, \"24:0\", 1)," +
@@ -94,7 +95,7 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         db.execSQL(addVariable, new String[] {context.getResources().getString(R.string.currency_type)});
         db.execSQL(numberAfterDot);
         db.execSQL(firstRunTutFirst);
-
+        db.execSQL(token);
     }
 
     @Override
@@ -140,13 +141,33 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         dbWriter.update("configuration_variable", contentValues, where, new String[]{variableName});
     }
 
-    protected String changeSpaceInName(String name) {
-        return name.trim().replace(" ", "_");
+    public void addTokenToDB(String token) {
+        SQLiteDatabase dbWriter = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        String where = "name = \"token\"";
+
+        contentValues.put("value", token);
+
+        dbWriter.update("configuration_variable", contentValues, where, null);
     }
 
-    public void addTokenToDB(String token) {
-        //TODO funkcja dodania tokenu, długi string
-        //bhdjilpkjjgpjckmahakgmjc.AO-J1OwUogYFF2zXaZtBOckqdbPc4J2ut0M6W7GcvHZw0mZXoJ9WjP9y4MXKKYEXAIHVXqSR9P9Bm6EzTszZHVX_VoxI9GxHezN4BnAWInet5QRT7ugt6UZF9b9JZxSCgJb8gotfJJmg
-        // taki przykład
+    @SuppressLint("Recycle")
+    public String getTokenFromDB(){
+        SQLiteDatabase dbhRead = getReadableDatabase();
+        String query;
+        Cursor cursor;
+
+        query = "SELECT value " +
+                "FROM   configuration_variable " +
+                "WHERE  name = \"token\"";
+
+        cursor = dbhRead.rawQuery(query, null);
+
+        cursor.moveToFirst();
+        return cursor.getString(0);
+    }
+
+    protected String changeSpaceInName(String name) {
+        return name.trim().replace(" ", "_");
     }
 }

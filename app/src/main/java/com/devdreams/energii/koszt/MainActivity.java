@@ -13,6 +13,7 @@ import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.devdreams.energii.koszt.ui.BillingManage;
+import com.devdreams.energii.koszt.ui.SQLLiteDBHelper;
 import com.devdreams.energii.koszt.ui.settings.SettingActivity;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     BillingManage billingManage;
     static DrawerLayout drawer;
     BillingClientStateListener billingClientStateListener;
+    public static Boolean runAds = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,8 +99,10 @@ public class MainActivity extends AppCompatActivity {
 
 
     private String getUserTokenFromDB() {
+        SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(this);
+
         //TODO Funkcja zwrotna tokenu z bazy
-        return "aoenjfcelmnkknjmeldphlcb.AO-J1OxHNqNIk4r021jajctxmlqYK8d3zYUc4_FnDAHySn8ldlQO87WLZwhxGVZuDhNbD6HKvM_OSHrAsijGBRnqMBMY89flRQ0sS9h-Bzj-1bt2HwI-7mwnXkWYm3eoVLFfVw3miAky";
+        return sqlLiteDBHelper.getTokenFromDB();
     }
 
     @Override

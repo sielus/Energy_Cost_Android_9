@@ -20,6 +20,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+
+import com.devdreams.energii.koszt.MainActivity;
 import com.devdreams.energii.koszt.R;
 import com.devdreams.energii.koszt.ui.SQLLiteDBHelper;
 import com.devdreams.energii.koszt.ui.settings.SettingActivity;
@@ -74,10 +76,12 @@ public class HomeFragment extends Fragment {
                 return false;
             }
         });
+        if(MainActivity.runAds){
+            mAdView = root.findViewById(R.id.adViewHome);
+            AdRequest adRequest = new AdRequest.Builder().build();
+            mAdView.loadAd(adRequest);
+        }
 
-        mAdView = root.findViewById(R.id.adViewHome);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
 
 
 

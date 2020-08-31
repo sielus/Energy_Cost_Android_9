@@ -37,6 +37,7 @@
             app:counterMaxLength="4"
             app:counterTextAppearance="@style/CounterOverFlow"
             app:errorEnabled="true"
+            app:layout_constraintBottom_toTopOf="@+id/text_field_inputinputDefaultCurrencyGlobal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -53,31 +54,30 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_field_inputinputDefaultCurrencyGlobal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="22dp"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="22dp"
-            app:counterTextAppearance="@style/CounterOverFlow"
-            app:boxBackgroundMode="outline"
-            android:id="@+id/text_field_inputinputDefaultCurrencyGlobal"
-            app:errorEnabled="true"
-
             android:textColorHint="@color/white"
+            app:boxBackgroundMode="outline"
             app:counterEnabled="true"
+
             app:counterMaxLength="3"
+            app:counterTextAppearance="@style/CounterOverFlow"
+            app:errorEnabled="true"
             app:layout_constraintBottom_toTopOf="@+id/calculatorTable"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_field_inputinputEnergyCostGlobal">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputDefaultCurrencyGlobal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="@string/settings_currency_global"
                 android:maxLength="3"
-                android:id="@+id/inputDefaultCurrencyGlobal"
-                android:textColor="@color/white"
-                android:hint="@string/settings_currency_global" />
+                android:textColor="@color/white" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <TableLayout
