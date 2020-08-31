@@ -3,33 +3,23 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.android.billingclient.api.AcknowledgePurchaseParams;
-import com.android.billingclient.api.AcknowledgePurchaseResponseListener;
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
-import com.android.billingclient.api.BillingFlowParams;
-import com.android.billingclient.api.BillingResult;
-import com.android.billingclient.api.ConsumeParams;
-import com.android.billingclient.api.ConsumeResponseListener;
-import com.android.billingclient.api.Purchase;
-import com.android.billingclient.api.PurchasesUpdatedListener;
-import com.android.billingclient.api.SkuDetails;
-import com.android.billingclient.api.SkuDetailsParams;
-import com.android.billingclient.api.SkuDetailsResponseListener;
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+import com.devdreams.energii.koszt.ui.BillingManage;
 import com.devdreams.energii.koszt.ui.settings.SettingActivity;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.navigation.NavigationView;
 
-import androidx.annotation.NonNull;
+import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -37,18 +27,16 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity{
-    public View view;
+public class MainActivity extends AppCompatActivity {
+    public static View view;
     private AppBarConfiguration mAppBarConfiguration;
     public static Toolbar toolbar;
     BillingClient billingClient;
+    BillingManage billingManage;
+    static DrawerLayout drawer;
     BillingClientStateListener billingClientStateListener;
-    Purchase purchaseTest;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +44,10 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        final DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer = findViewById(R.id.drawer_layout);
         final NavigationView navigationView = findViewById(R.id.nav_view);
         view = this.findViewById(android.R.id.content);
+
 
         View headerView = navigationView.getHeaderView(0);
         final TextView studioMail = headerView.findViewById(R.id.studioMail);
@@ -75,54 +64,25 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
-        final PurchasesUpdatedListener purchaseUpdateListener = new PurchasesUpdatedListener() {
+
+
+        billingManage = new BillingManage(this);
+        billingManage.initializeClient();
+        billingClient = BillingManage.billingClient;
+      //  billingClient.startConnection(billingClientStateListener);
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
             @Override
-            public void onPurchasesUpdated(BillingResult billingResult, List<Purchase> purchases) {
-                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK
-                        && purchases != null) {
-                    for (Purchase purchase : purchases) {
-                        handlePurchase(purchase);
-                    }
-                } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.USER_CANCELED) {
-                    // Handle an error caused by a user cancelling the purchase flow.
-                } else {
-                    // Handle any other error codes.
-                    Toast.makeText(MainActivity.this,billingResult.getDebugMessage(),Toast.LENGTH_SHORT).show();
-                    if(purchases != null){
-                        for (Purchase purchase : purchases) {
-                            Toast.makeText(MainActivity.this,purchase.getPurchaseState(),Toast.LENGTH_SHORT).show();
-                        }
+            public void run() {
+
+                if(billingClient.isReady()) {
+                    if(getUserTokenFromDB() != null){
+                        billingManage.checkPurchase(getUserTokenFromDB(),false);
                     }
                 }
             }
-        };
-            billingClient = BillingClient.newBuilder(this)
-                .setListener(purchaseUpdateListener)
-                .enablePendingPurchases()
-                .build();
-
-            billingClientStateListener = new BillingClientStateListener() {
-                @Override
-                public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
-                    if (billingResult.getResponseCode() ==  BillingClient.BillingResponseCode.OK) {
-                        Toast.makeText(MainActivity.this,"Sukces",Toast.LENGTH_SHORT).show();
-
-
-                    }else {
-
-                        Toast.makeText(MainActivity.this,"Error " + String.valueOf(billingResult.getDebugMessage()),Toast.LENGTH_SHORT).show();
-                    }
-                }
-
-                @Override
-                public void onBillingServiceDisconnected() {
-                    billingClient.startConnection(this);
-
-                }
-            };
-
-        billingClient.startConnection(billingClientStateListener);
-      //  checkPurchase(); todo przechowywać tokem w bazie, sprawdzać czy zapłata jest aktualna
+        }, 1000);
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home, R.id.nav_rooms, R.id.nav_fragment_sun_energy_calculator_layout, R.id.nav_about_us)
@@ -131,42 +91,14 @@ public class MainActivity extends AppCompatActivity{
         NavController navController = Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(MainActivity.this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
     }
 
-    private void checkPurchase() {
-        System.out.println(this.purchaseTest);
-        AcknowledgePurchaseParams acknowledgePurchaseParams =
-                AcknowledgePurchaseParams.newBuilder()
-                        .setPurchaseToken(this.purchaseTest.getPurchaseToken())
-                        .build();
 
-        AcknowledgePurchaseResponseListener acknowledgePurchaseResponseListener = new AcknowledgePurchaseResponseListener() {
-            @Override
-            public void onAcknowledgePurchaseResponse(BillingResult billingResult) {
 
-                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-                    Toast.makeText(MainActivity.this, "consumeResponseListener OK ", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(MainActivity.this, billingResult.getDebugMessage() + " consumeResponseListener", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-        };
-        billingClient.acknowledgePurchase(acknowledgePurchaseParams, acknowledgePurchaseResponseListener);
-    }
-
-    void handlePurchase(final Purchase purchase) {
-        // Purchase retrieved from BillingClient#queryPurchases or your PurchasesUpdatedListener.
-        // Verify the purchase.
-        // Ensure entitlement was not already granted for this purchaseToken.
-        // Grant entitlement to the user.
-        Toast.makeText(MainActivity.this, "listener", Toast.LENGTH_SHORT).show();
-        this.purchaseTest = purchase;
-        this.checkPurchase();
-    }
-
-    void disableAds() {
-        //TODO po sprawdzeniu zapłaty zgodnie z tokenem, wykonać odpowiednie czynnosci
+    private String getUserTokenFromDB() {
+        //TODO Funkcja zwrotna tokenu z bazy
+        return "aoenjfcelmnkknjmeldphlcb.AO-J1OxHNqNIk4r021jajctxmlqYK8d3zYUc4_FnDAHySn8ldlQO87WLZwhxGVZuDhNbD6HKvM_OSHrAsijGBRnqMBMY89flRQ0sS9h-Bzj-1bt2HwI-7mwnXkWYm3eoVLFfVw3miAky";
     }
 
     @Override
@@ -184,39 +116,27 @@ public class MainActivity extends AppCompatActivity{
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_settings) {
-          //  Intent intent = new Intent(this, SettingActivity.class);
-          //  startActivity(intent);
-          //  Animatoo.animateSlideLeft(MainActivity.this);
-            checkPurchase();
+            openSettings();
             return true;
         }else if(item.getItemId() == R.id.disable_ads){
-            if(billingClient.isReady()){
-                startPurchase();
-            }else{
-                billingClient.startConnection(this.billingClientStateListener);
-                Toast.makeText(MainActivity.this,"Brak połaczenia z internetem lub inny bła",Toast.LENGTH_SHORT).show();
-            }
+            openStartBillingDialog();
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void startPurchase() {
+    private void openStartBillingDialog() {
+        if(billingClient.isReady()){
+            billingManage.startPurchase(this);
+        }else{
+            billingClient.startConnection(this.billingClientStateListener);
+            Toast.makeText(MainActivity.this,getResources().getString(R.string.billing_no_connect),Toast.LENGTH_SHORT).show();
+        }
+    }
 
-        List<String> skuList = new ArrayList<>();
-        skuList.add("xdd.test.tenn");
-        final SkuDetailsParams.Builder params = SkuDetailsParams.newBuilder();
-        params.setSkusList(skuList).setType(BillingClient.SkuType.INAPP);
-        billingClient.querySkuDetailsAsync(params.build(),
-                new SkuDetailsResponseListener() {
-                    @Override
-                    public void onSkuDetailsResponse(BillingResult billingResult,
-                                                     List<SkuDetails> skuDetailsList) {
-                        BillingFlowParams billingFlowParams = BillingFlowParams.newBuilder()
-                                .setSkuDetails(skuDetailsList.get(0))
-                                .build();
-                        billingClient.launchBillingFlow(MainActivity.this, billingFlowParams);
-                    }
-                });
+    private void openSettings() {
+          Intent intent = new Intent(this, SettingActivity.class);
+          startActivity(intent);
+          Animatoo.animateSlideLeft(MainActivity.this);
     }
 
     private void copyMailtoCopyBoard(TextView studioMail) {
@@ -228,4 +148,6 @@ public class MainActivity extends AppCompatActivity{
         Objects.requireNonNull(myClipboard).setPrimaryClip(myClip);
         Toast.makeText(this,getResources().getString(R.string.mail),Toast.LENGTH_SHORT).show();
     }
+
+
 }

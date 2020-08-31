@@ -143,4 +143,10 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
     protected String changeSpaceInName(String name) {
         return name.trim().replace(" ", "_");
     }
+
+    public void addTokenToDB(String token) {
+        //TODO funkcja dodania tokenu, długi string
+        //bhdjilpkjjgpjckmahakgmjc.AO-J1OwUogYFF2zXaZtBOckqdbPc4J2ut0M6W7GcvHZw0mZXoJ9WjP9y4MXKKYEXAIHVXqSR9P9Bm6EzTszZHVX_VoxI9GxHezN4BnAWInet5QRT7ugt6UZF9b9JZxSCgJb8gotfJJmg
+        // taki przykład
+    }
 }

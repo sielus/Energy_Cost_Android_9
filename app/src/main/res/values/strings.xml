@@ -131,6 +131,11 @@
     <string name="banner_sun_energy" translatable="false">ca-app-pub-8486454550638664/2259915454</string>
     <string name="banner_room_edit" translatable="false">ca-app-pub-8486454550638664/7512242131</string>
     <string name="disable_ads">Disable Ads</string>
+    <string name="billing_canceled">User canceled transaction</string>
+    <string name="billing_item_already_owned">User already bought this item</string>
+    <string name="billing_verification_of_transaction">Verification of transaction</string>
+    <string name="billing_transaction_ok">"Transaction accepted "</string>
+    <string name="billing_no_connect">No conncection with Google Pay service</string>
 
 
 </resources>

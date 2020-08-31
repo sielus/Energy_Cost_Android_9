@@ -30,6 +30,7 @@
                     android:icon="@drawable/ic_baseline_info_24"
                     android:title="@string/nav_about_us" />
             </group>
+
         </menu>
     </item>
 
