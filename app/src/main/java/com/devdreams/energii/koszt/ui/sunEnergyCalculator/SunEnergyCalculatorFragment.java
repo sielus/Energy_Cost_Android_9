@@ -12,17 +12,10 @@ import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TableLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.devdreams.energii.koszt.MainActivity;
 import com.devdreams.energii.koszt.R;
 import com.devdreams.energii.koszt.ui.SQLLiteDBHelper;
 import com.devdreams.energii.koszt.ui.settings.SettingActivity;
@@ -192,15 +185,12 @@ public class SunEnergyCalculatorFragment extends Fragment {
     }
 
     public void runAdsInRoomList(SQLLiteDBHelper sqlLiteDBHelper, View root) {
-            Toast.makeText(root.getContext(),"ładowanie",Toast.LENGTH_SHORT).show();
 
             if(sqlLiteDBHelper.getEnableAds()){ //TODO Get boolen from db setEnableAds()
                 mAdView = root.findViewById(R.id.adViewSun);
                 AdRequest adRequest = new AdRequest.Builder().build();
                 mAdView.loadAd(adRequest);
-                Toast.makeText(MainActivity.view.getContext(),"runAdLayout",Toast.LENGTH_SHORT).show();
             }else{
-                Toast.makeText(MainActivity.view.getContext(),"runAdLayouyFalse",Toast.LENGTH_SHORT).show();
                 mAdView = root.findViewById(R.id.adViewSun);
                 fixLayoutAds(mAdView);
             }

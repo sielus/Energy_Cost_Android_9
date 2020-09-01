@@ -19,8 +19,6 @@ import com.android.billingclient.api.SkuDetailsParams;
 import com.android.billingclient.api.SkuDetailsResponseListener;
 import com.devdreams.energii.koszt.MainActivity;
 import com.devdreams.energii.koszt.R;
-import com.devdreams.energii.koszt.ui.rooms.RoomListFragment;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,7 +68,6 @@ public class BillingManage {
             @Override
             public void onBillingServiceDisconnected() {
                 billingClient.startConnection(this);
-
             }
         };
         billingClient.startConnection(billingClientStateListener);
@@ -101,7 +98,7 @@ public class BillingManage {
 
                 } else {
                     if(turnNotify) {
-                        Toast.makeText(context, billingResult.getDebugMessage() + "error acknowledgePurchaseResponseListener ", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, billingResult.getDebugMessage(), Toast.LENGTH_SHORT).show();
                     }
                     enableAds();
                 }
@@ -112,30 +109,26 @@ public class BillingManage {
     }
 
     void disableAds() {
-        Toast.makeText(context, "disableAds", Toast.LENGTH_SHORT).show();
         ActionMenuItemView menuItem = MainActivity.view.findViewById(R.id.disable_ads);
         if(menuItem != null){
             menuItem.setVisibility(View.INVISIBLE);
         }
         SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(this.context);
         sqlLiteDBHelper.setEnableAds(false);
-
     }
+
     void enableAds(){
-        Toast.makeText(context, "enableAds", Toast.LENGTH_SHORT).show();
         ActionMenuItemView menuItem = MainActivity.view.findViewById(R.id.disable_ads);
         if(menuItem != null){
             menuItem.setVisibility(View.VISIBLE);
         }
         SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(this.context);
         sqlLiteDBHelper.setEnableAds(true);
-        // TODO dodac do bazy sql
-
     }
 
     public void startPurchase(final Activity activity) {
         List<String> skuList = new ArrayList<>();
-        skuList.add("ads.test");
+        skuList.add("energy.cost.ads.disable");
         final SkuDetailsParams.Builder params = SkuDetailsParams.newBuilder();
         params.setSkusList(skuList).setType(BillingClient.SkuType.INAPP);
         billingClient.querySkuDetailsAsync(params.build(),

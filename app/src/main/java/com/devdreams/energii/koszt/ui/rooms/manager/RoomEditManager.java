@@ -18,9 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TableLayout;
-import android.widget.Toast;
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
-import com.devdreams.energii.koszt.MainActivity;
 import com.devdreams.energii.koszt.R;
 import com.devdreams.energii.koszt.ui.SQLLiteDBHelper;
 import com.devdreams.energii.koszt.ui.TutorialShowcase;
@@ -128,15 +126,11 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
     }
 
     public void runAdsInRoomList(SQLLiteDBHelper sqlLiteDBHelper, View root) {
-        Toast.makeText(root.getContext(),"ładowanie",Toast.LENGTH_SHORT).show();
-
         if(sqlLiteDBHelper.getEnableAds()){ //TODO Get boolen from db setEnableAds()
             mAdView = root.findViewById(R.id.adViewEditManager);
             AdRequest adRequest = new AdRequest.Builder().build();
             mAdView.loadAd(adRequest);
-            Toast.makeText(MainActivity.view.getContext(),"runAdLayout",Toast.LENGTH_SHORT).show();
         }else{
-            Toast.makeText(MainActivity.view.getContext(),"runAdLayouyFalse",Toast.LENGTH_SHORT).show();
             mAdView = root.findViewById(R.id.adViewHome);
             fixLayoutAds();
         }

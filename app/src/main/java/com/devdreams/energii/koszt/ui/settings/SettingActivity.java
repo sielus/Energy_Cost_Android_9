@@ -68,7 +68,6 @@ public class SettingActivity extends AppCompatActivity implements SettingsListAd
         roomListFragment = new RoomListFragment();
 
 
-
         setContentView(R.layout.activity_setting_);
         SeekBar seekBar = findViewById(R.id.seekBarNumericDecimal);
         RecyclerView recyclerView = view.findViewById(R.id.RecyckerViewSettings);
@@ -121,6 +120,7 @@ public class SettingActivity extends AppCompatActivity implements SettingsListAd
 
         inputDefaultCurrencyGlobal = view.findViewById(R.id.inputDefaultCurrencyGlobal);
         inputDefaultCurrencyGlobalLayout = view.findViewById(R.id.text_field_inputinputDefaultCurrencyGlobal);
+
         inputDefaultCurrencyGlobal.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -141,7 +141,7 @@ public class SettingActivity extends AppCompatActivity implements SettingsListAd
         int progress = Integer.parseInt(getNumberAfterDotFromDB(sqlLiteDBHelper.getVariable("numberAfterDot")));
 
         seekBar.setProgress(progress);
-
+        inputEnergyCostGlobal.clearFocus();
         inputEnergyCostGlobal.setText(ViewDataPowerCostFromDB(sqlLiteDBHelper.getVariable("powerCost")));
 
         final TextView textView = view.findViewById(R.id.textViewNumericView);

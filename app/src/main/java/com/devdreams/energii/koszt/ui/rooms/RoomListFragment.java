@@ -6,13 +6,10 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Canvas;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Advanceable;
-import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -39,8 +36,6 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.Arrays;
 import java.util.Objects;
-import android.content.SharedPreferences;
-import android.widget.Toast;
 
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
@@ -66,7 +61,6 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
         sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
         sqlLiteDBHelper.checkFirstRunApp();
         sqlLiteDBHelper.insertAdsEnable();
-
 
         pieChart =  root.findViewById(R.id.pieChart);
         BarChart barChart = root.findViewById(R.id.bartChart);
@@ -95,8 +89,6 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
                 Arrays.copyOf(Dialogs.roomNameKwhArray.toArray(), Dialogs.roomNameKwhArray.size(), String[].class));
 
          floatingActionButtonAddRoomDialog = root.findViewById(R.id.buttonAddRoom);
-
-
 
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
 
@@ -129,10 +121,8 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
             public void onClick(View v) {
 //                dialogs.showRoomListDialog(root,adapter,getActivity());
                 showDialogAddRoom();
-
             }
         });
-
         return root;
     }
 
@@ -140,22 +130,16 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
         SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
         AdView mAdView;
         if(!checkFirstRun(root,sqlLiteDBHelper)){
-            Toast.makeText(MainActivity.view.getContext(),"ładowanie",Toast.LENGTH_SHORT).show();
-            if(sqlLiteDBHelper.getEnableAds()){ //TODO Get boolen from db setEnableAds()
-
+            if(sqlLiteDBHelper.getEnableAds()){ //Get boolen from db getEnableAds() | setEnableAds()
                 mAdView = root.findViewById(R.id.adViewRooms);
                 adRequest = new AdRequest.Builder().build();
                 mAdView.loadAd(adRequest);
-                Toast.makeText(MainActivity.view.getContext(),"runAdLayout",Toast.LENGTH_SHORT).show();
                 fixLayoutWithAds(mAdView);
-                //TODO naprawić layout reklamy po ukończeniu tutorialu
             }else{
-                Toast.makeText(MainActivity.view.getContext(),"runAdLayouyFalse",Toast.LENGTH_SHORT).show();
                 fixLayoutAds(recyclerView);
             }
         }else{
             fixLayoutAds(recyclerView);
-            Toast.makeText(MainActivity.view.getContext(),"checkFirstRun fixLayoutAds",Toast.LENGTH_SHORT).show();
         }
 
     }

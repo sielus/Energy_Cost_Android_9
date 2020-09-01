@@ -41,10 +41,10 @@ public class RoomEditManagerListAdapter extends RecyclerView.Adapter<RoomEditMan
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull RoomEditManagerListAdapter.MyViewHolder holder, int position) {
-        holder.textViewName.setText(roomName[position]);
-        holder.textViewPower.setText(devicePower[position] + "W");
-        holder.textViewTimeWork.setText(deviceTimeWork[position]);
-        holder.textViewNumber.setText( deviceNumber[position]);
+        holder.textViewName.setText(" " + roomName[position]);
+        holder.textViewPower.setText(" " + devicePower[position] + "W");
+        holder.textViewTimeWork.setText(" " + deviceTimeWork[position]);
+        holder.textViewNumber.setText(" " + deviceNumber[position]);
         holder.imageView3bin.setColorFilter(Color.RED);
     }
 

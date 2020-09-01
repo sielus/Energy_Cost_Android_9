@@ -122,15 +122,12 @@ public class HomeFragment extends Fragment {
     }
 
     public void runAdsInRoomList(SQLLiteDBHelper sqlLiteDBHelper, View root) {
-        Toast.makeText(root.getContext(),"ładowanie",Toast.LENGTH_SHORT).show();
 
-        if(sqlLiteDBHelper.getEnableAds()){ //TODO Get boolen from db setEnableAds()
+        if(sqlLiteDBHelper.getEnableAds()){ //Get boolen from db setEnableAds()
             mAdView = root.findViewById(R.id.adViewHome);
             AdRequest adRequest = new AdRequest.Builder().build();
             mAdView.loadAd(adRequest);
-            Toast.makeText(MainActivity.view.getContext(),"runAdLayout",Toast.LENGTH_SHORT).show();
         }else{
-            Toast.makeText(MainActivity.view.getContext(),"runAdLayouyFalse",Toast.LENGTH_SHORT).show();
             mAdView = root.findViewById(R.id.adViewHome);
             fixLayoutAds(mAdView);
         }
@@ -204,7 +201,7 @@ public class HomeFragment extends Fragment {
         hideKeyboard(requireActivity());
     }
 
-    private static void hideKeyboard(Activity activity) {
+    public void hideKeyboard(Activity activity) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         View view = activity.getCurrentFocus();
 

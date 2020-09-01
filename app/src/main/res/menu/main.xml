@@ -13,6 +13,6 @@
         android:id="@+id/disable_ads"
         android:icon="@drawable/no_ads"
         android:orderInCategory="1"
-        android:title="@string/disable_ads"
+        android:title="Disable Ads"
         app:showAsAction="always" />
 </menu>
