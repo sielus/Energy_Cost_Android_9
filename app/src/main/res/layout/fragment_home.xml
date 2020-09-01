@@ -6,6 +6,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/home_layoutID"
+    android:focusableInTouchMode="true"
+    android:focusable="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient"
@@ -69,6 +71,7 @@
                             android:layout_height="wrap_content"
                             android:inputType="numberDecimal"
                             android:maxLength="8"
+                            android:focusable="true"
 
                             android:digits="0123456789"
                             android:textColor="@color/white" />
@@ -101,6 +104,8 @@
                             android:inputType="numberDecimal"
                             android:text="0.48"
                             android:maxLength="4"
+                            android:focusable="true"
+
                             android:textColor="@color/white" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -128,6 +133,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:digits="0123456789"
+                            android:focusable="true"
 
                             android:inputType="numberSigned"
                             android:maxLength="3"
@@ -175,6 +181,8 @@
                             android:layout_width="match_parent"
                             android:digits="0123456789"
                             android:text="1"
+                            android:focusable="true"
+
                             android:layout_height="wrap_content"
                             android:inputType="numberSigned"
                             android:maxLength="2"
@@ -211,6 +219,8 @@
                             android:maxLength="2"
                             android:digits="0123456789"
                             android:text="0"
+                            android:focusable="true"
+
 
                             android:textColor="@color/white" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -224,10 +234,11 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="6dp"
                 ads:adSize="LARGE_BANNER"
                 ads:adUnitId="@string/banner_calculator"
                 ads:layout_constraintEnd_toEndOf="parent"
+                ads:layout_constraintHorizontal_bias="0.494"
                 ads:layout_constraintStart_toStartOf="parent"
                 ads:layout_constraintTop_toBottomOf="@+id/buttonCalcCostEnergy">
 
@@ -240,11 +251,13 @@
                 android:layout_height="60dp"
 
                 android:layout_marginTop="24dp"
+                android:layout_marginBottom="8dp"
                 android:backgroundTint="#57F9FF"
                 android:fontFamily="@font/lato_black"
                 android:text="@string/home_button_calc_it"
                 android:textColor="#222431"
                 android:textSize="16sp"
+                ads:layout_constraintBottom_toTopOf="@+id/adViewHome"
                 ads:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

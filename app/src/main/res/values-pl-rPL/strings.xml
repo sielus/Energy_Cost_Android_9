@@ -5,10 +5,10 @@
     <string name="room_settings_change_room_name">Ustawienia pokoju</string>
     <string name="menu_room_list">Menadżer domu</string>
     <string name="menu_sun_energy_calculator">Kalkulator opłacalności</string>
-    <string name="home_hint_power_value">Moc urządzenia (W)*</string>
-    <string name="home_hint_number_device">"Ilość urządzeń* "</string>
-    <string name="home_hint_timework_m">Czas pracy : Minuty*</string>
-    <string name="home_hint_timework_h">" Czas pracy : Godziny *"</string>
+    <string name="home_hint_power_value">Moc urządzenia (W)</string>
+    <string name="home_hint_number_device">"Ilość urządzeń "</string>
+    <string name="home_hint_timework_m">Czas pracy : Minuty</string>
+    <string name="home_hint_timework_h">" Czas pracy : Godziny "</string>
     <string name="home_table_user_time">Czas użytkownika</string>
     <string name="home_table_month">30 dni</string>
     <string name="home_button_calc_it">Oblicz</string>
@@ -19,11 +19,11 @@
     <string name="dialog_room_edit_room_name">Nazwa pokoju</string>
     <string name="dialog_edit_device_name">Nazwa urządzenia</string>
     <string name="menu_home">Kalkulator kosztów energii</string>
-    <string name="device_row_device_power">"Moc urządzenia :* "</string>
-    <string name="device_row_device_time_work">"Czas pracy :* "</string>
-    <string name="device_row_device_number">"Ilość urządzeń :* "</string>
+    <string name="device_row_device_power">Moc urządzenia :</string>
+    <string name="device_row_device_time_work">Czas pracy :</string>
+    <string name="device_row_device_number">Ilość urządzeń :</string>
     <string name="settings_currency_global">Waluta</string>
-    <string name="settings_energy_cost_global">Koszt kWh*</string>
+    <string name="settings_energy_cost_global">Koszt kWh</string>
     <string name="settings_computational_accuracy_global">Dokładność \n obliczeniowa</string>
     <string name="settings_add_default_device">Dodaj urządzenie</string>
     <string name="settings_default_devices_list">Lista domyślnych urządzeń</string>
@@ -89,4 +89,10 @@
     <string name="tutorial_settings_start">"Oto lista domyślnych urządzeń. Podobnie jak w przypadku zarządzania domem / pokojem, możesz dowolnie wybierać urządzenia domyślne poprzez klikanie na nie. Aby je usunąć, przesuń w lewo (slide). Na początek wprowadziliśmy "</string>
     <string name="tutorial_settings_end">domyślnych urządzeń.</string>
     <string name="tutorial_device_list">Aby edytować urządzenie / pokój, kliknij w nie. Jeśli chcesz usunąć dany element, przesuń go w lewo (slide)</string>
+    <string name="billing_canceled">"Użytkownik anulował transakcję "</string>
+    <string name="billing_item_already_owned">Użytkownik już posiada ten przedmiot</string>
+    <string name="billing_verification_of_transaction">Weryfikacja transakcji</string>
+    <string name="billing_transaction_ok">Transakcja zaakceptowana</string>
+    <string name="billing_no_connect">Brak połączenia z  usługą Google Pay / Play</string>
+
 </resources>

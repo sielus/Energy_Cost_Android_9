@@ -1,22 +1,26 @@
 package com.devdreams.energii.koszt;
-
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.android.billingclient.api.BillingClient;
+import com.android.billingclient.api.BillingClientStateListener;
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
-import com.devdreams.energii.koszt.ui.rooms.RoomListFragment;
+import com.devdreams.energii.koszt.ui.BillingManage;
+import com.devdreams.energii.koszt.ui.SQLLiteDBHelper;
 import com.devdreams.energii.koszt.ui.settings.SettingActivity;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.navigation.NavigationView;
+
+import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -27,19 +31,25 @@ import androidx.appcompat.widget.Toolbar;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
-    public View view;
+    public static View view;
     private AppBarConfiguration mAppBarConfiguration;
     public static Toolbar toolbar;
-    public static boolean firstStart;
+    BillingClient billingClient;
+    BillingManage billingManage;
+    static DrawerLayout drawer;
+    BillingClientStateListener billingClientStateListener;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        final DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer = findViewById(R.id.drawer_layout);
         final NavigationView navigationView = findViewById(R.id.nav_view);
         view = this.findViewById(android.R.id.content);
+
 
         View headerView = navigationView.getHeaderView(0);
         final TextView studioMail = headerView.findViewById(R.id.studioMail);
@@ -56,6 +66,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+
+        billingManage = new BillingManage(this);
+        billingManage.initializeClient();
+        billingClient = BillingManage.billingClient;
+      //  billingClient.startConnection(billingClientStateListener);
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                if(billingClient.isReady()) {
+                    if(getUserTokenFromDB() != null){
+                        billingManage.checkPurchase(getUserTokenFromDB(),false);
+                    }
+                }
+            }
+        }, 1000);
+
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home, R.id.nav_rooms, R.id.nav_fragment_sun_energy_calculator_layout, R.id.nav_about_us)
                 .setDrawerLayout(drawer)
@@ -63,9 +93,17 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(MainActivity.this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
     }
 
 
+
+    private String getUserTokenFromDB() {
+        SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(this);
+
+        //TODO Funkcja zwrotna tokenu z bazy
+        return sqlLiteDBHelper.getTokenFromDB();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -82,12 +120,27 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_settings) {
-            Intent intent = new Intent(this, SettingActivity.class);
-            startActivity(intent);
-            Animatoo.animateSlideLeft(MainActivity.this);
+            openSettings();
             return true;
+        }else if(item.getItemId() == R.id.disable_ads){
+            openStartBillingDialog();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void openStartBillingDialog() {
+        if(billingClient.isReady()){
+            billingManage.startPurchase(this);
+        }else{
+            billingClient.startConnection(this.billingClientStateListener);
+            Toast.makeText(MainActivity.this,getResources().getString(R.string.billing_no_connect),Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void openSettings() {
+          Intent intent = new Intent(this, SettingActivity.class);
+          startActivity(intent);
+          Animatoo.animateSlideLeft(MainActivity.this);
     }
 
     private void copyMailtoCopyBoard(TextView studioMail) {
@@ -99,4 +152,6 @@ public class MainActivity extends AppCompatActivity {
         Objects.requireNonNull(myClipboard).setPrimaryClip(myClip);
         Toast.makeText(this,getResources().getString(R.string.mail),Toast.LENGTH_SHORT).show();
     }
+
+
 }

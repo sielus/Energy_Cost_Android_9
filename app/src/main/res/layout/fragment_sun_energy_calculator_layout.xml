@@ -5,6 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusableInTouchMode="true"
+    android:focusable="true"
+
     xmlns:ads="http://schemas.android.com/apk/res-auto"
 
     android:background="@drawable/sunny_gradient">
@@ -29,6 +32,7 @@
                 android:id="@+id/toplayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -85,6 +89,7 @@
                             android:id="@+id/homePowerCostText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:focusable="true"
 
                             android:hint="@string/Month_billing"
                             android:inputType="numberDecimal"
@@ -114,6 +119,7 @@
                         android:id="@+id/kwhCost"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:focusable="true"
 
                         android:hint="@string/settings_energy_cost_global"
                         android:inputType="numberDecimal"
@@ -150,6 +156,8 @@
                     android:hint="@string/module_price"
                     android:inputType="numberSigned"
                     android:maxLength="5"
+                    android:focusable="true"
+
                     android:text="1200"
                     android:textColor="@color/white" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -179,6 +187,8 @@
                     android:layout_height="wrap_content"
                     android:digits="0123456789"
                     android:hint="@string/module_power"
+                    android:focusable="true"
+
                     android:inputType="numberSigned"
                     android:maxLength="4"
                     android:text="250"

@@ -46,12 +46,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="18dp"
                 android:layout_marginEnd="50dp"
-                android:layout_marginBottom="13dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/rowTextViewDeviceName"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1.0">
+                app:layout_constraintTop_toTopOf="parent">
 
 
                 <TableRow>
@@ -111,8 +109,8 @@
                         android:id="@+id/rowTextViewNumber"
                         android:layout_width="70dp"
                         android:layout_weight="1"
-                        android:fontFamily="@font/lato_light"
                         android:autoSizeTextType="uniform"
+                        android:fontFamily="@font/lato_light"
                         android:text="TextView"
                         android:textColor="@color/white"
                         android:textSize="14sp"
@@ -143,8 +141,8 @@
                         android:id="@+id/rowTextViewTimeWork"
                         android:layout_width="70dp"
                         android:layout_weight="1"
-                        android:fontFamily="@font/lato_light"
                         android:autoSizeTextType="uniform"
+                        android:fontFamily="@font/lato_light"
                         android:text="TextView"
                         android:textColor="@color/white"
                         android:textSize="14sp"

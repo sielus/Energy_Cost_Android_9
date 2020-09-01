@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -37,8 +36,6 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.Arrays;
 import java.util.Objects;
-import android.content.SharedPreferences;
-import android.widget.Toast;
 
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
@@ -46,10 +43,12 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 public class RoomListFragment extends Fragment implements RoomListAdapter.onNoteListener {
     @SuppressLint("StaticFieldLeak")
     public static View root;
+    private  SQLLiteDBHelper sqlLiteDBHelper;
+    private static RecyclerView recyclerView;
+    private  AdView mAdView;
     private RoomListAdapter adapter;
     private Dialogs dialogs;
     private PieChart pieChart;
-    private AdView mAdView;
     public  static AdRequest adRequest;
     public static Activity activity;
     public FloatingActionButton floatingActionButtonAddRoomDialog;
@@ -58,6 +57,10 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
         root = inflater.inflate(R.layout.fragment_rooms, container, false);
         RoomManager roomManager = new RoomManager(root.getContext());
         TableLayout tableLayout = root.findViewById(R.id.sunnyTable);
+
+        sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
+        sqlLiteDBHelper.checkFirstRunApp();
+        sqlLiteDBHelper.insertAdsEnable();
 
         pieChart =  root.findViewById(R.id.pieChart);
         BarChart barChart = root.findViewById(R.id.bartChart);
@@ -68,12 +71,14 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
         actionBar.setBackgroundDrawable(getResources().getDrawable(R.color.startBart,null));
         requireActivity().getWindow().setStatusBarColor(getActivity().getResources().getColor(R.color.startBart));
 
-        final RecyclerView recyclerView = root.findViewById(R.id.RecyckerView);
+        recyclerView = root.findViewById(R.id.RecyckerView);
 
         pieChart.setVisibility(View.GONE);
         barChart.setVisibility(View.GONE);
         titleSummary.setVisibility(View.GONE);
         tableLayout.setVisibility(View.GONE);
+
+        runAdsInRoomList();
 
         hideKeyboard(requireActivity());
         dialogs = new Dialogs(null,null,null,null);
@@ -85,14 +90,6 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
 
          floatingActionButtonAddRoomDialog = root.findViewById(R.id.buttonAddRoom);
 
-        if(roomManager.getRoomList().getCount()!=0){
-            mAdView = root.findViewById(R.id.adViewRooms);
-            adRequest = new AdRequest.Builder().build();
-            mAdView.loadAd(adRequest);
-        }else{
-            fixLayoutAds(recyclerView);
-        }
-
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
 
         pieChart.setVisibility(View.VISIBLE);
@@ -103,8 +100,7 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
 
-        SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
-        sqlLiteDBHelper.checkFirstRunApp();
+        //sqlLiteDBHelper.checkFirstRunApp();
         if(roomManager.getRoomList().getCount()==0){
            if(checkFirstRun(root,sqlLiteDBHelper)){
                startTutorial(root);
@@ -125,10 +121,36 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
             public void onClick(View v) {
 //                dialogs.showRoomListDialog(root,adapter,getActivity());
                 showDialogAddRoom();
-
             }
         });
         return root;
+    }
+
+    public static void runAdsInRoomList() {
+        SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
+        AdView mAdView;
+        if(!checkFirstRun(root,sqlLiteDBHelper)){
+            if(sqlLiteDBHelper.getEnableAds()){ //Get boolen from db getEnableAds() | setEnableAds()
+                mAdView = root.findViewById(R.id.adViewRooms);
+                adRequest = new AdRequest.Builder().build();
+                mAdView.loadAd(adRequest);
+                fixLayoutWithAds(mAdView);
+            }else{
+                fixLayoutAds(recyclerView);
+            }
+        }else{
+            fixLayoutAds(recyclerView);
+        }
+
+    }
+
+    public static void fixLayoutWithAds(AdView mAdView) {
+        RecyclerView recyclerView = root.findViewById(R.id.RecyckerView);
+        ConstraintLayout constraintLayout = root.findViewById(R.id.ConstraintLayoutRoomList);
+        ConstraintSet constraintSet = new ConstraintSet();
+        constraintSet.clone(constraintLayout);
+        constraintSet.connect(recyclerView.getId(),ConstraintSet.TOP, mAdView.getId(),ConstraintSet.BOTTOM,0);
+        constraintSet.applyTo(constraintLayout);
     }
 
     public void startTutorial(View view) {
@@ -140,7 +162,7 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
     }
 
 
-    public Boolean checkFirstRun(View root, SQLLiteDBHelper sqlLiteDBHelper) {
+    public static Boolean checkFirstRun(View root, SQLLiteDBHelper sqlLiteDBHelper) {
         Cursor cursor = sqlLiteDBHelper.getVariable("runTutFir");
         if(cursor.getCount()!=0){
             if(cursor.getString(0).equals("false")){
@@ -155,7 +177,7 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
     }
 
 
-    private void fixLayoutAds(RecyclerView recyclerView) {
+    private static void fixLayoutAds(RecyclerView recyclerView) {
         ConstraintLayout constraintLayout = root.findViewById(R.id.ConstraintLayoutRoomList);
         ConstraintSet constraintSet = new ConstraintSet();
         constraintSet.clone(constraintLayout);

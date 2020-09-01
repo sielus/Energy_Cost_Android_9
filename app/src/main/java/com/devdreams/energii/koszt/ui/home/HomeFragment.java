@@ -20,6 +20,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+
+import com.devdreams.energii.koszt.MainActivity;
 import com.devdreams.energii.koszt.R;
 import com.devdreams.energii.koszt.ui.SQLLiteDBHelper;
 import com.devdreams.energii.koszt.ui.settings.SettingActivity;
@@ -75,12 +77,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        mAdView = root.findViewById(R.id.adViewHome);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
-
-
-
+        runAdsInRoomList(sqlLiteDBHelper,root);
 
         buttonCalcCostEnergy.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,6 +119,24 @@ public class HomeFragment extends Fragment {
         inputHours.addTextChangedListener(textWatcher_text_field_inputHours);
         inputMinutes.addTextChangedListener(textWatcher_text_field_inputMinutes);
         return root;
+    }
+
+    public void runAdsInRoomList(SQLLiteDBHelper sqlLiteDBHelper, View root) {
+
+        if(sqlLiteDBHelper.getEnableAds()){ //Get boolen from db setEnableAds()
+            mAdView = root.findViewById(R.id.adViewHome);
+            AdRequest adRequest = new AdRequest.Builder().build();
+            mAdView.loadAd(adRequest);
+        }else{
+            mAdView = root.findViewById(R.id.adViewHome);
+            fixLayoutAds(mAdView);
+        }
+
+    }
+
+    private static void fixLayoutAds(AdView mAdView) {
+        ViewGroup parent = (ViewGroup) mAdView.getParent();
+        parent.removeView(mAdView);
     }
 
     @SuppressLint("SetTextI18n")
@@ -186,7 +201,7 @@ public class HomeFragment extends Fragment {
         hideKeyboard(requireActivity());
     }
 
-    private static void hideKeyboard(Activity activity) {
+    public void hideKeyboard(Activity activity) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         View view = activity.getCurrentFocus();
 

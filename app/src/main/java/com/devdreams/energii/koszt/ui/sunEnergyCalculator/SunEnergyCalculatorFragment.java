@@ -30,17 +30,13 @@ public class SunEnergyCalculatorFragment extends Fragment {
     private AdView mAdView;
 
 
-    @SuppressLint({"CutPasteId", "SetTextI18n"})
+    @SuppressLint({"CutPasteId", "SetTextI18n", "UseCompatLoadingForDrawables"})
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, final Bundle savedInstanceState) {
 
         root = inflater.inflate(R.layout.fragment_sun_energy_calculator_layout, container, false);
         Button getHomeKWHButton = root.findViewById(R.id.getHomeKWHButton);
         setNewDefaultCurrency(root);
-
-        mAdView = root.findViewById(R.id.adViewSun);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
 
 
         final TextView kwhUsage = root.findViewById(R.id.kwhUsage);
@@ -57,6 +53,8 @@ public class SunEnergyCalculatorFragment extends Fragment {
         final TextView moduleEfficiencyPercentText = root.findViewById(R.id.moduleEfficiencyPercect);
 
         final TextInputLayout kwhCostLayout = root.findViewById(R.id.kwhCostLayout);
+
+        runAdsInRoomList(sqlLiteDBHelper,root);
 
 
         moduleEfficiency.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -185,6 +183,25 @@ public class SunEnergyCalculatorFragment extends Fragment {
         });
         return root;
     }
+
+    public void runAdsInRoomList(SQLLiteDBHelper sqlLiteDBHelper, View root) {
+
+            if(sqlLiteDBHelper.getEnableAds()){ //TODO Get boolen from db setEnableAds()
+                mAdView = root.findViewById(R.id.adViewSun);
+                AdRequest adRequest = new AdRequest.Builder().build();
+                mAdView.loadAd(adRequest);
+            }else{
+                mAdView = root.findViewById(R.id.adViewSun);
+                fixLayoutAds(mAdView);
+            }
+
+        }
+
+    private static void fixLayoutAds(AdView mAdView) {
+        ViewGroup parent = (ViewGroup) mAdView.getParent();
+        parent.removeView(mAdView);
+    }
+
     private void checkIfEmpty(View root) {
         EditText homePowerCostText = root.findViewById(R.id.homePowerCostText);
         TextInputLayout kwhCostLayout = root.findViewById(R.id.kwhCostLayout);

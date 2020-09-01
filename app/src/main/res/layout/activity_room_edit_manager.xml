@@ -43,6 +43,7 @@
                 app:adSize="LARGE_BANNER"
                 app:adUnitId="@string/banner_room_edit"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.494"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
