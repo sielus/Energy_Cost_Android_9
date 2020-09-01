@@ -19,7 +19,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TableLayout;
 import android.widget.Toast;
-
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.devdreams.energii.koszt.MainActivity;
 import com.devdreams.energii.koszt.R;
@@ -110,15 +109,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
 
         if(!RoomListFragment.checkFirstRun(view,sqlLiteDBHelper)){
-            if(MainActivity.runAds){
-                mAdView = view.findViewById(R.id.adViewEditManager);
-                AdRequest adRequest = new AdRequest.Builder().build();
-                mAdView.loadAd(adRequest);
-                Toast.makeText(this,"urucho",Toast.LENGTH_SHORT).show();
-            }else {
-                Toast.makeText(this,"fix",Toast.LENGTH_SHORT).show();
-                fixLayoutAds();
-            }
+            runAdsInRoomList(sqlLiteDBHelper,view);
         }else{
                 fixLayoutAds();
         }
@@ -135,6 +126,24 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
             }
         });
     }
+
+    public void runAdsInRoomList(SQLLiteDBHelper sqlLiteDBHelper, View root) {
+        Toast.makeText(root.getContext(),"ładowanie",Toast.LENGTH_SHORT).show();
+
+        if(sqlLiteDBHelper.getEnableAds()){ //TODO Get boolen from db setEnableAds()
+            mAdView = root.findViewById(R.id.adViewEditManager);
+            AdRequest adRequest = new AdRequest.Builder().build();
+            mAdView.loadAd(adRequest);
+            Toast.makeText(MainActivity.view.getContext(),"runAdLayout",Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(MainActivity.view.getContext(),"runAdLayouyFalse",Toast.LENGTH_SHORT).show();
+            mAdView = root.findViewById(R.id.adViewHome);
+            fixLayoutAds();
+        }
+
+    }
+
+
 
     private void fixLayoutAds() {
         ConstraintLayout constraintLayout = view.findViewById(R.id.deviceListConstraintLayout);
@@ -156,12 +165,12 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         if(cursor.getCount()!=0) {
             if(cursor.getString(0).equals("false")){
                 sqlLiteDBHelper.setVariable("runTutFir", "true");
-                startTutorial(root,floatingActionButton);
+                startTutorial(floatingActionButton);
             }
         }
     }
 
-    private void startTutorial(View view,FloatingActionButton floatingActionButtonAddDevice) {
+    private void startTutorial(FloatingActionButton floatingActionButtonAddDevice) {
         TutorialShowcase tutorialShowcase = new TutorialShowcase(this);
         tutorialShowcase.tutorialWithNoListener(floatingActionButtonAddDevice,
                 getResources().getString(R.string.tutorial_welcome_in_room_start) + " '" + room_name+"'",
@@ -182,15 +191,7 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         return true;
     }
 
-    private void reloadAdsLayout(AdView mAdView) {
-        RecyclerView recyclerView = RoomListFragment.root.findViewById(R.id.RecyckerView);
-        ConstraintLayout constraintLayout = RoomListFragment.root.findViewById(R.id.ConstraintLayoutRoomList);
-        ConstraintSet constraintSet = new ConstraintSet();
-        constraintSet.clone(constraintLayout);
-        constraintSet.connect(recyclerView.getId(),ConstraintSet.TOP, mAdView.getId(),ConstraintSet.BOTTOM,0);
 
-        constraintSet.applyTo(constraintLayout);
-    }
 
     void generateDevicesListDetails(View view, String room_name){
         RoomEditManagerDeviceDetailsListAdapter roomEditManagerDeviceDetailsListAdapter = new RoomEditManagerDeviceDetailsListAdapter(view,room_name);
@@ -200,17 +201,17 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
         recycleViewDeviceDetailsList.setLayoutManager(new LinearLayoutManager(view.getContext()));
     }
     public void onBackPressed() {
-        AdView mAdView;
-        mAdView = RoomListFragment.root.findViewById(R.id.adViewRooms);
-        if(RoomListFragment.adRequest == null){
-            RoomListFragment.adRequest = new AdRequest.Builder().build();
-            mAdView.loadAd(RoomListFragment.adRequest);
-        }
-        reloadAdsLayout(mAdView);
+
+//        if(RoomListFragment.adRequest == null){
+//            RoomListFragment.adRequest = new AdRequest.Builder().build();
+//            mAdView.loadAd(RoomListFragment.adRequest);
+//        }
+        RoomListFragment.runAdsInRoomList();
         fullRefreshRoomList();
         super.onBackPressed();
         Animatoo.animateSlideRight(this);
     }
+
 
     public void refreshListView(View root) {
         generateDevicesListDetails(view,room_name);

@@ -12,10 +12,15 @@ import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.devdreams.energii.koszt.MainActivity;
 import com.devdreams.energii.koszt.R;
@@ -32,18 +37,14 @@ public class SunEnergyCalculatorFragment extends Fragment {
     private AdView mAdView;
 
 
-    @SuppressLint({"CutPasteId", "SetTextI18n"})
+    @SuppressLint({"CutPasteId", "SetTextI18n", "UseCompatLoadingForDrawables"})
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, final Bundle savedInstanceState) {
 
         root = inflater.inflate(R.layout.fragment_sun_energy_calculator_layout, container, false);
         Button getHomeKWHButton = root.findViewById(R.id.getHomeKWHButton);
         setNewDefaultCurrency(root);
-        if(MainActivity.runAds){
-            mAdView = root.findViewById(R.id.adViewSun);
-            AdRequest adRequest = new AdRequest.Builder().build();
-            mAdView.loadAd(adRequest);
-        }
+
 
         final TextView kwhUsage = root.findViewById(R.id.kwhUsage);
         final SunEnergyCalculator sunEnergyCalculator = new SunEnergyCalculator(root.getContext());
@@ -59,6 +60,9 @@ public class SunEnergyCalculatorFragment extends Fragment {
         final TextView moduleEfficiencyPercentText = root.findViewById(R.id.moduleEfficiencyPercect);
 
         final TextInputLayout kwhCostLayout = root.findViewById(R.id.kwhCostLayout);
+
+        runAdsInRoomList(sqlLiteDBHelper,root);
+
 
         moduleEfficiency.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -186,6 +190,28 @@ public class SunEnergyCalculatorFragment extends Fragment {
         });
         return root;
     }
+
+    public void runAdsInRoomList(SQLLiteDBHelper sqlLiteDBHelper, View root) {
+            Toast.makeText(root.getContext(),"ładowanie",Toast.LENGTH_SHORT).show();
+
+            if(sqlLiteDBHelper.getEnableAds()){ //TODO Get boolen from db setEnableAds()
+                mAdView = root.findViewById(R.id.adViewSun);
+                AdRequest adRequest = new AdRequest.Builder().build();
+                mAdView.loadAd(adRequest);
+                Toast.makeText(MainActivity.view.getContext(),"runAdLayout",Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(MainActivity.view.getContext(),"runAdLayouyFalse",Toast.LENGTH_SHORT).show();
+                mAdView = root.findViewById(R.id.adViewSun);
+                fixLayoutAds(mAdView);
+            }
+
+        }
+
+    private static void fixLayoutAds(AdView mAdView) {
+        ViewGroup parent = (ViewGroup) mAdView.getParent();
+        parent.removeView(mAdView);
+    }
+
     private void checkIfEmpty(View root) {
         EditText homePowerCostText = root.findViewById(R.id.homePowerCostText);
         TextInputLayout kwhCostLayout = root.findViewById(R.id.kwhCostLayout);

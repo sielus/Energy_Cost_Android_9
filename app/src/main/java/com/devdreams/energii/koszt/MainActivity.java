@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     BillingManage billingManage;
     static DrawerLayout drawer;
     BillingClientStateListener billingClientStateListener;
-    public static Boolean runAds = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

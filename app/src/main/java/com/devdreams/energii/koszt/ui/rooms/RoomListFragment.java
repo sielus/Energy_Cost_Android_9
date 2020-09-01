@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Advanceable;
 import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TextView;
@@ -61,7 +62,11 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
         root = inflater.inflate(R.layout.fragment_rooms, container, false);
         RoomManager roomManager = new RoomManager(root.getContext());
         TableLayout tableLayout = root.findViewById(R.id.sunnyTable);
+
         sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
+        sqlLiteDBHelper.checkFirstRunApp();
+        sqlLiteDBHelper.insertAdsEnable();
+
 
         pieChart =  root.findViewById(R.id.pieChart);
         BarChart barChart = root.findViewById(R.id.bartChart);
@@ -103,7 +108,7 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
 
-        sqlLiteDBHelper.checkFirstRunApp();
+        //sqlLiteDBHelper.checkFirstRunApp();
         if(roomManager.getRoomList().getCount()==0){
            if(checkFirstRun(root,sqlLiteDBHelper)){
                startTutorial(root);
@@ -131,14 +136,19 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
         return root;
     }
 
-    public void runAdsInRoomList() {
+    public static void runAdsInRoomList() {
+        SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
+        AdView mAdView;
         if(!checkFirstRun(root,sqlLiteDBHelper)){
             Toast.makeText(MainActivity.view.getContext(),"ładowanie",Toast.LENGTH_SHORT).show();
-            if(MainActivity.runAds){
+            if(sqlLiteDBHelper.getEnableAds()){ //TODO Get boolen from db setEnableAds()
+
                 mAdView = root.findViewById(R.id.adViewRooms);
                 adRequest = new AdRequest.Builder().build();
                 mAdView.loadAd(adRequest);
                 Toast.makeText(MainActivity.view.getContext(),"runAdLayout",Toast.LENGTH_SHORT).show();
+                fixLayoutWithAds(mAdView);
+                //TODO naprawić layout reklamy po ukończeniu tutorialu
             }else{
                 Toast.makeText(MainActivity.view.getContext(),"runAdLayouyFalse",Toast.LENGTH_SHORT).show();
                 fixLayoutAds(recyclerView);
@@ -148,6 +158,15 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
             Toast.makeText(MainActivity.view.getContext(),"checkFirstRun fixLayoutAds",Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    public static void fixLayoutWithAds(AdView mAdView) {
+        RecyclerView recyclerView = root.findViewById(R.id.RecyckerView);
+        ConstraintLayout constraintLayout = root.findViewById(R.id.ConstraintLayoutRoomList);
+        ConstraintSet constraintSet = new ConstraintSet();
+        constraintSet.clone(constraintLayout);
+        constraintSet.connect(recyclerView.getId(),ConstraintSet.TOP, mAdView.getId(),ConstraintSet.BOTTOM,0);
+        constraintSet.applyTo(constraintLayout);
     }
 
     public void startTutorial(View view) {

@@ -76,15 +76,8 @@ public class HomeFragment extends Fragment {
                 return false;
             }
         });
-        if(MainActivity.runAds){
-            mAdView = root.findViewById(R.id.adViewHome);
-            AdRequest adRequest = new AdRequest.Builder().build();
-            mAdView.loadAd(adRequest);
-        }
 
-
-
-
+        runAdsInRoomList(sqlLiteDBHelper,root);
 
         buttonCalcCostEnergy.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,6 +119,27 @@ public class HomeFragment extends Fragment {
         inputHours.addTextChangedListener(textWatcher_text_field_inputHours);
         inputMinutes.addTextChangedListener(textWatcher_text_field_inputMinutes);
         return root;
+    }
+
+    public void runAdsInRoomList(SQLLiteDBHelper sqlLiteDBHelper, View root) {
+        Toast.makeText(root.getContext(),"ładowanie",Toast.LENGTH_SHORT).show();
+
+        if(sqlLiteDBHelper.getEnableAds()){ //TODO Get boolen from db setEnableAds()
+            mAdView = root.findViewById(R.id.adViewHome);
+            AdRequest adRequest = new AdRequest.Builder().build();
+            mAdView.loadAd(adRequest);
+            Toast.makeText(MainActivity.view.getContext(),"runAdLayout",Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(MainActivity.view.getContext(),"runAdLayouyFalse",Toast.LENGTH_SHORT).show();
+            mAdView = root.findViewById(R.id.adViewHome);
+            fixLayoutAds(mAdView);
+        }
+
+    }
+
+    private static void fixLayoutAds(AdView mAdView) {
+        ViewGroup parent = (ViewGroup) mAdView.getParent();
+        parent.removeView(mAdView);
     }
 
     @SuppressLint("SetTextI18n")

@@ -12,7 +12,7 @@ import com.devdreams.energii.koszt.ui.rooms.RoomManager;
 public class SQLLiteDBHelper extends SQLiteOpenHelper {
     public final Context context;
     private static final String DB_NAME = "cost_energy.db";
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 3;
 
     public SQLLiteDBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -27,6 +27,7 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         String defaultDevice;
         String firstRunTutFirst;
         String token;
+        String adsEnable;
 
         String roomListTable = "CREATE TABLE room_list " +
                                     "(" +
@@ -59,6 +60,7 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         addVariable = "INSERT INTO configuration_variable (name, value) values (\"powerCost\", \"0.60\"), (\"defaultCurrency\", ?)";
         numberAfterDot = "INSERT INTO configuration_variable (name, value) values (\"numberAfterDot\", \"2\")";
         token = "INSERT INTO configuration_variable (name, value) values (\"token\", \"\")";
+        adsEnable = "INSERT INTO configuration_variable (name, value) values (\"adsEnable\", \"Y\")";
 
         defaultDevice = "INSERT INTO default_device_settings (name, power_value, work_time, device_number) values (?, 15, \"2:0\", 1)," +
                                                                                                                  "(?, 0.1, \"24:0\", 1)," +
@@ -96,20 +98,20 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         db.execSQL(numberAfterDot);
         db.execSQL(firstRunTutFirst);
         db.execSQL(token);
+        db.execSQL(adsEnable);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+
+//        if(oldVersion < 3) {
+//            db.execSQL("DROP TABLE IF EXISTS " + "configuration_variable"); // TODO trzeba dodać zabezpieczenia na istnienie tabelki
+//        }
         onCreate(db);
+
     }
 
-    public void checkFirstRunApp(){
-        String firstRunTutFirst = "INSERT INTO configuration_variable (name, value) values (\"runTutFir\", \"false\")";
-        SQLiteDatabase dbWriter = getWritableDatabase();
-        if(getVariable("runTutFir").getCount()==0){
-            dbWriter.execSQL(firstRunTutFirst);
-        }
-    }
     @SuppressLint("Recycle")
     public Cursor getVariable(String variableName) {
         SQLiteDatabase dbhRead = getReadableDatabase();
@@ -124,6 +126,22 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         cursor.moveToFirst();
 
         return cursor;
+    }
+
+    public void checkFirstRunApp(){
+        String firstRunTutFirst = "INSERT INTO configuration_variable (name, value) values (\"runTutFir\", \"false\")";
+        SQLiteDatabase dbWriter = getWritableDatabase();
+        if(getVariable("runTutFir").getCount()==0){
+            dbWriter.execSQL(firstRunTutFirst);
+        }
+    }
+
+    public void insertAdsEnable(){
+        String adsEnable = "INSERT INTO configuration_variable (name, value) values (\"adsEnable\", \"Y\")";
+        SQLiteDatabase dbWriter = getWritableDatabase();
+        if(getVariable("adsEnable").getCount()==0){
+            dbWriter.execSQL(adsEnable);
+        }
     }
 
     public void setVariable(String variableName, String value) {
@@ -167,7 +185,35 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         return cursor.getString(0);
     }
 
+    public void setEnableAds(boolean b) {
+        SQLiteDatabase dbWriter = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        String where = "name = \"adsEnable\"";
+
+        contentValues.put("value", b ? "Y" : "N");
+
+        dbWriter.update("configuration_variable", contentValues, where, null);
+    }
+
+    @SuppressLint("Recycle")
+    public boolean getEnableAds() {
+        SQLiteDatabase dbhRead = getReadableDatabase();
+        String query;
+        Cursor cursor;
+
+        query = "SELECT value " +
+                "FROM   configuration_variable " +
+                "WHERE  name = \"adsEnable\"";
+
+        cursor = dbhRead.rawQuery(query, null);
+
+        cursor.moveToFirst();
+        return cursor.getString(0).equals("Y");
+    }
+
     protected String changeSpaceInName(String name) {
         return name.trim().replace(" ", "_");
     }
+
+
 }

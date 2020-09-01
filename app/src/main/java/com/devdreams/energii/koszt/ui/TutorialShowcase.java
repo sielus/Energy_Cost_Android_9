@@ -75,7 +75,7 @@ public class TutorialShowcase {
 
     public void tutorialBright(View view, ShapeType rectangle, String textMessage, String tutID) {
         SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
-        sqlLiteDBHelper.checkFirstRunApp();
+       // sqlLiteDBHelper.checkFirstRunApp();
         RoomListFragment roomListFragment = new RoomListFragment();
 
         if (roomListFragment.checkFirstRun(view,sqlLiteDBHelper)) {

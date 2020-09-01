@@ -224,10 +224,11 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="6dp"
                 ads:adSize="LARGE_BANNER"
                 ads:adUnitId="@string/banner_calculator"
                 ads:layout_constraintEnd_toEndOf="parent"
+                ads:layout_constraintHorizontal_bias="0.494"
                 ads:layout_constraintStart_toStartOf="parent"
                 ads:layout_constraintTop_toBottomOf="@+id/buttonCalcCostEnergy">
 
@@ -240,11 +241,13 @@
                 android:layout_height="60dp"
 
                 android:layout_marginTop="24dp"
+                android:layout_marginBottom="8dp"
                 android:backgroundTint="#57F9FF"
                 android:fontFamily="@font/lato_black"
                 android:text="@string/home_button_calc_it"
                 android:textColor="#222431"
                 android:textSize="16sp"
+                ads:layout_constraintBottom_toTopOf="@+id/adViewHome"
                 ads:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

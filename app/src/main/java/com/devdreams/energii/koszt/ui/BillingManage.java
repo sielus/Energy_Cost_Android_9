@@ -101,7 +101,7 @@ public class BillingManage {
 
                 } else {
                     if(turnNotify) {
-                        Toast.makeText(context, billingResult.getDebugMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, billingResult.getDebugMessage() + "error acknowledgePurchaseResponseListener ", Toast.LENGTH_SHORT).show();
                     }
                     enableAds();
                 }
@@ -117,7 +117,8 @@ public class BillingManage {
         if(menuItem != null){
             menuItem.setVisibility(View.INVISIBLE);
         }
-        MainActivity.runAds = false;
+        SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(this.context);
+        sqlLiteDBHelper.setEnableAds(false);
 
     }
     void enableAds(){
@@ -126,13 +127,15 @@ public class BillingManage {
         if(menuItem != null){
             menuItem.setVisibility(View.VISIBLE);
         }
-        MainActivity.runAds = true; // TODO dodac do bazy sql
+        SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(this.context);
+        sqlLiteDBHelper.setEnableAds(true);
+        // TODO dodac do bazy sql
 
     }
 
     public void startPurchase(final Activity activity) {
         List<String> skuList = new ArrayList<>();
-        skuList.add("xddddddd.testttt");
+        skuList.add("ads.test");
         final SkuDetailsParams.Builder params = SkuDetailsParams.newBuilder();
         params.setSkusList(skuList).setType(BillingClient.SkuType.INAPP);
         billingClient.querySkuDetailsAsync(params.build(),
@@ -143,6 +146,7 @@ public class BillingManage {
                         BillingFlowParams billingFlowParams = BillingFlowParams.newBuilder()
                                 .setSkuDetails(skuDetailsList.get(0))
                                 .build();
+
                         billingClient.launchBillingFlow(activity, billingFlowParams);
                     }
                 });
