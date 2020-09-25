@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
 import com.devdreams.energii.koszt.R;
 import com.devdreams.energii.koszt.ui.rooms.RoomManager;
 
@@ -105,10 +106,10 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
 
-//        if(oldVersion < 3) {
+//        if(oldVersion <= 3) {
 //            db.execSQL("DROP TABLE IF EXISTS " + "configuration_variable"); // TODO trzeba dodać zabezpieczenia na istnienie tabelki
 //        }
-        onCreate(db);
+        //    onCreate(db);
 
     }
 
@@ -124,22 +125,45 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
 
         cursor = dbhRead.rawQuery(query, new String[]{variableName});
         cursor.moveToFirst();
-
         return cursor;
     }
 
-    public void checkFirstRunApp(){
+    public void checkFirstRunApp() {
         String firstRunTutFirst = "INSERT INTO configuration_variable (name, value) values (\"runTutFir\", \"false\")";
         SQLiteDatabase dbWriter = getWritableDatabase();
-        if(getVariable("runTutFir").getCount()==0){
+        if (getVariable("runTutFir").getCount() == 0) {
             dbWriter.execSQL(firstRunTutFirst);
         }
     }
 
-    public void insertAdsEnable(){
+    public void checkIfDefaultRoomListExist() {
+        SQLiteDatabase dbWriter = getWritableDatabase();
+        String defaultRoomListTable;
+        String defaultDevicesInRoom = "REPLACE INTO default_room_list (name, device_list) values (\"Kuchnia\", \"Mikrofala;PC\"), (\"Kuchnia2_TEST\", \"Mikrofala;PC\")";
+        ;
+
+        defaultRoomListTable = "CREATE TABLE IF NOT EXISTS default_room_list" +
+                "(" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "name varchar(100) NOT NULL UNIQUE, " +
+                "device_list varchar(3000) NOT NULL " +
+                ")";
+        dbWriter.execSQL(defaultRoomListTable);
+        dbWriter.execSQL(defaultDevicesInRoom);
+    }
+
+    public void insertToken() {
+        String token = "INSERT INTO configuration_variable (name, value) values (\"token\", \"\")";
+        SQLiteDatabase dbWriter = getWritableDatabase();
+        if (getVariable("token").getCount() == 0) {
+            dbWriter.execSQL(token);
+        }
+    }
+
+    public void insertAdsEnable() {
         String adsEnable = "INSERT INTO configuration_variable (name, value) values (\"adsEnable\", \"Y\")";
         SQLiteDatabase dbWriter = getWritableDatabase();
-        if(getVariable("adsEnable").getCount()==0){
+        if (getVariable("adsEnable").getCount() == 0) {
             dbWriter.execSQL(adsEnable);
         }
     }
@@ -206,14 +230,26 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
                 "WHERE  name = \"adsEnable\"";
 
         cursor = dbhRead.rawQuery(query, null);
-
         cursor.moveToFirst();
         return cursor.getString(0).equals("Y");
+    }
+
+    public Cursor getDefaultRoomListName() {
+        SQLiteDatabase dbhRead = getReadableDatabase();
+        String query;
+        Cursor cursor;
+
+        query = "SELECT name " +
+                "FROM   default_room_list";
+
+        cursor = dbhRead.rawQuery(query, null);
+        cursor.moveToFirst();
+
+        return cursor;
     }
 
     protected String changeSpaceInName(String name) {
         return name.trim().replace(" ", "_");
     }
-
 
 }

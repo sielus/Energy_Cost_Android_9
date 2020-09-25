@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.devdreams.energii.koszt.R;
 import com.devdreams.energii.koszt.ui.rooms.manager.DeviceManager;
 import com.devdreams.energii.koszt.ui.settings.SettingActivity;
@@ -23,6 +24,7 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -73,18 +75,13 @@ public class GenerateCharts {
                 barEntries.add(new BarEntry(labelNumberIndex, Float.parseFloat(String.format("%."+ numberAfterDot +"f", cursor.getFloat(2)).replace(",","."))));
                 colorList.add(cursor.getInt(3));
                 deviceName.add(cursor.getString(0));
-
                 labelNumberIndex++;
             }
         }else if(cursor.getCount() == 1){
             cursor.moveToFirst();
-
             pieEntry.add(new PieEntry(cursor.getInt(1), String.format("%."+ numberAfterDot +"f",((float)cursor.getInt(1) / 1000)) + " kWh"));
-
             colorList.add(cursor.getInt(3));
-
             barEntries.add(new BarEntry(labelNumberIndex,Float.parseFloat(String.format("%."+ numberAfterDot +"f", cursor.getDouble(2)).replace(",","."))));
-
             deviceName.add(cursor.getString(0));
         }
 

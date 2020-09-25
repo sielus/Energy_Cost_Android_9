@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -20,8 +21,11 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
 import androidx.fragment.app.FragmentActivity;
+
 import com.devdreams.energii.koszt.R;
+import com.devdreams.energii.koszt.ui.SQLLiteDBHelper;
 import com.devdreams.energii.koszt.ui.exception.SQLEnergyCostException;
 import com.devdreams.energii.koszt.ui.rooms.manager.DeviceManager;
 import com.devdreams.energii.koszt.ui.rooms.manager.GenerateTableEditRoom;
@@ -30,12 +34,12 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
-
 
 import top.defaults.colorpicker.ColorObserver;
 import top.defaults.colorpicker.ColorPickerView;
@@ -87,10 +91,6 @@ public class Dialogs {
             }
 
         });
-
-
-
-
 
         Spinner spinner = dialog.findViewById(R.id.spinner);
 
@@ -653,12 +653,55 @@ public class Dialogs {
 
     public void showRoomListDialog(final View view, final RoomListAdapter adapter, final FragmentActivity activity) {
         final Dialog dialog;
+        final SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
+        final RoomManager roomManager = new RoomManager(view.getContext());
         dialog = new Dialog(view.getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.room_list_dialog);
         dialog.show();
-        
+
         // TODO: 8/20/2020 Dodać listę domyślnych pokoi
+
+        final ArrayList<String> defaultListRoomSchema = new ArrayList<String>();
+        defaultListRoomSchema.add(0, "Schre");
+
+        Cursor cursor;
+        cursor = sqlLiteDBHelper.getDefaultRoomListName();
+        int x = 1;
+        if (cursor.getCount() != 0) {
+            cursor.moveToFirst();
+            do {
+                defaultListRoomSchema.add(x, cursor.getString(0));
+                Log.e("myTag", cursor.getString(0));
+                x++;
+            } while (cursor.moveToNext());
+        }
+        Spinner spinner = dialog.findViewById(R.id.spinnerDefaultRoomList);
+
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(dialog.getContext(), android.R.layout.simple_spinner_dropdown_item, defaultListRoomSchema);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinner.setAdapter(arrayAdapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (!Objects.equals(arrayAdapter.getItem(0), arrayAdapter.getItem(position))) {
+                    Toast.makeText(view.getContext(), defaultListRoomSchema.get(position), Toast.LENGTH_SHORT).show();
+                    try {
+                        roomManager.createDefaultRoom(defaultListRoomSchema.get(position));
+                    } catch (SQLEnergyCostException.WrongTime | SQLEnergyCostException.EmptyField | SQLEnergyCostException.DuplicationDevice | SQLEnergyCostException.DuplicationRoom errorMessage) {
+                        Toast.makeText(view.getContext(), errorMessage.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
 
         final RoomListFragment roomListFragment = new RoomListFragment();
 

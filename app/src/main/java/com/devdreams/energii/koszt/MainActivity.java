@@ -1,4 +1,5 @@
 package com.devdreams.energii.koszt;
+
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Intent;
@@ -9,6 +10,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
+
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
@@ -20,14 +30,6 @@ import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.navigation.NavigationView;
 
-import androidx.appcompat.view.menu.ActionMenuItemView;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
@@ -97,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     private String getUserTokenFromDB() {
         SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(this);
 
@@ -132,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
         if(billingClient.isReady()){
             billingManage.startPurchase(this);
         }else{
-            billingClient.startConnection(this.billingClientStateListener);
+//            billingClient.startConnection(this.billingClientStateListener);
             Toast.makeText(MainActivity.this,getResources().getString(R.string.billing_no_connect),Toast.LENGTH_SHORT).show();
         }
     }
