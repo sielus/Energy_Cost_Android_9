@@ -32,6 +32,8 @@ import com.google.android.material.navigation.NavigationView;
 
 import java.util.Objects;
 
+import hotchemi.android.rate.AppRate;
+
 public class MainActivity extends AppCompatActivity {
     public static View view;
     private AppBarConfiguration mAppBarConfiguration;
@@ -40,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
     BillingManage billingManage;
     static DrawerLayout drawer;
     BillingClientStateListener billingClientStateListener;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,12 @@ public class MainActivity extends AppCompatActivity {
         final NavigationView navigationView = findViewById(R.id.nav_view);
         view = this.findViewById(android.R.id.content);
 
+        AppRate.with(this)
+                .setInstallDays(2)
+                .setLaunchTimes(3)
+                .setRemindInterval(1)
+                .monitor();
+        AppRate.showRateDialogIfMeetsConditions(this);
 
         View headerView = navigationView.getHeaderView(0);
         final TextView studioMail = headerView.findViewById(R.id.studioMail);
@@ -67,8 +74,6 @@ public class MainActivity extends AppCompatActivity {
             public void onInitializationComplete(InitializationStatus initializationStatus) {
             }
         });
-
-
 
         billingManage = new BillingManage(this);
         billingManage.initializeClient();
@@ -95,9 +100,7 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(MainActivity.this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-
     }
-
 
     private String getUserTokenFromDB() {
         SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(this);

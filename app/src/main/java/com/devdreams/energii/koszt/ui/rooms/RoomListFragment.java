@@ -44,9 +44,7 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 public class RoomListFragment extends Fragment implements RoomListAdapter.onNoteListener {
     @SuppressLint("StaticFieldLeak")
     public static View root;
-    private  SQLLiteDBHelper sqlLiteDBHelper;
     private static RecyclerView recyclerView;
-    private  AdView mAdView;
     private RoomListAdapter adapter;
     private Dialogs dialogs;
     private PieChart pieChart;
@@ -54,13 +52,13 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
     public static Activity activity;
     public FloatingActionButton floatingActionButtonAddRoomDialog;
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_rooms, container, false);
         RoomManager roomManager = new RoomManager(root.getContext());
         TableLayout tableLayout = root.findViewById(R.id.sunnyTable);
         SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(root.getContext());
         updateVariableInDB();
-
         pieChart = root.findViewById(R.id.pieChart);
         BarChart barChart = root.findViewById(R.id.bartChart);
         TextView titleSummary = root.findViewById(R.id.title_summary);
@@ -68,7 +66,7 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
         ActionBar actionBar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
         assert actionBar != null;
         actionBar.setBackgroundDrawable(getResources().getDrawable(R.color.startBart, null));
-        requireActivity().getWindow().setStatusBarColor(getActivity().getResources().getColor(R.color.startBart));
+        requireActivity().getWindow().setStatusBarColor(requireActivity().getResources().getColor(R.color.startBart));
 
         recyclerView = root.findViewById(R.id.RecyckerView);
 
@@ -86,8 +84,7 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
         adapter = new RoomListAdapter(root.getContext(),Arrays.copyOf(Dialogs.roomNameArray.toArray(),
                 Dialogs.roomNameArray.size(), String[].class),this,
                 Arrays.copyOf(Dialogs.roomNameKwhArray.toArray(), Dialogs.roomNameKwhArray.size(), String[].class));
-
-         floatingActionButtonAddRoomDialog = root.findViewById(R.id.buttonAddRoom);
+        floatingActionButtonAddRoomDialog = root.findViewById(R.id.buttonAddRoom);
 
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
 
@@ -101,9 +98,9 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
 
         //sqlLiteDBHelper.checkFirstRunApp();
         if(roomManager.getRoomList().getCount()==0){
-           if(checkFirstRun(root,sqlLiteDBHelper)){
-               startTutorial(root);
-           }
+            if(checkFirstRun(root,sqlLiteDBHelper)){
+                startTutorial(root);
+            }
         }else {
             Cursor cursor = sqlLiteDBHelper.getVariable("runTutFir");
             System.out.println("getcount");
@@ -150,7 +147,6 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
         }else{
             fixLayoutAds(recyclerView);
         }
-
     }
 
     public static void fixLayoutWithAds(AdView mAdView) {
@@ -169,7 +165,6 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
                 getResources().getString(R.string.tutorial_room_list_desc),
                 R.color.tutorial);
     }
-
 
     public static Boolean checkFirstRun(View root, SQLLiteDBHelper sqlLiteDBHelper) {
         Cursor cursor = sqlLiteDBHelper.getVariable("runTutFir");
