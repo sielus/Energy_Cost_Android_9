@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.view.menu.ActionMenuItemView;
+
 import com.android.billingclient.api.AcknowledgePurchaseParams;
 import com.android.billingclient.api.AcknowledgePurchaseResponseListener;
 import com.android.billingclient.api.BillingClient;
@@ -19,12 +21,13 @@ import com.android.billingclient.api.SkuDetailsParams;
 import com.android.billingclient.api.SkuDetailsResponseListener;
 import com.devdreams.energii.koszt.MainActivity;
 import com.devdreams.energii.koszt.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class BillingManage {
     public static BillingClient billingClient;
-    Context context;
+    public Context context;
 
     BillingClientStateListener billingClientStateListener;
     final PurchasesUpdatedListener purchaseUpdateListener = new PurchasesUpdatedListener() {

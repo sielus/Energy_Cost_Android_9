@@ -78,11 +78,10 @@
     <string name="about_us_note">Jesteśmy młodym fascynującym się programowaniem zespołem, który stara się rozwijać i uczyć się! Mamy nadzieję, że nasza aplikacja wam się spodoba oraz zwyczajnie pomoże w dokonaniu obliczeń. Dziękujemy za pobranie i czekamy na oceny! Pozdrawiamy!</string>
 
     <string name="tutorial_room_list_title">Witaj w menadżerze domu!</string>
-    <string name="tutorial_room_list_desc">Aby utworzyć nowy pokój, kliknij tutaj!</string>
+    <string name="tutorial_room_list_desc">Aby utworzyć nowy pokój, kliknij tutaj! Możesz również wybrać gotowy schemat</string>
 
     <string name="tutorial_new_device_title">"Aby dodać nowe urządzenie, kliknij tutaj!</string>
     <string name="tutorial_new_device_desc">"Możesz również wybrać je z listy domyślnych urządzeń. Domyślną listą urządzeń, możesz zarządzać z ustawień aplikacji "</string>
-
 
     <string name="tutorial_welcome_in_room_start">Aktualnie jesteś w</string>
     <string name="tutorial_welcome_in_room_end">Z tego poziomu, możesz nim dowolnie zarządzać poprzez : \n-dodawanie \n-edytowanie (kliknij w nazwę!) \n-usuwanie (przesuń w lewo) \nurządzeń w nim zawartych.</string>
@@ -94,5 +93,8 @@
     <string name="billing_verification_of_transaction">Weryfikacja transakcji</string>
     <string name="billing_transaction_ok">Transakcja zaakceptowana</string>
     <string name="billing_no_connect">Brak połączenia z  usługą Google Pay / Play</string>
+
+    <string name="default_room_kitchen">Kuchnia</string>
+
 
 </resources>

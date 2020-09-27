@@ -228,27 +228,12 @@ public class Dialogs {
                                 GenerateCharts generateCharts = new GenerateCharts();
                                 generateCharts.generateChartsInRoom(view,room_name,numberAfterDot,defaultCurrency);
 
-
-
                                 RoomEditManager roomEditManager = new RoomEditManager();
                                 roomEditManager.refreshListView(view);
 
                                 GenerateTableEditRoom generateTableEditRoom = new GenerateTableEditRoom();
                                 generateTableEditRoom.refreshTable(view,defaultCurrency,room_name,numberAfterDot);
 
-//                                new MaterialIntroView.Builder(RoomEditManager.activity)
-//                                        .enableDotAnimation(true)
-//                                        .enableIcon(false)
-//                                        .setFocusGravity(FocusGravity.RIGHT)
-//                                        .setFocusType(Focus.MINIMUM)
-//                                        .setDelayMillis(500)
-//                                        .enableFadeAnimation(true)
-//                                        .performClick(false)
-//                                        .setInfoText(v.getResources().getString(R.string.tutorial_new_device))
-//                                        .setShape(ShapeType.RECTANGLE)
-//                                        .setTarget(RoomEditManager.view.findViewById(R.id.RecyckerView))
-//                                        .setUsageId("editRoomDeviceListTut") //THIS SHOULD BE UNIQUE ID
-//                                        .show();
                             } catch (SQLEnergyCostException.WrongTime wrongTime) {
                                 Toast.makeText(view.getContext(),wrongTime.getMessage(),Toast.LENGTH_SHORT).show();
                             }
@@ -576,7 +561,7 @@ public class Dialogs {
         final RoomManager roomManager = new RoomManager(view.getContext());
 
         room_name_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        room_name_dialog.setContentView(R.layout.room_list_dialog);
+        room_name_dialog.setContentView(R.layout.room_name_edit_dialog);
         room_name_dialog.show();
 
         Button buttonDialogAccept = room_name_dialog.findViewById(R.id.ButtonAddRoom);
@@ -663,7 +648,7 @@ public class Dialogs {
         // TODO: 8/20/2020 Dodać listę domyślnych pokoi
 
         final ArrayList<String> defaultListRoomSchema = new ArrayList<String>();
-        defaultListRoomSchema.add(0, "Schre");
+        defaultListRoomSchema.add(0, view.getResources().getString(R.string.just_templates));
 
         Cursor cursor;
         cursor = sqlLiteDBHelper.getDefaultRoomListName();
@@ -678,42 +663,21 @@ public class Dialogs {
         }
         Spinner spinner = dialog.findViewById(R.id.spinnerDefaultRoomList);
 
-        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(dialog.getContext(), android.R.layout.simple_spinner_dropdown_item, defaultListRoomSchema);
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(dialog.getContext(), R.layout.custom_spinner, defaultListRoomSchema);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinner.setAdapter(arrayAdapter);
+        final Button buttonColorPicker = dialog.findViewById(R.id.roomButtonColorPicker);
+        final Random rnd = new Random();
+        final int colorInit = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
 
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (!Objects.equals(arrayAdapter.getItem(0), arrayAdapter.getItem(position))) {
-                    Toast.makeText(view.getContext(), defaultListRoomSchema.get(position), Toast.LENGTH_SHORT).show();
-                    try {
-                        roomManager.createDefaultRoom(defaultListRoomSchema.get(position));
-                    } catch (SQLEnergyCostException.WrongTime | SQLEnergyCostException.EmptyField | SQLEnergyCostException.DuplicationDevice | SQLEnergyCostException.DuplicationRoom errorMessage) {
-                        Toast.makeText(view.getContext(), errorMessage.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
+        buttonColorPicker.setBackgroundColor(colorInit);
 
         final RoomListFragment roomListFragment = new RoomListFragment();
 
         ifNumberOnStart = false;
 
         Button buttonDialogAccept = dialog.findViewById(R.id.ButtonAddRoom);
-
-        final Random rnd = new Random();
-        final int colorInit = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
-
-        final Button buttonColorPicker = dialog.findViewById(R.id.roomButtonColorPicker);
-        buttonColorPicker.setBackgroundColor(colorInit);
 
         buttonColorPicker.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -752,14 +716,35 @@ public class Dialogs {
             }
         });
 
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (!Objects.equals(arrayAdapter.getItem(0), arrayAdapter.getItem(position))) {
+                    try {
+                        RoomManager roomManager = new RoomManager(view.getContext());
+                        ColorDrawable viewColor = (ColorDrawable) buttonColorPicker.getBackground();
+                        roomManager.createDefaultRoom(defaultListRoomSchema.get(position), viewColor.getColor());
+                    } catch (SQLEnergyCostException.WrongTime | SQLEnergyCostException.EmptyField |
+                            SQLEnergyCostException.DuplicationDevice |
+                            SQLEnergyCostException.DuplicationRoom errorMessage) {
+                        Toast.makeText(view.getContext(), errorMessage.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         buttonDialogAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String roomName = Objects.requireNonNull(text_field_inputRoomName.getText()).toString();
                 if (roomName.isEmpty()) {
                     text_field_inputRoomNameLayout.setError(v.getContext().getResources().getString(R.string.error_no_data));
-                }
-                else if(ifNumberOnStart){
+                } else if (ifNumberOnStart) {
                     text_field_inputRoomNameLayout.setError(v.getContext().getResources().getString(R.string.error_name_canot_start_from_number));
                 }
                 else{
@@ -785,8 +770,6 @@ public class Dialogs {
                         pieChart.setVisibility(View.VISIBLE);
                         RoomListFragment.hideKeyboard(activity);
                         dialog.dismiss();
-
-
 
                         Toast.makeText(view.getContext(),R.string.toast_room_added,Toast.LENGTH_SHORT).show();
                     }catch (SQLEnergyCostException.DuplicationRoom | SQLEnergyCostException.EmptyField errorMessage) {

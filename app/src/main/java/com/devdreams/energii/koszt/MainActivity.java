@@ -1,5 +1,6 @@
 package com.devdreams.energii.koszt;
 
+import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Intent;
@@ -35,8 +36,10 @@ import java.util.Objects;
 import hotchemi.android.rate.AppRate;
 
 public class MainActivity extends AppCompatActivity {
+    @SuppressLint("StaticFieldLeak")
     public static View view;
     private AppBarConfiguration mAppBarConfiguration;
+    @SuppressLint("StaticFieldLeak")
     public static Toolbar toolbar;
     BillingClient billingClient;
     BillingManage billingManage;
@@ -156,6 +159,4 @@ public class MainActivity extends AppCompatActivity {
         Objects.requireNonNull(myClipboard).setPrimaryClip(myClip);
         Toast.makeText(this,getResources().getString(R.string.mail),Toast.LENGTH_SHORT).show();
     }
-
-
 }

@@ -20,12 +20,12 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         this.context = context;
     }
 
-    @SuppressLint("StringFormatInvalid")
     @Override
     public void onCreate(SQLiteDatabase db) {
         String addVariable;
         String numberAfterDot;
         String defaultDevice;
+        String defaultRoomDevice;
         String firstRunTutFirst;
         String token;
         String adsEnable;
@@ -48,14 +48,22 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         db.execSQL(configurationVariableTable);
 
         String defaultDeviceTable = "CREATE TABLE default_device_settings " +
-                                    "(" +
-                                        "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                                        "name varchar(100) NOT NULL UNIQUE, " +
-                                        "power_value NUMERIC(60,2) NOT NULL, " +
-                                        "work_time text NOT NULL, " +
-                                        "device_number NUMERIC(3,0) NOT NULL " +
-                                    ")";
+                "(" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "name varchar(100) NOT NULL UNIQUE, " +
+                "power_value NUMERIC(60,2) NOT NULL, " +
+                "work_time text NOT NULL, " +
+                "device_number NUMERIC(3,0) NOT NULL " +
+                ")";
         db.execSQL(defaultDeviceTable);
+
+        String defaultRoomListTable = "CREATE TABLE IF NOT EXISTS default_room_list" +
+                "(" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "name varchar(100) NOT NULL UNIQUE, " +
+                "device_list varchar(3000) NOT NULL " +
+                ")";
+        db.execSQL(defaultRoomListTable);
 
         firstRunTutFirst = "INSERT INTO configuration_variable (name, value) values (\"runTutFir\", \"false\")";
         addVariable = "INSERT INTO configuration_variable (name, value) values (\"powerCost\", \"0.60\"), (\"defaultCurrency\", ?)";
@@ -63,15 +71,17 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
         token = "INSERT INTO configuration_variable (name, value) values (\"token\", \"\")";
         adsEnable = "INSERT INTO configuration_variable (name, value) values (\"adsEnable\", \"Y\")";
 
+        defaultRoomDevice = "INSERT INTO default_room_list (name, device_list) values (\"Kuchnia\", ?)";
+
         defaultDevice = "INSERT INTO default_device_settings (name, power_value, work_time, device_number) values (?, 15, \"2:0\", 1)," +
-                                                                                                                 "(?, 0.1, \"24:0\", 1)," +
-                                                                                                                 "(?, 35, \"24:0\", 1)," +
-                                                                                                                 "(?, 8, \"7:0\", 1)," +
-                                                                                                                 "(?, 20, \"7:0\", 1)," +
-                                                                                                                 "(?, 250, \"8:0\", 1)," +
-                                                                                                                 "(?, 130, \"8:0\", 1)," +
-                                                                                                                 "(?, 150, \"12:0\", 1)," +
-                                                                                                                 "(?, 800, \"0:5\", 1)," +
+                "(?, 0.1, \"24:0\", 1)," +
+                "(?, 35, \"24:0\", 1)," +
+                "(?, 8, \"7:0\", 1)," +
+                "(?, 20, \"7:0\", 1)," +
+                "(?, 250, \"8:0\", 1)," +
+                "(?, 130, \"8:0\", 1)," +
+                "(?, 150, \"12:0\", 1)," +
+                "(?, 800, \"0:5\", 1)," +
                                                                                                                  "(?, 100, \"4:0\", 1)," +
                                                                                                                  "(?, 1.4, \"24:0\", 1)," +
                                                                                                                  "(?, 3, \"24:0\", 1)," +
@@ -85,17 +95,18 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
                                                 context.getResources().getString(R.string.default_device_led_light),
                                                 context.getResources().getString(R.string.default_device_energy_saving_light),
                                                 context.getResources().getString(R.string.default_device_pc),
-                                                context.getResources().getString(R.string.default_device_laptop),
-                                                context.getResources().getString(R.string.default_device_tv_qled),
-                                                context.getResources().getString(R.string.default_device_microvave),
-                                                context.getResources().getString(R.string.default_device_game_console),
-                                                context.getResources().getString(R.string.default_device_game_console_idle),
-                                                context.getResources().getString(R.string.default_device_router),
-                                                context.getResources().getString(R.string.default_device_night_light_led),
-                                                context.getResources().getString(R.string.default_device_vacuum_cleaner),
-                                                context.getResources().getString(R.string.default_device_amp),
-                                                context.getResources().getString(R.string.default_device_amp_idle)});
-        db.execSQL(addVariable, new String[] {context.getResources().getString(R.string.currency_type)});
+                context.getResources().getString(R.string.default_device_laptop),
+                context.getResources().getString(R.string.default_device_tv_qled),
+                context.getResources().getString(R.string.default_device_microvave),
+                context.getResources().getString(R.string.default_device_game_console),
+                context.getResources().getString(R.string.default_device_game_console_idle),
+                context.getResources().getString(R.string.default_device_router),
+                context.getResources().getString(R.string.default_device_night_light_led),
+                context.getResources().getString(R.string.default_device_vacuum_cleaner),
+                context.getResources().getString(R.string.default_device_amp),
+                context.getResources().getString(R.string.default_device_amp_idle)});
+        db.execSQL(defaultRoomDevice, new String[]{context.getResources().getString(R.string.default_device_fridge) + ";" + context.getResources().getString(R.string.default_device_microvave)});
+        db.execSQL(addVariable, new String[]{context.getResources().getString(R.string.currency_type)});
         db.execSQL(numberAfterDot);
         db.execSQL(firstRunTutFirst);
         db.execSQL(token);
@@ -104,13 +115,10 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
-
 //        if(oldVersion <= 3) {
 //            db.execSQL("DROP TABLE IF EXISTS " + "configuration_variable"); // TODO trzeba dodać zabezpieczenia na istnienie tabelki
 //        }
         //    onCreate(db);
-
     }
 
     @SuppressLint("Recycle")
@@ -139,8 +147,7 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
     public void checkIfDefaultRoomListExist() {
         SQLiteDatabase dbWriter = getWritableDatabase();
         String defaultRoomListTable;
-        String defaultDevicesInRoom = "REPLACE INTO default_room_list (name, device_list) values (\"Kuchnia\", \"Mikrofala;PC\"), (\"Kuchnia2_TEST\", \"Mikrofala;PC\")";
-        ;
+        String defaultDevicesInRoom = "REPLACE INTO default_room_list (name, device_list) values (\"Kuchnia\",  \"Mikrofalówka;PC\"), (\"Kuchnia2_TEST\", \"Mikrofalówka;PC\")";
 
         defaultRoomListTable = "CREATE TABLE IF NOT EXISTS default_room_list" +
                 "(" +
@@ -231,6 +238,7 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
 
         cursor = dbhRead.rawQuery(query, null);
         cursor.moveToFirst();
+
         return cursor.getString(0).equals("Y");
     }
 
@@ -251,5 +259,4 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
     protected String changeSpaceInName(String name) {
         return name.trim().replace(" ", "_");
     }
-
 }

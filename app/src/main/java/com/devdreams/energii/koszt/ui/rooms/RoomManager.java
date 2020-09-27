@@ -12,8 +12,6 @@ import com.devdreams.energii.koszt.ui.exception.SQLEnergyCostException;
 import com.devdreams.energii.koszt.ui.rooms.manager.DeviceManager;
 import com.devdreams.energii.koszt.ui.settings.DefaultDeviceManager;
 
-import java.util.Random;
-
 public class RoomManager extends SQLLiteDBHelper {
     public RoomManager(Context context) {
         super(context);
@@ -76,7 +74,6 @@ public class RoomManager extends SQLLiteDBHelper {
     }
 
     public void updateRoomName(String oldRoomName, String newRoomName) throws SQLEnergyCostException.DuplicationRoom {
-
         if(checkNameRoom(changeSpaceInName(newRoomName)).getCount() != 0) {
             throw new SQLEnergyCostException.DuplicationRoom(newRoomName,context);
         }
@@ -176,28 +173,33 @@ public class RoomManager extends SQLLiteDBHelper {
     }
 
     //TODO Naprawić randomowe dodawnia kolorow
-    //     Zaimplementowac automatyczne dodawanie urzadzen do utworzonego pokoju z szablonu
     //     Dodac wiecej domyslnych pokoi
     //     Dodac odswiezanie listy pokoi po dodaniu domyslnego pokoju
     //     Przejscie automatyczne do domyslnego pokoju po dodaniu go
-    public void createDefaultRoom(String selectedDefaultRoomName) throws SQLEnergyCostException.WrongTime, SQLEnergyCostException.EmptyField, SQLEnergyCostException.DuplicationDevice, SQLEnergyCostException.DuplicationRoom {
-        Random random = new Random();
+    public void createDefaultRoom(String selectedDefaultRoomName, int colorID)
+            throws SQLEnergyCostException.WrongTime,
+            SQLEnergyCostException.EmptyField,
+            SQLEnergyCostException.DuplicationDevice,
+            SQLEnergyCostException.DuplicationRoom {
+
         String[] deviceList = getDeviceListFromDefaultRoom();
-        String[] workTime = new String[2];
+        String[] workTime;
         DeviceManager deviceManager = new DeviceManager(context);
         DefaultDeviceManager defaultDeviceManager = new DefaultDeviceManager(context);
-        addRoom(selectedDefaultRoomName, -8888888);
+        addRoom(selectedDefaultRoomName, colorID);
 
+        for (String deviceName : deviceList) {
+            Cursor cursor = defaultDeviceManager.getDetailsDefaultDevice(deviceName);
 
-//        for (String deviceName: deviceList) {
-//            cursor = defaultDeviceManager.getDetailsDefaultDevice(deviceName);
-//            cursor.moveToFirst();
-//
-//            workTime = cursor.getString(2).split(":");
-//            System.out.println(workTime[0]);
-//
-//            deviceManager.addDevice(selectedDefaultRoomName, deviceName, cursor.getDouble(0), Integer.parseInt(workTime[0]), Integer.parseInt(workTime[1]), cursor.getInt(2), -8888888);
-//        }
+            workTime = cursor.getString(1).split(":");
+
+            deviceManager.addDevice(selectedDefaultRoomName, deviceName,
+                    cursor.getDouble(0),
+                    Integer.parseInt(workTime[0]),
+                    Integer.parseInt(workTime[1]),
+                    cursor.getInt(2),
+                    colorID);
+        }
     }
 
     @SuppressLint("Recycle")
@@ -255,7 +257,6 @@ public class RoomManager extends SQLLiteDBHelper {
         return dbhRead.rawQuery(query, new String[]{changeSpaceInName(roomName)});
     }
 
-    @SuppressLint("Recycle")
     private void updateNameDeviceList(String oldRoomName, String newRoomName) {
         SQLiteDatabase dbWriter = getWritableDatabase();
         String query;

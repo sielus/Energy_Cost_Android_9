@@ -157,7 +157,7 @@
 
             android:layout_marginBottom="20dp"
             android:autoSizeTextType="uniform"
-            android:theme="@style/mySpinnerItemStyle"
+            android:theme="@style/spinnerDrop"
             tools:ignore="HardcodedText" />
 
 
