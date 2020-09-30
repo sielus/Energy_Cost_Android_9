@@ -94,7 +94,12 @@
     <string name="billing_transaction_ok">Transakcja zaakceptowana</string>
     <string name="billing_no_connect">Brak połączenia z  usługą Google Pay / Play</string>
 
-    <string name="default_room_kitchen">Kuchnia</string>
+    <string name="default_roomname_kitchen">Kuchnia</string>
+    <string name="default_roomname_bedroom">Sypialnia</string>
+    <string name="default_roomname_bathroom">Łazienka</string>
+    <string name="default_roomname_livingroom">Salon</string>
+    <string name="default_roomname_homeoffice">Biuro (domowe)</string>
+    <string name="default_roomname_utilityroom">Kotłownia</string>
 
 
 </resources>

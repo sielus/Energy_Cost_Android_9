@@ -32,7 +32,8 @@ public class DefaultDeviceManager extends SQLLiteDBHelper {
         SQLiteDatabase dbhRead = getReadableDatabase();
         String query;
 
-        query = "SELECT power_value," +
+        query = "SELECT name," +
+                "power_value," +
                 "work_time," +
                 "device_number " +
                 "FROM  default_device_settings " +

@@ -8,7 +8,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -639,7 +638,6 @@ public class Dialogs {
     public void showRoomListDialog(final View view, final RoomListAdapter adapter, final FragmentActivity activity) {
         final Dialog dialog;
         final SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(view.getContext());
-        final RoomManager roomManager = new RoomManager(view.getContext());
         dialog = new Dialog(view.getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.room_list_dialog);
@@ -657,7 +655,6 @@ public class Dialogs {
             cursor.moveToFirst();
             do {
                 defaultListRoomSchema.add(x, cursor.getString(0));
-                Log.e("myTag", cursor.getString(0));
                 x++;
             } while (cursor.moveToNext());
         }
@@ -718,12 +715,17 @@ public class Dialogs {
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemSelected(AdapterView<?> parent, View spinerView, int position, long id) {
                 if (!Objects.equals(arrayAdapter.getItem(0), arrayAdapter.getItem(position))) {
                     try {
+                        String roomName = defaultListRoomSchema.get(position);
                         RoomManager roomManager = new RoomManager(view.getContext());
                         ColorDrawable viewColor = (ColorDrawable) buttonColorPicker.getBackground();
-                        roomManager.createDefaultRoom(defaultListRoomSchema.get(position), viewColor.getColor());
+                        roomManager.createDefaultRoom(roomName, viewColor.getColor());
+                        refreshListAndCharts(view, roomManager, roomListFragment, adapter, roomName, activity);
+
+                        dialog.dismiss();
+
                     } catch (SQLEnergyCostException.WrongTime | SQLEnergyCostException.EmptyField |
                             SQLEnergyCostException.DuplicationDevice |
                             SQLEnergyCostException.DuplicationRoom errorMessage) {
@@ -746,33 +748,18 @@ public class Dialogs {
                     text_field_inputRoomNameLayout.setError(v.getContext().getResources().getString(R.string.error_no_data));
                 } else if (ifNumberOnStart) {
                     text_field_inputRoomNameLayout.setError(v.getContext().getResources().getString(R.string.error_name_canot_start_from_number));
-                }
-                else{
+                } else {
                     text_field_inputRoomNameLayout.setError(null);
                     try {
                         RoomManager roomManager = new RoomManager(view.getContext());
                         ColorDrawable viewColor = (ColorDrawable) buttonColorPicker.getBackground();
                         int colorId = viewColor.getColor();
-                        roomManager.addRoom(roomName,colorId);
-                        clearRoomList();
-                        ViewRoomListFromDB(roomManager.getRoomList());
-                        roomListFragment.refreshListView(view);
-                        roomListFragment.refreshTable(view);
-                        GenerateCharts generateCharts = new GenerateCharts();
-                        generateCharts.generateChart(view);
-                        adapter.notifyDataSetChanged();
-                        PieChart pieChart;
-                        BarChart barChart;
-                        pieChart =  view.findViewById(R.id.pieChart);
-                        barChart = view.findViewById(R.id.bartChart);
-                        roomNameArray.add(roomName);
-                        barChart.setVisibility(View.VISIBLE);
-                        pieChart.setVisibility(View.VISIBLE);
-                        RoomListFragment.hideKeyboard(activity);
+                        roomManager.addRoom(roomName, colorId);
+                        refreshListAndCharts(view, roomManager, roomListFragment, adapter, roomName, activity);
                         dialog.dismiss();
 
-                        Toast.makeText(view.getContext(),R.string.toast_room_added,Toast.LENGTH_SHORT).show();
-                    }catch (SQLEnergyCostException.DuplicationRoom | SQLEnergyCostException.EmptyField errorMessage) {
+                        Toast.makeText(view.getContext(), R.string.toast_room_added, Toast.LENGTH_SHORT).show();
+                    } catch (SQLEnergyCostException.DuplicationRoom | SQLEnergyCostException.EmptyField errorMessage) {
                         text_field_inputRoomNameLayout.setError(errorMessage.getMessage());
                     }
                 }
@@ -780,7 +767,25 @@ public class Dialogs {
         });
     }
 
-    public void showColorPicker(final View view, final Button showColorPicker,int colorInit) {
+    private void refreshListAndCharts(View view, RoomManager roomManager, RoomListFragment roomListFragment, RoomListAdapter adapter, String roomName, FragmentActivity activity) {
+        clearRoomList();
+        ViewRoomListFromDB(roomManager.getRoomList());
+        roomListFragment.refreshListView(view);
+        roomListFragment.refreshTable(view);
+        GenerateCharts generateCharts = new GenerateCharts();
+        generateCharts.generateChart(view);
+        adapter.notifyDataSetChanged();
+        PieChart pieChart;
+        BarChart barChart;
+        pieChart = view.findViewById(R.id.pieChart);
+        barChart = view.findViewById(R.id.bartChart);
+        roomNameArray.add(roomName);
+        barChart.setVisibility(View.VISIBLE);
+        pieChart.setVisibility(View.VISIBLE);
+        RoomListFragment.hideKeyboard(activity);
+    }
+
+    public void showColorPicker(final View view, final Button showColorPicker, int colorInit) {
         final Dialog dialog;
         dialog = new Dialog(view.getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);

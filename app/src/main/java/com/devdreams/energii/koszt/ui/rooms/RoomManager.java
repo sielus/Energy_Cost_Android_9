@@ -12,6 +12,8 @@ import com.devdreams.energii.koszt.ui.exception.SQLEnergyCostException;
 import com.devdreams.energii.koszt.ui.rooms.manager.DeviceManager;
 import com.devdreams.energii.koszt.ui.settings.DefaultDeviceManager;
 
+import java.util.Random;
+
 public class RoomManager extends SQLLiteDBHelper {
     public RoomManager(Context context) {
         super(context);
@@ -19,7 +21,7 @@ public class RoomManager extends SQLLiteDBHelper {
 
     public void addRoom(String roomName, int colorId) throws SQLEnergyCostException.DuplicationRoom, SQLEnergyCostException.EmptyField {
         if (roomName.isEmpty()) {
-            throw new SQLEnergyCostException.EmptyField(context.getResources().getString(R.string.just_room_name),context);
+            throw new SQLEnergyCostException.EmptyField(context.getResources().getString(R.string.just_room_name), context);
         }
 
         SQLiteDatabase dbhWrite = getWritableDatabase();
@@ -182,23 +184,25 @@ public class RoomManager extends SQLLiteDBHelper {
             SQLEnergyCostException.DuplicationDevice,
             SQLEnergyCostException.DuplicationRoom {
 
+        Random randomColorId = new Random();
         String[] deviceList = getDeviceListFromDefaultRoom();
         String[] workTime;
+        Cursor cursor;
         DeviceManager deviceManager = new DeviceManager(context);
         DefaultDeviceManager defaultDeviceManager = new DefaultDeviceManager(context);
         addRoom(selectedDefaultRoomName, colorID);
 
         for (String deviceName : deviceList) {
-            Cursor cursor = defaultDeviceManager.getDetailsDefaultDevice(deviceName);
-
-            workTime = cursor.getString(1).split(":");
+            cursor = defaultDeviceManager.getDetailsDefaultDevice(deviceName.trim());
+            cursor.moveToFirst();
+            workTime = cursor.getString(2).split(":");
 
             deviceManager.addDevice(selectedDefaultRoomName, deviceName,
-                    cursor.getDouble(0),
+                    cursor.getDouble(1),
                     Integer.parseInt(workTime[0]),
                     Integer.parseInt(workTime[1]),
-                    cursor.getInt(2),
-                    colorID);
+                    cursor.getInt(3),
+                    ((randomColorId.nextInt(4499999) + 5500000) * -1));
         }
     }
 

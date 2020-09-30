@@ -125,7 +125,7 @@
     <string name="tutorial_device_list">"To edit a device / room, click on it. If you want to delete an item, slide it to the left "</string>
 
     <string name="tutorial_room_list_title">"Welcome to the house manager! "</string>
-    <string name="tutorial_room_list_desc">To add a new room, click here!</string>
+    <string name="tutorial_room_list_desc">To add a new room, click here!\nYou can also select prepared room schema</string>
     <string name="banner_calculator" translatable="false">ca-app-pub-8486454550638664/8407231843</string>
     <string name="banner_room_list" translatable="false">ca-app-pub-8486454550638664/5510439914</string>
     <string name="banner_sun_energy" translatable="false">ca-app-pub-8486454550638664/2259915454</string>
@@ -135,6 +135,13 @@
     <string name="billing_verification_of_transaction">Verification of transaction</string>
     <string name="billing_transaction_ok">"Transaction accepted "</string>
     <string name="billing_no_connect">No conncection with Google Pay / Play service</string>
+
+    <string name="default_roomname_kitchen">Kitchen</string>
+    <string name="default_roomname_bedroom">Bedroom</string>
+    <string name="default_roomname_bathroom">Bathroom</string>
+    <string name="default_roomname_livingroom">Living room</string>
+    <string name="default_roomname_homeoffice">Home office</string>
+    <string name="default_roomname_utilityroom">Utility room</string>
 
 
 </resources>
