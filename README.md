@@ -13,11 +13,11 @@ Google Play - https://play.google.com/store/apps/details?id=com.devdreams.energy
 
 In house manager you can create any room and as many as you want ( or you can select from default room schema )
 
-After this just enter your new room and add some devices ( Ofcourse you can add your own devices or choose from default device/devices )
+After this just enter your new room and add some devices ( Of course you can add your own devices or choose from default device/devices )
 
 Application will calc some things for you like **how much your device will use kWh and how much will it cost you at 24 h / 30 day / 1 year**
 
-This data will be shown in some nice charts ( _in my opinion :d_ ). 
+This data will be shown in some nice charts ( _in my opinion_ ). 
 
 ## House manager
 ![House manager](https://lh3.googleusercontent.com/69AnGr7I9HeEAWzLCcC_Ee8fb6nuFIEcLr-nPgoKhxHOx0d9pIJ5SCtGa5Kj3uCm1trK=w1800-h900)
