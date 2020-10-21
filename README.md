@@ -11,7 +11,7 @@ Google Play - https://play.google.com/store/apps/details?id=com.devdreams.energy
 # How it works? 
 **It's very simple!** 
 
-In house manager  you can create any rooms and as many as you want ( or you can select from default rooms schema )
+In house manager  you can create any rooms as many as you want ( or you can select from default rooms schema )
 
 After this just enter your new room and add some devices ( Ofcourse you can add your own devices or choose from default devices )
 
