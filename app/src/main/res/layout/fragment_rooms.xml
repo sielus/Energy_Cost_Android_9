@@ -58,8 +58,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:layout_marginBottom="2dp"
                 android:stretchColumns="*"
                 app:layout_constraintBottom_toTopOf="@+id/bartChart"
@@ -107,12 +107,15 @@
                             android:layout_height="match_parent"
 
                             android:layout_weight="1"
+                            android:autoSizeMaxTextSize="16dp"
+                            android:autoSizeMinTextSize="7dp"
+                            android:autoSizeTextType="uniform"
                             android:background="@drawable/border"
                             android:fontFamily="@font/lato_light"
+
                             android:gravity="center"
                             android:text="@string/room_list_table_month"
-                            android:textColor="#FFFFFF"
-                            android:textSize="18sp" />
+                            android:textColor="#FFFFFF" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -127,12 +130,13 @@
                             android:layout_height="match_parent"
 
                             android:layout_weight="1"
+
                             android:background="@drawable/border"
                             android:fontFamily="@font/lato_light"
                             android:gravity="center"
                             android:text="@string/room_list_table_year"
                             android:textColor="#FFFFFF"
-                            android:textSize="18sp" />
+                            android:textSize="18dp" />
                     </LinearLayout>
 
                 </TableRow>
@@ -155,16 +159,15 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
 
-                            android:autoSizeMaxTextSize="18sp"
-                            android:autoSizeMinTextSize="9sp"
+                            android:autoSizeMaxTextSize="16dp"
+                            android:autoSizeMinTextSize="7dp"
                             android:autoSizeTextType="uniform"
                             android:background="@drawable/border"
                             android:fontFamily="@font/lato_light"
                             android:gravity="center"
                             android:minHeight="50dp"
                             android:text="0 kWh"
-                            android:textColor="#FFFFFF"
-                            android:textSize="18sp" />
+                            android:textColor="#FFFFFF" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -179,15 +182,14 @@
                             android:layout_height="match_parent"
 
                             android:layout_weight="1"
-                            android:autoSizeMaxTextSize="18sp"
-                            android:autoSizeMinTextSize="9sp"
+                            android:autoSizeMaxTextSize="16dp"
+                            android:autoSizeMinTextSize="7dp"
                             android:autoSizeTextType="uniform"
                             android:background="@drawable/border"
                             android:fontFamily="@font/lato_light"
                             android:gravity="center"
                             android:text="0 kWh "
-                            android:textColor="#FFFFFF"
-                            android:textSize="18sp" />
+                            android:textColor="#FFFFFF" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -202,16 +204,16 @@
                             android:layout_height="match_parent"
 
                             android:layout_weight="1"
-                            android:autoSizeMaxTextSize="18sp"
-                            android:autoSizeMinTextSize="9sp"
+                            android:autoSizeMaxTextSize="16dp"
+                            android:autoSizeMinTextSize="7dp"
                             android:autoSizeTextType="uniform"
+
                             android:background="@drawable/border"
                             android:fontFamily="@font/lato_light"
                             android:gravity="center"
                             android:text="0 kWh "
 
-                            android:textColor="#FFFFFF"
-                            android:textSize="18sp" />
+                            android:textColor="#FFFFFF" />
                     </LinearLayout>
 
                 </TableRow>
@@ -229,16 +231,15 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:autoSizeMaxTextSize="18sp"
-                            android:autoSizeMinTextSize="9sp"
+                            android:autoSizeMaxTextSize="16dp"
+                            android:autoSizeMinTextSize="7dp"
                             android:autoSizeTextType="uniform"
                             android:background="@drawable/border"
                             android:fontFamily="@font/lato_light"
                             android:gravity="center"
                             android:minHeight="50dp"
                             android:text="0 zł"
-                            android:textColor="#FFFFFF"
-                            android:textSize="18sp" />
+                            android:textColor="#FFFFFF" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -253,15 +254,14 @@
                             android:layout_height="match_parent"
 
                             android:layout_weight="1"
-                            android:autoSizeMaxTextSize="18sp"
-                            android:autoSizeMinTextSize="9sp"
+                            android:autoSizeMaxTextSize="16dp"
+                            android:autoSizeMinTextSize="7dp"
                             android:autoSizeTextType="uniform"
                             android:background="@drawable/border"
                             android:fontFamily="@font/lato_light"
                             android:gravity="center"
                             android:text="0 zł"
-                            android:textColor="#FFFFFF"
-                            android:textSize="18sp" />
+                            android:textColor="#FFFFFF" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -276,15 +276,14 @@
                             android:layout_height="match_parent"
 
                             android:layout_weight="1"
-                            android:autoSizeMaxTextSize="18sp"
-                            android:autoSizeMinTextSize="9sp"
+                            android:autoSizeMaxTextSize="16dp"
+                            android:autoSizeMinTextSize="7dp"
                             android:autoSizeTextType="uniform"
                             android:background="@drawable/border"
                             android:fontFamily="@font/lato_light"
                             android:gravity="center"
                             android:text="0 zł"
-                            android:textColor="#FFFFFF"
-                            android:textSize="18sp" />
+                            android:textColor="#FFFFFF" />
                     </LinearLayout>
 
                 </TableRow>

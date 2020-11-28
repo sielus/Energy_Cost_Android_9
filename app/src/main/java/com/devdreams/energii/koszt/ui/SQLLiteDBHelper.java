@@ -8,132 +8,273 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.devdreams.energii.koszt.R;
+import com.devdreams.energii.koszt.ui.rooms.RoomListFragment;
 import com.devdreams.energii.koszt.ui.rooms.RoomManager;
 
 public class SQLLiteDBHelper extends SQLiteOpenHelper {
-    public final Context context;
+    public Context context = RoomListFragment.root.getContext();
     private static final String DB_NAME = "cost_energy.db";
-    private static final int DB_VERSION = 3;
+    private static final int DB_VERSION = 4;
 
     public SQLLiteDBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
         this.context = context;
     }
 
+    private String defaultDeviceTable =
+            "CREATE TABLE default_device_settings " +
+                    "(" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "name varchar(100) NOT NULL UNIQUE, " +
+                    "power_value NUMERIC(60,2) NOT NULL, " +
+                    "work_time text NOT NULL, " +
+                    "device_number NUMERIC(3,0) NOT NULL " +
+                    ")";
+
+    private String defaultDevice = "INSERT INTO default_device_settings (name, power_value, work_time, device_number) values (?, 15, \"2:0\", 1)," +
+            "(?, 0.1, \"24:0\", 1)," +
+            "(?, 35, \"24:0\", 1)," +
+            "(?, 8, \"7:0\", 1)," +
+            "(?, 20, \"7:0\", 1)," +
+            "(?, 250, \"8:0\", 1)," +
+            "(?, 130, \"8:0\", 1)," +
+            "(?, 150, \"12:0\", 1)," +
+            "(?, 800, \"0:5\", 1)," +
+            "(?, 100, \"4:0\", 1)," +
+            "(?, 1.4, \"24:0\", 1)," +
+            "(?, 3, \"24:0\", 1)," +
+            "(?, 10, \"1:0\", 1)," +
+            "(?, 20, \"0:20\", 1)," +
+            "(?, 40, \"10:0\", 1)," +
+            "(?, 2, \"24:0\", 1)," +
+
+            "(?, 600, \"2:0\", 1)," +
+            "(?, 3000, \"1:0\", 1)," +
+            "(?, 1500, \"0:30\", 1)," +
+            "(?, 1500, \"3:30\", 1)," +
+            "(?, 250, \"2:0\", 1)," +
+            "(?, 10, \"2:0\", 1)," +
+            "(?, 2000, \"3:0\", 1)," +
+            "(?, 2400, \"1:0\", 1)," +
+            "(?, 500, \"0:10\", 1)," +
+            "(?, 1200, \"0:5\", 1)," +
+            "(?, 1200, \"0:30\", 1)," +
+            "(?, 1800, \"2:0\", 1)," +
+            "(?, 700, \"7:0\", 1)";
+
+    String defaultRoomListTable = "CREATE TABLE IF NOT EXISTS default_room_list" +
+            "(" +
+            "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            "name varchar(100) NOT NULL UNIQUE, " +
+            "device_list varchar(3000) NOT NULL " +
+            ")";
+
+    String defaultDevicesInDefaultKitchen =
+            context.getResources().getString(R.string.default_device_fridge) + ";"
+                    + context.getResources().getString(R.string.default_device_small_tv) + ";"
+                    + context.getResources().getString(R.string.default_device_induction_cooker) + ";"
+                    + context.getResources().getString(R.string.default_device_oven) + ";"
+                    + context.getResources().getString(R.string.default_device_Mixer) + ";"
+                    + context.getResources().getString(R.string.default_device_kettle) + ";"
+                    + context.getResources().getString(R.string.default_device_dishwasher) + ";"
+                    + context.getResources().getString(R.string.default_device_toaster);
+
+    String defaultDevicesInDefaultBathroom =
+            context.getResources().getString(R.string.default_device_washing_wachine) + ";"
+                    + context.getResources().getString(R.string.default_device_laudry_dryer) + ";"
+                    + context.getResources().getString(R.string.default_device_electric_heater) + ";"
+                    + context.getResources().getString(R.string.default_device_hair_dryer);
+
+    String defaultDevicesInDefaultBedroom =
+            context.getResources().getString(R.string.default_device_led_light) + ";"
+                    + context.getResources().getString(R.string.default_device_night_light_led) + ";"
+                    + context.getResources().getString(R.string.default_device_phone_charger_idle) + ";"
+                    + context.getResources().getString(R.string.default_device_small_tv) + ";"
+                    + context.getResources().getString(R.string.default_device_radio) + ";"
+                    + context.getResources().getString(R.string.default_device_phone_charger);
+
+    String defaultDevicesInDefaultUtilityRoom =
+            context.getResources().getString(R.string.default_device_washing_wachine) + ";"
+                    + context.getResources().getString(R.string.default_device_air_conditioner) + ";"
+                    + context.getResources().getString(R.string.default_device_laudry_dryer);
+
+    String defaultDevicesInDefaultLivingRoom =
+            context.getResources().getString(R.string.default_device_amp) + ";"
+                    + context.getResources().getString(R.string.default_device_amp_idle) + ";"
+                    + context.getResources().getString(R.string.default_device_game_console_idle) + ";"
+                    + context.getResources().getString(R.string.default_device_game_console) + ";"
+                    + context.getResources().getString(R.string.default_device_led_light);
+
+    String defaultDevicesInDefaultHomeOffice =
+            context.getResources().getString(R.string.default_device_pc) + ";"
+                    + context.getResources().getString(R.string.default_device_phone_charger) + ";"
+                    + context.getResources().getString(R.string.default_device_phone_charger_idle) + ";"
+                    + context.getResources().getString(R.string.default_device_router) + ";"
+                    + context.getResources().getString(R.string.default_device_led_light);
+
+
+    String defaultRoomNameKitchen = context.getResources().getString(R.string.default_roomname_kitchen);
+    String defaultRoomNameBathroom = context.getResources().getString(R.string.default_roomname_bathroom);
+    String defaultRoomNameBedroom = context.getResources().getString(R.string.default_roomname_bedroom);
+    String defaultRoomNameUtilityRoom = context.getResources().getString(R.string.default_roomname_utilityroom);
+    String defaultRoomNameLivingRoom = context.getResources().getString(R.string.default_roomname_livingroom);
+    String defaultRoomNameHomeOffice = context.getResources().getString(R.string.default_roomname_homeoffice);
+
+    String defaultDevicesInRoom = "INSERT INTO default_room_list (name, device_list) values (\"" + defaultRoomNameKitchen + "\", \"" + defaultDevicesInDefaultKitchen + "\"), " +
+            "(\"" + defaultRoomNameBathroom + "\", \"" + defaultDevicesInDefaultBathroom + " \"), " +
+            "(\"" + defaultRoomNameBedroom + "\", \"" + defaultDevicesInDefaultBedroom + " \"), " +
+            "(\"" + defaultRoomNameUtilityRoom + "\", \"" + defaultDevicesInDefaultUtilityRoom + " \"), " +
+            "(\"" + defaultRoomNameLivingRoom + "\", \"" + defaultDevicesInDefaultLivingRoom.replace('"', '\"') + " \"), " +
+            "(\"" + defaultRoomNameHomeOffice + "\", \"" + defaultDevicesInDefaultHomeOffice + " \") ";
+
+
+    String firstRunTutFirst = "INSERT INTO configuration_variable (name, value) values (\"runTutFir\", \"false\")";
+    String addVariable = "INSERT INTO configuration_variable (name, value) values (\"powerCost\", \"0.60\"), (\"defaultCurrency\", ?)";
+    String numberAfterDot = "INSERT INTO configuration_variable (name, value) values (\"numberAfterDot\", \"2\")";
+    String token = "INSERT INTO configuration_variable (name, value) values (\"token\", \"\")";
+    String adsEnable = "INSERT INTO configuration_variable (name, value) values (\"adsEnable\", \"Y\")";
+
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String addVariable;
-        String numberAfterDot;
-        String defaultDevice;
-        String firstRunTutFirst;
-        String token;
-        String adsEnable;
+//        String addVariable;
+//        String numberAfterDot;
+//       // String defaultDevice;
+//        String firstRunTutFirst;
+//        String token;
+//        String adsEnable;
+
 
         String roomListTable = "CREATE TABLE room_list " +
-                                    "(" +
-                                        "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                                        "name varchar(100) NOT NULL UNIQUE, " +
-                                        "energy_amount NUMERIC(60,2) NOT NULL DEFAULT 0," +
-                                        "energy_cost NUMERIC(60,2) NOT NULL DEFAULT 0," +
-                                        "color_id NUMERIC(30,0)" +
-                                    ")";
+                "(" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "name varchar(100) NOT NULL UNIQUE, " +
+                "energy_amount NUMERIC(60,2) NOT NULL DEFAULT 0," +
+                "energy_cost NUMERIC(60,2) NOT NULL DEFAULT 0," +
+                "color_id NUMERIC(30,0)" +
+                ")";
         db.execSQL(roomListTable);
 
         String configurationVariableTable = "CREATE TABLE configuration_variable " +
-                                                "(" +
-                                                    " name varchar(100) PRIMARY KEY, " +
-                                                    " value varchar(300) NOT NULL UNIQUE " +
-                                                ");";
+                "(" +
+                " name varchar(100) PRIMARY KEY, " +
+                " value varchar(300) NOT NULL UNIQUE " +
+                ");";
         db.execSQL(configurationVariableTable);
 
-        String defaultDeviceTable = "CREATE TABLE default_device_settings " +
-                "(" +
-                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "name varchar(100) NOT NULL UNIQUE, " +
-                "power_value NUMERIC(60,2) NOT NULL, " +
-                "work_time text NOT NULL, " +
-                "device_number NUMERIC(3,0) NOT NULL " +
-                ")";
+//        String defaultDeviceTable = "CREATE TABLE default_device_settings " +
+//                "(" +
+//                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+//                "name varchar(100) NOT NULL UNIQUE, " +
+//                "power_value NUMERIC(60,2) NOT NULL, " +
+//                "work_time text NOT NULL, " +
+//                "device_number NUMERIC(3,0) NOT NULL " +
+//                ")";
         db.execSQL(defaultDeviceTable);
 
-        String defaultRoomListTable = "CREATE TABLE IF NOT EXISTS default_room_list" +
-                "(" +
-                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "name varchar(100) NOT NULL UNIQUE, " +
-                "device_list varchar(3000) NOT NULL " +
-                ")";
+//        String defaultRoomListTable = "CREATE TABLE IF NOT EXISTS default_room_list" +
+//                "(" +
+//                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+//                "name varchar(100) NOT NULL UNIQUE, " +
+//                "device_list varchar(3000) NOT NULL " +
+//                ")";
         db.execSQL(defaultRoomListTable);
+        
+//        String defaultDevicesInDefaultKitchen =
+//                context.getResources().getString(R.string.default_device_fridge) + ";"
+//                    + context.getResources().getString(R.string.default_device_small_tv) + ";"
+//                    + context.getResources().getString(R.string.default_device_induction_cooker) + ";"
+//                    + context.getResources().getString(R.string.default_device_oven) + ";"
+//                    + context.getResources().getString(R.string.default_device_Mixer) + ";"
+//                    + context.getResources().getString(R.string.default_device_kettle) + ";"
+//                    + context.getResources().getString(R.string.default_device_dishwasher) + ";"
+//                    + context.getResources().getString(R.string.default_device_toaster);
+//
+//        String defaultDevicesInDefaultBathroom =
+//                  context.getResources().getString(R.string.default_device_washing_wachine) + ";"
+//                    + context.getResources().getString(R.string.default_device_laudry_dryer) + ";"
+//                    + context.getResources().getString(R.string.default_device_electric_heater) + ";"
+//                    + context.getResources().getString(R.string.default_device_hair_dryer);
+//
+//        String defaultDevicesInDefaultBedroom =
+//                context.getResources().getString(R.string.default_device_led_light) + ";"
+//                    + context.getResources().getString(R.string.default_device_night_light_led) + ";"
+//                    + context.getResources().getString(R.string.default_device_phone_charger_idle) + ";"
+//                    + context.getResources().getString(R.string.default_device_small_tv) + ";"
+//                    + context.getResources().getString(R.string.default_device_radio) + ";"
+//                    + context.getResources().getString(R.string.default_device_phone_charger);
+//
+//        String defaultDevicesInDefaultUtilityRoom =
+//                context.getResources().getString(R.string.default_device_washing_wachine) + ";"
+//                    + context.getResources().getString(R.string.default_device_air_conditioner) + ";"
+//                    + context.getResources().getString(R.string.default_device_laudry_dryer);
+//
+//        String defaultDevicesInDefaultLivingRoom =
+//                context.getResources().getString(R.string.default_device_amp) + ";"
+//                    + context.getResources().getString(R.string.default_device_amp_idle) + ";"
+//                    + context.getResources().getString(R.string.default_device_game_console_idle) + ";"
+//                    + context.getResources().getString(R.string.default_device_game_console) + ";"
+//                    + context.getResources().getString(R.string.default_device_led_light);
+//
+//        String defaultDevicesInDefaultHomeOffice =
+//                context.getResources().getString(R.string.default_device_pc) + ";"
+//                    + context.getResources().getString(R.string.default_device_phone_charger) + ";"
+//                    + context.getResources().getString(R.string.default_device_phone_charger_idle) + ";"
+//                    + context.getResources().getString(R.string.default_device_router) + ";"
+//                    + context.getResources().getString(R.string.default_device_led_light);
+//
+//        String defaultRoomNameKitchen = context.getResources().getString(R.string.default_roomname_kitchen);
+//        String defaultRoomNameBathroom = context.getResources().getString(R.string.default_roomname_bathroom);
+//        String defaultRoomNameBedroom = context.getResources().getString(R.string.default_roomname_bedroom);
+//        String defaultRoomNameUtilityRoom = context.getResources().getString(R.string.default_roomname_utilityroom);
+//        String defaultRoomNameLivingRoom = context.getResources().getString(R.string.default_roomname_livingroom);
+//        String defaultRoomNameHomeOffice = context.getResources().getString(R.string.default_roomname_homeoffice);
 
-        firstRunTutFirst = "INSERT INTO configuration_variable (name, value) values (\"runTutFir\", \"false\")";
-        addVariable = "INSERT INTO configuration_variable (name, value) values (\"powerCost\", \"0.60\"), (\"defaultCurrency\", ?)";
-        numberAfterDot = "INSERT INTO configuration_variable (name, value) values (\"numberAfterDot\", \"2\")";
-        token = "INSERT INTO configuration_variable (name, value) values (\"token\", \"\")";
-        adsEnable = "INSERT INTO configuration_variable (name, value) values (\"adsEnable\", \"Y\")";
 
-        String defaultDevicesInDefaultKitchen = context.getResources().getString(R.string.default_device_fridge) + ";"
-                + context.getResources().getString(R.string.default_device_microvave);
+//        String defaultDevicesInRoom = "INSERT INTO default_room_list (name, device_list) values (\"" + defaultRoomNameKitchen + "\", \"" + defaultDevicesInDefaultKitchen + "\"), " +
+//                "(\"" + defaultRoomNameBathroom + "\", \"" + defaultDevicesInDefaultBathroom + " \"), " +
+//                "(\"" + defaultRoomNameBedroom + "\", \"" + defaultDevicesInDefaultBedroom + " \"), " +
+//                "(\"" + defaultRoomNameUtilityRoom + "\", \"" + defaultDevicesInDefaultUtilityRoom + " \"), " +
+//                "(\"" + defaultRoomNameLivingRoom + "\", \"" + defaultDevicesInDefaultLivingRoom.replace('"','\"') + " \"), " +
+//                "(\"" + defaultRoomNameHomeOffice + "\", \"" + defaultDevicesInDefaultHomeOffice + " \") ";
 
-        String defaultDevicesInDefaultBathroom = context.getResources().getString(R.string.default_device_fridge) + ";"
-                + context.getResources().getString(R.string.default_device_microvave);
+//        defaultDevice = "INSERT INTO default_device_settings (name, power_value, work_time, device_number) values (?, 15, \"2:0\", 1)," +
+//                "(?, 0.1, \"24:0\", 1)," +
+//                "(?, 35, \"24:0\", 1)," +
+//                "(?, 8, \"7:0\", 1)," +
+//                "(?, 20, \"7:0\", 1)," +
+//                "(?, 250, \"8:0\", 1)," +
+//                "(?, 130, \"8:0\", 1)," +
+//                "(?, 150, \"12:0\", 1)," +
+//                "(?, 800, \"0:5\", 1)," +
+//                "(?, 100, \"4:0\", 1)," +
+//                "(?, 1.4, \"24:0\", 1)," +
+//                "(?, 3, \"24:0\", 1)," +
+//                "(?, 10, \"1:0\", 1)," +
+//                "(?, 20, \"0:20\", 1)," +
+//                "(?, 40, \"10:0\", 1)," +
+//                "(?, 2, \"24:0\", 1)," +
+//
+//                "(?, 600, \"2:0\", 1)," +
+//                "(?, 3000, \"1:0\", 1)," +
+//                "(?, 1500, \"0:30\", 1)," +
+//                "(?, 1500, \"3:30\", 1)," +
+//                "(?, 250, \"2:0\", 1)," +
+//                "(?, 10, \"2:0\", 1)," +
+//                "(?, 2000, \"3:0\", 1)," +
+//                "(?, 2400, \"1:0\", 1)," +
+//                "(?, 500, \"0:10\", 1)," +
+//                "(?, 1200, \"0:5\", 1)," +
+//                "(?, 1200, \"0:30\", 1)," +
+//                "(?, 1800, \"2:0\", 1)," +
+//                "(?, 700, \"7:0\", 1)";
 
-        String defaultDevicesInDefaultBedroom = context.getResources().getString(R.string.default_device_led_light)
-                + context.getResources().getString(R.string.default_device_night_light_led) + ";"
-                + context.getResources().getString(R.string.default_device_phone_charger_idle) + ";"
-                + context.getResources().getString(R.string.default_device_phone_charger);
 
-        String defaultDevicesInDefaultUtilityroom = context.getResources().getString(R.string.default_device_fridge) + ";"
-                + context.getResources().getString(R.string.default_device_microvave);
-
-        String defaultDevicesInDefaultLivingroom = context.getResources().getString(R.string.default_device_tv_qled) + ";"
-                + context.getResources().getString(R.string.default_device_amp) + ";"
-                + context.getResources().getString(R.string.default_device_amp_idle) + ";"
-                + context.getResources().getString(R.string.default_device_game_console_idle) + ";"
-                + context.getResources().getString(R.string.default_device_game_console) + ";"
-                + context.getResources().getString(R.string.default_device_led_light);
-
-        String defaultDevicesInDefaultHomeoffice = context.getResources().getString(R.string.default_device_pc) + ";"
-                + context.getResources().getString(R.string.default_device_phone_charger) + ";"
-                + context.getResources().getString(R.string.default_device_phone_charger_idle) + ";"
-                + context.getResources().getString(R.string.default_device_router) + ";"
-                + context.getResources().getString(R.string.default_device_led_light);
-
-        String defaultRoomNameKitchen = context.getResources().getString(R.string.default_roomname_kitchen);
-        String defaultRoomNameBathroom = context.getResources().getString(R.string.default_roomname_bathroom);
-        String defaultRoomNameBedroom = context.getResources().getString(R.string.default_roomname_bedroom);
-        String defaultRoomNameUtilityroom = context.getResources().getString(R.string.default_roomname_utilityroom);
-        String defaultRoomNameLivingroom = context.getResources().getString(R.string.default_roomname_livingroom);
-        String defaultRoomNameHomeoffice = context.getResources().getString(R.string.default_roomname_homeoffice);
-
-
-        String defaultDevicesInRoom = "INSERT INTO default_room_list (name, device_list) values (\"" + defaultRoomNameKitchen + "\", \"" + defaultDevicesInDefaultKitchen + "\"), " +
-                "(\"" + defaultRoomNameBathroom + "\", \"" + defaultDevicesInDefaultBathroom + "\"), " +
-                "(\"" + defaultRoomNameBedroom + "\", \"" + defaultDevicesInDefaultBedroom + "\"), " +
-                "(\"" + defaultRoomNameUtilityroom + "\", \"" + defaultDevicesInDefaultUtilityroom + "\"), " +
-                "(\"" + defaultRoomNameLivingroom + "\", \"" + defaultDevicesInDefaultLivingroom + "\"), " +
-                "(\"" + defaultRoomNameHomeoffice + "\", \"" + defaultDevicesInDefaultHomeoffice + "\") ";
-
-        defaultDevice = "INSERT INTO default_device_settings (name, power_value, work_time, device_number) values (?, 15, \"2:0\", 1)," +
-                "(?, 0.1, \"24:0\", 1)," +
-                "(?, 35, \"24:0\", 1)," +
-                "(?, 8, \"7:0\", 1)," +
-                "(?, 20, \"7:0\", 1)," +
-                "(?, 250, \"8:0\", 1)," +
-                "(?, 130, \"8:0\", 1)," +
-                "(?, 150, \"12:0\", 1)," +
-                "(?, 800, \"0:5\", 1)," +
-                                                                                                                 "(?, 100, \"4:0\", 1)," +
-                                                                                                                 "(?, 1.4, \"24:0\", 1)," +
-                                                                                                                 "(?, 3, \"24:0\", 1)," +
-                                                                                                                 "(?, 10, \"1:0\", 1)," +
-                                                                                                                 "(?, 20, \"0:20\", 1)," +
-                                                                                                                 "(?, 40, \"10:0\", 1)," +
-                                                                                                                 "(?, 2, \"24:0\", 1)";
-        db.execSQL(defaultDevice, new String[] {context.getResources().getString(R.string.default_device_phone_charger),
-                                                context.getResources().getString(R.string.default_device_phone_charger_idle),
-                                                context.getResources().getString(R.string.default_device_fridge),
-                                                context.getResources().getString(R.string.default_device_led_light),
-                                                context.getResources().getString(R.string.default_device_energy_saving_light),
-                                                context.getResources().getString(R.string.default_device_pc),
+        db.execSQL(defaultDevice, new String[]{context.getResources().getString(R.string.default_device_phone_charger),
+                context.getResources().getString(R.string.default_device_phone_charger_idle),
+                context.getResources().getString(R.string.default_device_fridge),
+                context.getResources().getString(R.string.default_device_led_light),
+                context.getResources().getString(R.string.default_device_energy_saving_light),
+                context.getResources().getString(R.string.default_device_pc),
                 context.getResources().getString(R.string.default_device_laptop),
                 context.getResources().getString(R.string.default_device_tv_qled),
                 context.getResources().getString(R.string.default_device_microvave),
@@ -143,7 +284,23 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
                 context.getResources().getString(R.string.default_device_night_light_led),
                 context.getResources().getString(R.string.default_device_vacuum_cleaner),
                 context.getResources().getString(R.string.default_device_amp),
-                context.getResources().getString(R.string.default_device_amp_idle)});
+                context.getResources().getString(R.string.default_device_amp_idle),
+
+                context.getResources().getString(R.string.default_device_washing_wachine),
+                context.getResources().getString(R.string.default_device_laudry_dryer),
+                context.getResources().getString(R.string.default_device_hair_dryer),
+                context.getResources().getString(R.string.default_device_electric_heater),
+                context.getResources().getString(R.string.default_device_small_tv),
+                context.getResources().getString(R.string.default_device_radio),
+                context.getResources().getString(R.string.default_device_induction_cooker),
+                context.getResources().getString(R.string.default_device_oven),
+                context.getResources().getString(R.string.default_device_Mixer),
+                context.getResources().getString(R.string.default_device_toaster),
+                context.getResources().getString(R.string.default_device_kettle),
+                context.getResources().getString(R.string.default_device_dishwasher),
+                context.getResources().getString(R.string.default_device_air_conditioner)
+        });
+
         db.execSQL(defaultDevicesInRoom);
         db.execSQL(addVariable, new String[]{context.getResources().getString(R.string.currency_type)});
         db.execSQL(numberAfterDot);
@@ -154,10 +311,43 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-//        if(oldVersion <= 3) {
-//            db.execSQL("DROP TABLE IF EXISTS " + "configuration_variable"); // TODO trzeba dodać zabezpieczenia na istnienie tabelki
-//        }
-        //    onCreate(db);
+        if (oldVersion < 5) {
+            db.execSQL("DROP TABLE IF EXISTS " + "default_device_settings");
+            db.execSQL(defaultDeviceTable);
+
+
+            db.execSQL(defaultDevice, new String[]{context.getResources().getString(R.string.default_device_phone_charger),
+                    context.getResources().getString(R.string.default_device_phone_charger_idle),
+                    context.getResources().getString(R.string.default_device_fridge),
+                    context.getResources().getString(R.string.default_device_led_light),
+                    context.getResources().getString(R.string.default_device_energy_saving_light),
+                    context.getResources().getString(R.string.default_device_pc),
+                    context.getResources().getString(R.string.default_device_laptop),
+                    context.getResources().getString(R.string.default_device_tv_qled),
+                    context.getResources().getString(R.string.default_device_microvave),
+                    context.getResources().getString(R.string.default_device_game_console),
+                    context.getResources().getString(R.string.default_device_game_console_idle),
+                    context.getResources().getString(R.string.default_device_router),
+                    context.getResources().getString(R.string.default_device_night_light_led),
+                    context.getResources().getString(R.string.default_device_vacuum_cleaner),
+                    context.getResources().getString(R.string.default_device_amp),
+                    context.getResources().getString(R.string.default_device_amp_idle),
+
+                    context.getResources().getString(R.string.default_device_washing_wachine),
+                    context.getResources().getString(R.string.default_device_laudry_dryer),
+                    context.getResources().getString(R.string.default_device_hair_dryer),
+                    context.getResources().getString(R.string.default_device_electric_heater),
+                    context.getResources().getString(R.string.default_device_small_tv),
+                    context.getResources().getString(R.string.default_device_radio),
+                    context.getResources().getString(R.string.default_device_induction_cooker),
+                    context.getResources().getString(R.string.default_device_oven),
+                    context.getResources().getString(R.string.default_device_Mixer),
+                    context.getResources().getString(R.string.default_device_toaster),
+                    context.getResources().getString(R.string.default_device_kettle),
+                    context.getResources().getString(R.string.default_device_dishwasher),
+                    context.getResources().getString(R.string.default_device_air_conditioner)
+            });
+        }
     }
 
     @SuppressLint("Recycle")
@@ -185,55 +375,25 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
 
     public void checkIfDefaultRoomListExist() {
         SQLiteDatabase dbWriter = getWritableDatabase();
-        String defaultRoomListTable;
-        String defaultDevicesInDefaultKitchen = context.getResources().getString(R.string.default_device_fridge) + ";"
-                + context.getResources().getString(R.string.default_device_microvave);
+//        String defaultRoomNameKitchen = context.getResources().getString(R.string.default_roomname_kitchen);
+//        String defaultRoomNameBathroom = context.getResources().getString(R.string.default_roomname_bathroom);
+//        String defaultRoomNameBedroom = context.getResources().getString(R.string.default_roomname_bedroom);
+//        String defaultRoomNameUtilityRoom = context.getResources().getString(R.string.default_roomname_utilityroom);
+//        String defaultRoomNameLivingRoom = context.getResources().getString(R.string.default_roomname_livingroom);
+//        String defaultRoomNameHomeOffice = context.getResources().getString(R.string.default_roomname_homeoffice);
 
-        String defaultDevicesInDefaultBathroom = context.getResources().getString(R.string.default_device_fridge) + ";"
-                + context.getResources().getString(R.string.default_device_microvave);
-
-        String defaultDevicesInDefaultBedroom = context.getResources().getString(R.string.default_device_led_light)
-                + context.getResources().getString(R.string.default_device_night_light_led) + ";"
-                + context.getResources().getString(R.string.default_device_phone_charger_idle) + ";"
-                + context.getResources().getString(R.string.default_device_phone_charger);
-
-        String defaultDevicesInDefaultUtilityroom = context.getResources().getString(R.string.default_device_fridge) + ";"
-                + context.getResources().getString(R.string.default_device_microvave);
-
-        String defaultDevicesInDefaultLivingroom = context.getResources().getString(R.string.default_device_tv_qled) + ";"
-                + context.getResources().getString(R.string.default_device_amp) + ";"
-                + context.getResources().getString(R.string.default_device_amp_idle) + ";"
-                + context.getResources().getString(R.string.default_device_game_console_idle) + ";"
-                + context.getResources().getString(R.string.default_device_game_console) + ";"
-                + context.getResources().getString(R.string.default_device_led_light);
-
-        String defaultDevicesInDefaultHomeoffice = context.getResources().getString(R.string.default_device_pc) + ";"
-                + context.getResources().getString(R.string.default_device_phone_charger) + ";"
-                + context.getResources().getString(R.string.default_device_phone_charger_idle) + ";"
-                + context.getResources().getString(R.string.default_device_router) + ";"
-                + context.getResources().getString(R.string.default_device_led_light);
-
-        String defaultRoomNameKitchen = context.getResources().getString(R.string.default_roomname_kitchen);
-        String defaultRoomNameBathroom = context.getResources().getString(R.string.default_roomname_bathroom);
-        String defaultRoomNameBedroom = context.getResources().getString(R.string.default_roomname_bedroom);
-        String defaultRoomNameUtilityroom = context.getResources().getString(R.string.default_roomname_utilityroom);
-        String defaultRoomNameLivingroom = context.getResources().getString(R.string.default_roomname_livingroom);
-        String defaultRoomNameHomeoffice = context.getResources().getString(R.string.default_roomname_homeoffice);
-
-
-        String defaultDevicesInRoom = "INSERT INTO default_room_list (name, device_list) values (\"" + defaultRoomNameKitchen + "\", \"" + defaultDevicesInDefaultKitchen + "\"), " +
+        String defaultDevicesInRoom = "REPLACE INTO default_room_list (name, device_list) values (\"" + defaultRoomNameKitchen + "\", \"" + defaultDevicesInDefaultKitchen + "\"), " +
                 "(\"" + defaultRoomNameBathroom + "\", \"" + defaultDevicesInDefaultBathroom + " \"), " +
                 "(\"" + defaultRoomNameBedroom + "\", \"" + defaultDevicesInDefaultBedroom + " \"), " +
-                "(\"" + defaultRoomNameUtilityroom + "\", \"" + defaultDevicesInDefaultUtilityroom + " \"), " +
-                "(\"" + defaultRoomNameLivingroom + "\", \"" + defaultDevicesInDefaultLivingroom + " \"), " +
-                "(\"" + defaultRoomNameHomeoffice + "\", \"" + defaultDevicesInDefaultHomeoffice + " \") ";
-
-        defaultRoomListTable = "CREATE TABLE IF NOT EXISTS default_room_list" +
-                "(" +
-                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "name varchar(100) NOT NULL UNIQUE, " +
-                "device_list varchar(3000) NOT NULL " +
-                ")";
+                "(\"" + defaultRoomNameUtilityRoom + "\", \"" + defaultDevicesInDefaultUtilityRoom + " \"), " +
+                "(\"" + defaultRoomNameLivingRoom + "\", \"" + defaultDevicesInDefaultLivingRoom.replace('"', '\"') + " \"), " +
+                "(\"" + defaultRoomNameHomeOffice + "\", \"" + defaultDevicesInDefaultHomeOffice + " \") ";
+//        defaultRoomListTable = "CREATE TABLE IF NOT EXISTS default_room_list" +
+//                "(" +
+//                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+//                "name varchar(100) NOT NULL UNIQUE, " +
+//                "device_list varchar(3000) NOT NULL " +
+//                ")";
         dbWriter.execSQL(defaultRoomListTable);
         dbWriter.execSQL(defaultDevicesInRoom);
     }
@@ -262,7 +422,7 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
 
         contentValues.put("value", value);
 
-        if(variableName.equals("powerCost")) {
+        if (variableName.equals("powerCost")) {
             roomManager.updateAllEnergyCostCurrency(Double.parseDouble(value));
         }
 
@@ -280,7 +440,7 @@ public class SQLLiteDBHelper extends SQLiteOpenHelper {
     }
 
     @SuppressLint("Recycle")
-    public String getTokenFromDB(){
+    public String getTokenFromDB() {
         SQLiteDatabase dbhRead = getReadableDatabase();
         String query;
         Cursor cursor;

@@ -658,7 +658,7 @@ public class Dialogs {
                 x++;
             } while (cursor.moveToNext());
         }
-        Spinner spinner = dialog.findViewById(R.id.spinnerDefaultRoomList);
+        final Spinner spinner = dialog.findViewById(R.id.spinnerDefaultRoomList);
 
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(dialog.getContext(), R.layout.custom_spinner, defaultListRoomSchema);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -689,7 +689,6 @@ public class Dialogs {
         text_field_inputRoomName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
@@ -713,6 +712,19 @@ public class Dialogs {
             }
         });
 
+        Cursor checkFirstRunApp = sqlLiteDBHelper.getVariable("runTutFir");
+        //   System.out.println("getcount");
+
+        if (checkFirstRunApp.getCount() != 0) {
+            if (checkFirstRunApp.getString(0).equals("false")) {
+                spinner.setEnabled(false);
+            } else {
+                spinner.setEnabled(true);
+            }
+        }
+        if (!spinner.isEnabled()) {
+            Toast.makeText(activity.getApplicationContext(), activity.getResources().getString(R.string.tutorial_blocked_templates), Toast.LENGTH_SHORT).show();
+        }
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View spinerView, int position, long id) {

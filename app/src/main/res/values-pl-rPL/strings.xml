@@ -8,7 +8,7 @@
     <string name="home_hint_power_value">Moc urządzenia (W)</string>
     <string name="home_hint_number_device">"Ilość urządzeń "</string>
     <string name="home_hint_timework_m">Czas pracy : Minuty</string>
-    <string name="home_hint_timework_h">" Czas pracy : Godziny "</string>
+    <string name="home_hint_timework_h">"Czas pracy : Godziny "</string>
     <string name="home_table_user_time">Czas użytkownika</string>
     <string name="home_table_month">30 dni</string>
     <string name="home_button_calc_it">Oblicz</string>
@@ -45,17 +45,17 @@
     <string name="sql_exception_DuplicationDevice">- To urządzenie już istnieje</string>
     <string name="sql_exception_WrongTime">"Wybierz czas pracy "</string>
     <string name="sql_exception_EmptyField">Puste pole</string>
-    <string name="default_device_phone_charger_idle">Ładowarka do telefonu (Standby)</string>
+    <string name="default_device_phone_charger_idle">Ładowarka do telefonu - Standby</string>
     <string name="default_device_phone_charger">Ładowarka do telefonu</string>
     <string name="default_device_fridge">Lodówka</string>
     <string name="default_device_led_light">Żarówka LED</string>
     <string name="default_device_energy_saving_light">"Żarówka energooszczędna "</string>
     <string name="default_device_microvave">Mikrofalówka</string>
     <string name="default_device_game_console">Konsola do gier</string>
-    <string name="default_device_game_console_idle">Konsola do gier (Standby)</string>
+    <string name="default_device_game_console_idle">Konsola do gier - Standby</string>
     <string name="default_device_vacuum_cleaner">Odkurzacz</string>
     <string name="default_device_amp">Amplituner</string>
-    <string name="default_device_amp_idle">Amplituner (Standby)</string>
+    <string name="default_device_amp_idle">Amplituner - Standby</string>
     <string name="default_device_night_light_led">Lampka nocka LED</string>
     <string name="currency_type">zł</string>
     <string name="module_power">"Moc modułu (W) "</string>
@@ -98,8 +98,21 @@
     <string name="default_roomname_bedroom">Sypialnia</string>
     <string name="default_roomname_bathroom">Łazienka</string>
     <string name="default_roomname_livingroom">Salon</string>
-    <string name="default_roomname_homeoffice">Biuro (domowe)</string>
+    <string name="default_roomname_homeoffice">Biuro domowe</string>
     <string name="default_roomname_utilityroom">Kotłownia</string>
+    <string name="default_device_washing_wachine">Pralka</string>
+    <string name="default_device_laudry_dryer">Suszarka do prania</string>
+    <string name="default_device_hair_dryer">Suszarka do włosów</string>
+    <string name="default_device_electric_heater">Grzejnik elektryczny</string>
+    <string name="default_device_small_tv">Mały TV</string>
+    <string name="default_device_induction_cooker">Kuchenka indukcyjna</string>
+    <string name="default_device_oven">Piekarnik</string>
+    <string name="default_device_Mixer">Mikser kuchenny</string>
+    <string name="default_device_toaster">Toster</string>
+    <string name="default_device_kettle">Czajnik elektryczny</string>
+    <string name="default_device_dishwasher">Zmywarka</string>
+    <string name="default_device_air_conditioner">"Klimatyzator"</string>
+    <string name="tutorial_blocked_templates">"Po ukończeniu poradnika, szablony pokoi zostaną odblokowane! "</string>
 
 
 </resources>

@@ -75,7 +75,7 @@
     <string name="sql_exception_WrongTime">Choose work time</string>
     <string name="sql_exception_EmptyField">"Empty field "</string>
 
-    <string name="default_device_phone_charger_idle">Phone charger (Standby)</string>
+    <string name="default_device_phone_charger_idle">Phone charger - Standby</string>
     <string name="default_device_phone_charger">Phone charger</string>
     <string name="default_device_fridge">Fridge</string>
     <string name="default_device_led_light">Led Light</string>
@@ -85,12 +85,29 @@
     <string name="default_device_tv_qled" translatable="false">TV QLED 60\"</string>
     <string name="default_device_microvave">Microwave</string>
     <string name="default_device_game_console">Game console</string>
-    <string name="default_device_game_console_idle">Game console (Standby)</string>
+    <string name="default_device_game_console_idle">Game console - Standby</string>
     <string name="default_device_router" translatable="false">Router</string>
     <string name="default_device_vacuum_cleaner">Vacuum cleaner</string>
     <string name="default_device_amp">Amp</string>
-    <string name="default_device_amp_idle">Amp (Standby)</string>
+    <string name="default_device_amp_idle">Amp - Standby</string>
     <string name="default_device_night_light_led">LED night light</string>
+
+
+    <string name="default_device_washing_wachine">Washing Machine</string>
+    <string name="default_device_laudry_dryer">Laundry dryer</string>
+    <string name="default_device_hair_dryer">Hair dryer</string>
+    <string name="default_device_electric_heater">Electric heater</string>
+    <string name="default_device_small_tv">Small TV</string>
+    <string name="default_device_radio" translatable="false">Radio</string>
+    <string name="default_device_induction_cooker">Induction cooker</string>
+    <string name="default_device_oven">Oven</string>
+    <string name="default_device_Mixer">Mixer</string>
+    <string name="default_device_toaster">Toaster</string>
+    <string name="default_device_kettle">Electric Kettle</string>
+    <string name="default_device_dishwasher">Dishwasher</string>
+    <string name="default_device_air_conditioner">Air conditioner</string>
+
+
     <string name="currency_type">$</string>
     <string name="module_power">Module power (W)</string>
     <string name="module_price">1x module price</string>
@@ -142,6 +159,7 @@
     <string name="default_roomname_livingroom">Living room</string>
     <string name="default_roomname_homeoffice">Home office</string>
     <string name="default_roomname_utilityroom">Utility room</string>
+    <string name="tutorial_blocked_templates">After completing the guide, room examples will be unlocked!</string>
 
 
 </resources>

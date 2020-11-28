@@ -185,7 +185,7 @@ public class RoomManager extends SQLLiteDBHelper {
             SQLEnergyCostException.DuplicationRoom {
 
         Random randomColorId = new Random();
-        String[] deviceList = getDeviceListFromDefaultRoom();
+        String[] deviceList = getDeviceListFromDefaultRoom(selectedDefaultRoomName);
         String[] workTime;
         Cursor cursor;
         DeviceManager deviceManager = new DeviceManager(context);
@@ -195,6 +195,7 @@ public class RoomManager extends SQLLiteDBHelper {
         for (String deviceName : deviceList) {
             cursor = defaultDeviceManager.getDetailsDefaultDevice(deviceName.trim());
             cursor.moveToFirst();
+            System.out.println(deviceName);
             workTime = cursor.getString(2).split(":");
 
             deviceManager.addDevice(selectedDefaultRoomName, deviceName,
@@ -207,14 +208,15 @@ public class RoomManager extends SQLLiteDBHelper {
     }
 
     @SuppressLint("Recycle")
-    private String[] getDeviceListFromDefaultRoom() {
+    private String[] getDeviceListFromDefaultRoom(String defaultRoomName) {
         SQLiteDatabase dbhRead = getReadableDatabase();
         String query;
 
         query = "SELECT device_list " +
-                "FROM   default_room_list";
+                "FROM   default_room_list " +
+                "WHERE  name = ?";
         Cursor cursor;
-        cursor = dbhRead.rawQuery(query, null);
+        cursor = dbhRead.rawQuery(query, new String[]{defaultRoomName});
         cursor.moveToFirst();
 
         return cursor.getString(0).split(";");

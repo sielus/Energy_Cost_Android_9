@@ -103,7 +103,7 @@ public class RoomListFragment extends Fragment implements RoomListAdapter.onNote
             }
         }else {
             Cursor cursor = sqlLiteDBHelper.getVariable("runTutFir");
-            System.out.println("getcount");
+         //   System.out.println("getcount");
 
             if (cursor.getCount() != 0) {
                 if (cursor.getString(0).equals("false")) {

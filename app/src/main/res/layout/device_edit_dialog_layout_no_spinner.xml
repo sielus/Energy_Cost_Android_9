@@ -112,7 +112,7 @@
                     android:layout_width="match_parent"
 
                     android:layout_height="wrap_content"
-                    android:digits=" abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890łóęążźć"
+                    android:digits=" abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890łóęążźć-"
                     android:inputType="text"
                     android:maxLength="40"
                     android:textColor="@color/white"
