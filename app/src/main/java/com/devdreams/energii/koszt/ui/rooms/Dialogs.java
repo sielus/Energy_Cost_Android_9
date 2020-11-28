@@ -723,7 +723,7 @@ public class Dialogs {
             }
         }
         if (!spinner.isEnabled()) {
-            Toast.makeText(activity.getApplicationContext(), activity.getResources().getString(R.string.tutorial_blocked_templates), Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity.getApplicationContext(), activity.getResources().getString(R.string.tutorial_blocked_templates), Toast.LENGTH_LONG).show();
         }
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
