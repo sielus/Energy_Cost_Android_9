@@ -174,21 +174,17 @@ public class RoomManager extends SQLLiteDBHelper {
         }
     }
 
-    //TODO Naprawić randomowe dodawnia kolorow
-    //     Dodac wiecej domyslnych pokoi
-    //     Dodac odswiezanie listy pokoi po dodaniu domyslnego pokoju
-    //     Przejscie automatyczne do domyslnego pokoju po dodaniu go
-    public void createDefaultRoom(String selectedDefaultRoomName, int colorID)
-            throws SQLEnergyCostException.WrongTime,
-            SQLEnergyCostException.EmptyField,
-            SQLEnergyCostException.DuplicationDevice,
-            SQLEnergyCostException.DuplicationRoom {
+     public void createDefaultRoom(String selectedDefaultRoomName, int colorID)
+             throws SQLEnergyCostException.WrongTime,
+             SQLEnergyCostException.EmptyField,
+             SQLEnergyCostException.DuplicationDevice,
+             SQLEnergyCostException.DuplicationRoom {
 
-        Random randomColorId = new Random();
-        String[] deviceList = getDeviceListFromDefaultRoom(selectedDefaultRoomName);
-        String[] workTime;
-        Cursor cursor;
-        DeviceManager deviceManager = new DeviceManager(context);
+         Random randomColorId = new Random();
+         String[] deviceList = getDeviceListFromDefaultRoom(selectedDefaultRoomName);
+         String[] workTime;
+         Cursor cursor;
+         DeviceManager deviceManager = new DeviceManager(context);
         DefaultDeviceManager defaultDeviceManager = new DefaultDeviceManager(context);
         addRoom(selectedDefaultRoomName, colorID);
 

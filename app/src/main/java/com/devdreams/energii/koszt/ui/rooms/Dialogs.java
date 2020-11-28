@@ -56,6 +56,8 @@ public class Dialogs {
     private ArrayList<String> defaultListDeviceTimeWork;
     private ArrayList<String> defaultListDeviceNumber;
     private boolean ifNumberOnStart = false;
+    private boolean ifWhiteSpaceOnStart = false;
+
     private DeviceManager deviceManager;
 
     public Dialogs(ArrayList<String> defaultListDeviceName, ArrayList<String> defaultListDevicePower, ArrayList<String> defaultListDeviceTimeWork, ArrayList<String> defaultListDeviceNumber) {
@@ -65,7 +67,7 @@ public class Dialogs {
         this.defaultListDeviceNumber = defaultListDeviceNumber;
     }
 
-    public void showDialogAddDevice(final View view, final String room_name, final int numberAfterDot, final String defaultCurrency){
+    public void showDialogAddDevice(final View view, final String room_name, final int numberAfterDot, final String defaultCurrency) {
         deviceManager = new DeviceManager(view.getContext());
         final Dialog dialog = new Dialog(view.getContext());
 
@@ -86,7 +88,7 @@ public class Dialogs {
             public void onClick(View v) {
                 ColorDrawable buttonColor = (ColorDrawable) buttonColorPicker.getBackground();
 
-                showColorPicker(v,buttonColorPicker,buttonColor.getColor());
+                showColorPicker(v, buttonColorPicker, buttonColor.getColor());
             }
 
         });
@@ -97,7 +99,7 @@ public class Dialogs {
         final EditText editTextDevicePower = dialog.findViewById(R.id.editTextDevicePower);
         final EditText editTextDeviceNumbers = dialog.findViewById(R.id.editTextDeviceNumbers);
 
-        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(dialog.getContext(),android.R.layout.simple_spinner_dropdown_item, defaultListDeviceName);
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(dialog.getContext(), android.R.layout.simple_spinner_dropdown_item, defaultListDeviceName);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinner.setAdapter(arrayAdapter);
@@ -118,10 +120,10 @@ public class Dialogs {
                     h[0] = Integer.parseInt(defaultListDeviceTimeWork.get(position).split(":")[0]);
                     m[0] = Integer.parseInt(defaultListDeviceTimeWork.get(position).split(":")[1]);
                     buttonTimePicker.setText(view.getContext().getResources().getString(R.string.dialog_edit_device_button_time_work) + "\n " + h[0] + "h" + " " + m[0] + "m");
-                    if(h[0]==24){
+                    if (h[0] == 24) {
                         is24hSwitch.setChecked(true);
                         buttonTimePicker.setEnabled(false);
-                    }else{
+                    } else {
                         is24hSwitch.setChecked(false);
                         buttonTimePicker.setText(view.getContext().getResources().getString(R.string.dialog_edit_device_button_time_work) + "\n " + h[0] + "h" + " " + m[0] + "m");
                         buttonTimePicker.setEnabled(true);
@@ -138,13 +140,13 @@ public class Dialogs {
             @SuppressLint("SetTextI18n")
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
+                if (isChecked) {
                     h[0] = 24;
                     m[0] = 0;
-                    Toast.makeText(dialog.getContext(),R.string.toast_device_wokrs_all_day,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(dialog.getContext(), R.string.toast_device_wokrs_all_day, Toast.LENGTH_SHORT).show();
                     buttonTimePicker.setEnabled(false);
                     buttonTimePicker.setText(view.getContext().getResources().getString(R.string.dialog_edit_device_button_time_work) + " \n " + h[0] + "h" + " " + m[0] + "m");
-                }else{
+                } else {
                     buttonTimePicker.setEnabled(true);
                     buttonTimePicker.setText(view.getContext().getResources().getString(R.string.dialog_edit_device_button_time_work));
                 }
@@ -159,7 +161,7 @@ public class Dialogs {
         buttonTimePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TimePickerDialog timePickerDialog = new TimePickerDialog(dialog.getContext() , R.style.TimePickerTheme, new TimePickerDialog.OnTimeSetListener() {
+                TimePickerDialog timePickerDialog = new TimePickerDialog(dialog.getContext(), R.style.TimePickerTheme, new TimePickerDialog.OnTimeSetListener() {
 
 
                     @SuppressLint("SetTextI18n")
@@ -170,7 +172,7 @@ public class Dialogs {
                         m[0] = minute;
                         buttonTimePicker.setText(view.getContext().getResources().getString(R.string.dialog_edit_device_button_time_work) + " \n " + h[0] + "h" + " " + m[0] + "m");
                     }
-                } ,h[0],m[0],true);
+                }, h[0], m[0], true);
                 Objects.requireNonNull(timePickerDialog.getWindow()).clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
                 timePickerDialog.show();
             }
@@ -190,9 +192,13 @@ public class Dialogs {
                     if (Character.isDigit(first)) {
                         text_field_inputEditTextDeviceNameLayout.setError(view.getContext().getResources().getString(R.string.error_name_canot_start_from_number));
                         ifNumberOnStart = true;
+                    } else if (Character.isWhitespace(first)) {
+                        text_field_inputEditTextDeviceNameLayout.setError(view.getContext().getResources().getString(R.string.error_name_canot_start_from_white_space));
+                        ifWhiteSpaceOnStart = true;
                     } else {
                         text_field_inputEditTextDeviceNameLayout.setError(null);
                         ifNumberOnStart = false;
+                        ifWhiteSpaceOnStart = false;
                     }
                 }
             }
@@ -207,40 +213,41 @@ public class Dialogs {
             public void onClick(View v) {
                 editTextDevicePower.addTextChangedListener(roomPowerTextWatcher);
                 editTextDeviceNumbers.addTextChangedListener(roomNumberTextWatcher);
-                if(editTextDevicePower.getText().toString().equals(".")){
+                if (editTextDevicePower.getText().toString().equals(".")) {
                     text_field_inputEditTextDevicePowerLayout.setError(view.getResources().getString(R.string.error_no_data));
-                }else {
-                    if(checkInputValue()) {
-                        text_field_inputEditTextDevicePowerLayout.setError(null);
-                        double powerValue = Double.parseDouble(editTextDevicePower.getText().toString());
-                        String deviceNameInput = editTextDeviceName.getText().toString();
-                        int number = Integer.parseInt(editTextDeviceNumbers.getText().toString());
-                        try {
+                } else {
+                    if (!ifNumberOnStart && !ifWhiteSpaceOnStart) {
+                        if (checkInputValue()) {
+                            text_field_inputEditTextDevicePowerLayout.setError(null);
+                            double powerValue = Double.parseDouble(editTextDevicePower.getText().toString());
+                            String deviceNameInput = editTextDeviceName.getText().toString();
+                            int number = Integer.parseInt(editTextDeviceNumbers.getText().toString());
                             try {
-                                ColorDrawable viewColor = (ColorDrawable) buttonColorPicker.getBackground();
-                                int colorId = viewColor.getColor();
-                                deviceManager.addDevice(room_name, deviceNameInput, powerValue, h[0], m[0], number,colorId);
-                                Toast.makeText(view.getContext(), R.string.toast_device_added, Toast.LENGTH_SHORT).show();
-                                dialog.dismiss();
+                                try {
+                                    ColorDrawable viewColor = (ColorDrawable) buttonColorPicker.getBackground();
+                                    int colorId = viewColor.getColor();
+                                    deviceManager.addDevice(room_name, deviceNameInput, powerValue, h[0], m[0], number, colorId);
+                                    Toast.makeText(view.getContext(), R.string.toast_device_added, Toast.LENGTH_SHORT).show();
+                                    dialog.dismiss();
 
-                                ViewDataDeviceFromDB(deviceManager.getRoomDeviceList(room_name));
-                                GenerateCharts generateCharts = new GenerateCharts();
-                                generateCharts.generateChartsInRoom(view,room_name,numberAfterDot,defaultCurrency);
+                                    ViewDataDeviceFromDB(deviceManager.getRoomDeviceList(room_name));
+                                    GenerateCharts generateCharts = new GenerateCharts();
+                                    generateCharts.generateChartsInRoom(view, room_name, numberAfterDot, defaultCurrency);
 
-                                RoomEditManager roomEditManager = new RoomEditManager();
-                                roomEditManager.refreshListView(view);
+                                    RoomEditManager roomEditManager = new RoomEditManager();
+                                    roomEditManager.refreshListView(view);
 
-                                GenerateTableEditRoom generateTableEditRoom = new GenerateTableEditRoom();
-                                generateTableEditRoom.refreshTable(view,defaultCurrency,room_name,numberAfterDot);
+                                    GenerateTableEditRoom generateTableEditRoom = new GenerateTableEditRoom();
+                                    generateTableEditRoom.refreshTable(view, defaultCurrency, room_name, numberAfterDot);
 
-                            } catch (SQLEnergyCostException.WrongTime wrongTime) {
-                                Toast.makeText(view.getContext(),wrongTime.getMessage(),Toast.LENGTH_SHORT).show();
+                                } catch (SQLEnergyCostException.WrongTime wrongTime) {
+                                    Toast.makeText(view.getContext(), wrongTime.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            } catch (SQLEnergyCostException.EmptyField | SQLEnergyCostException.DuplicationDevice errorMessage) {
+                                Toast.makeText(view.getContext(), errorMessage.getMessage(), Toast.LENGTH_SHORT).show();
                             }
-                        } catch (SQLEnergyCostException.EmptyField | SQLEnergyCostException.DuplicationDevice errorMessage) {
-                            Toast.makeText(view.getContext(), errorMessage.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
-
                 }
 
             }
@@ -281,28 +288,27 @@ public class Dialogs {
 
             private boolean checkInputValue() {
                 boolean isNotEmpty = true;
-                if(editTextDeviceName.getText().toString().isEmpty()) {
+                if (editTextDeviceName.getText().toString().isEmpty()) {
                     text_field_inputEditTextDeviceNameLayout.setError(view.getContext().getResources().getString(R.string.error_no_data));
                     isNotEmpty = false;
-                }else if(ifNumberOnStart){
+                } else if (ifNumberOnStart) {
                     text_field_inputEditTextDeviceNameLayout.setError(view.getContext().getResources().getString(R.string.error_name_canot_start_from_number));
                     isNotEmpty = false;
-                }
-                else {
+                } else {
                     text_field_inputEditTextDeviceNameLayout.setError(null);
                 }
 
-                if(editTextDeviceNumbers.getText().toString().isEmpty()) {
+                if (editTextDeviceNumbers.getText().toString().isEmpty()) {
                     text_field_inputEditTextDeviceNumbersLayout.setError(view.getContext().getResources().getString(R.string.error_no_data));
                     isNotEmpty = false;
-                }else {
+                } else {
                     text_field_inputEditTextDeviceNumbersLayout.setError(null);
                 }
 
-                if(editTextDevicePower.getText().toString().isEmpty()) {
+                if (editTextDevicePower.getText().toString().isEmpty()) {
                     text_field_inputEditTextDevicePowerLayout.setError(view.getContext().getResources().getString(R.string.error_no_data));
                     isNotEmpty = false;
-                }else {
+                } else {
                     text_field_inputEditTextDevicePowerLayout.setError(null);
                 }
 
@@ -314,7 +320,7 @@ public class Dialogs {
     public void ViewDataDeviceFromDB(Cursor cursor) {
         if (cursor.getCount() != 0) {
             clearDeviceList();
-            while(cursor.moveToNext()) {
+            while (cursor.moveToNext()) {
                 devicePower.add(cursor.getString(2));
                 deviceTimeWork.add(cursor.getString(3));
                 deviceNumber.add(cursor.getString(4));
@@ -331,7 +337,7 @@ public class Dialogs {
     }
 
     @SuppressLint("SetTextI18n")
-    public void showUpdateDialog(final View view, final String roomName, String deviceName, final String room_name, final int numberAfterDot, final String defaultCurrency){
+    public void showUpdateDialog(final View view, final String roomName, String deviceName, final String room_name, final int numberAfterDot, final String defaultCurrency) {
         final Dialog dialog = new Dialog(view.getContext());
         deviceManager = new DeviceManager(view.getContext());
         ViewDataDeviceFromDB(deviceManager.getRoomDeviceList(room_name));
@@ -341,7 +347,7 @@ public class Dialogs {
         dialog.setCancelable(false);
         dialog.show();
 
-        viewDeviceInfoFromDB(deviceManager.getDeviceInfo(roomName,deviceName));
+        viewDeviceInfoFromDB(deviceManager.getDeviceInfo(roomName, deviceName));
 
         Button buttonDialogAccept = dialog.findViewById(R.id.buttonDialogAccept);
         final EditText editTextDeviceName = dialog.findViewById(R.id.editTextDeviceName);
@@ -358,7 +364,7 @@ public class Dialogs {
             @Override
             public void onClick(View view) {
                 ColorDrawable buttonColor = (ColorDrawable) buttonColorPicker.getBackground();
-                showColorPicker(view,buttonColorPicker,buttonColor.getColor());
+                showColorPicker(view, buttonColorPicker, buttonColor.getColor());
             }
         });
         editTextDeviceName.setText(device.get(1));
@@ -370,11 +376,11 @@ public class Dialogs {
 
         Switch is24hSwitch = dialog.findViewById(R.id.switch1);
 
-        buttonTimePicker.setText(view.getContext().getResources().getString(R.string.dialog_edit_device_button_time_work) +" \n " + h[0] + "h" + " " + m[0] + "m");
-        if(h[0]==24){
+        buttonTimePicker.setText(view.getContext().getResources().getString(R.string.dialog_edit_device_button_time_work) + " \n " + h[0] + "h" + " " + m[0] + "m");
+        if (h[0] == 24) {
             is24hSwitch.setChecked(true);
             buttonTimePicker.setEnabled(false);
-        }else{
+        } else {
             is24hSwitch.setChecked(false);
             buttonTimePicker.setEnabled(true);
         }
@@ -382,13 +388,13 @@ public class Dialogs {
             @SuppressLint({"ResourceAsColor", "SetTextI18n"})
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
+                if (isChecked) {
                     h[0] = 24;
                     m[0] = 0;
-                    Toast.makeText(dialog.getContext(),R.string.toast_device_wokrs_all_day,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(dialog.getContext(), R.string.toast_device_wokrs_all_day, Toast.LENGTH_SHORT).show();
                     buttonTimePicker.setEnabled(false);
                     buttonTimePicker.setText(view.getContext().getResources().getString(R.string.dialog_edit_device_button_time_work) + " \n " + h[0] + "h" + " " + m[0] + "m");
-                }else{
+                } else {
                     final int[] h = {Integer.parseInt(device.get(3).split(":")[0])};
                     final int[] m = {Integer.parseInt(device.get(3).split(":")[1])};
                     buttonTimePicker.setEnabled(true);
@@ -399,7 +405,7 @@ public class Dialogs {
         buttonTimePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TimePickerDialog timePickerDialog = new TimePickerDialog(dialog.getContext() , R.style.TimePickerTheme, new TimePickerDialog.OnTimeSetListener() {
+                TimePickerDialog timePickerDialog = new TimePickerDialog(dialog.getContext(), R.style.TimePickerTheme, new TimePickerDialog.OnTimeSetListener() {
 
 
                     @SuppressLint("SetTextI18n")
@@ -410,54 +416,90 @@ public class Dialogs {
                         m[0] = minute;
                         buttonTimePicker.setText(view.getContext().getResources().getString(R.string.dialog_edit_device_button_time_work) + " \n " + h[0] + "h" + " " + m[0] + "m");
                     }
-                } ,Integer.parseInt(device.get(3).split(":")[0]),Integer.parseInt(device.get(3).split(":")[1]),true);
+                }, Integer.parseInt(device.get(3).split(":")[0]), Integer.parseInt(device.get(3).split(":")[1]), true);
                 Objects.requireNonNull(timePickerDialog.getWindow()).clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
                 timePickerDialog.show();
+            }
+        });
+
+        editTextDeviceName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String deviceName = editTextDeviceName.getText().toString();
+                if (!deviceName.isEmpty()) {
+                    char first = deviceName.charAt(0);
+                    if (Character.isDigit(first)) {
+                        text_field_inputEditTextDeviceNameLayout.setError(view.getContext().getResources().getString(R.string.error_name_canot_start_from_number));
+                        ifNumberOnStart = true;
+                    } else if (Character.isWhitespace(first)) {
+                        text_field_inputEditTextDeviceNameLayout.setError(view.getContext().getResources().getString(R.string.error_name_canot_start_from_white_space));
+                        ifWhiteSpaceOnStart = true;
+                    } else {
+                        text_field_inputEditTextDeviceNameLayout.setError(null);
+                        ifNumberOnStart = false;
+                        ifWhiteSpaceOnStart = false;
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
 
         buttonDialogAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editTextDeviceName.addTextChangedListener(roomNameTextWatcher);
-                editTextDevicePower.addTextChangedListener(roomPowerTextWatcher);
-                editTextDeviceNumbers.addTextChangedListener(roomNumberTextWatcher);
-                if(editTextDevicePower.getText().toString().equals(".")){
-                   text_field_inputEditTextDevicePowerLayout.setError(view.getResources().getString(R.string.error_no_data));
-                }else {
-                    text_field_inputEditTextDevicePowerLayout.setError(null);
-                    if(checkInputValue()) {
-                        String deviceName = editTextDeviceName.getText().toString();
-                        double powerValue = Double.parseDouble(editTextDevicePower.getText().toString());
-                        int number = Integer.parseInt(editTextDeviceNumbers.getText().toString());
-                        try {
-                            try {
-                                ColorDrawable viewColor = (ColorDrawable) buttonColorPicker.getBackground();
-                                int colorId = viewColor.getColor();
-                                deviceManager.updateDevice(Integer.parseInt(device.get(0)), roomName, deviceName, powerValue, number, h[0], m[0], colorId);
-                            } catch (SQLEnergyCostException.WrongTime wrongTime) {
-                                wrongTime.printStackTrace();
+                if (!editTextDeviceName.getText().toString().trim().isEmpty()) {
+                    if (!ifWhiteSpaceOnStart && !ifNumberOnStart) {
+                        editTextDeviceName.addTextChangedListener(roomNameTextWatcher);
+                        editTextDevicePower.addTextChangedListener(roomPowerTextWatcher);
+                        editTextDeviceNumbers.addTextChangedListener(roomNumberTextWatcher);
+                        if (editTextDevicePower.getText().toString().equals(".")) {
+                            text_field_inputEditTextDevicePowerLayout.setError(view.getResources().getString(R.string.error_no_data));
+                        } else {
+                            text_field_inputEditTextDevicePowerLayout.setError(null);
+                            if (checkInputValue()) {
+                                String deviceName = editTextDeviceName.getText().toString();
+                                double powerValue = Double.parseDouble(editTextDevicePower.getText().toString());
+                                int number = Integer.parseInt(editTextDeviceNumbers.getText().toString());
+                                try {
+                                    try {
+                                        ColorDrawable viewColor = (ColorDrawable) buttonColorPicker.getBackground();
+                                        int colorId = viewColor.getColor();
+                                        deviceManager.updateDevice(Integer.parseInt(device.get(0)), roomName, deviceName, powerValue, number, h[0], m[0], colorId);
+                                    } catch (SQLEnergyCostException.WrongTime wrongTime) {
+                                        wrongTime.printStackTrace();
+                                    }
+                                    Toast.makeText(view.getContext(), R.string.toast_device_updated, Toast.LENGTH_SHORT).show();
+                                    dialog.dismiss();
+
+                                    ViewDataDeviceFromDB(deviceManager.getRoomDeviceList(room_name));
+                                    RoomEditManager roomEditManager = new RoomEditManager();
+                                    GenerateTableEditRoom generateTableEditRoom = new GenerateTableEditRoom();
+
+                                    generateTableEditRoom.refreshTable(view, defaultCurrency, room_name, numberAfterDot);
+                                    GenerateCharts generateCharts = new GenerateCharts();
+                                    generateCharts.generateChartsInRoom(view, room_name, numberAfterDot, defaultCurrency);
+                                    ViewDataDeviceFromDB(deviceManager.getRoomDeviceList(room_name));
+
+                                    roomEditManager.refreshListView(view);
+                                } catch (SQLEnergyCostException.EmptyField | SQLEnergyCostException.DuplicationDevice exception) {
+                                    Toast.makeText(view.getContext(), exception.getMessage(), Toast.LENGTH_SHORT).show();
+                                    exception.printStackTrace();
+                                }
                             }
-                            Toast.makeText(view.getContext(), R.string.toast_device_updated, Toast.LENGTH_SHORT).show();
-                            dialog.dismiss();
-
-                            ViewDataDeviceFromDB(deviceManager.getRoomDeviceList(room_name));
-                            RoomEditManager roomEditManager = new RoomEditManager();
-                            GenerateTableEditRoom generateTableEditRoom = new GenerateTableEditRoom();
-
-                            generateTableEditRoom.refreshTable(view, defaultCurrency, room_name, numberAfterDot);
-                            GenerateCharts generateCharts = new GenerateCharts();
-                            generateCharts.generateChartsInRoom(view, room_name, numberAfterDot, defaultCurrency);
-                            ViewDataDeviceFromDB(deviceManager.getRoomDeviceList(room_name));
-
-                            roomEditManager.refreshListView(view);
-                        } catch (SQLEnergyCostException.EmptyField | SQLEnergyCostException.DuplicationDevice exception) {
-                            Toast.makeText(view.getContext(), exception.getMessage(), Toast.LENGTH_SHORT).show();
-                            exception.printStackTrace();
                         }
                     }
                 }
             }
+
 
             private TextWatcher roomNameTextWatcher = new TextWatcher() {
                 @Override
@@ -514,24 +556,24 @@ public class Dialogs {
 
                 boolean isNotEmpty = true;
 
-                if(editTextDeviceName.getText().toString().isEmpty()) {
+                if (editTextDeviceName.getText().toString().isEmpty()) {
                     text_field_inputEditTextDeviceNameLayout.setError(view.getContext().getResources().getString(R.string.error_no_data));
                     isNotEmpty = false;
-                }else {
+                } else {
                     text_field_inputEditTextDeviceNameLayout.setError(null);
                 }
 
-                if(editTextDeviceNumbers.getText().toString().isEmpty()) {
+                if (editTextDeviceNumbers.getText().toString().isEmpty()) {
                     text_field_inputEditTextDeviceNumbersLayout.setError(view.getContext().getResources().getString(R.string.error_no_data));
                     isNotEmpty = false;
-                }else {
+                } else {
                     text_field_inputEditTextDeviceNumbersLayout.setError(null);
                 }
 
-                if(editTextDevicePower.getText().toString().isEmpty()) {
+                if (editTextDevicePower.getText().toString().isEmpty()) {
                     text_field_inputEditTextDevicePowerLayout.setError(view.getContext().getResources().getString(R.string.error_no_data));
                     isNotEmpty = false;
-                }else {
+                } else {
                     text_field_inputEditTextDevicePowerLayout.setError(null);
                 }
                 return isNotEmpty;
@@ -543,7 +585,7 @@ public class Dialogs {
         if (cursor.getCount() != 0) {
             clearRoomList();
             device.clear();
-            while(cursor.moveToNext()) {
+            while (cursor.moveToNext()) {
                 device.add((cursor.getString(0)));
                 device.add((cursor.getString(1)));
                 device.add((cursor.getString(2)));
@@ -568,10 +610,8 @@ public class Dialogs {
         final TextInputLayout text_field_inputRoomNameLayout = room_name_dialog.findViewById(R.id.text_field_inputRoomNameLayout);
 
         text_field_inputRoomNameLayout.setHint(view.getContext().getResources().getString(R.string.dialog_hint_new_room_name));
-        text_field_inputRoomName.setText(room_name.replace("_"," "));
+        text_field_inputRoomName.setText(room_name.replace("_", " "));
 
-
-        final Random rnd = new Random();
         final Button buttonColorPicker = room_name_dialog.findViewById(R.id.roomButtonColorPicker);
         buttonColorPicker.setBackgroundColor(roomManager.getRoomColor(room_name).getInt(1));
 
@@ -579,7 +619,7 @@ public class Dialogs {
             @Override
             public void onClick(View view) {
                 ColorDrawable buttonColor = (ColorDrawable) buttonColorPicker.getBackground();
-                showColorPicker(view,buttonColorPicker,buttonColor.getColor());
+                showColorPicker(view, buttonColorPicker, buttonColor.getColor());
             }
         });
 
@@ -592,14 +632,18 @@ public class Dialogs {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String roomName = Objects.requireNonNull(text_field_inputRoomName.getText()).toString();
-                if(!roomName.isEmpty()){
-                    char First = roomName.charAt(0);
-                    if(Character.isDigit(First)){
+                if (!roomName.isEmpty()) {
+                    char first = roomName.charAt(0);
+                    if (Character.isDigit(first)) {
                         text_field_inputRoomNameLayout.setError(view.getContext().getResources().getString(R.string.error_name_canot_start_from_number));
                         ifNumberOnStart = true;
-                    }else {
+                    } else if (Character.isWhitespace(first)) {
+                        text_field_inputRoomNameLayout.setError(view.getContext().getResources().getString(R.string.error_name_canot_start_from_white_space));
+                        ifWhiteSpaceOnStart = true;
+                    } else {
                         text_field_inputRoomNameLayout.setError(null);
                         ifNumberOnStart = false;
+                        ifWhiteSpaceOnStart = false;
                     }
                 }
             }
@@ -612,23 +656,27 @@ public class Dialogs {
             @Override
             public void onClick(View v) {
                 String newRoomName = Objects.requireNonNull(text_field_inputRoomName.getText()).toString();
-                if (newRoomName.isEmpty()) {
+                if (newRoomName.trim().isEmpty()) {
                     text_field_inputRoomNameLayout.setError(view.getContext().getResources().getString(R.string.error_no_data));
-                }else if(ifNumberOnStart){
+                } else if (ifNumberOnStart) {
                     text_field_inputRoomNameLayout.setError(view.getContext().getResources().getString(R.string.error_name_canot_start_from_number));
-                }else{
-                    roomEditManager.setTitle(view.getResources().getString(R.string.just_room) + " " + newRoomName.replace("_"," "));
-                    room_name_dialog.dismiss();
-                    try {
-                        ColorDrawable viewColor = (ColorDrawable) buttonColorPicker.getBackground();
-                        int colorId = viewColor.getColor();
-                        roomManager.updateRoomColor(room_name,colorId);
-
-                        roomManager.updateRoomName(room_name,newRoomName);
-                        RoomEditManager.room_name = newRoomName;
-                        Toast.makeText(view.getContext(),view.getContext().getResources().getString(R.string.toast_new_room_name) + " " + newRoomName,Toast.LENGTH_SHORT).show();
-                    } catch (SQLEnergyCostException.DuplicationRoom duplicationRoom) {
-                        duplicationRoom.printStackTrace();
+                } else if (ifWhiteSpaceOnStart) {
+                    text_field_inputRoomNameLayout.setError(view.getContext().getResources().getString(R.string.error_name_canot_start_from_white_space));
+                } else {
+                    text_field_inputRoomNameLayout.setError(null);
+                    if (!ifWhiteSpaceOnStart && !ifNumberOnStart) {
+                        try {
+                            ColorDrawable viewColor = (ColorDrawable) buttonColorPicker.getBackground();
+                            int colorId = viewColor.getColor();
+                            roomManager.updateRoomColor(room_name, colorId);
+                            roomManager.updateRoomName(room_name, newRoomName);
+                            RoomEditManager.room_name = newRoomName;
+                            Toast.makeText(view.getContext(), view.getContext().getResources().getString(R.string.toast_new_room_name) + " " + newRoomName, Toast.LENGTH_SHORT).show();
+                            roomEditManager.setTitle(view.getResources().getString(R.string.just_room) + " " + newRoomName.replace("_", " "));
+                            room_name_dialog.dismiss();
+                        } catch (SQLEnergyCostException.DuplicationRoom duplicationRoom) {
+                            duplicationRoom.printStackTrace();
+                        }
                     }
                 }
             }
@@ -642,8 +690,6 @@ public class Dialogs {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.room_list_dialog);
         dialog.show();
-
-        // TODO: 8/20/2020 Dodać listę domyślnych pokoi
 
         final ArrayList<String> defaultListRoomSchema = new ArrayList<String>();
         defaultListRoomSchema.add(0, view.getResources().getString(R.string.just_templates));
@@ -674,13 +720,14 @@ public class Dialogs {
 
         ifNumberOnStart = false;
 
+
         Button buttonDialogAccept = dialog.findViewById(R.id.ButtonAddRoom);
 
         buttonColorPicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ColorDrawable buttonColor = (ColorDrawable) buttonColorPicker.getBackground();
-                showColorPicker(view,buttonColorPicker,buttonColor.getColor());
+                showColorPicker(view, buttonColorPicker, buttonColor.getColor());
             }
         });
 
@@ -694,15 +741,18 @@ public class Dialogs {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String roomName = Objects.requireNonNull(text_field_inputRoomName.getText()).toString();
-                if(!roomName.isEmpty()){
-                    char First = roomName.charAt(0);
-
-                    if(Character.isDigit(First)){
+                if (!roomName.isEmpty()) {
+                    char first = roomName.charAt(0);
+                    if (Character.isDigit(first)) {
                         text_field_inputRoomNameLayout.setError(view.getContext().getResources().getString(R.string.error_name_canot_start_from_number));
                         ifNumberOnStart = true;
-                    }else {
+                    } else if (Character.isWhitespace(first)) {
+                        text_field_inputRoomNameLayout.setError(view.getContext().getResources().getString(R.string.error_name_canot_start_from_white_space));
+                        ifWhiteSpaceOnStart = true;
+                    } else {
                         text_field_inputRoomNameLayout.setError(null);
                         ifNumberOnStart = false;
+                        ifWhiteSpaceOnStart = false;
                     }
                 }
             }
@@ -756,21 +806,25 @@ public class Dialogs {
             @Override
             public void onClick(View v) {
                 String roomName = Objects.requireNonNull(text_field_inputRoomName.getText()).toString();
-                if (roomName.isEmpty()) {
+                if (roomName.trim().isEmpty()) {
                     text_field_inputRoomNameLayout.setError(v.getContext().getResources().getString(R.string.error_no_data));
                 } else if (ifNumberOnStart) {
                     text_field_inputRoomNameLayout.setError(v.getContext().getResources().getString(R.string.error_name_canot_start_from_number));
+                } else if (ifWhiteSpaceOnStart) {
+                    text_field_inputRoomNameLayout.setError(v.getContext().getResources().getString(R.string.error_name_canot_start_from_white_space));
                 } else {
                     text_field_inputRoomNameLayout.setError(null);
                     try {
-                        RoomManager roomManager = new RoomManager(view.getContext());
-                        ColorDrawable viewColor = (ColorDrawable) buttonColorPicker.getBackground();
-                        int colorId = viewColor.getColor();
-                        roomManager.addRoom(roomName, colorId);
-                        refreshListAndCharts(view, roomManager, roomListFragment, adapter, roomName, activity);
-                        dialog.dismiss();
-
-                        Toast.makeText(view.getContext(), R.string.toast_room_added, Toast.LENGTH_SHORT).show();
+                        if (!ifWhiteSpaceOnStart && !ifNumberOnStart) {
+                            roomName = roomName.trim();
+                            RoomManager roomManager = new RoomManager(view.getContext());
+                            ColorDrawable viewColor = (ColorDrawable) buttonColorPicker.getBackground();
+                            int colorId = viewColor.getColor();
+                            roomManager.addRoom(roomName, colorId);
+                            refreshListAndCharts(view, roomManager, roomListFragment, adapter, roomName, activity);
+                            dialog.dismiss();
+                            Toast.makeText(view.getContext(), R.string.toast_room_added, Toast.LENGTH_SHORT).show();
+                        }
                     } catch (SQLEnergyCostException.DuplicationRoom | SQLEnergyCostException.EmptyField errorMessage) {
                         text_field_inputRoomNameLayout.setError(errorMessage.getMessage());
                     }
@@ -830,8 +884,8 @@ public class Dialogs {
     void ViewRoomListFromDB(Cursor cursor) {
         if (cursor.getCount() != 0) {
             clearRoomList();
-            while(cursor.moveToNext()) {
-                roomNameArray.add(cursor.getString(1).replace("_"," "));
+            while (cursor.moveToNext()) {
+                roomNameArray.add(cursor.getString(1).replace("_", " "));
                 roomNameKwhArray.add(String.valueOf(cursor.getLong(2)));
             }
         }

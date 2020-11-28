@@ -185,11 +185,11 @@ public class SunEnergyCalculatorFragment extends Fragment {
 
     public void runAdsInRoomList(SQLLiteDBHelper sqlLiteDBHelper, View root) {
 
-            if(sqlLiteDBHelper.getEnableAds()){ //TODO Get boolen from db setEnableAds()
+            if (sqlLiteDBHelper.getEnableAds()) {
                 mAdView = root.findViewById(R.id.adViewSun);
                 AdRequest adRequest = new AdRequest.Builder().build();
                 mAdView.loadAd(adRequest);
-            }else{
+            } else {
                 mAdView = root.findViewById(R.id.adViewSun);
                 fixLayoutAds(mAdView);
             }

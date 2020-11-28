@@ -107,8 +107,6 @@ public class MainActivity extends AppCompatActivity {
 
     private String getUserTokenFromDB() {
         SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(this);
-
-        //TODO Funkcja zwrotna tokenu z bazy
         return sqlLiteDBHelper.getTokenFromDB();
     }
 
