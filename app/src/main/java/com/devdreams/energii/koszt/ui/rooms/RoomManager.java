@@ -5,9 +5,14 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
 import com.devdreams.energii.koszt.R;
 import com.devdreams.energii.koszt.ui.SQLLiteDBHelper;
 import com.devdreams.energii.koszt.ui.exception.SQLEnergyCostException;
+import com.devdreams.energii.koszt.ui.rooms.manager.DeviceManager;
+import com.devdreams.energii.koszt.ui.settings.DefaultDeviceManager;
+
+import java.util.Random;
 
 public class RoomManager extends SQLLiteDBHelper {
     public RoomManager(Context context) {
@@ -16,7 +21,7 @@ public class RoomManager extends SQLLiteDBHelper {
 
     public void addRoom(String roomName, int colorId) throws SQLEnergyCostException.DuplicationRoom, SQLEnergyCostException.EmptyField {
         if (roomName.isEmpty()) {
-            throw new SQLEnergyCostException.EmptyField(context.getResources().getString(R.string.just_room_name),context);
+            throw new SQLEnergyCostException.EmptyField(context.getResources().getString(R.string.just_room_name), context);
         }
 
         SQLiteDatabase dbhWrite = getWritableDatabase();
@@ -71,7 +76,6 @@ public class RoomManager extends SQLLiteDBHelper {
     }
 
     public void updateRoomName(String oldRoomName, String newRoomName) throws SQLEnergyCostException.DuplicationRoom {
-
         if(checkNameRoom(changeSpaceInName(newRoomName)).getCount() != 0) {
             throw new SQLEnergyCostException.DuplicationRoom(newRoomName,context);
         }
@@ -160,14 +164,58 @@ public class RoomManager extends SQLLiteDBHelper {
 
         cursor = getRoomList();
 
-        while(cursor.moveToNext()) {
+        while (cursor.moveToNext()) {
             String deviceRoomName = cursor.getString(1) + "_device";
 
             query = "UPDATE " + deviceRoomName +
                     " SET    energy_cost = energy_amount * ?";
 
-            dbWriter.execSQL(query, new String[] {String.valueOf(newEnergyCost / 1000)});
+            dbWriter.execSQL(query, new String[]{String.valueOf(newEnergyCost / 1000)});
         }
+    }
+
+     public void createDefaultRoom(String selectedDefaultRoomName, int colorID)
+             throws SQLEnergyCostException.WrongTime,
+             SQLEnergyCostException.EmptyField,
+             SQLEnergyCostException.DuplicationDevice,
+             SQLEnergyCostException.DuplicationRoom {
+
+         Random randomColorId = new Random();
+         String[] deviceList = getDeviceListFromDefaultRoom(selectedDefaultRoomName);
+         String[] workTime;
+         Cursor cursor;
+         DeviceManager deviceManager = new DeviceManager(context);
+        DefaultDeviceManager defaultDeviceManager = new DefaultDeviceManager(context);
+        addRoom(selectedDefaultRoomName, colorID);
+
+        for (String deviceName : deviceList) {
+            cursor = defaultDeviceManager.getDetailsDefaultDevice(deviceName.trim());
+            cursor.moveToFirst();
+            System.out.println(deviceName);
+            workTime = cursor.getString(2).split(":");
+
+            deviceManager.addDevice(selectedDefaultRoomName, deviceName,
+                    cursor.getDouble(1),
+                    Integer.parseInt(workTime[0]),
+                    Integer.parseInt(workTime[1]),
+                    cursor.getInt(3),
+                    ((randomColorId.nextInt(4499999) + 5500000) * -1));
+        }
+    }
+
+    @SuppressLint("Recycle")
+    private String[] getDeviceListFromDefaultRoom(String defaultRoomName) {
+        SQLiteDatabase dbhRead = getReadableDatabase();
+        String query;
+
+        query = "SELECT device_list " +
+                "FROM   default_room_list " +
+                "WHERE  name = ?";
+        Cursor cursor;
+        cursor = dbhRead.rawQuery(query, new String[]{defaultRoomName});
+        cursor.moveToFirst();
+
+        return cursor.getString(0).split(";");
     }
 
     private void addDeviceList(String roomName) {
@@ -211,7 +259,6 @@ public class RoomManager extends SQLLiteDBHelper {
         return dbhRead.rawQuery(query, new String[]{changeSpaceInName(roomName)});
     }
 
-    @SuppressLint("Recycle")
     private void updateNameDeviceList(String oldRoomName, String newRoomName) {
         SQLiteDatabase dbWriter = getWritableDatabase();
         String query;

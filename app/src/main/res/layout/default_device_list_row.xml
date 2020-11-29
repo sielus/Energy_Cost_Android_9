@@ -30,10 +30,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:autoSizeTextType="uniform"
+                android:autoSizeMinTextSize="7dp"
+                android:autoSizeMaxTextSize="16dp"
                 android:fontFamily="@font/lato_black"
                 android:text="TextView"
                 android:textColor="@color/white"
-                android:textSize="20dp"
 
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

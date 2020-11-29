@@ -1,14 +1,5 @@
 package com.devdreams.energii.koszt.ui.rooms.manager;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.database.Cursor;
@@ -18,18 +9,30 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TableLayout;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.devdreams.energii.koszt.R;
 import com.devdreams.energii.koszt.ui.SQLLiteDBHelper;
 import com.devdreams.energii.koszt.ui.TutorialShowcase;
 import com.devdreams.energii.koszt.ui.rooms.Dialogs;
 import com.devdreams.energii.koszt.ui.rooms.GenerateCharts;
+import com.devdreams.energii.koszt.ui.rooms.RoomListFragment;
 import com.devdreams.energii.koszt.ui.settings.DefaultDeviceManager;
 import com.devdreams.energii.koszt.ui.settings.SettingActivity;
-import com.devdreams.energii.koszt.ui.rooms.RoomListFragment;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
@@ -126,18 +129,16 @@ public class RoomEditManager extends AppCompatActivity implements RoomEditManage
     }
 
     public void runAdsInRoomList(SQLLiteDBHelper sqlLiteDBHelper, View root) {
-        if(sqlLiteDBHelper.getEnableAds()){ //TODO Get boolen from db setEnableAds()
+        if (sqlLiteDBHelper.getEnableAds()) {
             mAdView = root.findViewById(R.id.adViewEditManager);
             AdRequest adRequest = new AdRequest.Builder().build();
             mAdView.loadAd(adRequest);
-        }else{
+        } else {
             mAdView = root.findViewById(R.id.adViewHome);
             fixLayoutAds();
         }
 
     }
-
-
 
     private void fixLayoutAds() {
         ConstraintLayout constraintLayout = view.findViewById(R.id.deviceListConstraintLayout);

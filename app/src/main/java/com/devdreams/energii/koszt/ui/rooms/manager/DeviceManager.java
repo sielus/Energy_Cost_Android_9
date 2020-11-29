@@ -5,11 +5,11 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
 import com.devdreams.energii.koszt.ui.SQLLiteDBHelper;
 import com.devdreams.energii.koszt.ui.exception.SQLEnergyCostException;
 
 public class DeviceManager extends SQLLiteDBHelper {
-
     public DeviceManager(Context context) {
         super(context);
     }

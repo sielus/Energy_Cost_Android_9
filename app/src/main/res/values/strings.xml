@@ -51,6 +51,7 @@
     <string name="chart_kwh_consumption">kWh consumption</string>
 
     <string name="error_name_canot_start_from_number">The name cannot start with a number</string>
+    <string name="error_name_canot_start_from_white_space">The name cannot start with a whitespace</string>
     <string name="error_no_data">" Lack of data!"</string>
 
     <string name="dialog_hint_new_room_name">Enter new room name</string>
@@ -75,7 +76,7 @@
     <string name="sql_exception_WrongTime">Choose work time</string>
     <string name="sql_exception_EmptyField">"Empty field "</string>
 
-    <string name="default_device_phone_charger_idle">Phone charger (Standby)</string>
+    <string name="default_device_phone_charger_idle">Phone charger - Standby</string>
     <string name="default_device_phone_charger">Phone charger</string>
     <string name="default_device_fridge">Fridge</string>
     <string name="default_device_led_light">Led Light</string>
@@ -85,12 +86,29 @@
     <string name="default_device_tv_qled" translatable="false">TV QLED 60\"</string>
     <string name="default_device_microvave">Microwave</string>
     <string name="default_device_game_console">Game console</string>
-    <string name="default_device_game_console_idle">Game console (Standby)</string>
+    <string name="default_device_game_console_idle">Game console - Standby</string>
     <string name="default_device_router" translatable="false">Router</string>
     <string name="default_device_vacuum_cleaner">Vacuum cleaner</string>
     <string name="default_device_amp">Amp</string>
-    <string name="default_device_amp_idle">Amp (Standby)</string>
+    <string name="default_device_amp_idle">Amp - Standby</string>
     <string name="default_device_night_light_led">LED night light</string>
+
+
+    <string name="default_device_washing_wachine">Washing Machine</string>
+    <string name="default_device_laudry_dryer">Laundry dryer</string>
+    <string name="default_device_hair_dryer">Hair dryer</string>
+    <string name="default_device_electric_heater">Electric heater</string>
+    <string name="default_device_small_tv">Small TV</string>
+    <string name="default_device_radio" translatable="false">Radio</string>
+    <string name="default_device_induction_cooker">Induction cooker</string>
+    <string name="default_device_oven">Oven</string>
+    <string name="default_device_Mixer">Mixer</string>
+    <string name="default_device_toaster">Toaster</string>
+    <string name="default_device_kettle">Electric Kettle</string>
+    <string name="default_device_dishwasher">Dishwasher</string>
+    <string name="default_device_air_conditioner">Air conditioner</string>
+
+
     <string name="currency_type">$</string>
     <string name="module_power">Module power (W)</string>
     <string name="module_price">1x module price</string>
@@ -125,7 +143,7 @@
     <string name="tutorial_device_list">"To edit a device / room, click on it. If you want to delete an item, slide it to the left "</string>
 
     <string name="tutorial_room_list_title">"Welcome to the house manager! "</string>
-    <string name="tutorial_room_list_desc">To add a new room, click here!</string>
+    <string name="tutorial_room_list_desc">To add a new room, click here!\nYou can also select prepared room schema</string>
     <string name="banner_calculator" translatable="false">ca-app-pub-8486454550638664/8407231843</string>
     <string name="banner_room_list" translatable="false">ca-app-pub-8486454550638664/5510439914</string>
     <string name="banner_sun_energy" translatable="false">ca-app-pub-8486454550638664/2259915454</string>
@@ -135,6 +153,14 @@
     <string name="billing_verification_of_transaction">Verification of transaction</string>
     <string name="billing_transaction_ok">"Transaction accepted "</string>
     <string name="billing_no_connect">No conncection with Google Pay / Play service</string>
+
+    <string name="default_roomname_kitchen">Kitchen</string>
+    <string name="default_roomname_bedroom">Bedroom</string>
+    <string name="default_roomname_bathroom">Bathroom</string>
+    <string name="default_roomname_livingroom">Living room</string>
+    <string name="default_roomname_homeoffice">Home office</string>
+    <string name="default_roomname_utilityroom">Utility room</string>
+    <string name="tutorial_blocked_templates">After completing the guide, room examples will be unlocked!</string>
 
 
 </resources>

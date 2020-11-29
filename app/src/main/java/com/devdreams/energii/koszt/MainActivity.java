@@ -1,4 +1,6 @@
 package com.devdreams.energii.koszt;
+
+import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Intent;
@@ -9,6 +11,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
+
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
@@ -20,25 +31,20 @@ import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.navigation.NavigationView;
 
-import androidx.appcompat.view.menu.ActionMenuItemView;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import java.util.Objects;
 
+import hotchemi.android.rate.AppRate;
+
 public class MainActivity extends AppCompatActivity {
+    @SuppressLint("StaticFieldLeak")
     public static View view;
     private AppBarConfiguration mAppBarConfiguration;
+    @SuppressLint("StaticFieldLeak")
     public static Toolbar toolbar;
     BillingClient billingClient;
     BillingManage billingManage;
     static DrawerLayout drawer;
     BillingClientStateListener billingClientStateListener;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +56,12 @@ public class MainActivity extends AppCompatActivity {
         final NavigationView navigationView = findViewById(R.id.nav_view);
         view = this.findViewById(android.R.id.content);
 
+        AppRate.with(this)
+                .setInstallDays(2)
+                .setLaunchTimes(3)
+                .setRemindInterval(1)
+                .monitor();
+        AppRate.showRateDialogIfMeetsConditions(this);
 
         View headerView = navigationView.getHeaderView(0);
         final TextView studioMail = headerView.findViewById(R.id.studioMail);
@@ -65,8 +77,6 @@ public class MainActivity extends AppCompatActivity {
             public void onInitializationComplete(InitializationStatus initializationStatus) {
             }
         });
-
-
 
         billingManage = new BillingManage(this);
         billingManage.initializeClient();
@@ -93,15 +103,10 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(MainActivity.this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-
     }
-
-
 
     private String getUserTokenFromDB() {
         SQLLiteDBHelper sqlLiteDBHelper = new SQLLiteDBHelper(this);
-
-        //TODO Funkcja zwrotna tokenu z bazy
         return sqlLiteDBHelper.getTokenFromDB();
     }
 
@@ -132,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
         if(billingClient.isReady()){
             billingManage.startPurchase(this);
         }else{
-            billingClient.startConnection(this.billingClientStateListener);
+//            billingClient.startConnection(this.billingClientStateListener);
             Toast.makeText(MainActivity.this,getResources().getString(R.string.billing_no_connect),Toast.LENGTH_SHORT).show();
         }
     }
@@ -152,6 +157,4 @@ public class MainActivity extends AppCompatActivity {
         Objects.requireNonNull(myClipboard).setPrimaryClip(myClip);
         Toast.makeText(this,getResources().getString(R.string.mail),Toast.LENGTH_SHORT).show();
     }
-
-
 }

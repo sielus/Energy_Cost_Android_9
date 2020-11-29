@@ -12,10 +12,12 @@ import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TableLayout;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+
 import com.devdreams.energii.koszt.R;
 import com.devdreams.energii.koszt.ui.SQLLiteDBHelper;
 import com.devdreams.energii.koszt.ui.settings.SettingActivity;
@@ -28,7 +30,6 @@ public class SunEnergyCalculatorFragment extends Fragment {
     @SuppressLint("StaticFieldLeak")
     public static View root;
     private AdView mAdView;
-
 
     @SuppressLint({"CutPasteId", "SetTextI18n", "UseCompatLoadingForDrawables"})
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -82,7 +83,7 @@ public class SunEnergyCalculatorFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 double homeKwhCost = sunEnergyCalculator.getHouseEnergyCost();
-                homePowerCostText.setText(String.valueOf(String.format("%.2f",homeKwhCost).replace(",",".")));
+                homePowerCostText.setText(String.format("%.2f", homeKwhCost).replace(",", "."));
             }
         });
 
@@ -113,8 +114,6 @@ public class SunEnergyCalculatorFragment extends Fragment {
                 checkIfEmpty(root);
             }
         });
-
-
 
         kwhCost.addTextChangedListener(new TextWatcher() {
             @Override
@@ -186,11 +185,11 @@ public class SunEnergyCalculatorFragment extends Fragment {
 
     public void runAdsInRoomList(SQLLiteDBHelper sqlLiteDBHelper, View root) {
 
-            if(sqlLiteDBHelper.getEnableAds()){ //TODO Get boolen from db setEnableAds()
+            if (sqlLiteDBHelper.getEnableAds()) {
                 mAdView = root.findViewById(R.id.adViewSun);
                 AdRequest adRequest = new AdRequest.Builder().build();
                 mAdView.loadAd(adRequest);
-            }else{
+            } else {
                 mAdView = root.findViewById(R.id.adViewSun);
                 fixLayoutAds(mAdView);
             }
@@ -258,6 +257,7 @@ public class SunEnergyCalculatorFragment extends Fragment {
             lineChart.setVisibility(View.VISIBLE);
         }
     }
+
     @SuppressLint("SetTextI18n")
     public static void setNewDefaultCurrency(View root){
         final SettingActivity settingActivity = new SettingActivity();

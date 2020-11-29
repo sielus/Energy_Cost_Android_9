@@ -187,7 +187,7 @@
                             android:minHeight="50dp"
                             android:text="0 kWh"
                             android:textColor="#FFFFFF"
-                            android:textSize="18sp" />
+                             />
                     </LinearLayout>
 
                     <LinearLayout
@@ -209,8 +209,7 @@
                             android:fontFamily="@font/lato_light"
                             android:gravity="center"
                             android:text="0 kWh "
-                            android:textColor="#FFFFFF"
-                            android:textSize="18sp" />
+                            android:textColor="#FFFFFF" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -233,8 +232,7 @@
                             android:gravity="center"
                             android:text="0 kWh "
 
-                            android:textColor="#FFFFFF"
-                            android:textSize="18sp" />
+                            android:textColor="#FFFFFF" />
                     </LinearLayout>
 
                 </TableRow>
@@ -260,8 +258,7 @@
                             android:gravity="center"
                             android:minHeight="50dp"
                             android:text="0 zł"
-                            android:textColor="#FFFFFF"
-                            android:textSize="18sp" />
+                            android:textColor="#FFFFFF" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -283,8 +280,7 @@
                             android:fontFamily="@font/lato_light"
                             android:gravity="center"
                             android:text="0 zł"
-                            android:textColor="#FFFFFF"
-                            android:textSize="18sp" />
+                            android:textColor="#FFFFFF" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -306,8 +302,7 @@
                             android:fontFamily="@font/lato_light"
                             android:gravity="center"
                             android:text="0 zł"
-                            android:textColor="#FFFFFF"
-                            android:textSize="18sp" />
+                            android:textColor="#FFFFFF" />
                     </LinearLayout>
 
                 </TableRow>

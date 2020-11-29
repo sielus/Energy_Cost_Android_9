@@ -5,11 +5,11 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
 import com.devdreams.energii.koszt.ui.SQLLiteDBHelper;
 import com.devdreams.energii.koszt.ui.exception.SQLEnergyCostException;
 
 public class DefaultDeviceManager extends SQLLiteDBHelper {
-
     public DefaultDeviceManager(Context context) {
         super(context);
     }
@@ -39,14 +39,13 @@ public class DefaultDeviceManager extends SQLLiteDBHelper {
                 "FROM  default_device_settings " +
                 "WHERE name = ? ";
 
-        return dbhRead.rawQuery(query, new String[] {deviceName});
+        return dbhRead.rawQuery(query, new String[]{deviceName});
     }
 
-    @SuppressLint("Recycle")
     public void deleteDefaultDevice(String deviceName) {
         SQLiteDatabase dbWriter = getWritableDatabase();
-
         String where = "name = ?";
+
         dbWriter.delete("default_device_settings", where, new String[]{deviceName});
     }
 
@@ -99,6 +98,7 @@ public class DefaultDeviceManager extends SQLLiteDBHelper {
         dbWriter.update("default_device_settings", contentValues, where, new String[] {oldDeviceName});
     }
 
+    @SuppressLint("Recycle")
     public int countDefaultDevices() {
         SQLiteDatabase dbhRead = getReadableDatabase();
         String query;
