@@ -25,6 +25,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
+// TODO ogarnać ten pierdolnik
+
 public class SettingsDialogs {
     public static List<String> devicePower = new LinkedList<>();
     public static List<String> deviceName = new ArrayList<>();
@@ -82,14 +84,12 @@ public class SettingsDialogs {
         buttonTimePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 final TimePickerDialog timePickerDialog = new TimePickerDialog(dialog.getContext() , R.style.TimePickerTheme, new TimePickerDialog.OnTimeSetListener() {
 
 
                     @SuppressLint("SetTextI18n")
                     @Override
                     public void onTimeSet(TimePicker timePickerV, int hourOfDay, int minute) {
-
                         timePickerV.setIs24HourView(true);
                         h[0] = hourOfDay;
                         m[0] = minute;
@@ -106,7 +106,6 @@ public class SettingsDialogs {
             @Override
             public void onClick(View v) {
                 String deviceNameInput = editTextDeviceName.getText().toString();
-
                 if (!deviceNameInput.trim().isEmpty()) {
                     if (!ifNumberOnStart && !ifWhiteSpaceOnStart) {
                         if (!editTextDevicePower.getText().toString().equals(".")) {
@@ -133,9 +132,10 @@ public class SettingsDialogs {
                             text_field_inputEditTextDevicePowerLayout.setError(view.getResources().getString(R.string.error_no_data));
                         }
                     }
+                } else {
+                    text_field_inputEditTextDeviceNameLayout.setError(view.getResources().getString(R.string.error_no_data));
                 }
             }
-
 
             private boolean checkInputValue() {
                 boolean isNotEmpty = true;
@@ -228,9 +228,7 @@ public class SettingsDialogs {
         TextWatcher roomNameTextWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String deviceName = editTextDeviceName.getText().toString();

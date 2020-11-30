@@ -720,7 +720,6 @@ public class Dialogs {
 
         ifNumberOnStart = false;
 
-
         Button buttonDialogAccept = dialog.findViewById(R.id.ButtonAddRoom);
 
         buttonColorPicker.setOnClickListener(new View.OnClickListener() {
@@ -763,11 +762,10 @@ public class Dialogs {
         });
 
         Cursor checkFirstRunApp = sqlLiteDBHelper.getVariable("runTutFir");
-        //   System.out.println("getcount");
-
         if (checkFirstRunApp.getCount() != 0) {
             if (checkFirstRunApp.getString(0).equals("false")) {
                 spinner.setEnabled(false);
+                spinner.setAlpha(.3f);
             } else {
                 spinner.setEnabled(true);
             }
