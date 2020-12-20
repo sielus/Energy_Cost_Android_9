@@ -87,8 +87,6 @@ public class RoomManager extends SQLLiteDBHelper {
         contentValues.put("name", changeSpaceInName(newRoomName));
 
         dbWriter.update("room_list", contentValues, where, new String[] {changeSpaceInName(oldRoomName)});
-
-        updateNameDeviceList(changeSpaceInName(oldRoomName), changeSpaceInName(newRoomName));
     }
 
     public void updateRoomColor(String roomName, int colorId) {
@@ -207,11 +205,11 @@ public class RoomManager extends SQLLiteDBHelper {
     private String[] getDeviceListFromDefaultRoom(String defaultRoomName) {
         SQLiteDatabase dbhRead = getReadableDatabase();
         String query;
+        Cursor cursor;
 
         query = "SELECT device_list " +
                 "FROM   default_room_list " +
                 "WHERE  name = ?";
-        Cursor cursor;
         cursor = dbhRead.rawQuery(query, new String[]{defaultRoomName});
         cursor.moveToFirst();
 
@@ -257,17 +255,5 @@ public class RoomManager extends SQLLiteDBHelper {
                 "WHERE  name = ?";
 
         return dbhRead.rawQuery(query, new String[]{changeSpaceInName(roomName)});
-    }
-
-    private void updateNameDeviceList(String oldRoomName, String newRoomName) {
-        SQLiteDatabase dbWriter = getWritableDatabase();
-        String query;
-        String oldDeviceRoomName = changeSpaceInName(oldRoomName) + "_device";
-        String newDeviceRoomName = changeSpaceInName(newRoomName) + "_device";
-
-        query = "ALTER TABLE " + oldDeviceRoomName +
-                " RENAME TO " + newDeviceRoomName;
-
-        dbWriter.execSQL(query);
     }
 }

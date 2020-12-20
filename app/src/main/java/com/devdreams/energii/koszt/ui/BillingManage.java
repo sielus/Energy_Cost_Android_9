@@ -1,4 +1,4 @@
-package com.devdreams.energii.koszt.ui;
+    package com.devdreams.energii.koszt.ui;
 
 import android.app.Activity;
 import android.content.Context;
