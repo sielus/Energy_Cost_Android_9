@@ -15,13 +15,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
-import com.devdreams.energii.koszt.MainActivity;
 import com.devdreams.energii.koszt.R;
 import com.devdreams.energii.koszt.ui.SQLLiteDBHelper;
 import com.devdreams.energii.koszt.ui.settings.SettingActivity;
@@ -29,6 +29,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+
 import java.util.Map;
 import java.util.Objects;
 
@@ -77,12 +78,37 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        runAdsInRoomList(sqlLiteDBHelper,root);
+        final TextView outputEnergyCostUser = root.findViewById(R.id.OutputEnergyCostUser);
+        final TextView outputEnergyCostDay = root.findViewById(R.id.OutputEnergyCostDay);
+        final TextView outputEnergyCostMonth = root.findViewById(R.id.OutputEnergyCostMonth);
+
+        Button buttonClean = root.findViewById(R.id.buttonClean);
+        buttonClean.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                outputEnergyCostUser.setText("0 " + defaultCurrency);
+                outputEnergyCostDay.setText("0 " + defaultCurrency);
+                outputEnergyCostMonth.setText("0 " + defaultCurrency);
+
+
+                TextView outputEnergyCostUserKwh = root.findViewById(R.id.OutputEnergyCostUserKwh);
+                TextView outputEnergyCostDayKwh = root.findViewById(R.id.OutputEnergyCostDayKwh);
+                TextView outputEnergyCostMonthKwh = root.findViewById(R.id.OutputEnergyCostMonthKwh);
+
+                outputEnergyCostUserKwh.setText("0 kWh");
+                outputEnergyCostDayKwh.setText("0 kWh");
+                outputEnergyCostMonthKwh.setText("0 kWh");
+
+
+            }
+        });
+
+        runAdsInRoomList(sqlLiteDBHelper, root);
 
         buttonCalcCostEnergy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(Check(root)) {
+                if (Check(root)) {
 
                     getInputValue(root);
 
@@ -97,9 +123,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        TextView outputEnergyCostUser = root.findViewById(R.id.OutputEnergyCostUser);
-        TextView outputEnergyCostDay = root.findViewById(R.id.OutputEnergyCostDay);
-        TextView outputEnergyCostMonth = root.findViewById(R.id.OutputEnergyCostMonth);
+
         outputEnergyCostUser.setText("0 " + defaultCurrency);
         outputEnergyCostDay.setText("0 " + defaultCurrency);
         outputEnergyCostMonth.setText("0 " + defaultCurrency);
