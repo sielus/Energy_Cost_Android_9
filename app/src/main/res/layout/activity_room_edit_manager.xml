@@ -181,13 +181,13 @@
                             android:autoSizeMaxTextSize="15dp"
                             android:autoSizeMinTextSize="9sp"
                             android:autoSizeTextType="uniform"
+
                             android:background="@drawable/border"
                             android:fontFamily="@font/lato_light"
                             android:gravity="center"
                             android:minHeight="50dp"
                             android:text="0 kWh"
-                            android:textColor="#FFFFFF"
-                             />
+                            android:textColor="#FFFFFF" />
                     </LinearLayout>
 
                     <LinearLayout
