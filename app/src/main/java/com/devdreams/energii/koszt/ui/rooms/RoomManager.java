@@ -77,7 +77,7 @@ public class RoomManager extends SQLLiteDBHelper {
 
     public void updateRoomName(String oldRoomName, String newRoomName) throws SQLEnergyCostException.DuplicationRoom {
         if(checkNameRoom(changeSpaceInName(newRoomName)).getCount() != 0) {
-            throw new SQLEnergyCostException.DuplicationRoom(newRoomName,context);
+            throw new SQLEnergyCostException.DuplicationRoom(newRoomName, context);
         }
         SQLiteDatabase dbWriter = getWritableDatabase();
 
@@ -86,7 +86,9 @@ public class RoomManager extends SQLLiteDBHelper {
 
         contentValues.put("name", changeSpaceInName(newRoomName));
 
-        dbWriter.update("room_list", contentValues, where, new String[] {changeSpaceInName(oldRoomName)});
+        dbWriter.update("room_list", contentValues, where, new String[]{changeSpaceInName(oldRoomName)});
+
+        updateNameDeviceList(changeSpaceInName(oldRoomName), changeSpaceInName(newRoomName));
     }
 
     public void updateRoomColor(String roomName, int colorId) {
@@ -97,6 +99,7 @@ public class RoomManager extends SQLLiteDBHelper {
         contentValues.put("color_id", colorId);
 
         dbWriter.update("room_list", contentValues, where, new String[] {roomName});
+
     }
 
     public Cursor getRoomDetails() {
@@ -255,5 +258,17 @@ public class RoomManager extends SQLLiteDBHelper {
                 "WHERE  name = ?";
 
         return dbhRead.rawQuery(query, new String[]{changeSpaceInName(roomName)});
+    }
+
+    private void updateNameDeviceList(String oldRoomName, String newRoomName) {
+        SQLiteDatabase dbWriter = getWritableDatabase();
+        String query;
+        String oldDeviceRoomName = changeSpaceInName(oldRoomName) + "_device";
+        String newDeviceRoomName = changeSpaceInName(newRoomName) + "_device";
+
+        query = "ALTER TABLE " + oldDeviceRoomName +
+                " RENAME TO " + newDeviceRoomName;
+
+        dbWriter.execSQL(query);
     }
 }

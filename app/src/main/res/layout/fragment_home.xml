@@ -27,8 +27,8 @@
         app:layout_constraintVertical_bias="0.0">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
             android:id="@+id/ConstraintLayoutHome"
+            android:layout_width="match_parent"
 
             android:layout_height="match_parent">
 
@@ -69,11 +69,11 @@
                             android:id="@+id/inputPowerValue"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="numberDecimal"
-                            android:maxLength="8"
-                            android:focusable="true"
-
                             android:digits="0123456789"
+                            android:focusable="true"
+                            android:inputType="numberDecimal"
+
+                            android:maxLength="8"
                             android:textColor="@color/white" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -101,10 +101,10 @@
                             android:id="@+id/inputEnergyCost"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="numberDecimal"
-                            android:text="0.48"
-                            android:maxLength="4"
                             android:focusable="true"
+                            android:inputType="numberDecimal"
+                            android:maxLength="4"
+                            android:text="0.48"
 
                             android:textColor="@color/white" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -156,19 +156,16 @@
                 ads:layout_constraintStart_toStartOf="parent"
                 ads:layout_constraintTop_toBottomOf="@+id/calculatorTable">
 
-                <TableRow
-                    android:id="@+id/task213">
-
-
+                <TableRow android:id="@+id/task213">
 
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/text_field_inputHours"
                         android:layout_width="160dp"
                         android:layout_height="match_parent"
-                        android:hint="@string/home_hint_timework_h"
-
                         android:autoSizeTextType="uniform"
+
+                        android:hint="@string/home_hint_timework_h"
                         android:textColorHint="#FFFFFF"
                         app:boxBackgroundMode="outline"
                         app:counterEnabled="true"
@@ -179,13 +176,13 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/inputhours"
                             android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:digits="0123456789"
-                            android:text="1"
                             android:focusable="true"
 
-                            android:layout_height="wrap_content"
                             android:inputType="numberSigned"
                             android:maxLength="2"
+                            android:text="1"
 
                             android:textColor="@color/white" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -215,11 +212,11 @@
                             android:id="@+id/inputminutes"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:digits="0123456789"
+                            android:focusable="true"
                             android:inputType="numberSigned"
                             android:maxLength="2"
-                            android:digits="0123456789"
                             android:text="0"
-                            android:focusable="true"
 
 
                             android:textColor="@color/white" />
@@ -234,7 +231,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="6dp"
+                android:layout_marginTop="24dp"
                 ads:adSize="LARGE_BANNER"
                 ads:adUnitId="@string/banner_calculator"
                 ads:layout_constraintEnd_toEndOf="parent"
@@ -245,23 +242,40 @@
             </com.google.android.gms.ads.AdView>
 
             <Button
+                android:id="@+id/buttonClean"
+                android:layout_width="128dp"
+
+                android:layout_height="60dp"
+
+                android:layout_marginStart="26dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="64dp"
+                android:layout_marginBottom="24dp"
+                android:backgroundTint="#FF0000"
+                android:fontFamily="@font/lato_black"
+                android:text="Clean it"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                ads:layout_constraintBottom_toTopOf="@+id/adViewHome"
+                ads:layout_constraintEnd_toEndOf="parent"
+                ads:layout_constraintStart_toEndOf="@+id/buttonCalcCostEnergy"
+                ads:layout_constraintTop_toBottomOf="@+id/sunnyTable" />
+
+            <Button
                 android:id="@+id/buttonCalcCostEnergy"
                 android:layout_width="128dp"
 
                 android:layout_height="60dp"
 
+                android:layout_marginStart="64dp"
                 android:layout_marginTop="24dp"
-                android:layout_marginBottom="8dp"
                 android:backgroundTint="#57F9FF"
                 android:fontFamily="@font/lato_black"
                 android:text="@string/home_button_calc_it"
                 android:textColor="#222431"
                 android:textSize="16sp"
-                ads:layout_constraintBottom_toTopOf="@+id/adViewHome"
-                ads:layout_constraintHorizontal_bias="0.498"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/sunnyTable" />
+                ads:layout_constraintStart_toStartOf="parent"
+                ads:layout_constraintTop_toBottomOf="@+id/sunnyTable" />
 
             <TableLayout
                 android:id="@+id/sunnyTable"
