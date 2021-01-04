@@ -51,10 +51,10 @@ public class Dialogs {
     public static List<String> roomNameArray = new ArrayList<>();
     public static List<String> roomNameKwhArray = new ArrayList<>();
     public final List<String> device = new LinkedList<>();
-    private ArrayList<String> defaultListDeviceName;
-    private ArrayList<String> defaultListDevicePower;
-    private ArrayList<String> defaultListDeviceTimeWork;
-    private ArrayList<String> defaultListDeviceNumber;
+    private final ArrayList<String> defaultListDeviceName;
+    private final ArrayList<String> defaultListDevicePower;
+    private final ArrayList<String> defaultListDeviceTimeWork;
+    private final ArrayList<String> defaultListDeviceNumber;
     private boolean ifNumberOnStart = false;
     private boolean ifWhiteSpaceOnStart = false;
 

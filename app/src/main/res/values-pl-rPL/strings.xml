@@ -114,6 +114,7 @@
     <string name="default_device_air_conditioner">"Klimatyzator"</string>
     <string name="tutorial_blocked_templates">"Po ukończeniu poradnika, szablony pokoi zostaną odblokowane! "</string>
     <string name="error_name_canot_start_from_white_space">Nazwa nie może zaczynać się od spacji</string>
+    <string name="home_button_clean_it">Wyczyść</string>
 
 
 </resources>
