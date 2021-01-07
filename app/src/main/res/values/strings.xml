@@ -161,6 +161,7 @@
     <string name="default_roomname_homeoffice">Home office</string>
     <string name="default_roomname_utilityroom">Utility room</string>
     <string name="tutorial_blocked_templates">After completing the guide, room examples will be unlocked!</string>
+    <string name="home_button_clean_it">Clean it</string>
 
 
 </resources>

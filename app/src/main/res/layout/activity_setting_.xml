@@ -22,16 +22,16 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ConstraintLayoutSettings"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/text_field_inputinputEnergyCostGlobal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="22dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="22dp"
+            android:layout_marginStart="22sp"
+            android:layout_marginTop="32sp"
+            android:layout_marginEnd="22sp"
             android:hint="@string/settings_energy_cost_global"
             android:textColorHint="@color/white"
             app:boxBackgroundMode="outline"
@@ -54,15 +54,15 @@
                 android:maxLength="4"
                 android:textColor="@color/white"
 
-                android:textSize="16dp" />
+                android:textSize="16sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/text_field_inputinputDefaultCurrencyGlobal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="22dp"
-            android:layout_marginEnd="22dp"
+            android:layout_marginStart="22sp"
+            android:layout_marginEnd="22sp"
             android:textColorHint="@color/white"
             app:boxBackgroundMode="outline"
             app:counterEnabled="true"
@@ -90,9 +90,9 @@
             android:textColorHint="@color/white"
 
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_height="100sp"
+            android:layout_marginStart="16sp"
+            android:layout_marginEnd="16sp"
             android:layout_weight="1"
 
 
@@ -106,7 +106,7 @@
 
             <TableRow
                 android:id="@+id/task1"
-                android:layout_height="30dp"
+                android:layout_height="30sp"
                 android:gravity="center">
 
 
@@ -118,25 +118,25 @@
                     android:gravity="center"
                     android:text="@string/settings_computational_accuracy_global"
                     android:textColor="@color/white"
-                    android:textSize="16dp" />
+                    android:textSize="16sp" />
 
                 <SeekBar
                     android:id="@+id/seekBarNumericDecimal"
-                    android:layout_width="180dp"
+                    android:layout_width="180sp"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginEnd="10sp"
                     android:max="6"
                   />
 
                 <TextView
                     android:id="@+id/textViewNumericView"
-                    android:layout_width="50dp"
+                    android:layout_width="50sp"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/lato_light"
                     android:text="TextView"
 
                     android:textColor="@color/white"
-                    android:textSize="16dp" />
+                    android:textSize="16sp" />
 
             </TableRow>
 
@@ -149,7 +149,7 @@
             android:fontFamily="@font/lato_light"
             android:text="@string/settings_default_devices_list"
             android:textColor="@color/white"
-            android:textSize="20dp"
+            android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@+id/RecyckerViewSettings"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -158,8 +158,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/RecyckerViewSettings"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_marginTop="8dp"
+            android:layout_height="200sp"
+            android:layout_marginTop="8sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -172,7 +172,7 @@
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="12sp"
             android:backgroundTint="#57F9FF"
             android:text="@string/settings_add_default_device"
             app:layout_constraintEnd_toEndOf="parent"

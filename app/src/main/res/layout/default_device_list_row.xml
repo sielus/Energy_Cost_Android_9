@@ -12,26 +12,27 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="70sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="69dp"
+            android:layout_height="69sp"
 
             android:background="@drawable/default_device_list_settings_gradient">
 
             <TextView
                 android:id="@+id/rowTextViewDeviceName"
-                android:layout_width="126dp"
+                android:layout_width="126sp"
 
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:autoSizeTextType="uniform"
-                android:autoSizeMinTextSize="7dp"
-                android:autoSizeMaxTextSize="16dp"
+                android:layout_marginStart="8sp"
+                app:autoSizeTextType="uniform"
+                app:autoSizeMinTextSize="7sp"
+                app:autoSizeMaxTextSize="16sp"
+
                 android:fontFamily="@font/lato_black"
                 android:text="TextView"
                 android:textColor="@color/white"
@@ -43,10 +44,10 @@
 
             <TableLayout
                 android:id="@+id/sunnyTable"
-                android:layout_width="191dp"
+                android:layout_width="200sp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="37dp"
-                android:layout_marginEnd="50dp"
+                android:layout_marginStart="18sp"
+                android:layout_marginEnd="50sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/rowTextViewDeviceName"
@@ -63,23 +64,24 @@
 
                         android:fontFamily="@font/lato_light"
                         android:gravity="right"
-                        android:text="Moc : "
+                        android:text="@string/device_row_device_power"
                         android:textColor="@color/white"
-                        android:textSize="15sp"
+                        android:textSize="14sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.0" />
+                        app:layout_constraintVertical_bias="0.0"
+                        tools:ignore="RtlHardcoded" />
 
                     <TextView
                         android:id="@+id/rowTextViewPower"
-                        android:layout_width="wrap_content"
+                        android:layout_width="70sp"
                         android:layout_weight="1"
-
+                        app:autoSizeTextType="uniform"
                         android:fontFamily="@font/lato_light"
                         android:text="TextView"
                         android:textColor="@color/white"
-                        android:textSize="15sp"
+                        android:textSize="14sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -98,23 +100,24 @@
                         android:fontFamily="@font/lato_light"
 
                         android:gravity="right"
-                        android:text="Czas pracy : "
+                        android:text="@string/device_row_device_time_work"
                         android:textColor="@color/white"
-                        android:textSize="15sp"
+                        android:textSize="14sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.8" />
+                        app:layout_constraintVertical_bias="0.8"
+                        tools:ignore="RtlHardcoded" />
 
                     <TextView
                         android:id="@+id/rowTextViewNumber"
-                        android:layout_width="wrap_content"
+                        android:layout_width="70sp"
                         android:layout_weight="1"
+                        app:autoSizeTextType="uniform"
                         android:fontFamily="@font/lato_light"
-
                         android:text="TextView"
                         android:textColor="@color/white"
-                        android:textSize="15sp"
+                        android:textSize="14sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -130,23 +133,24 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/lato_light"
                         android:gravity="right"
-                        android:text="Ilość urządzeń : "
+                        android:text="@string/device_row_device_number"
                         android:textColor="@color/white"
-                        android:textSize="15sp"
+                        android:textSize="14sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.8" />
+                        app:layout_constraintVertical_bias="0.8"
+                        tools:ignore="RtlHardcoded" />
 
                     <TextView
                         android:id="@+id/rowTextViewTimeWork"
-                        android:layout_width="wrap_content"
+                        android:layout_width="70sp"
                         android:layout_weight="1"
+                        app:autoSizeTextType="uniform"
                         android:fontFamily="@font/lato_light"
-
                         android:text="TextView"
                         android:textColor="@color/white"
-                        android:textSize="15sp"
+                        android:textSize="14sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -156,13 +160,13 @@
             </TableLayout>
 
             <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="36dp"
-                android:layout_height="29dp"
+                android:id="@+id/imageView3bin"
+                android:layout_width="36sp"
+                android:layout_height="29sp"
 
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="4dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20sp"
+                android:layout_marginEnd="4sp"
+                android:layout_marginBottom="20sp"
                 android:src="@drawable/bin"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

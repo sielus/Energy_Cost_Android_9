@@ -46,7 +46,7 @@
                 android:fontFamily="@font/lato_light"
                 android:text="@string/room_list_summary_of_the_costs"
                 android:textColor="@color/white"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 app:layout_constraintBottom_toTopOf="@+id/sunnyTable"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -107,9 +107,9 @@
                             android:layout_height="match_parent"
 
                             android:layout_weight="1"
-                            android:autoSizeMaxTextSize="16dp"
-                            android:autoSizeMinTextSize="7dp"
-                            android:autoSizeTextType="uniform"
+                            app:autoSizeMaxTextSize="16dp"
+                            app:autoSizeMinTextSize="7dp"
+                            app:autoSizeTextType="uniform"
                             android:background="@drawable/border"
                             android:fontFamily="@font/lato_light"
 
@@ -136,7 +136,7 @@
                             android:gravity="center"
                             android:text="@string/room_list_table_year"
                             android:textColor="#FFFFFF"
-                            android:textSize="18dp" />
+                            android:textSize="18sp" />
                     </LinearLayout>
 
                 </TableRow>
@@ -159,9 +159,9 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
 
-                            android:autoSizeMaxTextSize="16dp"
-                            android:autoSizeMinTextSize="7dp"
-                            android:autoSizeTextType="uniform"
+                            app:autoSizeMaxTextSize="16dp"
+                            app:autoSizeMinTextSize="7dp"
+                            app:autoSizeTextType="uniform"
                             android:background="@drawable/border"
                             android:fontFamily="@font/lato_light"
                             android:gravity="center"
@@ -182,9 +182,9 @@
                             android:layout_height="match_parent"
 
                             android:layout_weight="1"
-                            android:autoSizeMaxTextSize="16dp"
-                            android:autoSizeMinTextSize="7dp"
-                            android:autoSizeTextType="uniform"
+                            app:autoSizeMaxTextSize="16dp"
+                            app:autoSizeMinTextSize="7dp"
+                            app:autoSizeTextType="uniform"
                             android:background="@drawable/border"
                             android:fontFamily="@font/lato_light"
                             android:gravity="center"
@@ -204,9 +204,9 @@
                             android:layout_height="match_parent"
 
                             android:layout_weight="1"
-                            android:autoSizeMaxTextSize="16dp"
-                            android:autoSizeMinTextSize="7dp"
-                            android:autoSizeTextType="uniform"
+                            app:autoSizeMaxTextSize="16dp"
+                            app:autoSizeMinTextSize="7dp"
+                            app:autoSizeTextType="uniform"
 
                             android:background="@drawable/border"
                             android:fontFamily="@font/lato_light"
@@ -231,14 +231,14 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:autoSizeMaxTextSize="16dp"
-                            android:autoSizeMinTextSize="7dp"
-                            android:autoSizeTextType="uniform"
+                            app:autoSizeMaxTextSize="16dp"
+                            app:autoSizeMinTextSize="7dp"
+                            app:autoSizeTextType="uniform"
                             android:background="@drawable/border"
                             android:fontFamily="@font/lato_light"
                             android:gravity="center"
                             android:minHeight="50dp"
-                            android:text="0 zł"
+                            android:text="0 xx"
                             android:textColor="#FFFFFF" />
                     </LinearLayout>
 
@@ -254,13 +254,13 @@
                             android:layout_height="match_parent"
 
                             android:layout_weight="1"
-                            android:autoSizeMaxTextSize="16dp"
-                            android:autoSizeMinTextSize="7dp"
-                            android:autoSizeTextType="uniform"
+                            app:autoSizeMaxTextSize="16dp"
+                            app:autoSizeMinTextSize="7dp"
+                            app:autoSizeTextType="uniform"
                             android:background="@drawable/border"
                             android:fontFamily="@font/lato_light"
                             android:gravity="center"
-                            android:text="0 zł"
+                            android:text="0 xx"
                             android:textColor="#FFFFFF" />
                     </LinearLayout>
 
@@ -276,13 +276,13 @@
                             android:layout_height="match_parent"
 
                             android:layout_weight="1"
-                            android:autoSizeMaxTextSize="16dp"
-                            android:autoSizeMinTextSize="7dp"
-                            android:autoSizeTextType="uniform"
+                            app:autoSizeMaxTextSize="16dp"
+                            app:autoSizeMinTextSize="7dp"
+                            app:autoSizeTextType="uniform"
                             android:background="@drawable/border"
                             android:fontFamily="@font/lato_light"
                             android:gravity="center"
-                            android:text="0 zł"
+                            android:text="0 xx"
                             android:textColor="#FFFFFF" />
                     </LinearLayout>
 
@@ -339,14 +339,15 @@
         android:id="@+id/buttonAddRoom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="30dp"
+        android:layout_marginEnd="30dp"
 
         android:layout_marginBottom="30dp"
         android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         android:tint="#fff"
         app:layout_constraintRight_toRightOf="parent"
-        app:srcCompat="@drawable/ic_add_black_24dp" />
+        app:srcCompat="@drawable/ic_add_black_24dp"
+        android:focusable="true" />
 
 
 

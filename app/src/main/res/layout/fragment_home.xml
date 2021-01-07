@@ -4,6 +4,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/home_layoutID"
     android:focusableInTouchMode="true"
@@ -88,8 +89,9 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/text_field_inputEnergyCost"
                         android:layout_width="wrap_content"
+
                         android:layout_height="wrap_content"
-                        android:autoSizeTextType="uniform"
+                        app:autoSizeTextType="uniform"
                         android:textColorHint="@color/white"
 
                         app:boxBackgroundMode="outline"
@@ -120,7 +122,7 @@
                         android:id="@+id/text_field_inputNumberDevices"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:autoSizeTextType="uniform"
+                        app:autoSizeTextType="uniform"
                         android:hint="@string/home_hint_number_device"
                         android:textColorHint="#FFFFFF"
                         app:boxBackgroundMode="outline"
@@ -163,7 +165,7 @@
                         android:id="@+id/text_field_inputHours"
                         android:layout_width="160dp"
                         android:layout_height="match_parent"
-                        android:autoSizeTextType="uniform"
+                        app:autoSizeTextType="uniform"
 
                         android:hint="@string/home_hint_timework_h"
                         android:textColorHint="#FFFFFF"
@@ -197,7 +199,7 @@
                         android:id="@+id/text_field_inputMinutes"
                         android:layout_width="160dp"
                         android:layout_height="wrap_content"
-                        android:autoSizeTextType="uniform"
+                        app:autoSizeTextType="uniform"
 
                         android:hint="@string/home_hint_timework_m"
                         android:textColorHint="#FFFFFF"
@@ -231,51 +233,52 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="24dp"
                 ads:adSize="LARGE_BANNER"
                 ads:adUnitId="@string/banner_calculator"
+                ads:layout_constraintBottom_toBottomOf="parent"
                 ads:layout_constraintEnd_toEndOf="parent"
                 ads:layout_constraintHorizontal_bias="0.494"
                 ads:layout_constraintStart_toStartOf="parent"
-                ads:layout_constraintTop_toBottomOf="@+id/buttonCalcCostEnergy">
+                ads:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
             </com.google.android.gms.ads.AdView>
 
-            <Button
-                android:id="@+id/buttonClean"
-                android:layout_width="128dp"
-
-                android:layout_height="60dp"
-
-                android:layout_marginStart="26dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="64dp"
-                android:layout_marginBottom="24dp"
-                android:backgroundTint="#FF0000"
-                android:fontFamily="@font/lato_black"
-                android:text="Clean it"
-                android:textColor="#FFFFFF"
-                android:textSize="16sp"
+            <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal"
                 ads:layout_constraintBottom_toTopOf="@+id/adViewHome"
                 ads:layout_constraintEnd_toEndOf="parent"
-                ads:layout_constraintStart_toEndOf="@+id/buttonCalcCostEnergy"
-                ads:layout_constraintTop_toBottomOf="@+id/sunnyTable" />
-
-            <Button
-                android:id="@+id/buttonCalcCostEnergy"
-                android:layout_width="128dp"
-
-                android:layout_height="60dp"
-
-                android:layout_marginStart="64dp"
-                android:layout_marginTop="24dp"
-                android:backgroundTint="#57F9FF"
-                android:fontFamily="@font/lato_black"
-                android:text="@string/home_button_calc_it"
-                android:textColor="#222431"
-                android:textSize="16sp"
                 ads:layout_constraintStart_toStartOf="parent"
-                ads:layout_constraintTop_toBottomOf="@+id/sunnyTable" />
+                ads:layout_constraintTop_toBottomOf="@+id/sunnyTable">
+
+                <Button
+                    android:id="@+id/buttonCalcCostEnergy"
+                    android:layout_width="128dp"
+
+                    android:layout_height="60dp"
+                    android:layout_marginEnd="20dp"
+
+                    android:backgroundTint="#57F9FF"
+                    android:fontFamily="@font/lato_black"
+                    android:text="@string/home_button_calc_it"
+                    android:textColor="#222431"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/buttonClean"
+                    android:layout_width="128dp"
+
+                    android:layout_height="60dp"
+                    android:layout_marginStart="20dp"
+                    android:backgroundTint="#FF0000"
+                    android:fontFamily="@font/lato_black"
+                    android:text="@string/home_button_clean_it"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp" />
+            </LinearLayout>
 
             <TableLayout
                 android:id="@+id/sunnyTable"
@@ -306,9 +309,9 @@
                             android:layout_height="50dp"
 
                             android:layout_weight="1"
-                            android:autoSizeMaxTextSize="14sp"
-                            android:autoSizeMinTextSize="7sp"
-                            android:autoSizeTextType="uniform"
+                            app:autoSizeMaxTextSize="14sp"
+                            app:autoSizeMinTextSize="4sp"
+                            app:autoSizeTextType="uniform"
                             android:background="@drawable/border"
                             android:fontFamily="@font/lato_light"
                             android:gravity="center"
@@ -333,9 +336,9 @@
                             android:layout_height="50dp"
 
                             android:layout_weight="1"
-                            android:autoSizeMaxTextSize="14sp"
-                            android:autoSizeMinTextSize="7sp"
-                            android:autoSizeTextType="uniform"
+                            app:autoSizeMaxTextSize="14sp"
+                            app:autoSizeMinTextSize="4sp"
+                            app:autoSizeTextType="uniform"
                             android:background="@drawable/border"
                             android:fontFamily="@font/lato_light"
                             android:gravity="center"
@@ -355,9 +358,9 @@
                             android:layout_height="50dp"
 
                             android:layout_weight="1"
-                            android:autoSizeMaxTextSize="14sp"
-                            android:autoSizeMinTextSize="7sp"
-                            android:autoSizeTextType="uniform"
+                            app:autoSizeMaxTextSize="14sp"
+                            app:autoSizeMinTextSize="4sp"
+                            app:autoSizeTextType="uniform"
                             android:background="@drawable/border"
                             android:fontFamily="@font/lato_light"
                             android:gravity="center"
@@ -381,11 +384,12 @@
                             android:layout_width="match_parent"
 
                             android:layout_height="match_parent"
-
                             android:layout_weight="1"
-                            android:autoSizeMaxTextSize="14sp"
-                            android:autoSizeMinTextSize="4sp"
-                            android:autoSizeTextType="uniform"
+
+                            app:autoSizeMaxTextSize="14sp"
+                            app:autoSizeMinTextSize="4sp"
+                            app:autoSizeTextType="uniform"
+
                             android:background="@drawable/border"
                             android:fontFamily="@font/lato_light"
                             android:gravity="center"
@@ -405,9 +409,9 @@
                             android:layout_height="match_parent"
 
                             android:layout_weight="1"
-                            android:autoSizeMaxTextSize="14sp"
-                            android:autoSizeMinTextSize="4sp"
-                            android:autoSizeTextType="uniform"
+                            app:autoSizeMaxTextSize="14sp"
+                            app:autoSizeMinTextSize="4sp"
+                            app:autoSizeTextType="uniform"
                             android:background="@drawable/border"
                             android:fontFamily="@font/lato_light"
                             android:gravity="center"
@@ -427,9 +431,9 @@
                             android:layout_height="match_parent"
 
                             android:layout_weight="1"
-                            android:autoSizeMaxTextSize="14sp"
-                            android:autoSizeMinTextSize="4sp"
-                            android:autoSizeTextType="uniform"
+                            app:autoSizeMaxTextSize="14sp"
+                            app:autoSizeMinTextSize="4sp"
+                            app:autoSizeTextType="uniform"
                             android:background="@drawable/border"
                             android:fontFamily="@font/lato_light"
                             android:gravity="center"
@@ -454,9 +458,9 @@
                             android:layout_height="match_parent"
 
                             android:layout_weight="1"
-                            android:autoSizeMaxTextSize="14sp"
-                            android:autoSizeMinTextSize="4sp"
-                            android:autoSizeTextType="uniform"
+                            app:autoSizeMaxTextSize="14sp"
+                            app:autoSizeMinTextSize="4sp"
+                            app:autoSizeTextType="uniform"
                             android:background="@drawable/border"
                             android:fontFamily="@font/lato_light"
                             android:gravity="center"
@@ -477,9 +481,9 @@
                             android:layout_height="match_parent"
 
                             android:layout_weight="1"
-                            android:autoSizeMaxTextSize="14sp"
-                            android:autoSizeMinTextSize="4sp"
-                            android:autoSizeTextType="uniform"
+                            app:autoSizeMaxTextSize="14sp"
+                            app:autoSizeMinTextSize="4sp"
+                            app:autoSizeTextType="uniform"
                             android:background="@drawable/border"
                             android:fontFamily="@font/lato_light"
                             android:gravity="center"
@@ -497,9 +501,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:autoSizeMaxTextSize="14sp"
-                            android:autoSizeMinTextSize="4sp"
-                            android:autoSizeTextType="uniform"
+                            app:autoSizeMaxTextSize="14sp"
+                            app:autoSizeMinTextSize="4sp"
+                            app:autoSizeTextType="uniform"
                             android:background="@drawable/border"
                             android:fontFamily="@font/lato_light"
                             android:gravity="center"

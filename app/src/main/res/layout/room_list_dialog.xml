@@ -76,7 +76,7 @@
         android:layout_width="214dp"
         android:layout_height="39dp"
         android:layout_marginStart="8dp"
-        android:autoSizeTextType="uniform"
+        app:autoSizeTextType="uniform"
         android:theme="@style/spinnerDrop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_field_inputRoomNameLayout" />
