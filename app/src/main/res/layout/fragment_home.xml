@@ -31,7 +31,7 @@
             android:id="@+id/ConstraintLayoutHome"
             android:layout_width="match_parent"
 
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <TableLayout
                 android:id="@+id/calculatorTable"
@@ -306,7 +306,7 @@
 
                             android:layout_width="match_parent"
 
-                            android:layout_height="50dp"
+                            android:layout_height="0dp"
 
                             android:layout_weight="1"
                             app:autoSizeMaxTextSize="14sp"
@@ -333,7 +333,7 @@
 
 
                             android:layout_width="match_parent"
-                            android:layout_height="50dp"
+                            android:layout_height="0dp"
 
                             android:layout_weight="1"
                             app:autoSizeMaxTextSize="14sp"
@@ -355,7 +355,7 @@
                             android:id="@+id/textView11"
 
                             android:layout_width="match_parent"
-                            android:layout_height="50dp"
+                            android:layout_height="0dp"
 
                             android:layout_weight="1"
                             app:autoSizeMaxTextSize="14sp"
@@ -383,7 +383,7 @@
 
                             android:layout_width="match_parent"
 
-                            android:layout_height="match_parent"
+                            android:layout_height="0dp"
                             android:layout_weight="1"
 
                             app:autoSizeMaxTextSize="14sp"
@@ -406,7 +406,7 @@
                             android:id="@+id/OutputEnergyCostDayKwh"
 
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="0dp"
 
                             android:layout_weight="1"
                             app:autoSizeMaxTextSize="14sp"
@@ -428,7 +428,7 @@
                             android:id="@+id/OutputEnergyCostMonthKwh"
 
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="0dp"
 
                             android:layout_weight="1"
                             app:autoSizeMaxTextSize="14sp"
@@ -455,7 +455,7 @@
                             android:id="@+id/OutputEnergyCostUser"
 
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="0dp"
 
                             android:layout_weight="1"
                             app:autoSizeMaxTextSize="14sp"
@@ -478,7 +478,7 @@
                             android:id="@+id/OutputEnergyCostDay"
 
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="0dp"
 
                             android:layout_weight="1"
                             app:autoSizeMaxTextSize="14sp"
@@ -499,7 +499,7 @@
                         <TextView
                             android:id="@+id/OutputEnergyCostMonth"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="0dp"
                             android:layout_weight="1"
                             app:autoSizeMaxTextSize="14sp"
                             app:autoSizeMinTextSize="4sp"

@@ -62,7 +62,7 @@
                         android:layout_marginEnd="16dp"
                         android:layout_marginBottom="16dp"
                         android:width="10dp"
-                        app:autoSizeMaxTextSize="15dp"
+                        app:autoSizeMaxTextSize="15sp"
                         app:autoSizeMinTextSize="9sp"
                         app:autoSizeTextType="uniform"
                         android:background="#37BCE4"
@@ -209,7 +209,7 @@
                     android:layout_height="wrap_content"
                     android:text="%"
                     android:textColor="@color/white"
-                    android:textSize="15dp"
+                    android:textSize="15sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/moduleEfficiency"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -290,7 +290,7 @@
 
                             android:id="@+id/moduleCountText"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="0dp"
                             android:layout_weight="1"
 
                             app:autoSizeMaxTextSize="16sp"
@@ -322,7 +322,7 @@
                             android:id="@+id/instalationCostTitleTextView"
 
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="0dp"
                             android:layout_weight="1"
 
                             app:autoSizeMaxTextSize="16sp"
@@ -345,7 +345,7 @@
                             android:id="@+id/instalationCost"
 
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="0dp"
 
                             android:layout_weight="1"
                             app:autoSizeMaxTextSize="16sp"
@@ -375,7 +375,7 @@
                             android:id="@+id/textView232"
 
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="0dp"
                             android:layout_weight="1"
 
                             app:autoSizeMaxTextSize="16sp"
@@ -398,7 +398,7 @@
                             android:id="@+id/kwhUsage"
 
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="0dp"
                             android:layout_weight="1"
 
                             app:autoSizeMaxTextSize="16sp"
@@ -429,7 +429,7 @@
                             android:id="@+id/textView2322"
 
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="0dp"
                             android:layout_weight="1"
 
                             app:autoSizeMaxTextSize="16sp"
@@ -452,7 +452,7 @@
                             android:id="@+id/targetPowerText"
 
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="0dp"
                             android:layout_weight="1"
 
                             app:autoSizeMaxTextSize="16sp"
