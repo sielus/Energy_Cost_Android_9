@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
-    android:layout_height="250dp"
+    android:layout_height="250sp"
     android:background="@color/AppBackGroudColor"
     android:visibility="visible">
 
@@ -12,9 +12,9 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginStart="47dp"
-        android:layout_marginEnd="48dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginStart="47sp"
+        android:layout_marginEnd="48sp"
+        android:layout_marginBottom="8sp"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -24,24 +24,27 @@
 
         <Button
             android:id="@+id/buttonTimePicker"
-            android:layout_width="118dp"
-            android:layout_height="61dp"
-            android:text="@string/dialog_edit_device_button_time_work"
+            android:layout_width="118sp"
+            android:layout_height="61sp"
+            app:autoSizeMaxTextSize="14sp"
 
-            android:drawableTint="@color/white"
+            app:autoSizeMinTextSize="10sp"
+            app:autoSizeTextType="uniform"
+
             android:backgroundTint="#1683B1"
-
             android:fontFamily="@font/lato_bold"
-            android:scaleType="fitEnd"
-
+            android:scaleType="fitCenter"
+            android:text="@string/dialog_edit_device_button_time_work"
             android:textColor="@color/white"
-            android:textSize="13dp" />
+
+
+            />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="20sp"
             android:gravity="center">
 
             <Switch
@@ -51,22 +54,22 @@
                 android:fontFamily="@font/lato_light"
                 android:scaleType="fitCenter"
                 android:text="24h"
-                android:layout_marginRight="5dp"
+                android:layout_marginEnd="5sp"
                 android:textColor="@color/white"
-                android:textSize="19dp"
+                android:textSize="19sp"
                 tools:ignore="UseSwitchCompatOrMaterialXml" />
 
             <Button
                 android:id="@+id/buttonColorPicker"
-                android:layout_width="35dp"
-                android:layout_height="35dp" />
+                android:layout_width="35sp"
+                android:layout_height="35sp" />
         </LinearLayout>
 
         <Button
             android:id="@+id/buttonDialogAccept"
-            android:layout_width="76dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="30dp"
+            android:layout_width="76sp"
+            android:layout_height="48sp"
+            android:layout_marginTop="30sp"
 
             android:backgroundTint="#1683B1"
             android:fontFamily="@font/lato_bold"
@@ -76,9 +79,9 @@
 
     <TableLayout
         android:id="@+id/tableLayout2"
-        android:layout_width="150dp"
+        android:layout_width="150sp"
         android:layout_height="match_parent"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="16sp"
         android:stretchColumns="*"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.028"
@@ -94,7 +97,7 @@
                 android:id="@+id/text_field_inputeditTextDeviceNameLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:autoSizeTextType="uniform"
+                app:autoSizeTextType="uniform"
                 android:hint="@string/dialog_edit_device_name"
                 android:overScrollMode="always"
 
@@ -116,7 +119,7 @@
                     android:inputType="text"
                     android:maxLength="40"
                     android:textColor="@color/white"
-                    android:textSize="15dp" />
+                    android:textSize="15sp" />
 
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -131,7 +134,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
-                android:autoSizeTextType="uniform"
+                app:autoSizeTextType="uniform"
                 android:hint="@string/dialog_edit_device_power_value"
                 android:textColorHint="#FFFFFF"
 
@@ -165,7 +168,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-                android:autoSizeTextType="uniform"
+                app:autoSizeTextType="uniform"
                 android:hint="@string/dialog_edit_device_number"
 
                 android:textColorHint="#FFFFFF"
