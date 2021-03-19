@@ -3,7 +3,6 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar.Bridge">
         <!-- Customize your theme here. -->
-
         <item name="colorPrimary">#330867</item>
         <item name="colorPrimaryDark">#330867</item>
         <item name="colorAccent">@color/colorAccent</item>
