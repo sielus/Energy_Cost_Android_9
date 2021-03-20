@@ -656,7 +656,7 @@ public class Dialogs {
             @Override
             public void onClick(View v) {
                 String newRoomName = Objects.requireNonNull(text_field_inputRoomName.getText()).toString();
-                if (newRoomName.trim().isEmpty()) {
+                if (newRoomName.trim().isEmpty() || newRoomName.trim().toLowerCase().equals("tmp")) {
                     text_field_inputRoomNameLayout.setError(view.getContext().getResources().getString(R.string.error_no_data));
                 } else if (ifNumberOnStart) {
                     text_field_inputRoomNameLayout.setError(view.getContext().getResources().getString(R.string.error_name_canot_start_from_number));

@@ -14,10 +14,11 @@ public class DeviceManager extends SQLLiteDBHelper {
         super(context);
     }
 
-    public void addDevice(String roomName, String deviceName, double powerValue, int hour, int minutes, int deviceNumber, int colorId) throws SQLEnergyCostException.EmptyField, SQLEnergyCostException.DuplicationDevice, SQLEnergyCostException.WrongTime {
+    public void addDevice(String roomName, String deviceName, double powerValue, int hour, int minutes, int deviceNumber, int colorId) throws SQLEnergyCostException.EmptyField, SQLEnergyCostException.
+            DuplicationDevice, SQLEnergyCostException.WrongTime {
         if (roomName.isEmpty() || deviceName.isEmpty() || powerValue == 0 || deviceNumber == 0) {
             throw new SQLEnergyCostException.EmptyField(context);
-        }else if(hour == 0 && minutes == 0) {
+        } else if (hour == 0 && minutes == 0) {
             throw new SQLEnergyCostException.WrongTime(context);
         }
 
